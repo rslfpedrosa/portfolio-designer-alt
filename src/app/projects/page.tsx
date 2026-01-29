@@ -6,6 +6,7 @@ import { ArrowRight, X, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { getAllProjects } from '@/data/projects'
+import CardHoverFramePortal from '@/components/CardHoverFramePortal'
 
 // Unified Figma Cursor System
 interface FigmaCursorProps {
@@ -97,7 +98,7 @@ const FigmaCursor = ({ label, showPill, shouldReduceMotion, isDesktop }: FigmaCu
   return (
     <div
       ref={cursorRef}
-      className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform"
+      className="pointer-events-none fixed top-0 left-0 z-[10002] will-change-transform"
       style={{
         display: hasMousePositionRef.current ? 'block' : 'none',
         transform: `translate3d(${cursorXRef.current}px, ${cursorYRef.current}px, 0)`,
@@ -143,6 +144,8 @@ const ProjectsPage = () => {
   })
   const [selectedMedia, setSelectedMedia] = useState<{ type: 'video' | 'image'; src: string } | null>(null)
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null)
+  const [hoveredCardBounds, setHoveredCardBounds] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
+  const cardRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
   const [isDesktop, setIsDesktop] = useState(false)
   const shouldReduceMotion = useReducedMotion()
 
@@ -169,6 +172,38 @@ const ProjectsPage = () => {
 
   const cursorLabel = hoveredCardId !== null ? 'VIEW CASE STUDY' : null
   const showCursorPill = cursorLabel !== null
+
+  // Card hover frame portal – update bounds when hovered card changes and on scroll/resize
+  useEffect(() => {
+    if (hoveredCardId === null) {
+      setHoveredCardBounds(null)
+      return
+    }
+    const updateCardBounds = () => {
+      const el = cardRefs.current.get(hoveredCardId!)
+      if (el) {
+        const r = el.getBoundingClientRect()
+        setHoveredCardBounds({ left: r.left, top: r.top, width: r.width, height: r.height })
+      }
+    }
+    const raf = requestAnimationFrame(updateCardBounds)
+    let ticking = false
+    const throttledUpdate = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        updateCardBounds()
+        ticking = false
+      })
+    }
+    window.addEventListener('resize', throttledUpdate)
+    window.addEventListener('scroll', throttledUpdate, { passive: true })
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', throttledUpdate)
+      window.removeEventListener('scroll', throttledUpdate)
+    }
+  }, [hoveredCardId])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -251,6 +286,9 @@ const ProjectsPage = () => {
 
   return (
     <div className="min-h-screen pt-16">
+      {isDesktop && (
+        <CardHoverFramePortal bounds={hoveredCardBounds} isVisible={hoveredCardId !== null} />
+      )}
       {/* Hero Section */}
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -273,175 +311,79 @@ const ProjectsPage = () => {
       </section>
 
       {/* Projects List */}
-      <section className="pb-24 pt-8 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-900">
+      <section className="pb-24 pt-8 px-4 sm:px-6 lg:px-8 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="space-y-8 lg:space-y-12">
-            {projects.map((project, index) => {
-              // Define background gradients - cycle through colors for all projects
-              const cardBackgrounds = [
-                'bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800', // Default - dark blue-purple
-                'bg-gradient-to-br from-purple-600 to-purple-700', // Vibrant purple
-                'bg-gradient-to-br from-blue-600 to-indigo-600', // Blue-indigo
-                'bg-gradient-to-br from-pink-600 to-rose-600', // Pink-rose
-                'bg-gradient-to-br from-teal-600 to-cyan-600', // Teal-cyan
-                'bg-gradient-to-br from-orange-600 to-amber-600', // Orange-amber
-              ]
-              
-              // Custom backgrounds for specific projects
-              const cardBackground = project.id === 1 
-                ? 'bg-[#B76A46]' 
-                : project.id === 3
-                  ? 'bg-gradient-to-br from-blue-600 to-indigo-600'
-                  : cardBackgrounds[index % cardBackgrounds.length]
-              
-              return (
-                <Link 
-                  key={project.id}
-                  href={`/projects/${project.id}`} 
-                  className="block group"
-                  onMouseEnter={() => isDesktop && setHoveredCardId(project.id)}
-                  onMouseLeave={() => setHoveredCardId(null)}
-                  onFocus={() => {}}
-                  onBlur={() => {}}
-                  style={isDesktop && hoveredCardId === project.id ? { cursor: 'none' } : {}}
+            {projects.map((project, index) => (
+              <Link
+                key={project.id}
+                href={`/projects/${project.id}`}
+                className="block group"
+                onMouseEnter={() => isDesktop && setHoveredCardId(project.id)}
+                onMouseLeave={() => setHoveredCardId(null)}
+                onFocus={() => {}}
+                onBlur={() => {}}
+                style={isDesktop && hoveredCardId === project.id ? { cursor: 'none' } : {}}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  ref={(el) => {
+                    if (el) cardRefs.current.set(project.id, el as HTMLDivElement)
+                    else cardRefs.current.delete(project.id)
+                  }}
+                  className="relative overflow-visible transition-all duration-200 ease-out group cursor-pointer"
                 >
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.05, y: -6 }}
-                    className={`relative overflow-hidden rounded-2xl lg:rounded-3xl ${cardBackground} transition-all duration-200 ease-out group cursor-pointer`}
-                >
-                    {/* Subtle abstract shapes overlay */}
-                    <div className="absolute inset-0 opacity-10 group-hover:opacity-15 transition-opacity duration-200">
-                      <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-                      <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-300 rounded-full blur-2xl"></div>
-                    </div>
-                    
-                    {/* Hover highlight overlay */}
-                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-200 pointer-events-none z-20"></div>
-                    
+                  {/* Card content – neutral background */}
+                  <div className="relative overflow-hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0">
                       {/* Left Column - Content */}
                       <div className="flex flex-col justify-center space-y-6 z-10 p-8 lg:p-12">
-                        {/* Brand/Logo */}
                         <div className="mb-2">
                           {project.id === 1 ? (
-                            <Image
-                              src="/Logos/Logo.svg"
-                              alt="Bocca Moments Logo"
-                              width={200}
-                              height={45}
-                              className="h-7 w-auto"
-                            />
+                            <Image src="/Logos/Logo.svg" alt="Bocca Moments Logo" width={200} height={45} className="h-7 w-auto brightness-0 invert" />
                           ) : project.id === 3 ? (
-                            <Image
-                              src="/Logos/Onyx.svg"
-                              alt="Onyx Logo"
-                              width={473}
-                              height={169}
-                              className="h-7 w-auto"
-                            />
+                            <Image src="/Logos/Onyx.svg" alt="Onyx Logo" width={473} height={169} className="h-7 w-auto brightness-0 invert" />
                           ) : project.id === 2 ? (
-                            <Image
-                              src="/Logos/Cortado.svg"
-                              alt="Cortado Logo"
-                              width={132}
-                              height={44}
-                              className="h-7 w-auto"
-                            />
-                        ) : (
-                            <span className="text-2xl font-bold text-white tracking-tight">
-                              {project.title.split(' ')[0].toUpperCase()}
-                                </span>
-                        )}
-                      </div>
-
-                        {/* Project Title */}
-                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-white leading-tight mb-6">
-                          {project.id === 1 
-                            ? 'Crafting a Sensory Brand Experience' 
-                            : project.id === 2 
-                            ? (
-                              <>
-                                Scaling Rental Management<br />with GenAI
-                              </>
-                            )
-                            : project.id === 3
-                            ? (
-                              <>
-                                Designing Human-Centered<br />CPPS Care
-                              </>
-                            )
-                            : project.title}
+                            <Image src="/Logos/Cortado.svg" alt="Cortado Logo" width={132} height={44} className="h-7 w-auto brightness-0 invert" />
+                          ) : (
+                            <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{project.title.split(' ')[0].toUpperCase()}</span>
+                          )}
+                        </div>
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-gray-900 dark:text-white leading-tight mb-6">
+                          {project.id === 1 ? 'Crafting a Sensory Brand Experience' : project.id === 2 ? (<>Scaling Rental Management<br />with GenAI</>) : project.id === 3 ? (<>Designing Human-Centered<br />CPPS Care</>) : project.title}
                         </h3>
-                        
-                        {/* Tags - White with borders */}
                         <div className="flex flex-wrap gap-3 mb-4">
                           {project.tags.slice(0, 2).map((tag, tagIndex) => (
-                            <span
-                              key={tagIndex}
-                              className="text-sm font-medium text-white border border-white/40 rounded-full px-4 py-2 whitespace-nowrap backdrop-blur-sm bg-white/10"
-                            >
+                            <span key={tagIndex} className="text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded-full px-4 py-2 whitespace-nowrap">
                               {tag}
                             </span>
                           ))}
                         </div>
-
-                        {/* Date */}
                         <div>
-                          <span className="text-base text-white/80">
+                          <span className="text-base text-gray-500 dark:text-gray-400">
                             {project.id === 1 ? '2025' : project.id === 3 ? '2025' : project.id === 2 ? '2023' : '2024'}
                           </span>
                         </div>
                       </div>
-
-                      {/* Right Column - Image Preview - Full Height */}
+                      {/* Right Column - Hero image */}
                       <div className="relative h-64 lg:h-full min-h-[400px] overflow-hidden z-10">
-                        {project.id === 3 ? (
-                          <Image
-                            src="/Case Study/Onyx.png"
-                            alt={`${project.title} preview`}
-                            fill
-                            className="object-contain"
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            priority={index < 2}
-                          />
-                        ) : project.id === 2 ? (
-                          <Image
-                            src="/Case Study/Cortado.png"
-                            alt={`${project.title} preview`}
-                            fill
-                            className="object-contain"
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            priority={index < 2}
-                          />
-                        ) : project.cardImage ? (
-                          <Image
-                            src={project.cardImage}
-                            alt={`${project.title} preview`}
-                            fill
-                            className="object-contain"
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            priority={index < 2}
-                          />
-                        ) : (
-                          <div className={`h-full w-full bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                            <div className="text-white text-center">
-                              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <Sparkles size={24} />
-                              </div>
-                              <p className="text-sm opacity-90">Project Preview</p>
-                            </div>
-                          </div>
-                        )}
+                        <Image
+                          src={project.heroImage.replace(',', '%2C')}
+                          alt={`${project.title} preview`}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                          sizes="(min-width: 1024px) 50vw, 100vw"
+                          priority={index < 2}
+                        />
                       </div>
                     </div>
-                  </motion.div>
-                  </Link>
-              )
-            })}
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -643,7 +585,7 @@ const ProjectsPage = () => {
         />
 
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:50px_50px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+        <div className="absolute inset-0 bg-animated-grid" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div

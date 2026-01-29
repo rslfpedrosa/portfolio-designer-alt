@@ -138,6 +138,19 @@ body {
   background-size: 40px 40px;
 }
 
+/* Grid pattern: matches hero (2% opacity, 50px). Use on hero, AnimatedBackground, and all sections. */
+.bg-animated-grid {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.dark .bg-animated-grid {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
 /* Animation utilities */
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out forwards;

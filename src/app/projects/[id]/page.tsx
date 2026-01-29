@@ -494,7 +494,7 @@ Key design focuses included:
   const navigationSections = getNavigationSections()
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 relative z-10">
+    <div className="min-h-screen bg-white dark:bg-slate-950 bg-animated-grid relative z-10">
       {/* Hero Section */}
       <section 
         ref={(el) => {
@@ -541,7 +541,7 @@ Key design focuses included:
                       alt="Bocca Moments Logo"
                       width={200}
                       height={45}
-                      className="h-8 sm:h-10 lg:h-12 w-auto"
+                      className="h-8 sm:h-10 lg:h-12 w-auto brightness-0 invert"
                     />
                   ) : project.id === 3 ? (
                     <Image
@@ -549,7 +549,7 @@ Key design focuses included:
                       alt="Onyx Logo"
                       width={473}
                       height={169}
-                      className="h-8 sm:h-10 lg:h-12 w-auto"
+                      className="h-8 sm:h-10 lg:h-12 w-auto brightness-0 invert"
                     />
                   ) : project.id === 2 ? (
                     <Image
@@ -557,7 +557,7 @@ Key design focuses included:
                       alt="Cortado Logo"
                       width={132}
                       height={44}
-                      className="h-8 sm:h-10 lg:h-12 w-auto"
+                      className="h-8 sm:h-10 lg:h-12 w-auto brightness-0 invert"
                     />
                   ) : null}
                 </motion.div>

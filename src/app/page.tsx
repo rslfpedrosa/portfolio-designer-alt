@@ -5,44 +5,13 @@ import { motion, useReducedMotion, useMotionValue, useSpring, AnimatePresence } 
 import Link from 'next/link'
 import { ArrowRight, Sparkles, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
-import { getFeaturedProjects } from '@/data/projects'
+import { getFeaturedProjects, projectsData } from '@/data/projects'
+import SelectionFramePortal from '@/components/SelectionFramePortal'
+import CardHoverFramePortal from '@/components/CardHoverFramePortal'
+import HeroHoverImages from '@/components/HeroHoverImages'
 
-interface SelectionFrameProps {
-  bounds: DOMRect | null
-  isVisible: boolean
-  shouldReduceMotion: boolean
-}
-
-const SelectionFrame = ({ bounds, isVisible, shouldReduceMotion }: SelectionFrameProps) => {
-  if (!bounds || !isVisible) return null
-
-  const animationDuration = shouldReduceMotion ? 0 : 0.2
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.98 }}
-      transition={{ duration: animationDuration, ease: [0.4, 0, 0.2, 1] }}
-      className="pointer-events-none absolute z-40"
-      style={{
-        left: `${bounds.left}px`,
-        top: `${bounds.top}px`,
-        width: `${bounds.width}px`,
-        height: `${bounds.height}px`,
-      }}
-    >
-      {/* Selection Frame Outline */}
-      <div className="absolute inset-0 border-2 border-indigo-500 dark:border-indigo-400" />
-      
-      {/* Corner Handles */}
-      <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-      <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-      <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-      <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-    </motion.div>
-  )
-}
+const HERO_RITA_PHOTOS: [string, string, string] = ['/Me/IMG_0426.webp', '/conferences/dm-group.webp', '/projects/Onyx/Stanford.webp']
+const HERO_DESIGN_PHOTOS: [string, string, string] = [projectsData[1].heroImage, projectsData[2].heroImage, projectsData[3].heroImage]
 
 // Unified Figma Cursor System
 interface FigmaCursorProps {
@@ -140,7 +109,7 @@ const FigmaCursor = ({ label, showPill, shouldReduceMotion, isDesktop }: FigmaCu
   return (
     <div
       ref={cursorRef}
-      className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform"
+      className="pointer-events-none fixed top-0 left-0 z-[10002] will-change-transform"
       style={{
         display: hasMousePositionRef.current ? 'block' : 'none',
         transform: `translate3d(${cursorXRef.current}px, ${cursorYRef.current}px, 0)`,
@@ -352,6 +321,8 @@ const HomePage = () => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
   const [entered, setEntered] = useState(false)
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null)
+  const [hoveredCardBounds, setHoveredCardBounds] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
+  const cardRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
   
   const ritaRef = useRef<HTMLAnchorElement>(null)
   const designRef = useRef<HTMLAnchorElement>(null)
@@ -361,6 +332,9 @@ const HomePage = () => {
   
   const [ritaBounds, setRitaBounds] = useState<DOMRect | null>(null)
   const [designBounds, setDesignBounds] = useState<DOMRect | null>(null)
+  /** Viewport coords for selection frame portal (so all 4 corner squares show) */
+  const [ritaViewport, setRitaViewport] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
+  const [designViewport, setDesignViewport] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
 
   const allProjects = getFeaturedProjects()
   const featuredProjects = allProjects.filter(project => project.id === 1 || project.id === 3)
@@ -496,6 +470,7 @@ const HomePage = () => {
         ritaRect.width,
         ritaRect.height
       ))
+      setRitaViewport({ left: ritaRect.left, top: ritaRect.top, width: ritaRect.width, height: ritaRect.height })
     }
     if (designRef.current && headlineRef.current) {
       const headlineRect = headlineRef.current.getBoundingClientRect()
@@ -506,24 +481,22 @@ const HomePage = () => {
         designRect.width,
         designRect.height
       ))
+      setDesignViewport({ left: designRect.left, top: designRect.top, width: designRect.width, height: designRect.height })
     }
   }
 
+  // Hero frame bounds: only on mount and resize (not scroll – we hide on scroll, so no need to update)
   useEffect(() => {
     updateBounds()
     window.addEventListener('resize', updateBounds)
-    window.addEventListener('scroll', updateBounds)
-    return () => {
-      window.removeEventListener('resize', updateBounds)
-      window.removeEventListener('scroll', updateBounds)
-    }
+    return () => window.removeEventListener('resize', updateBounds)
   }, [])
 
   const handleRitaHover = (isHovering: boolean) => {
     if (isDesktop) {
       setHoveredWord(isHovering ? 'rita' : null)
       if (isHovering) {
-        updateBounds()
+        requestAnimationFrame(updateBounds)
         if (ritaRef.current) {
           ritaRef.current.style.cursor = 'none'
         }
@@ -539,7 +512,7 @@ const HomePage = () => {
     if (isDesktop) {
       setHoveredWord(isHovering ? 'design' : null)
       if (isHovering) {
-        updateBounds()
+        requestAnimationFrame(updateBounds)
         if (designRef.current) {
           designRef.current.style.cursor = 'none'
         }
@@ -553,16 +526,57 @@ const HomePage = () => {
 
   const handleRitaFocus = (isFocused: boolean) => {
     setFocusedWord(isFocused ? 'rita' : null)
-    if (isFocused) updateBounds()
+    if (isFocused) requestAnimationFrame(updateBounds)
   }
 
   const handleDesignFocus = (isFocused: boolean) => {
     setFocusedWord(isFocused ? 'design' : null)
-    if (isFocused) updateBounds()
+    if (isFocused) requestAnimationFrame(updateBounds)
   }
 
   const showRitaFrame = isDesktop && (hoveredWord === 'rita' || focusedWord === 'rita')
   const showDesignFrame = isDesktop && (hoveredWord === 'design' || focusedWord === 'design')
+
+  // Hide hero hover effect (frame + images) on scroll so it doesn't move with the page
+  useEffect(() => {
+    const hideOnScroll = () => {
+      setHoveredWord(null)
+    }
+    window.addEventListener('scroll', hideOnScroll, { passive: true })
+    return () => window.removeEventListener('scroll', hideOnScroll)
+  }, [])
+
+  // Card hover frame portal – update bounds when hovered card changes and on scroll/resize
+  useEffect(() => {
+    if (hoveredCardId === null) {
+      setHoveredCardBounds(null)
+      return
+    }
+    const updateCardBounds = () => {
+      const el = cardRefs.current.get(hoveredCardId!)
+      if (el) {
+        const r = el.getBoundingClientRect()
+        setHoveredCardBounds({ left: r.left, top: r.top, width: r.width, height: r.height })
+      }
+    }
+    const raf = requestAnimationFrame(updateCardBounds)
+    let ticking = false
+    const throttledUpdate = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        updateCardBounds()
+        ticking = false
+      })
+    }
+    window.addEventListener('resize', throttledUpdate)
+    window.addEventListener('scroll', throttledUpdate, { passive: true })
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', throttledUpdate)
+      window.removeEventListener('scroll', throttledUpdate)
+    }
+  }, [hoveredCardId])
   
   // Determine which cursor label to show
   const cursorLabel = 
@@ -582,10 +596,14 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
+      {/* Card hover frame – portal so all 4 corner squares show above next card */}
+      {isDesktop && (
+        <CardHoverFramePortal bounds={hoveredCardBounds} isVisible={hoveredCardId !== null} />
+      )}
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-end sm:items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden bg-white dark:bg-slate-950 pb-20 sm:pb-0">
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:50px_50px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+        <div className="absolute inset-0 bg-animated-grid" />
         
         {/* Animated Orbs */}
         <motion.div
@@ -704,21 +722,12 @@ const HomePage = () => {
               </Link>
               </h1>
 
-            {/* Selection Frames Overlay */}
-            {headlineRef.current && (
-              <>
-                <SelectionFrame
-                  bounds={ritaBounds}
-                  isVisible={showRitaFrame}
-                  shouldReduceMotion={shouldReduceMotion || false}
-                />
-                <SelectionFrame
-                  bounds={designBounds}
-                  isVisible={showDesignFrame}
-                  shouldReduceMotion={shouldReduceMotion || false}
-                />
-              </>
-            )}
+            {/* Selection frames – portal so all 4 corner squares show above hero overflow */}
+            <SelectionFramePortal bounds={ritaViewport} isVisible={showRitaFrame} />
+            <SelectionFramePortal bounds={designViewport} isVisible={showDesignFrame} />
+            {/* 3 floating images on hover (Rita = about photos, Design = case study heroes) */}
+            <HeroHoverImages bounds={ritaViewport} isVisible={showRitaFrame} photos={HERO_RITA_PHOTOS} variant="design" />
+            <HeroHoverImages bounds={designViewport} isVisible={showDesignFrame} photos={HERO_DESIGN_PHOTOS} variant="rita" />
           </div>
 
           {/* Subtitle and Description */}
@@ -729,15 +738,15 @@ const HomePage = () => {
               animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.7 }}
             >
-              Product Designer focused on clarity and usability
+              I design products that turn complexity into clarity.
             </motion.h2>
             <motion.p
-              className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-lg mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.9 }}
             >
-              My work focuses on usability, systems thinking, and close collaboration to ship products that work in real-world constraints.
+              I work closely with teams to research, design, and ship thoughtful, human-centered products.
             </motion.p>
           </div>
 
@@ -802,7 +811,7 @@ const HomePage = () => {
       </section>
 
       {/* Featured Projects Section */}
-      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800">
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-gray-200 dark:border-gray-800 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -831,46 +840,30 @@ const HomePage = () => {
           </motion.div>
 
           <div className="space-y-8 lg:space-y-12">
-            {featuredProjects.map((project, index) => {
-              // Define background - Bocca Moments gets custom color, Onyx gets gradient
-              const cardBackground = project.id === 1 
-                ? 'bg-[#B76A46]' 
-                : project.id === 3
-                  ? 'bg-gradient-to-br from-blue-600 to-indigo-600'
-                  : 'bg-gradient-to-br from-purple-600 to-purple-700'
-              
-              return (
-                <Link 
-                  key={project.id} 
-                  href={`/projects/${project.id}`} 
-                  className="block group"
-                  onMouseEnter={() => isDesktop && setHoveredCardId(project.id)}
-                  onMouseLeave={() => setHoveredCardId(null)}
-                  onFocus={() => {}}
-                  onBlur={() => {}}
-                  style={isDesktop && hoveredCardId === project.id ? { cursor: 'none' } : {}}
-                >
+            {featuredProjects.map((project, index) => (
+              <Link 
+                key={project.id} 
+                href={`/projects/${project.id}`} 
+                className="block group"
+                onMouseEnter={() => isDesktop && setHoveredCardId(project.id)}
+                onMouseLeave={() => setHoveredCardId(null)}
+                onFocus={() => {}}
+                onBlur={() => {}}
+                style={isDesktop && hoveredCardId === project.id ? { cursor: 'none' } : {}}
+              >
                 <motion.div
-                    initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ 
-                      duration: 0.7, 
-                      delay: index * 0.15,
-                      ease: [0.16, 1, 0.3, 1]
-                    }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    whileHover={{ scale: 1.05, y: -6 }}
-                    className={`relative overflow-hidden rounded-2xl lg:rounded-3xl ${cardBackground} transition-all duration-200 ease-out group cursor-pointer`}
-                  >
-                    {/* Subtle abstract shapes overlay */}
-                    <div className="absolute inset-0 opacity-10 group-hover:opacity-15 transition-opacity duration-200">
-                      <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-                      <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-300 rounded-full blur-2xl"></div>
-                    </div>
-                    
-                    {/* Hover highlight overlay */}
-                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-200 pointer-events-none z-20"></div>
-                    
+                  ref={(el) => {
+                    if (el) cardRefs.current.set(project.id, el as HTMLDivElement)
+                    else cardRefs.current.delete(project.id)
+                  }}
+                  initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.7, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  className="relative overflow-visible transition-all duration-200 ease-out cursor-pointer"
+                >
+                  {/* Card content – neutral background, no colored fill */}
+                  <div className="relative overflow-hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0">
                       {/* Left Column - Content */}
                       <div className="flex flex-col justify-center space-y-4 sm:space-y-6 z-10 p-6 sm:p-8 lg:p-12">
@@ -882,7 +875,7 @@ const HomePage = () => {
                               alt="Bocca Moments Logo"
                               width={200}
                               height={45}
-                              className="h-7 w-auto"
+                              className="h-7 w-auto brightness-0 invert"
                             />
                           ) : project.id === 3 ? (
                             <Image
@@ -890,7 +883,7 @@ const HomePage = () => {
                               alt="Onyx Logo"
                               width={473}
                               height={169}
-                              className="h-7 w-auto"
+                              className="h-7 w-auto brightness-0 invert"
                             />
                           ) : project.id === 2 ? (
                             <Image
@@ -898,99 +891,57 @@ const HomePage = () => {
                               alt="Cortado Logo"
                               width={132}
                               height={44}
-                              className="h-7 w-auto"
+                              className="h-7 w-auto brightness-0 invert"
                             />
                           ) : (
-                            <span className="text-2xl font-bold text-white tracking-tight">
+                            <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
                               {project.title.split(' ')[0].toUpperCase()}
                             </span>
                           )}
                         </div>
-                        
                         {/* Project Title */}
-                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-white leading-tight mb-4 sm:mb-6">
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-gray-900 dark:text-white leading-tight mb-4 sm:mb-6">
                           {project.id === 1 
                             ? 'Crafting a Sensory Brand Experience' 
                             : project.id === 2 
-                            ? (
-                              <>
-                                Scaling Rental Management<br />with GenAI
-                              </>
-                            )
+                            ? (<>Scaling Rental Management<br />with GenAI</>)
                             : project.id === 3
-                            ? (
-                              <>
-                                Designing Human-Centered<br />CPPS Care
-                              </>
-                            )
+                            ? (<>Designing Human-Centered<br />CPPS Care</>)
                             : project.title}
                         </h3>
-                        
-                        {/* Tags - White with borders */}
+                        {/* Tags */}
                         <div className="flex flex-wrap gap-3 mb-4">
                           {project.tags.slice(0, 2).map((tag, tagIndex) => (
                             <span
                               key={tagIndex}
-                              className="text-sm font-medium text-white border border-white/40 rounded-full px-4 py-2 whitespace-nowrap backdrop-blur-sm bg-white/10"
+                              className="text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded-full px-4 py-2 whitespace-nowrap"
                             >
                               {tag}
                             </span>
                           ))}
                         </div>
-
-                        {/* Date */}
                         <div>
-                          <span className="text-base text-white/80">
+                          <span className="text-base text-gray-500 dark:text-gray-400">
                             {project.id === 1 ? '2025' : project.id === 3 ? '2025' : project.id === 2 ? '2023' : '2024'}
                           </span>
                         </div>
                       </div>
-
-                      {/* Right Column - Image Preview - Full Height */}
+                      {/* Right Column - Hero image */}
                       <div className="relative h-48 sm:h-64 lg:h-full lg:min-h-[400px] overflow-hidden z-10">
-                        {project.id === 3 ? (
-                          <Image
-                            src="/Case Study/Onyx.png"
-                            alt={`${project.title} preview`}
-                            fill
-                            className="object-contain"
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            priority={index < 2}
-                          />
-                        ) : project.id === 2 ? (
-                          <Image
-                            src="/Case Study/Cortado.png"
-                            alt={`${project.title} preview`}
-                            fill
-                            className="object-contain"
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            priority={index < 2}
-                          />
-                        ) : project.cardImage ? (
                         <Image
-                          src={project.cardImage}
+                          src={project.heroImage.replace(',', '%2C')}
                           alt={`${project.title} preview`}
                           fill
-                            className="object-contain"
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            priority={index < 2}
+                          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                          sizes="(min-width: 1024px) 50vw, 100vw"
+                          priority={index < 2}
                         />
-                    ) : (
-                      <div className={`h-full w-full bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                          <div className="text-white text-center">
-                              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                              <Sparkles size={24} />
-                            </div>
-                            <p className="text-sm opacity-90">Project Preview</p>
-                        </div>
                       </div>
-                    )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
               </Link>
-              )
-            })}
+            ))}
           </div>
 
           {/* View All Projects CTA */}
@@ -1005,7 +956,7 @@ const HomePage = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-indigo-600 dark:bg-indigo-500 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>View All Projects</span>
@@ -1252,7 +1203,7 @@ const HomePage = () => {
         />
 
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:50px_50px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+        <div className="absolute inset-0 bg-animated-grid" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div

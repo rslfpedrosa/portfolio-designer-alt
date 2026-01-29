@@ -5,44 +5,12 @@ import { motion, useReducedMotion, useMotionValue, useSpring, AnimatePresence } 
 import Link from 'next/link'
 import { ArrowRight, Sparkles, X } from 'lucide-react'
 import Image from 'next/image'
-import { getFeaturedProjects } from '@/data/projects'
+import { getFeaturedProjects, projectsData } from '@/data/projects'
+import SelectionFramePortal from '@/components/SelectionFramePortal'
+import HeroHoverImages from '@/components/HeroHoverImages'
 
-interface SelectionFrameProps {
-  bounds: DOMRect | null
-  isVisible: boolean
-  shouldReduceMotion: boolean
-}
-
-const SelectionFrame = ({ bounds, isVisible, shouldReduceMotion }: SelectionFrameProps) => {
-  if (!bounds || !isVisible) return null
-
-  const animationDuration = shouldReduceMotion ? 0 : 0.2
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.98 }}
-      transition={{ duration: animationDuration, ease: [0.4, 0, 0.2, 1] }}
-      className="pointer-events-none absolute z-40"
-      style={{
-        left: `${bounds.left}px`,
-        top: `${bounds.top}px`,
-        width: `${bounds.width}px`,
-        height: `${bounds.height}px`,
-      }}
-    >
-      {/* Selection Frame Outline */}
-      <div className="absolute inset-0 border-2 border-indigo-500 dark:border-indigo-400" />
-      
-      {/* Corner Handles */}
-      <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-      <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-      <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-      <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400" />
-    </motion.div>
-  )
-}
+const HERO_RITA_PHOTOS: [string, string, string] = ['/Me/IMG_0426.webp', '/about/rita-photo.webp', '/conferences/offf-group.webp']
+const HERO_DESIGN_PHOTOS: [string, string, string] = [projectsData[1].heroImage, projectsData[2].heroImage, projectsData[3].heroImage]
 
 interface CustomCursorProps {
   label: string
@@ -107,7 +75,7 @@ const CustomCursor = ({ label, isCursorActive, shouldReduceMotion }: CustomCurso
   return (
     <div
       ref={cursorRef}
-      className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform"
+      className="pointer-events-none fixed top-0 left-0 z-[10002] will-change-transform"
       style={{
         transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0)`,
       }}
@@ -240,6 +208,8 @@ const HomeV2 = () => {
   
   const [ritaBounds, setRitaBounds] = useState<DOMRect | null>(null)
   const [designBounds, setDesignBounds] = useState<DOMRect | null>(null)
+  const [ritaViewport, setRitaViewport] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
+  const [designViewport, setDesignViewport] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
 
   const featuredProjects = getFeaturedProjects()
 
@@ -383,6 +353,7 @@ const HomeV2 = () => {
         ritaRect.width,
         ritaRect.height
       ))
+      setRitaViewport({ left: ritaRect.left, top: ritaRect.top, width: ritaRect.width, height: ritaRect.height })
     }
     if (designRef.current && headlineRef.current) {
       const headlineRect = headlineRef.current.getBoundingClientRect()
@@ -393,16 +364,26 @@ const HomeV2 = () => {
         designRect.width,
         designRect.height
       ))
+      setDesignViewport({ left: designRect.left, top: designRect.top, width: designRect.width, height: designRect.height })
     }
   }
 
   useEffect(() => {
     updateBounds()
+    let ticking = false
+    const throttledUpdate = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        updateBounds()
+        ticking = false
+      })
+    }
     window.addEventListener('resize', updateBounds)
-    window.addEventListener('scroll', updateBounds)
+    window.addEventListener('scroll', throttledUpdate, { passive: true })
     return () => {
       window.removeEventListener('resize', updateBounds)
-      window.removeEventListener('scroll', updateBounds)
+      window.removeEventListener('scroll', throttledUpdate)
     }
   }, [])
 
@@ -466,7 +447,7 @@ const HomeV2 = () => {
       {/* Hero Section - V2 */}
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden bg-white dark:bg-slate-950">
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:50px_50px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+        <div className="absolute inset-0 bg-animated-grid" />
         
         {/* Animated Orbs - Same as V1 */}
         <motion.div
@@ -586,21 +567,11 @@ const HomeV2 = () => {
               </Link>
             </h1>
 
-            {/* Selection Frames Overlay */}
-            {headlineRef.current && (
-              <>
-                <SelectionFrame
-                  bounds={ritaBounds}
-                  isVisible={showRitaFrame}
-                  shouldReduceMotion={shouldReduceMotion || false}
-                />
-                <SelectionFrame
-                  bounds={designBounds}
-                  isVisible={showDesignFrame}
-                  shouldReduceMotion={shouldReduceMotion || false}
-                />
-              </>
-            )}
+            {/* Selection frames – portal so all 4 corner squares show above hero overflow */}
+            <SelectionFramePortal bounds={ritaViewport} isVisible={showRitaFrame} />
+            <SelectionFramePortal bounds={designViewport} isVisible={showDesignFrame} />
+            <HeroHoverImages bounds={ritaViewport} isVisible={showRitaFrame} photos={HERO_RITA_PHOTOS} />
+            <HeroHoverImages bounds={designViewport} isVisible={showDesignFrame} photos={HERO_DESIGN_PHOTOS} />
           </div>
 
           {/* Subtitle and Description */}
@@ -611,7 +582,7 @@ const HomeV2 = () => {
               animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.7 }}
             >
-              Product Designer focused on clarity and usability
+              I design products that turn complexity into clarity.
             </motion.h2>
             <motion.p 
               className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
@@ -739,30 +710,25 @@ const HomeV2 = () => {
                       </p>
                     </div>
 
-                    {/* Image - Right */}
+                    {/* Image - Right (hero image, selection-frame style on hover) */}
                     <div className="lg:col-span-3 flex items-center justify-end">
-                      <div className="relative w-full lg:w-auto h-56 lg:h-72 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
-                        {project.cardImage ? (
-                          <>
-                            <Image
-                              src={project.cardImage}
-                              alt={`${project.title} preview`}
-                              fill
-                              className="object-cover group-hover:scale-[1.02] transition-transform duration-500 ease-out"
-                              sizes="(min-width: 1024px) 25vw, 100vw"
-                              priority={index < 3}
-                            />
-                          </>
-                        ) : (
-                          <div className={`h-full w-full bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                            <div className="text-white text-center">
-                              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <Sparkles size={24} />
-                              </div>
-                              <p className="text-sm opacity-90">Project Preview</p>
-                            </div>
-                          </div>
-                        )}
+                      <div className="relative w-full lg:w-auto h-56 lg:h-72 overflow-visible">
+                        <div className="relative w-full h-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+                          <Image
+                            src={project.heroImage.replace(',', '%2C')}
+                            alt={`${project.title} preview`}
+                            fill
+                            className="object-cover group-hover:scale-[1.02] transition-transform duration-500 ease-out"
+                            sizes="(min-width: 1024px) 25vw, 100vw"
+                            priority={index < 3}
+                          />
+                        </div>
+                        {/* Hover frame – indigo border + 4 corner squares, after image so it paints on top */}
+                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-indigo-500 dark:group-hover:border-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
                       </div>
                     </div>
 
@@ -795,7 +761,7 @@ const HomeV2 = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-indigo-600 dark:bg-indigo-500 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors flex items-center space-x-2 mx-auto"
               >
                 <span>View All Projects</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -1026,7 +992,7 @@ const HomeV2 = () => {
         />
 
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:50px_50px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+        <div className="absolute inset-0 bg-animated-grid" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div
