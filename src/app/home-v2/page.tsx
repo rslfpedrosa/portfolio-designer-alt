@@ -570,8 +570,8 @@ const HomeV2 = () => {
             {/* Selection frames – portal so all 4 corner squares show above hero overflow */}
             <SelectionFramePortal bounds={ritaViewport} isVisible={showRitaFrame} />
             <SelectionFramePortal bounds={designViewport} isVisible={showDesignFrame} />
-            <HeroHoverImages bounds={ritaViewport} isVisible={showRitaFrame} photos={HERO_RITA_PHOTOS} />
-            <HeroHoverImages bounds={designViewport} isVisible={showDesignFrame} photos={HERO_DESIGN_PHOTOS} />
+            <HeroHoverImages bounds={ritaViewport} isVisible={showRitaFrame} photos={HERO_RITA_PHOTOS} variant="design" />
+            <HeroHoverImages bounds={designViewport} isVisible={showDesignFrame} photos={HERO_DESIGN_PHOTOS} variant="rita" />
           </div>
 
           {/* Subtitle and Description */}
