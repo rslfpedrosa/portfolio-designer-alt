@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 import { createPortal } from 'react-dom'
 
 export interface ViewportBounds {
@@ -22,7 +22,7 @@ const BORDER_WIDTH = 2
 const PORTAL_Z_INDEX = 99999
 const HOVER_SCALE = 1.03
 
-function FrameContent({ bounds }: { bounds: ViewportBounds }) {
+const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
   const [grown, setGrown] = useState(false)
 
   useEffect(() => {
@@ -106,9 +106,11 @@ function FrameContent({ bounds }: { bounds: ViewportBounds }) {
       </div>
     </div>
   )
-}
+})
 
-export default function SelectionFramePortal({ bounds, isVisible }: SelectionFramePortalProps) {
+FrameContent.displayName = 'FrameContent'
+
+const SelectionFramePortal = memo<SelectionFramePortalProps>(({ bounds, isVisible }) => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -120,4 +122,8 @@ export default function SelectionFramePortal({ bounds, isVisible }: SelectionFra
   }
 
   return createPortal(<FrameContent bounds={bounds} />, document.body)
-}
+})
+
+SelectionFramePortal.displayName = 'SelectionFramePortal'
+
+export default SelectionFramePortal

@@ -6,7 +6,6 @@ import { ArrowRight, X, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { getAllProjects } from '@/data/projects'
-import CardHoverFramePortal from '@/components/CardHoverFramePortal'
 
 // Unified Figma Cursor System
 interface FigmaCursorProps {
@@ -144,8 +143,6 @@ const ProjectsPage = () => {
   })
   const [selectedMedia, setSelectedMedia] = useState<{ type: 'video' | 'image'; src: string } | null>(null)
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null)
-  const [hoveredCardBounds, setHoveredCardBounds] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
-  const cardRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
   const [isDesktop, setIsDesktop] = useState(false)
   const shouldReduceMotion = useReducedMotion()
 
@@ -172,38 +169,6 @@ const ProjectsPage = () => {
 
   const cursorLabel = hoveredCardId !== null ? 'VIEW CASE STUDY' : null
   const showCursorPill = cursorLabel !== null
-
-  // Card hover frame portal – update bounds when hovered card changes and on scroll/resize
-  useEffect(() => {
-    if (hoveredCardId === null) {
-      setHoveredCardBounds(null)
-      return
-    }
-    const updateCardBounds = () => {
-      const el = cardRefs.current.get(hoveredCardId!)
-      if (el) {
-        const r = el.getBoundingClientRect()
-        setHoveredCardBounds({ left: r.left, top: r.top, width: r.width, height: r.height })
-      }
-    }
-    const raf = requestAnimationFrame(updateCardBounds)
-    let ticking = false
-    const throttledUpdate = () => {
-      if (ticking) return
-      ticking = true
-      requestAnimationFrame(() => {
-        updateCardBounds()
-        ticking = false
-      })
-    }
-    window.addEventListener('resize', throttledUpdate)
-    window.addEventListener('scroll', throttledUpdate, { passive: true })
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('resize', throttledUpdate)
-      window.removeEventListener('scroll', throttledUpdate)
-    }
-  }, [hoveredCardId])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -286,9 +251,6 @@ const ProjectsPage = () => {
 
   return (
     <div className="min-h-screen pt-16">
-      {isDesktop && (
-        <CardHoverFramePortal bounds={hoveredCardBounds} isVisible={hoveredCardId !== null} />
-      )}
       {/* Hero Section */}
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -330,15 +292,24 @@ const ProjectsPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  ref={(el) => {
-                    if (el) cardRefs.current.set(project.id, el as HTMLDivElement)
-                    else cardRefs.current.delete(project.id)
-                  }}
                   className="relative overflow-visible transition-all duration-200 ease-out group cursor-pointer"
                 >
                   {/* Card content – neutral background */}
-                  <div className="relative overflow-hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
-                    <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0">
+                  <div className={`relative bg-white dark:bg-slate-800 transition-all duration-300 ${
+                    hoveredCardId === project.id 
+                      ? 'border-2 border-indigo-500 dark:border-indigo-400 scale-[1.03]' 
+                      : 'border border-gray-200 dark:border-slate-700'
+                  }`}>
+                    {/* Corner Squares - centered on edges */}
+                    {hoveredCardId === project.id && (
+                      <>
+                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
+                        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
+                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
+                      </>
+                    )}
+                    <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
                       {/* Left Column - Content */}
                       <div className="flex flex-col justify-center space-y-6 z-10 p-8 lg:p-12">
                         <div className="mb-2">

@@ -762,7 +762,8 @@ Key design focuses included:
                   fill
                   className="object-cover sm:rounded-2xl"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
-                  unoptimized
+                  quality={85}
+                  loading="lazy"
                 />
               </div>
             </motion.div>
@@ -887,7 +888,8 @@ Key design focuses included:
                     fill
                     className="object-cover sm:rounded-2xl"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                    unoptimized
+                    quality={85}
+                    loading="lazy"
                   />
                 </div>
               </motion.div>
@@ -905,7 +907,8 @@ Key design focuses included:
                     fill
                     className="object-cover sm:rounded-2xl"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                    unoptimized
+                    quality={85}
+                    loading="lazy"
                   />
                 </div>
               </motion.div>
@@ -1556,7 +1559,8 @@ Key design focuses included:
                     fill
                     className="object-cover sm:rounded-2xl"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                    unoptimized
+                    quality={85}
+                    loading="lazy"
                   />
                 </div>
               </motion.div>
@@ -1574,7 +1578,8 @@ Key design focuses included:
                     fill
                     className="object-cover sm:rounded-2xl"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                    unoptimized
+                    quality={85}
+                    loading="lazy"
                   />
                 </div>
               </motion.div>
@@ -1687,14 +1692,15 @@ Key design focuses included:
                 <div className="-mx-4 sm:mx-0 sm:-mx-6 lg:-mx-8">
                   <div className="relative w-full sm:rounded-2xl overflow-hidden max-w-7xl sm:mx-auto">
                     <div className="relative w-full aspect-video sm:rounded-2xl overflow-hidden">
-                      <Image
-                        src="/projects/Cortado/Inbox mu.webp"
-                        alt="AI-Assisted Inbox solution"
-                        fill
-                        className="object-cover sm:rounded-2xl"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
-                        unoptimized
-                      />
+                        <Image
+                          src="/projects/Cortado/Inbox mu.webp"
+                          alt="AI-Assisted Inbox solution"
+                          fill
+                          className="object-cover sm:rounded-2xl"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+                          quality={85}
+                          loading="lazy"
+                        />
                     </div>
                   </div>
                 </div>
@@ -1710,7 +1716,8 @@ Key design focuses included:
                             fill
                             className="object-cover sm:rounded-2xl"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                            unoptimized
+                            quality={85}
+                            loading="lazy"
                           />
                         </div>
                       </div>
@@ -1722,7 +1729,8 @@ Key design focuses included:
                             fill
                             className="object-cover sm:rounded-2xl"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                            unoptimized
+                            quality={85}
+                            loading="lazy"
                           />
                         </div>
                       </div>
@@ -1732,14 +1740,15 @@ Key design focuses included:
                 <div className="-mx-4 sm:mx-0 sm:-mx-6 lg:-mx-8">
                   <div className="relative w-full sm:rounded-2xl overflow-hidden max-w-7xl sm:mx-auto">
                     <div className="relative w-full aspect-video sm:rounded-2xl overflow-hidden">
-                      <Image
-                        src="/projects/Cortado/012.webp"
-                        alt="AI-Assisted Inbox solution 2"
-                        fill
-                        className="object-cover sm:rounded-2xl"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
-                        unoptimized
-                      />
+                        <Image
+                          src="/projects/Cortado/012.webp"
+                          alt="AI-Assisted Inbox solution 2"
+                          fill
+                          className="object-cover sm:rounded-2xl"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+                          quality={85}
+                          loading="lazy"
+                        />
                     </div>
                   </div>
                 </div>

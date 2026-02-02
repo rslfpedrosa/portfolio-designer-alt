@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 import { createPortal } from 'react-dom'
 
 export interface ViewportBounds {
@@ -33,17 +33,12 @@ const ROTATE_1 = -12
 const ROTATE_2 = 12
 const ROTATE_3 = 5
 
-function HoverImagesContent({
-  bounds,
-  photos,
-  isVisible,
-  variant,
-}: {
+const HoverImagesContent = memo<{
   bounds: ViewportBounds
   photos: [string, string, string]
   isVisible: boolean
   variant: HeroHoverVariant
-}) {
+}>(({ bounds, photos, isVisible, variant }) => {
   const cx = bounds.left + bounds.width / 2
   const cy = bounds.top + bounds.height / 2
   const right = bounds.left + bounds.width
@@ -114,9 +109,11 @@ function HoverImagesContent({
       </div>
     </div>
   )
-}
+})
 
-export default function HeroHoverImages({ bounds, isVisible, photos, variant }: HeroHoverImagesProps) {
+HoverImagesContent.displayName = 'HoverImagesContent'
+
+const HeroHoverImages = memo<HeroHoverImagesProps>(({ bounds, isVisible, photos, variant }) => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -131,4 +128,8 @@ export default function HeroHoverImages({ bounds, isVisible, photos, variant }: 
     <HoverImagesContent bounds={bounds} photos={photos} isVisible={isVisible} variant={variant} />,
     document.body
   )
-}
+})
+
+HeroHoverImages.displayName = 'HeroHoverImages'
+
+export default HeroHoverImages
