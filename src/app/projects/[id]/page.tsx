@@ -1807,24 +1807,28 @@ Key design focuses included:
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-              <h2 className="text-3xl font-medium text-gray-900 dark:text-white text-center mb-12">Next Project</h2>
-              <Link href={`/projects/${nextProject.id}`}>
-              <motion.div
-                whileHover={{ y: -8 }}
-                className="group cursor-pointer bg-white dark:bg-gray-900/70 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-soft hover:shadow-large transition-all duration-300 overflow-hidden backdrop-blur-sm"
+              <h2 className="text-3xl font-semibold text-gray-900 dark:text-white text-center mb-12 tracking-tight">Next Project</h2>
+              <Link href={`/projects/${nextProject.id}`} className="group">
+              <div
+                className="relative cursor-pointer bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 hover:border-2 hover:border-indigo-500/50 hover:dark:border-indigo-400/50 hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
               >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-0 min-h-[200px]">
-                    <div className="relative overflow-hidden min-h-[200px]">
+                {/* Corner Squares - centered on edges */}
+                <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 min-h-[300px] overflow-hidden">
+                    <div className="relative overflow-hidden min-h-[300px]">
                       {nextProject.heroImage ? (
                         <Image
                           src={nextProject.heroImage}
                           alt={`${nextProject.title} hero image`}
                           fill
-                          className="object-cover"
+                          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                           sizes="(min-width: 768px) 50vw, 100vw"
                         />
                       ) : (
-                        <div className={`bg-gradient-to-br ${nextProject.gradient} flex items-center justify-center h-full min-h-[200px]`}>
+                        <div className={`bg-gradient-to-br ${nextProject.gradient} flex items-center justify-center h-full min-h-[300px]`}>
                           <div className="text-white text-center">
                             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
                               <span className="text-xl font-medium">
@@ -1836,20 +1840,20 @@ Key design focuses included:
                         </div>
                       )}
                     </div>
-                    <div className="p-8 flex flex-col justify-center text-left">
-                    <h3 className="text-2xl font-medium text-gray-900 dark:text-white mb-3 transition-colors">
+                    <div className="p-8 sm:p-10 lg:p-14 flex flex-col justify-center text-left space-y-5">
+                    <h3 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight">
                         {nextProject.title}
                     </h3>
-                    <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                    <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                         {nextProject.description}
                     </p>
-                    <div className="flex items-center font-medium text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform">
+                    <div className="flex items-center font-medium text-indigo-600 dark:text-indigo-400 group-hover:translate-x-2 transition-transform duration-300 pt-2">
                       <span>View case study</span>
-                      <ArrowRight size={16} className="ml-1" />
+                      <ArrowRight size={18} className="ml-2" />
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </Link>
           </motion.div>
         </div>

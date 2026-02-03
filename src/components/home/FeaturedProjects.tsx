@@ -72,12 +72,12 @@ export default function FeaturedProjects({
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.7, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
                   viewport={{ once: true, margin: '-100px' }}
-                  className="relative overflow-visible transition-all duration-200 ease-out cursor-pointer"
+                  className="relative overflow-visible transition-all duration-300 ease-out cursor-pointer"
                 >
-                  <div className={`relative bg-white dark:bg-slate-800 transition-all duration-300 ${
+                  <div className={`relative bg-white dark:bg-slate-900/50 backdrop-blur-sm transition-all duration-500 ease-out ${
                     hoveredCardId === project.id 
-                      ? 'border-2 border-indigo-500 dark:border-indigo-400 scale-[1.03]' 
-                      : 'border border-gray-200 dark:border-slate-700'
+                      ? 'border-2 border-indigo-500/50 dark:border-indigo-400/50 shadow-xl shadow-indigo-500/10 scale-[1.05]' 
+                      : 'border border-gray-200/50 dark:border-slate-700/50'
                   }`}>
                     {/* Corner Squares - centered on edges */}
                     {hoveredCardId === project.id && (
@@ -90,7 +90,7 @@ export default function FeaturedProjects({
                     )}
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
                       {/* Left Column - Content */}
-                      <div className="flex flex-col justify-center space-y-4 sm:space-y-6 z-10 p-6 sm:p-8 lg:p-12">
+                      <div className="flex flex-col justify-center space-y-5 sm:space-y-6 z-10 p-8 sm:p-10 lg:p-14">
                         <div className="mb-2">
                           {project.id === 1 ? (
                             <Image
@@ -122,7 +122,7 @@ export default function FeaturedProjects({
                             </span>
                           )}
                         </div>
-                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-gray-900 dark:text-white leading-tight mb-4 sm:mb-6">
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-white leading-tight tracking-tight">
                           {project.id === 1 
                             ? 'Crafting a Sensory Brand Experience' 
                             : project.id === 2 
@@ -131,18 +131,27 @@ export default function FeaturedProjects({
                             ? (<>Designing Human-Centered<br />CPPS Care</>)
                             : project.title}
                         </h3>
-                        <div className="flex flex-wrap gap-3 mb-4">
-                          {project.tags.slice(0, 2).map((tag, tagIndex) => (
-                            <span
-                              key={tagIndex}
-                              className="text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded-full px-4 py-2 whitespace-nowrap"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div>
-                          <span className="text-base text-gray-500 dark:text-gray-400">
+                        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl">
+                          {project.id === 1 
+                            ? 'A multi-sensory brand experience for a Portuguese restaurant, blending traditional craftsmanship with modern design.' 
+                            : project.id === 2 
+                            ? 'AI-powered rental management platform that streamlines property operations and enhances tenant experience.'
+                            : project.id === 3
+                            ? 'Redesigning patient care coordination for a rare disease, focusing on accessibility and user empowerment.'
+                            : project.description}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-4 pt-2">
+                          <div className="flex flex-wrap gap-2">
+                            {project.tags.slice(0, 2).map((tag, tagIndex) => (
+                              <span
+                                key={tagIndex}
+                                className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100/50 dark:bg-slate-800/50 rounded-lg px-3 py-1.5 whitespace-nowrap"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                          <span className="text-sm text-gray-400 dark:text-gray-500">
                             {project.id === 1 ? '2025' : project.id === 3 ? '2025' : project.id === 2 ? '2023' : '2024'}
                           </span>
                         </div>
@@ -153,7 +162,7 @@ export default function FeaturedProjects({
                           src={project.heroImage.replace(',', '%2C')}
                           alt={`${project.title} preview`}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                           sizes="(min-width: 1024px) 50vw, 100vw"
                           priority={index < 2}
                         />

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   other: {
-    'font-link': 'https://api.fontshare.com/v2/css?f[]=clash-grotesk@200,300,400,500,600,700&display=swap',
+    'font-link': 'https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap',
   },
 }
 
@@ -39,12 +39,13 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         {/* Preconnect to external domains */}
-        <link rel="preconnect" href="https://api.fontshare.com" />
-        <link rel="dns-prefetch" href="https://api.fontshare.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         
         {/* Font loading with display=swap for better performance */}
         <link
-          href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@200,300,400,500,600,700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         

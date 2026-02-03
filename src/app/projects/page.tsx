@@ -292,13 +292,13 @@ const ProjectsPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="relative overflow-visible transition-all duration-200 ease-out group cursor-pointer"
+                  className="relative overflow-visible transition-all duration-300 ease-out group cursor-pointer"
                 >
                   {/* Card content – neutral background */}
-                  <div className={`relative bg-white dark:bg-slate-800 transition-all duration-300 ${
+                  <div className={`relative bg-white dark:bg-slate-900/50 backdrop-blur-sm transition-all duration-500 ease-out ${
                     hoveredCardId === project.id 
-                      ? 'border-2 border-indigo-500 dark:border-indigo-400 scale-[1.03]' 
-                      : 'border border-gray-200 dark:border-slate-700'
+                      ? 'border-2 border-indigo-500/50 dark:border-indigo-400/50 shadow-xl shadow-indigo-500/10 scale-[1.05]' 
+                      : 'border border-gray-200/50 dark:border-slate-700/50'
                   }`}>
                     {/* Corner Squares - centered on edges */}
                     {hoveredCardId === project.id && (
@@ -311,7 +311,7 @@ const ProjectsPage = () => {
                     )}
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
                       {/* Left Column - Content */}
-                      <div className="flex flex-col justify-center space-y-6 z-10 p-8 lg:p-12">
+                      <div className="flex flex-col justify-center space-y-5 z-10 p-8 sm:p-10 lg:p-14">
                         <div className="mb-2">
                           {project.id === 1 ? (
                             <Image src="/Logos/Logo.svg" alt="Bocca Moments Logo" width={200} height={45} className="h-7 w-auto brightness-0 invert" />
@@ -323,18 +323,30 @@ const ProjectsPage = () => {
                             <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{project.title.split(' ')[0].toUpperCase()}</span>
                           )}
                         </div>
-                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-gray-900 dark:text-white leading-tight mb-6">
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-white leading-tight tracking-tight">
                           {project.id === 1 ? 'Crafting a Sensory Brand Experience' : project.id === 2 ? (<>Scaling Rental Management<br />with GenAI</>) : project.id === 3 ? (<>Designing Human-Centered<br />CPPS Care</>) : project.title}
                         </h3>
-                        <div className="flex flex-wrap gap-3 mb-4">
-                          {project.tags.slice(0, 2).map((tag, tagIndex) => (
-                            <span key={tagIndex} className="text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600 rounded-full px-4 py-2 whitespace-nowrap">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div>
-                          <span className="text-base text-gray-500 dark:text-gray-400">
+                        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl">
+                          {project.id === 1 
+                            ? 'A multi-sensory brand experience for a Portuguese restaurant, blending traditional craftsmanship with modern design.' 
+                            : project.id === 2 
+                            ? 'AI-powered rental management platform that streamlines property operations and enhances tenant experience.'
+                            : project.id === 3
+                            ? 'Redesigning patient care coordination for a rare disease, focusing on accessibility and user empowerment.'
+                            : project.description}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-4 pt-2">
+                          <div className="flex flex-wrap gap-2">
+                            {project.tags.slice(0, 2).map((tag, tagIndex) => (
+                              <span
+                                key={tagIndex}
+                                className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100/50 dark:bg-slate-800/50 rounded-lg px-3 py-1.5 whitespace-nowrap"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                          <span className="text-sm text-gray-400 dark:text-gray-500">
                             {project.id === 1 ? '2025' : project.id === 3 ? '2025' : project.id === 2 ? '2023' : '2024'}
                           </span>
                         </div>
@@ -345,7 +357,7 @@ const ProjectsPage = () => {
                           src={project.heroImage.replace(',', '%2C')}
                           alt={`${project.title} preview`}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                           sizes="(min-width: 1024px) 50vw, 100vw"
                           priority={index < 2}
                         />
@@ -388,19 +400,26 @@ const ProjectsPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {designShowcase.map((item, index) => (
-              <motion.div
+              <div
                 key={item.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05 }}
                 className="group cursor-pointer"
                 onClick={() => setSelectedMedia({ type: item.type as 'video' | 'image', src: item.media })}
               >
-                <div className="relative overflow-hidden rounded-xl shadow-soft hover:shadow-large transition-all duration-300">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="relative bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 hover:border-2 hover:border-indigo-500/50 hover:dark:border-indigo-400/50 hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
+                >
+                  {/* Corner Squares - centered on edges */}
+                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
                   <div className="aspect-video relative overflow-hidden bg-gray-200 dark:bg-gray-800">
                     {item.type === 'video' ? (
                       <video
@@ -428,19 +447,18 @@ const ProjectsPage = () => {
                         onError={(e) => {
                           console.warn('Video failed to load:', item.media)
                         }}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                       />
                     ) : (
                       <img
                         src={item.media}
                         alt={`Exploration ${item.id}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                       />
                     )}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                   </div>
-                </div>
                 </motion.div>
+              </div>
             ))}
           </div>
         </div>

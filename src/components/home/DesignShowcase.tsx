@@ -65,19 +65,26 @@ export default function DesignShowcase({ isDesktop }: { isDesktop: boolean }) {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {designShowcase.map((item, index) => (
-              <motion.div
+              <div
                 key={item.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05 }}
                 className="group cursor-pointer"
                 onClick={() => item.type === 'video' && setSelectedVideo(item.media)}
               >
-                <div className="relative overflow-hidden rounded-xl shadow-soft hover:shadow-large transition-all duration-300">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="relative bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 hover:border-2 hover:border-indigo-500/50 hover:dark:border-indigo-400/50 hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
+                >
+                  {/* Corner Squares - centered on edges */}
+                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
                   <div className="aspect-video relative overflow-hidden bg-gray-200 dark:bg-gray-800">
                     {item.type === 'video' ? (
                       <video
@@ -100,20 +107,19 @@ export default function DesignShowcase({ isDesktop }: { isDesktop: boolean }) {
                           e.currentTarget.currentTime = 0
                           e.currentTarget.play().catch(() => {})
                         }}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                       />
                     ) : (
                       <img
                         src={item.media}
                         alt={`Exploration ${item.id}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                         loading="lazy"
                       />
                     )}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             ))}
           </div>
 
