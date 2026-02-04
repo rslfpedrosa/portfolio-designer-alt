@@ -12,7 +12,7 @@ export default function CustomCursor({ isDesktop, shouldReduceMotion }: CustomCu
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
   const [hoverText, setHoverText] = useState('')
-  const rafRef = useRef<number>()
+  const rafRef = useRef<number | undefined>(undefined)
   const cursorRef = useRef({ x: 0, y: 0 })
   const targetRef = useRef({ x: 0, y: 0 })
 
