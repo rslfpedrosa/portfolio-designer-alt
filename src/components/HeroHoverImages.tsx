@@ -77,9 +77,19 @@ const HoverImagesContent = memo<{
           height: IMG_H,
           transform: `rotate(${ROTATE_1}deg) scale(${isVisible ? 1 : 0.92})`,
           opacity: isVisible ? 1 : 0,
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          perspective: 1000,
         }}
       >
-        <img src={photos[0].replace(',', '%2C')} alt="" className="w-full h-full object-cover" />
+        <img
+          src={photos[0].replace(',', '%2C')}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+        />
       </div>
       <div
         className="absolute rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700 transition-[opacity,transform] duration-300 ease-out delay-75"
@@ -90,9 +100,19 @@ const HoverImagesContent = memo<{
           height: IMG_H,
           transform: `rotate(${ROTATE_2}deg) scale(${isVisible ? 1 : 0.92})`,
           opacity: isVisible ? 1 : 0,
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          perspective: 1000,
         }}
       >
-        <img src={photos[1].replace(',', '%2C')} alt="" className="w-full h-full object-cover" />
+        <img
+          src={photos[1].replace(',', '%2C')}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+        />
       </div>
       <div
         className="absolute rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700 transition-[opacity,transform] duration-300 ease-out delay-150"
@@ -103,9 +123,19 @@ const HoverImagesContent = memo<{
           height: IMG_H_SM,
           transform: `rotate(${ROTATE_3}deg) scale(${isVisible ? 1 : 0.92})`,
           opacity: isVisible ? 1 : 0,
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          perspective: 1000,
         }}
       >
-        <img src={photos[2].replace(',', '%2C')} alt="" className="w-full h-full object-cover" />
+        <img
+          src={photos[2].replace(',', '%2C')}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+        />
       </div>
     </div>
   )
@@ -119,6 +149,24 @@ const HeroHoverImages = memo<HeroHoverImagesProps>(({ bounds, isVisible, photos,
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Preload and decode images to prevent stuttering on hover
+  useEffect(() => {
+    const preloadPromises = photos.map(src => {
+      return new Promise<void>((resolve) => {
+        const img = new Image()
+        img.src = src.replace(',', '%2C')
+        img.onload = () => {
+          // Decode the image to ensure it's ready for rendering
+          img.decode().then(() => resolve()).catch(() => resolve())
+        }
+        img.onerror = () => resolve()
+      })
+    })
+
+    // Wait for all images to be loaded and decoded
+    Promise.all(preloadPromises)
+  }, [photos])
 
   if (!mounted || typeof document === 'undefined' || !bounds) {
     return null

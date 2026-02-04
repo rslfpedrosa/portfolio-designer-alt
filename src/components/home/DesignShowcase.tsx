@@ -32,7 +32,7 @@ const designShowcase = [
   },
 ]
 
-export default function DesignShowcase({ isDesktop }: { isDesktop: boolean }) {
+export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop: boolean, onLabelChange?: (label: string | null) => void }) {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
 
   return (
@@ -71,6 +71,9 @@ export default function DesignShowcase({ isDesktop }: { isDesktop: boolean }) {
                 key={item.id}
                 className="group cursor-pointer"
                 onClick={() => item.type === 'video' && setSelectedVideo(item.media)}
+                onMouseEnter={() => isDesktop && onLabelChange?.('EXPAND')}
+                onMouseLeave={() => isDesktop && onLabelChange?.(null)}
+                style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -153,7 +156,7 @@ export default function DesignShowcase({ isDesktop }: { isDesktop: boolean }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[99999] bg-black/95 flex items-center justify-center p-4"
             onClick={() => setSelectedVideo(null)}
           >
             <motion.div

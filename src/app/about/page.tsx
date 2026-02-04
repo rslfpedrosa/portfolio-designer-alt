@@ -1,9 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { Download, Award, Users, Lightbulb, Heart, Figma, Palette, Layers, Code, Coffee, Dog, Plane, ArrowRight, Calendar, Briefcase, Globe } from 'lucide-react'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import FigmaCursor from '@/components/FigmaCursor'
 
 // Conference Card Component with floating photos on hover
 const ConferenceCard = ({ 
@@ -203,6 +204,31 @@ const VideoCard = ({ joy, index }: { joy: { title: string; description: string; 
 }
 
 const AboutPage = () => {
+  const shouldReduceMotion = useReducedMotion()
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
+    setIsDesktop(mediaQuery.matches)
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsDesktop(e.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+
+  // Hide default cursor globally on desktop
+  useEffect(() => {
+    if (isDesktop) {
+      document.body.style.cursor = 'none'
+      return () => {
+        document.body.style.cursor = ''
+      }
+    }
+  }, [isDesktop])
+
   const timeline = [
     {
       year: '2024',
@@ -722,6 +748,7 @@ const AboutPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                   className="bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2"
+                  style={isDesktop ? { cursor: 'none' } : {}}
               >
                   <span>Get In Touch</span>
                   <ArrowRight size={20} />
@@ -731,6 +758,14 @@ const AboutPage = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Unified Figma Cursor */}
+      <FigmaCursor
+        label={null}
+        showPill={false}
+        shouldReduceMotion={shouldReduceMotion || false}
+        isDesktop={isDesktop}
+      />
     </div>
   )
 }

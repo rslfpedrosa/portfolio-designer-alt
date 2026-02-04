@@ -217,59 +217,7 @@ export default function HeroSection({
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-end sm:items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden bg-white dark:bg-slate-950 pb-20 sm:pb-0">
-      {/* Subtle Grid Pattern */}
-      <div className="absolute inset-0 bg-animated-grid" />
-      
-      {/* Animated Orbs */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/60 to-purple-400/60 rounded-full blur-3xl pointer-events-none"
-        initial={{ x: 0, y: 0, scale: 1 }}
-        animate={{
-          x: [0, 150, -50, 0],
-          y: [0, -120, 80, 0],
-          scale: [1, 1.3, 0.9, 1],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatType: "loop",
-        }}
-      />
-      
-      <motion.div
-        className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
-        initial={{ x: 0, y: 0, scale: 1 }}
-        animate={{
-          x: [0, -180, 60, 0],
-          y: [0, 120, -40, 0],
-          scale: [1, 0.7, 1.2, 1],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatType: "loop",
-        }}
-      />
-      
-      <motion.div
-        className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/60 to-indigo-400/60 rounded-full blur-3xl pointer-events-none"
-        initial={{ x: 0, y: 0, scale: 1 }}
-        animate={{
-          x: [0, 220, -80, 0],
-          y: [0, -80, 100, 0],
-          scale: [1, 1.15, 0.85, 1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatType: "loop",
-        }}
-      />
-
+    <section className="relative min-h-screen flex items-end sm:items-center justify-center px-4 sm:px-6 lg:px-8 pb-20 sm:pb-0">
       {/* Main Content */}
       <div className="max-w-7xl mx-auto text-center relative z-10">
         {/* Badge */}
@@ -307,6 +255,7 @@ export default function HeroSection({
               onBlur={() => handleRitaFocus(false)}
               className="inline-block focus:outline-none"
               aria-label="About Me"
+              style={isDesktop ? { cursor: 'none' } : {}}
             >
               <span
                 ref={leftSpanRef}
@@ -325,6 +274,7 @@ export default function HeroSection({
               onBlur={() => handleDesignFocus(false)}
               className="inline-block focus:outline-none"
               aria-label="View Work"
+              style={isDesktop ? { cursor: 'none' } : {}}
             >
               <span
                 ref={rightSpanRef}

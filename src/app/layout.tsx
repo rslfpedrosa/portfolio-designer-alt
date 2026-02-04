@@ -52,7 +52,7 @@ export default function RootLayout({
         {/* Viewport meta for mobile optimization */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
       </head>
-      <body>
+      <body className="overflow-x-hidden">
         <ConditionalLayout>
           {children}
         </ConditionalLayout>

@@ -32,12 +32,13 @@ const testimonials = [
   },
 ]
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDesktop?: boolean, onLabelChange?: (label: string | null) => void } = {}) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [expandedTestimonial, setExpandedTestimonial] = useState<number | null>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
 
   useEffect(() => {
     setIsMounted(true)
@@ -54,6 +55,24 @@ export default function TestimonialsSection() {
       document.body.style.overflow = 'unset'
     }
   }, [expandedTestimonial])
+
+  const nextModalTestimonial = () => {
+    if (expandedTestimonial !== null) {
+      setSlideDirection('right')
+      const currentIdx = testimonials.findIndex(t => t.id === expandedTestimonial)
+      const nextIdx = (currentIdx + 1) % testimonials.length
+      setExpandedTestimonial(testimonials[nextIdx].id)
+    }
+  }
+
+  const prevModalTestimonial = () => {
+    if (expandedTestimonial !== null) {
+      setSlideDirection('left')
+      const currentIdx = testimonials.findIndex(t => t.id === expandedTestimonial)
+      const prevIdx = (currentIdx - 1 + testimonials.length) % testimonials.length
+      setExpandedTestimonial(testimonials[prevIdx].id)
+    }
+  }
 
   const nextTestimonial = () => {
     if (!isAnimating) {
@@ -165,7 +184,7 @@ export default function TestimonialsSection() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
-                className="cursor-pointer absolute inset-0 group"
+                className="absolute inset-0 group"
                 onClick={() => setExpandedTestimonial(testimonials[currentIndex].id)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -175,7 +194,11 @@ export default function TestimonialsSection() {
                   ease: 'easeInOut',
                 }}
               >
-                <div className="bg-slate-900/70 backdrop-blur-2xl border border-white/10 rounded-2xl px-10 lg:px-12 py-8 lg:py-10 shadow-2xl shadow-black/50 flex flex-col h-full justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none">
+                <div
+                  className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-10 lg:px-12 py-8 lg:py-10 shadow-2xl shadow-black/50 flex flex-col h-full justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none cursor-pointer"
+                  onMouseEnter={() => isDesktop && onLabelChange?.('READ FULL REVIEW')}
+                  onMouseLeave={() => isDesktop && onLabelChange?.(null)}
+                >
                   
                   {/* Quote Icon */}
                   <div className="mb-6 relative z-10">
@@ -226,7 +249,9 @@ export default function TestimonialsSection() {
                 <div
                   key={testimonial.id}
                   onClick={() => setExpandedTestimonial(testimonial.id)}
-                  className="bg-slate-900/70 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-6 shadow-2xl shadow-black/50 flex flex-col w-[85vw] max-w-sm flex-shrink-0 snap-start justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none cursor-pointer group"
+                  onMouseEnter={() => isDesktop && onLabelChange?.('READ FULL REVIEW')}
+                  onMouseLeave={() => isDesktop && onLabelChange?.(null)}
+                  className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-6 shadow-2xl shadow-black/50 flex flex-col w-[85vw] max-w-sm flex-shrink-0 snap-start justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none cursor-pointer group"
                 >
                   {/* Quote Icon */}
                   <div className="mb-4 relative z-10">
@@ -303,10 +328,32 @@ export default function TestimonialsSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 lg:p-8"
+            className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 lg:p-8"
             onClick={() => setExpandedTestimonial(null)}
             style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh' }}
           >
+            {/* Navigation Arrows - Outside the card */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                prevModalTestimonial()
+              }}
+              className="absolute left-4 md:left-8 lg:left-16 top-1/2 -translate-y-1/2 z-20 p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-110"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft size={28} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                nextModalTestimonial()
+              }}
+              className="absolute right-4 md:right-8 lg:right-16 top-1/2 -translate-y-1/2 z-20 p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-110"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight size={28} />
+            </button>
+
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -324,35 +371,59 @@ export default function TestimonialsSection() {
                 <X size={24} />
               </button>
 
-              {/* Quote Icon */}
-              <div className="mb-6 relative z-10">
-                <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-indigo-400/40">
-                  <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
-                  <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
-                </svg>
-              </div>
+              {/* Animated Content */}
+              <AnimatePresence mode="wait" initial={false} custom={slideDirection}>
+                <motion.div
+                  key={expandedTestimonial}
+                  custom={slideDirection}
+                  initial={(direction) => ({
+                    x: direction === 'right' ? 100 : -100,
+                    opacity: 0
+                  })}
+                  animate={{
+                    x: 0,
+                    opacity: 1
+                  }}
+                  exit={(direction) => ({
+                    x: direction === 'right' ? -100 : 100,
+                    opacity: 0
+                  })}
+                  transition={{
+                    duration: 0.4,
+                    ease: 'easeInOut'
+                  }}
+                >
+                  {/* Quote Icon */}
+                  <div className="mb-6 relative z-10">
+                    <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-indigo-400/40">
+                      <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
+                      <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
+                    </svg>
+                  </div>
 
-              {/* Full Testimonial Text */}
-              <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl lg:text-3xl font-medium relative z-10">
-                "{testimonials.find(t => t.id === expandedTestimonial)?.fullContent}"
-              </p>
-
-              {/* Author Info */}
-              <div className="flex items-center space-x-4 pt-6 border-t border-white/10 relative z-10">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-base">
-                    {testimonials.find(t => t.id === expandedTestimonial)?.avatar}
-                  </span>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white text-lg">
-                    {testimonials.find(t => t.id === expandedTestimonial)?.name}
-                  </h4>
-                  <p className="text-base text-gray-400">
-                    {testimonials.find(t => t.id === expandedTestimonial)?.role}
+                  {/* Full Testimonial Text */}
+                  <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl lg:text-3xl font-medium relative z-10">
+                    "{testimonials.find(t => t.id === expandedTestimonial)?.fullContent}"
                   </p>
-                </div>
-              </div>
+
+                  {/* Author Info */}
+                  <div className="flex items-center space-x-4 pt-6 border-t border-white/10 relative z-10">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-semibold text-base">
+                        {testimonials.find(t => t.id === expandedTestimonial)?.avatar}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-white text-lg">
+                        {testimonials.find(t => t.id === expandedTestimonial)?.name}
+                      </h4>
+                      <p className="text-base text-gray-400">
+                        {testimonials.find(t => t.id === expandedTestimonial)?.role}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </motion.div>
           </motion.div>
         )}

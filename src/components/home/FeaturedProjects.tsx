@@ -29,34 +29,8 @@ export default function FeaturedProjects({
   }
 
   return (
-    <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-gray-200 dark:border-gray-800 overflow-visible">
+    <section className="relative py-8 sm:py-16 px-4 sm:px-6 lg:px-8 overflow-visible">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-8 sm:mb-12"
-          >
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              viewport={{ once: true }}
-              className="inline-block mb-3 sm:mb-4"
-            >
-              <span className="text-sm font-medium tracking-wider text-indigo-600 dark:text-indigo-400 uppercase">
-                Featured Work
-              </span>
-            </motion.div>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-4 sm:mb-6">
-              Case Studies
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Selected projects focused on complex, real-world problems.
-            </p>
-          </motion.div>
-
           <div className="space-y-8 lg:space-y-12">
             {featuredProjects.map((project, index) => (
               <Link 

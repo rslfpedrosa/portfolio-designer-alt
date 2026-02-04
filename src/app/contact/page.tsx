@@ -1,16 +1,41 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Send, Mail, Linkedin, Dribbble } from 'lucide-react'
+import FigmaCursor from '@/components/FigmaCursor'
 
 const ContactPage = () => {
+  const shouldReduceMotion = useReducedMotion()
+  const [isDesktop, setIsDesktop] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
+    setIsDesktop(mediaQuery.matches)
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsDesktop(e.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+
+  // Hide default cursor globally on desktop
+  useEffect(() => {
+    if (isDesktop) {
+      document.body.style.cursor = 'none'
+      return () => {
+        document.body.style.cursor = ''
+      }
+    }
+  }, [isDesktop])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -197,6 +222,7 @@ const ContactPage = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="w-full bg-indigo-600 text-white px-6 py-4 rounded-full font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  style={isDesktop ? { cursor: 'none' } : {}}
                 >
                   {isSubmitting ? (
                     <>
@@ -302,6 +328,14 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Unified Figma Cursor */}
+      <FigmaCursor
+        label={null}
+        showPill={false}
+        shouldReduceMotion={shouldReduceMotion || false}
+        isDesktop={isDesktop}
+      />
     </div>
   )
 }
