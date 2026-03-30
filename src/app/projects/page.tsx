@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { getAllProjects } from '@/data/projects'
 import FigmaCursor from '@/components/FigmaCursor'
+import CTASection from '@/components/home/CTASection'
 
 const ProjectsPage = () => {
   const allProjects = getAllProjects()
@@ -73,7 +74,7 @@ const ProjectsPage = () => {
       id: 2,
       type: 'image',
       media: '/explorations/23126508_195.webp',
-      gradient: 'from-pink-400 to-purple-500',
+      gradient: 'from-pink-400 to-gray-500',
     },
     {
       id: 3,
@@ -124,7 +125,7 @@ const ProjectsPage = () => {
   }
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-16 bg-[#171717]">
       {/* Hero Section */}
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -168,19 +169,22 @@ const ProjectsPage = () => {
                   viewport={{ once: true }}
                   className="relative overflow-visible transition-all duration-300 ease-out group cursor-pointer"
                 >
-                  {/* Card content – neutral background */}
-                  <div className={`relative bg-white dark:bg-slate-900/50 backdrop-blur-sm transition-all duration-500 ease-out ${
-                    hoveredCardId === project.id 
-                      ? 'border-2 border-indigo-500/50 dark:border-indigo-400/50 shadow-xl shadow-indigo-500/10 scale-[1.05]' 
-                      : 'border border-gray-200/50 dark:border-slate-700/50'
-                  }`}>
-                    {/* Corner Squares - centered on edges */}
+                  <div
+                    className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible"
+                    style={hoveredCardId === project.id ? {
+                      outline: '2px solid #18a0fb',
+                      outlineOffset: '0px',
+                    } : {
+                      outline: '1px solid rgba(255,255,255,0.08)',
+                      outlineOffset: '0px',
+                    }}
+                  >
                     {hoveredCardId === project.id && (
                       <>
-                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
-                        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
-                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
+                        <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
+                        <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
+                        <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
+                        <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
                       </>
                     )}
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
@@ -197,24 +201,18 @@ const ProjectsPage = () => {
                             <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{project.title.split(' ')[0].toUpperCase()}</span>
                           )}
                         </div>
-                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-white leading-tight tracking-tight">
-                          {project.id === 1 ? 'Crafting a Sensory Brand Experience' : project.id === 2 ? (<>Scaling Rental Management<br />with GenAI</>) : project.id === 3 ? (<>Designing Human-Centered<br />CPPS Care</>) : project.title}
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-white leading-tight tracking-tight text-balance">
+                          {project.subtitle}
                         </h3>
                         <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl">
-                          {project.id === 1 
-                            ? 'A multi-sensory brand experience for a Portuguese restaurant, blending traditional craftsmanship with modern design.' 
-                            : project.id === 2 
-                            ? 'AI-powered rental management platform that streamlines property operations and enhances tenant experience.'
-                            : project.id === 3
-                            ? 'Redesigning patient care coordination for a rare disease, focusing on accessibility and user empowerment.'
-                            : project.description}
+                          {project.tagline ?? project.description}
                         </p>
                         <div className="flex flex-wrap items-center gap-4 pt-2">
-                          <div className="flex flex-wrap gap-2">
-                            {project.tags.slice(0, 2).map((tag, tagIndex) => (
+                          <div className="flex flex-wrap gap-1.5">
+                            {project.tags.slice(0, 3).map((tag, tagIndex) => (
                               <span
                                 key={tagIndex}
-                                className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100/50 dark:bg-slate-800/50 rounded-lg px-3 py-1.5 whitespace-nowrap"
+                                className="px-2.5 py-1 rounded-full border border-gray-700 text-sm text-gray-300 whitespace-nowrap"
                               >
                                 {tag}
                               </span>
@@ -246,7 +244,7 @@ const ProjectsPage = () => {
       </section>
 
       {/* Design Showcase Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -262,7 +260,7 @@ const ProjectsPage = () => {
               viewport={{ once: true }}
               className="inline-block mb-4"
             >
-              <span className="text-sm font-medium tracking-wider text-indigo-600 dark:text-indigo-400 uppercase">
+              <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase">
                 Design Showcase
               </span>
             </motion.div>
@@ -278,21 +276,23 @@ const ProjectsPage = () => {
             {designShowcase.map((item, index) => (
               <div
                 key={item.id}
-                className="group cursor-pointer"
+                className="group cursor-pointer relative overflow-visible"
                 onClick={() => setSelectedMedia({ type: item.type as 'video' | 'image', src: item.media })}
+                onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #18a0fb')}
+                onMouseLeave={e => (e.currentTarget.style.outline = '')}
               >
+                {/* Corner Squares */}
+                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="relative bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 hover:border-2 hover:border-indigo-500/50 hover:dark:border-indigo-400/50 hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
+                  className="relative bg-white dark:bg-slate-900/50 backdrop-blur-sm hover:shadow-xl hover:scale-[1.05] transition-all duration-500 ease-out overflow-hidden"
                 >
-                  {/* Corner Squares - centered on edges */}
-                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   <div className="aspect-video relative overflow-hidden bg-gray-200 dark:bg-gray-800">
                     {item.type === 'video' ? (
@@ -396,90 +396,7 @@ const ProjectsPage = () => {
         )}
       </AnimatePresence>
 
-      {/* Let's Build Something Together Section */}
-      <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 overflow-hidden">
-        {/* Animated Orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/30 to-purple-400/30 rounded-full blur-3xl pointer-events-none"
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, 150, -50, 0],
-            y: [0, -120, 80, 0],
-            scale: [1, 1.3, 0.9, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
-        />
-        
-        <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/30 to-pink-400/30 rounded-full blur-3xl pointer-events-none"
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, -180, 60, 0],
-            y: [0, 120, -40, 0],
-            scale: [1, 0.7, 1.2, 1],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
-        />
-        
-        <motion.div
-          className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-indigo-400/30 rounded-full blur-3xl pointer-events-none"
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, 220, -80, 0],
-            y: [0, -80, 100, 0],
-            scale: [1, 1.15, 0.85, 1],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
-        />
-
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-animated-grid" />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="space-y-6 sm:space-y-8"
-          >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white">
-              Let's Build Something <span className="text-gradient">Together</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-              I'm always open to collaborating on thoughtful projects, from early product strategy to polished, production ready experiences.
-            </p>
-            <div className="flex justify-center">
-              <Link href="/contact">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2"
-                  style={isDesktop ? { cursor: 'none' } : {}}
-                >
-                  <span>Get In Touch</span>
-                  <ArrowRight size={20} />
-                </motion.button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CTASection isDesktop={isDesktop} />
 
       {/* Unified Figma Cursor */}
       <FigmaCursor

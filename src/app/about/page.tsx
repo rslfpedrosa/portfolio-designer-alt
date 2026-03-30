@@ -2,15 +2,16 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
-import { Download, Award, Users, Lightbulb, Heart, Figma, Palette, Layers, Code, Coffee, Dog, Plane, ArrowRight, Calendar, Briefcase, Globe } from 'lucide-react'
+import { Download, Award, Users, Lightbulb, Heart, Figma, Palette, Layers, Code, Coffee, Dog, Plane, ArrowRight, Calendar, Briefcase, Globe, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import FigmaCursor from '@/components/FigmaCursor'
+import CTASection from '@/components/home/CTASection'
 
 // Conference Card Component with floating photos on hover
-const ConferenceCard = ({ 
-  conference, 
-  index 
-}: { 
+const ConferenceCard = ({
+  conference,
+  index
+}: {
   conference: {
     name: string
     year: string
@@ -20,9 +21,10 @@ const ConferenceCard = ({
     destCode: string
     description: string
     gradient: string
+    cardBg: string
     photos: string[]
   }
-  index: number 
+  index: number
 }) => {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -34,7 +36,8 @@ const ConferenceCard = ({
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-soft hover:shadow-large transition-all overflow-visible"
+      className="relative rounded-2xl shadow-soft hover:shadow-large transition-all overflow-visible"
+      style={{ background: conference.cardBg }}
     >
       {/* Floating photos on hover */}
       <div className="absolute inset-0 pointer-events-none z-30">
@@ -54,7 +57,7 @@ const ConferenceCard = ({
             opacity: 0 
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute top-1/4 left-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700"
+          className="absolute top-1/4 left-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-4 border-white/20"
         >
           <img src={conference.photos[0]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
@@ -75,7 +78,7 @@ const ConferenceCard = ({
             opacity: 0 
           }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-          className="absolute bottom-1/4 right-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700"
+          className="absolute bottom-1/4 right-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-4 border-white/20"
         >
           <img src={conference.photos[1]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
@@ -94,7 +97,7 @@ const ConferenceCard = ({
             opacity: 0 
           }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="absolute top-0 right-1/4 w-44 h-44 rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700"
+          className="absolute top-0 right-1/4 w-44 h-44 rounded-xl shadow-2xl overflow-hidden border-4 border-white/20"
         >
           <img src={conference.photos[2]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
@@ -103,8 +106,8 @@ const ConferenceCard = ({
       {/* Ticket-style design */}
       <div className="relative overflow-hidden rounded-2xl">
         {/* Perforated edge effect */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-gray-50 dark:bg-slate-900 rounded-full -ml-2 z-10" />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-gray-50 dark:bg-slate-900 rounded-full -mr-2 z-10" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#171717] rounded-full -ml-2 z-10" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#171717] rounded-full -mr-2 z-10" />
         
         <motion.div 
           animate={isHovered ? { scale: 1.02 } : { scale: 1 }}
@@ -135,7 +138,7 @@ const ConferenceCard = ({
       </div>
 
       <div className="p-6 relative z-0">
-        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+        <p className="text-gray-300 leading-relaxed">
           {conference.description}
         </p>
       </div>
@@ -143,25 +146,26 @@ const ConferenceCard = ({
   )
 }
 
-// Video Card Component with auto-play on hover
+// Video Card Component with auto-play when in viewport
 const VideoCard = ({ joy, index }: { joy: { title: string; description: string; video: string }; index: number }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isHovering, setIsHovering] = useState(false)
 
-  const handleMouseEnter = () => {
-    setIsHovering(true)
-    if (videoRef.current) {
-      videoRef.current.play()
-    }
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovering(false)
-    if (videoRef.current) {
-      videoRef.current.pause()
-      videoRef.current.currentTime = 0
-    }
-  }
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.3 }
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <motion.div
@@ -169,32 +173,31 @@ const VideoCard = ({ joy, index }: { joy: { title: string; description: string; 
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="relative flex-shrink-0 w-80 snap-start group cursor-pointer"
+      className="relative w-full h-full group cursor-pointer"
     >
-      <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-soft hover:shadow-large transition-all overflow-hidden h-full">
+      <div className="relative bg-[#1e1e1e] rounded-2xl shadow-soft hover:shadow-large transition-all overflow-hidden h-full flex flex-col">
         {/* Video container */}
-        <div className="relative w-full h-96 bg-gray-200 dark:bg-gray-700 overflow-hidden rounded-t-2xl">
+        <div className="relative w-full h-96 bg-gray-800 overflow-hidden rounded-t-2xl flex-shrink-0">
           <video
             ref={videoRef}
             src={joy.video}
             muted
             loop
             playsInline
+            preload="none"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          
+
           {/* Enhanced gradient overlay for better text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         </div>
-        
+
         {/* Text below video - always readable */}
-        <div className="p-6 bg-white dark:bg-slate-800">
-          <h3 className="text-xl font-medium mb-2 text-gray-900 dark:text-white">
+        <div className="p-6 bg-[#1e1e1e] flex-1">
+          <h3 className="text-xl font-medium mb-2 text-white">
             {joy.title}
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-sm text-gray-400 leading-relaxed">
             {joy.description}
           </p>
         </div>
@@ -203,9 +206,63 @@ const VideoCard = ({ joy, index }: { joy: { title: string; description: string; 
   )
 }
 
+const JOYS = [
+  { title: 'Beautiful, Overpriced Coffees', description: '€5 for vibes and foam art? Worth it.', video: '/videos/coffee.mp4' },
+  { title: 'Falling in Love with Every Dog I Meet', description: 'Dogs are my weakness.', video: '/videos/dogs.mp4' },
+  { title: 'Design Shop Wandering', description: 'My favorite kind of field trip.', video: '/videos/design-shop.mp4' },
+  { title: "Nature's Biggest Fan", description: 'Trees, fresh air, no emails. Perfect.', video: '/videos/nature.mp4' },
+  { title: 'Learning by Leaving', description: 'New cities. New ways of seeing.', video: '/videos/travel.mp4' },
+]
+
+const CAROUSEL_GAP = 24
+
 const AboutPage = () => {
   const shouldReduceMotion = useReducedMotion()
   const [isDesktop, setIsDesktop] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  // Track viewport breakpoint for carousel layout decisions
+  const [breakpoint, setBreakpoint] = useState<'mobile' | 'tablet' | 'desktop'>('mobile')
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth
+      setBreakpoint(w >= 1024 ? 'desktop' : w >= 640 ? 'tablet' : 'mobile')
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  // Measure container for dynamic card sizing
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const ro = new ResizeObserver(() => setContainerWidth(el.offsetWidth))
+    ro.observe(el)
+    setContainerWidth(el.offsetWidth)
+    return () => ro.disconnect()
+  }, [])
+
+  const visibleCards = breakpoint === 'desktop' ? 3 : breakpoint === 'tablet' ? 2 : 1
+  const cardWidthPx = containerWidth > 0
+    ? visibleCards === 1
+      ? containerWidth * 0.88                                              // mobile: slight peek
+      : (containerWidth - CAROUSEL_GAP * (visibleCards - 1)) / visibleCards  // tablet/desktop: fill evenly
+    : 280
+  const stepPx = cardWidthPx + CAROUSEL_GAP
+  const maxCarouselIndex = Math.max(0, JOYS.length - visibleCards)
+
+  const carouselGoTo = (i: number) => {
+    setActiveIndex(Math.max(0, Math.min(maxCarouselIndex, i)))
+  }
+
+  // Reset position when layout changes (e.g. resize crosses a breakpoint)
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [visibleCards])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -299,7 +356,7 @@ const AboutPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-16 bg-[#171717]">
       {/* Hero Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
@@ -359,7 +416,7 @@ const AboutPage = () => {
       </section>
 
       {/* Design Philosophy */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -386,21 +443,32 @@ const AboutPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-soft hover:shadow-medium transition-shadow"
+                  className="relative group overflow-visible"
                 >
-                  <div className="flex flex-col items-start">
-                    <div className="mb-4">
-                      <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
-                        <Icon size={24} className="text-indigo-600 dark:text-indigo-400" />
+                  <div
+                    className="relative bg-[#1e1e1e] p-8 transition-all duration-300 ease-out overflow-visible"
+                    style={{ outline: '1px solid rgba(255,255,255,0.08)', outlineOffset: '0px' }}
+                    onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #18a0fb')}
+                    onMouseLeave={e => (e.currentTarget.style.outline = '1px solid rgba(255,255,255,0.08)')}
+                  >
+                    <div className="absolute -top-[5px] -left-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute -top-[5px] -right-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="flex flex-col items-start">
+                      <div className="mb-4">
+                        <div className="w-12 h-12 bg-white/5 flex items-center justify-center">
+                          <Icon size={24} className="text-gray-400" />
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
-                        {value.title}
-                      </h3>
-                      <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                        {value.description}
-                      </p>
+                      <div>
+                        <h3 className="text-xl font-medium text-white mb-2">
+                          {value.title}
+                        </h3>
+                        <p className="text-base sm:text-lg text-gray-400 leading-relaxed">
+                          {value.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -411,7 +479,7 @@ const AboutPage = () => {
       </section>
 
       {/* Timeline Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -430,7 +498,7 @@ const AboutPage = () => {
 
           <div className="relative">
             {/* Timeline Line */}
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-indigo-500 to-purple-600" />
+            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gray-500 to-gray-600" />
 
             <div className="space-y-12">
               {timeline.map((item, index) => (
@@ -443,8 +511,8 @@ const AboutPage = () => {
                   className="relative flex items-start space-x-8"
                 >
                   {/* Timeline Dot */}
-                  <div className="flex-shrink-0 w-16 h-16 bg-white dark:bg-gray-800 border-4 border-indigo-500 rounded-full flex items-center justify-center relative z-10">
-                    <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                  <div className="flex-shrink-0 w-16 h-16 bg-white dark:bg-gray-800 border-4 border-gray-500 rounded-full flex items-center justify-center relative z-10">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                       {item.year}
                     </span>
                   </div>
@@ -461,7 +529,7 @@ const AboutPage = () => {
                             href={item.companyUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1"
+                            className="text-sm text-gray-600 dark:text-gray-400 hover:underline inline-flex items-center gap-1"
                           >
                             {item.company}
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -538,13 +606,13 @@ const AboutPage = () => {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -4 }}
-                className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all"
+                className="bg-[#1e1e1e] p-6 rounded-xl border border-white/8 hover:border-white/20 transition-all"
               >
-                <tool.icon className="w-8 h-8 text-indigo-600 dark:text-indigo-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
+                <tool.icon className="w-8 h-8 text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-white mb-1">
                   {tool.name}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-400">
                   {tool.category}
                 </p>
               </motion.div>
@@ -554,67 +622,90 @@ const AboutPage = () => {
       </section>
 
       {/* Small Joys Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24">
+        {/* Heading — contained */}
+        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center"
           >
-            <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-4 tracking-wider uppercase">
+            <p className="text-sm font-medium text-gray-400 mb-4 tracking-wider uppercase">
               Offline Mode
             </p>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Small Joys, <span className="text-gradient">Big Inspiration</span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-gray-400">
               These are the little things that refill my creative energy.
             </p>
           </motion.div>
+        </div>
 
-          {/* Horizontal scrollable carousel */}
-          <div className="relative -mx-4 sm:-mx-6 lg:-mx-8">
-            <div className="overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory">
-              <div className="flex gap-6 px-4 sm:px-6 lg:px-8" style={{ width: 'max-content' }}>
-              {[
-                {
-                  title: 'Beautiful, Overpriced Coffees',
-                  description: '€5 for vibes and foam art? Worth it.',
-                  video: '/videos/coffee.mp4'
-                },
-                {
-                  title: 'Falling in Love with Every Dog I Meet',
-                  description: 'Dogs are my weakness.',
-                  video: '/videos/dogs.mp4'
-                },
-                {
-                  title: 'Design Shop Wandering',
-                  description: 'My favorite kind of field trip.',
-                  video: '/videos/design-shop.mp4'
-                },
-                {
-                  title: "Nature's Biggest Fan",
-                  description: 'Trees, fresh air, no emails. Perfect.',
-                  video: '/videos/nature.mp4'
-                },
-                {
-                  title: 'Learning by Leaving',
-                  description: 'New cities. New ways of seeing.',
-                  video: '/videos/travel.mp4'
-                },
-              ].map((joy, index) => (
-                <VideoCard key={joy.title} joy={joy} index={index} />
+        {/* Carousel — capped width, arrows outside the overflow container */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-14">
+          {/* Arrows — desktop only, disabled at ends */}
+          <button
+            onClick={() => carouselGoTo(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            aria-label="Previous"
+            className="hidden sm:flex absolute left-2 top-1/2 -translate-y-6 z-20 w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white transition-all"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            onClick={() => carouselGoTo(activeIndex + 1)}
+            disabled={activeIndex === maxCarouselIndex}
+            aria-label="Next"
+            className="hidden sm:flex absolute right-2 top-1/2 -translate-y-6 z-20 w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white transition-all"
+          >
+            <ChevronRight size={20} />
+          </button>
+
+          {/* Overflow container — clips the track */}
+          <div ref={containerRef} className="overflow-hidden">
+            <motion.div
+              className="flex pb-8"
+              style={{ gap: CAROUSEL_GAP }}
+              animate={{ x: -activeIndex * stepPx }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30, mass: 0.5 }}
+              drag="x"
+              dragConstraints={{ left: -(maxCarouselIndex * stepPx), right: 0 }}
+              dragElastic={0.08}
+              onDragEnd={(_, info) => {
+                if (Math.abs(info.offset.x) > 60 || Math.abs(info.velocity.x) > 400) {
+                  carouselGoTo(activeIndex + (info.offset.x < 0 ? 1 : -1))
+                } else {
+                  carouselGoTo(activeIndex)
+                }
+              }}
+            >
+              {JOYS.map((joy, index) => (
+                <div key={joy.title} style={{ width: cardWidthPx, flexShrink: 0 }}>
+                  <VideoCard joy={joy} index={index} />
+                </div>
               ))}
-            </div>
-            </div>
+            </motion.div>
           </div>
+        </div>
+
+        {/* Dots — one per valid carousel position, not per card */}
+        <div className="flex justify-center gap-2 mt-2">
+          {Array.from({ length: maxCarouselIndex + 1 }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => carouselGoTo(i)}
+              aria-label={`Go to page ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/30'}`}
+            />
+          ))}
         </div>
       </section>
 
       {/* Design Conferences Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-slate-900">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -623,7 +714,7 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-4 tracking-wider uppercase">
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-4 tracking-wider uppercase">
               Learning & Growth
             </p>
             <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
@@ -645,7 +736,8 @@ const AboutPage = () => {
                 code: 'LIS',
                 destCode: 'BCN',
                 description: 'Drew inspiration from top creatives across motion, branding, and interactive design.',
-                gradient: 'from-blue-400 to-indigo-500',
+                gradient: 'from-blue-400 to-gray-500',
+                cardBg: 'linear-gradient(to bottom right, #1e4db8, #1a3a8a)',
                 photos: [
                     '/conferences/offf-group.jpg',
                     '/conferences/offf-stage.jpg',
@@ -661,6 +753,7 @@ const AboutPage = () => {
                 destCode: 'CPH',
                 description: 'Explored cutting-edge digital design topics and connected with global UX leaders.',
                 gradient: 'from-orange-400 to-red-500',
+                cardBg: 'linear-gradient(to bottom right, #c2410c, #9a1f07)',
                 photos: [
                     '/conferences/dm-coffee.jpg',
                     '/conferences/dm-group.jpg',
@@ -674,90 +767,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Let's Build Something Together Section */}
-      <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 overflow-hidden">
-        {/* Animated Orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/30 to-purple-400/30 rounded-full blur-3xl pointer-events-none"
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, 150, -50, 0],
-            y: [0, -120, 80, 0],
-            scale: [1, 1.3, 0.9, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
-        />
-        
-        <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/30 to-pink-400/30 rounded-full blur-3xl pointer-events-none"
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, -180, 60, 0],
-            y: [0, 120, -40, 0],
-            scale: [1, 0.7, 1.2, 1],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
-        />
-        
-        <motion.div
-          className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-indigo-400/30 rounded-full blur-3xl pointer-events-none"
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, 220, -80, 0],
-            y: [0, -80, 100, 0],
-            scale: [1, 1.15, 0.85, 1],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
-        />
-
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-animated-grid" />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="space-y-6 sm:space-y-8"
-          >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white">
-              Let's Build Something <span className="text-gradient">Together</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-              I'm always open to collaborating on thoughtful projects, from early product strategy to polished, production ready experiences.
-            </p>
-            <div className="flex justify-center">
-              <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                  className="bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2"
-                  style={isDesktop ? { cursor: 'none' } : {}}
-              >
-                  <span>Get In Touch</span>
-                  <ArrowRight size={20} />
-              </motion.button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CTASection isDesktop={isDesktop} />
 
       {/* Unified Figma Cursor */}
       <FigmaCursor

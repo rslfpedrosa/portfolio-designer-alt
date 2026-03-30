@@ -96,7 +96,7 @@ export default function CustomCursor({ isDesktop, shouldReduceMotion }: CustomCu
       >
         {/* Small circle outline (default state) */}
         <motion.div
-          className="w-8 h-8 rounded-full border-2 border-purple-500"
+          className="w-8 h-8 rounded-full border-2 border-gray-500"
           initial={false}
           animate={{
             opacity: isHovering ? 0 : 1,
@@ -124,7 +124,7 @@ export default function CustomCursor({ isDesktop, shouldReduceMotion }: CustomCu
             ease: [0.16, 1, 0.3, 1],
           }}
         >
-          <div className="w-24 h-24 rounded-full bg-purple-600 flex items-center justify-center p-4 shadow-lg shadow-purple-500/30">
+          <div className="w-24 h-24 rounded-full bg-gray-600 flex items-center justify-center p-4 shadow-lg shadow-gray-500/30">
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: isHovering ? 1 : 0 }}

@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
   return (
-    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -25,7 +25,7 @@ export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
               animate="rest"
             >
               {/* Purple gradient blob behind */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] bg-gradient-to-br from-purple-500/30 to-indigo-500/30 rounded-full blur-3xl -z-10" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] bg-gradient-to-br from-gray-500/30 to-gray-gray-500/30 rounded-full blur-3xl -z-10" />
               
               {/* Back card - tilted left */}
               <motion.div 
@@ -98,7 +98,7 @@ export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group text-indigo-600 dark:text-indigo-400 font-medium text-lg hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center space-x-2 mx-auto"
+                className="group text-gray-gray-600 dark:text-gray-gray-400 font-medium text-lg hover:text-gray-gray-700 dark:hover:text-gray-gray-300 transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>How I approach design</span>

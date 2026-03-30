@@ -54,53 +54,52 @@ const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
           width: bounds.width,
           height: bounds.height,
           boxSizing: 'border-box',
-          border: `${BORDER_WIDTH}px solid rgb(99 102 241)`,
+          border: `${BORDER_WIDTH}px solid #18a0fb`,
           overflow: 'visible',
           transformOrigin: 'center',
           transform: grown ? `scale(${HOVER_SCALE})` : 'scale(0.98)',
           transition: 'transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
-        className="dark:border-indigo-400"
       >
         {/* Corner squares – outside the frame so all 4 are visible */}
         <div
-          className="bg-indigo-500 dark:bg-indigo-400"
           style={{
             position: 'absolute',
             top: -HANDLE_OFFSET,
             left: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
+            backgroundColor: '#18a0fb',
           }}
         />
         <div
-          className="bg-indigo-500 dark:bg-indigo-400"
           style={{
             position: 'absolute',
             top: -HANDLE_OFFSET,
             right: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
+            backgroundColor: '#18a0fb',
           }}
         />
         <div
-          className="bg-indigo-500 dark:bg-indigo-400"
           style={{
             position: 'absolute',
             bottom: -HANDLE_OFFSET,
             left: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
+            backgroundColor: '#18a0fb',
           }}
         />
         <div
-          className="bg-indigo-500 dark:bg-indigo-400"
           style={{
             position: 'absolute',
             bottom: -HANDLE_OFFSET,
             right: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
+            backgroundColor: '#18a0fb',
           }}
         />
       </div>

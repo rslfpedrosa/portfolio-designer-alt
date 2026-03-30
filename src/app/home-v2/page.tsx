@@ -82,7 +82,7 @@ const CustomCursor = ({ label, isCursorActive, shouldReduceMotion }: CustomCurso
     >
       <div className="flex items-center gap-2">
         {/* Figma-like arrow cursor */}
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-indigo-600 dark:text-indigo-400 flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-gray-600 dark:text-gray-400 flex-shrink-0">
           <path
             d="M2 2L14 14M14 2L2 14"
             stroke="currentColor"
@@ -91,7 +91,7 @@ const CustomCursor = ({ label, isCursorActive, shouldReduceMotion }: CustomCurso
             strokeLinejoin="round"
           />
         </svg>
-        <span className="bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap shadow-lg">
+        <span className="bg-white text-gray-900 text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap shadow-lg">
           {label}
         </span>
       </div>
@@ -150,7 +150,7 @@ const TestimonialsCarousel = ({ testimonials }: { testimonials: Array<{ id: numb
               
               {/* Author Info */}
               <div className="flex items-center space-x-4 pt-4 mt-auto border-t border-gray-800 dark:border-gray-700">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-medium text-sm">{testimonials[currentIndex].avatar}</span>
                 </div>
                 <div>
@@ -181,7 +181,7 @@ const TestimonialsCarousel = ({ testimonials }: { testimonials: Array<{ id: numb
             }}
             className={`h-2 rounded-full transition-all duration-300 ${
               index === currentIndex
-                ? 'w-8 bg-indigo-600'
+                ? 'w-8 bg-gray-600'
                 : 'w-2 bg-gray-400 dark:bg-gray-600 hover:bg-gray-500'
             }`}
             aria-label={`Go to testimonial ${index + 1}`}
@@ -248,7 +248,7 @@ const HomeV2 = () => {
       id: 2,
       type: 'image',
       media: '/explorations/23126508_195.webp',
-      gradient: 'from-pink-400 to-purple-500',
+      gradient: 'from-pink-400 to-gray-500',
     },
     {
       id: 3,
@@ -272,7 +272,7 @@ const HomeV2 = () => {
       id: 6,
       type: 'image',
       media: '/explorations/23126508_195.webp',
-      gradient: 'from-pink-400 to-purple-500',
+      gradient: 'from-pink-400 to-gray-500',
     },
     {
       id: 7,
@@ -451,7 +451,7 @@ const HomeV2 = () => {
         
         {/* Animated Orbs - Same as V1 */}
         <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/60 to-purple-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 150, -50, 0],
@@ -467,7 +467,7 @@ const HomeV2 = () => {
         />
         
         <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, -180, 60, 0],
@@ -483,7 +483,7 @@ const HomeV2 = () => {
         />
         
         <motion.div
-          className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/60 to-indigo-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 220, -80, 0],
@@ -605,7 +605,7 @@ const HomeV2 = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                className="group bg-white text-gray-900 px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               >
                 <span>View My Work</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
@@ -615,7 +615,7 @@ const HomeV2 = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white px-8 py-4 rounded-full font-medium text-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors backdrop-blur-sm w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                className="group bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white px-8 py-4 rounded-full font-medium text-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-100 transition-colors backdrop-blur-sm w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               >
                 Let's Connect
               </motion.button>
@@ -673,7 +673,7 @@ const HomeV2 = () => {
               viewport={{ once: true }}
               className="inline-block mb-4"
             >
-              <span className="text-sm font-medium tracking-wider text-indigo-600 dark:text-indigo-400 uppercase">
+              <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase">
                 Featured Work
               </span>
             </motion.div>
@@ -724,11 +724,11 @@ const HomeV2 = () => {
                           />
                         </div>
                         {/* Hover frame – indigo border + 4 corner squares, after image so it paints on top */}
-                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-indigo-500 dark:group-hover:border-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
-                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
-                        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
-                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-transparent group-hover:bg-indigo-500 dark:group-hover:bg-indigo-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-gray-500 dark:group-hover:border-gray-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-transparent group-hover:bg-gray-500 dark:group-hover:bg-gray-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-transparent group-hover:bg-gray-500 dark:group-hover:bg-gray-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-transparent group-hover:bg-gray-500 dark:group-hover:bg-gray-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
+                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-transparent group-hover:bg-gray-500 dark:group-hover:bg-gray-400 pointer-events-none z-10 transition-colors duration-200" aria-hidden />
                       </div>
                     </div>
 
@@ -761,7 +761,7 @@ const HomeV2 = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-indigo-600 dark:bg-indigo-500 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-white text-gray-900 px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-100 transition-colors flex items-center space-x-2 mx-auto"
               >
                 <span>View All Projects</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -788,7 +788,7 @@ const HomeV2 = () => {
               viewport={{ once: true }}
               className="inline-block mb-4"
             >
-              <span className="text-sm font-medium tracking-wider text-indigo-600 dark:text-indigo-400 uppercase">
+              <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase">
                 Design Showcase
               </span>
             </motion.div>
@@ -866,7 +866,7 @@ const HomeV2 = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-white text-gray-900 px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-100 transition-colors flex items-center space-x-2 mx-auto"
               >
                 <span>See More</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -877,10 +877,10 @@ const HomeV2 = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-hidden">
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-gray-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-hidden">
         {/* Subtle decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gray-500/5 dark:bg-gray-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gray-500/5 dark:bg-gray-500/10 rounded-full blur-3xl" />
         
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -890,7 +890,7 @@ const HomeV2 = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <span className="text-sm font-medium tracking-wider text-indigo-600 dark:text-indigo-400 uppercase mb-4 block">
+            <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase mb-4 block">
               TESTIMONIALS
             </span>
             <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
@@ -923,14 +923,14 @@ const HomeV2 = () => {
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
               I believe great design happens when we truly understand the people we're designing for. 
-              It's about creating experiences that feel intuitive, meaningful, and delightful—whether 
+              It's about creating experiences that feel intuitive, meaningful, and delightful whether 
               you're managing your energy consumption or finding your inner peace.
             </p>
             <Link href="/about">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group text-indigo-600 dark:text-indigo-400 font-medium text-lg hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center space-x-2 mx-auto"
+                className="group text-gray-600 dark:text-gray-400 font-medium text-lg hover:text-gray-700 dark:hover:text-gray-300 transition-colors flex items-center space-x-2 mx-auto"
               >
                 <span>Learn more about my approach</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -944,7 +944,7 @@ const HomeV2 = () => {
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 overflow-hidden">
         {/* Animated Orbs */}
         <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/30 to-purple-400/30 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-400/30 to-gray-400/30 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 150, -50, 0],
@@ -960,7 +960,7 @@ const HomeV2 = () => {
         />
         
         <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/30 to-pink-400/30 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-400/30 to-pink-400/30 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, -180, 60, 0],
@@ -976,7 +976,7 @@ const HomeV2 = () => {
         />
         
         <motion.div
-          className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-indigo-400/30 rounded-full blur-3xl pointer-events-none"
+          className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-gray-400/30 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 220, -80, 0],
@@ -1014,7 +1014,7 @@ const HomeV2 = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2"
+                  className="bg-white text-gray-900 px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-100 transition-colors flex items-center space-x-2"
                 >
                   <span>Get In Touch</span>
                   <ArrowRight size={20} />

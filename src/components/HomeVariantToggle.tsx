@@ -25,7 +25,7 @@ const HomeVariantToggle = () => {
           href="/"
           className={`px-2 py-1 rounded ${
             !isV2
-              ? 'bg-indigo-600 text-white'
+              ? 'bg-gray-gray-600 text-white'
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
           } transition-colors`}
         >
@@ -35,7 +35,7 @@ const HomeVariantToggle = () => {
           href="/home-v2"
           className={`px-2 py-1 rounded ${
             isV2
-              ? 'bg-indigo-600 text-white'
+              ? 'bg-gray-gray-600 text-white'
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
           } transition-colors`}
         >

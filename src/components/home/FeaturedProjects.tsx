@@ -48,18 +48,23 @@ export default function FeaturedProjects({
                   viewport={{ once: true, margin: '-100px' }}
                   className="relative overflow-visible transition-all duration-300 ease-out cursor-pointer"
                 >
-                  <div className={`relative bg-white dark:bg-slate-900/50 backdrop-blur-sm transition-all duration-500 ease-out ${
-                    hoveredCardId === project.id 
-                      ? 'border-2 border-indigo-500/50 dark:border-indigo-400/50 shadow-xl shadow-indigo-500/10 scale-[1.05]' 
-                      : 'border border-gray-200/50 dark:border-slate-700/50'
-                  }`}>
-                    {/* Corner Squares - centered on edges */}
+                  <div
+                    className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible"
+                    style={hoveredCardId === project.id ? {
+                      outline: '2px solid #18a0fb',
+                      outlineOffset: '0px',
+                    } : {
+                      outline: '1px solid rgba(255,255,255,0.08)',
+                      outlineOffset: '0px',
+                    }}
+                  >
+                    {/* Corner Squares */}
                     {hoveredCardId === project.id && (
                       <>
-                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
-                        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
-                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20" />
+                        <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
+                        <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
+                        <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
+                        <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
                       </>
                     )}
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
@@ -96,30 +101,18 @@ export default function FeaturedProjects({
                             </span>
                           )}
                         </div>
-                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-white leading-tight tracking-tight">
-                          {project.id === 1 
-                            ? 'Crafting a Sensory Brand Experience' 
-                            : project.id === 2 
-                            ? (<>Scaling Rental Management<br />with GenAI</>)
-                            : project.id === 3
-                            ? (<>Designing Human-Centered<br />CPPS Care</>)
-                            : project.title}
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-white leading-tight tracking-tight text-balance">
+                          {project.subtitle}
                         </h3>
                         <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl">
-                          {project.id === 1 
-                            ? 'A multi-sensory brand experience for a Portuguese restaurant, blending traditional craftsmanship with modern design.' 
-                            : project.id === 2 
-                            ? 'AI-powered rental management platform that streamlines property operations and enhances tenant experience.'
-                            : project.id === 3
-                            ? 'Redesigning patient care coordination for a rare disease, focusing on accessibility and user empowerment.'
-                            : project.description}
+                          {project.tagline ?? project.description}
                         </p>
                         <div className="flex flex-wrap items-center gap-4 pt-2">
-                          <div className="flex flex-wrap gap-2">
-                            {project.tags.slice(0, 2).map((tag, tagIndex) => (
+                          <div className="flex flex-wrap gap-1.5">
+                            {project.tags.slice(0, 3).map((tag, tagIndex) => (
                               <span
                                 key={tagIndex}
-                                className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100/50 dark:bg-slate-800/50 rounded-lg px-3 py-1.5 whitespace-nowrap"
+                                className="px-2.5 py-1 rounded-full border border-gray-700 text-sm text-gray-300 whitespace-nowrap"
                               >
                                 {tag}
                               </span>
@@ -160,7 +153,7 @@ export default function FeaturedProjects({
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-indigo-600 dark:bg-indigo-500 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-gray-gray-600 dark:bg-gray-gray-500 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 dark:hover:bg-gray-gray-600 transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>View All Projects</span>

@@ -7,31 +7,31 @@ import FigmaCursor from '@/components/FigmaCursor'
 
 // Dynamically import heavy components with loading states
 const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
-  loading: () => <div className="min-h-screen bg-white dark:bg-slate-950" />,
+  loading: () => <div className="min-h-screen bg-[#171717]" />,
 })
 
 const FeaturedProjects = dynamic(() => import('@/components/home/FeaturedProjects'), {
-  loading: () => <div className="py-16 bg-white dark:bg-slate-950" />,
+  loading: () => <div className="py-16 bg-[#171717]" />,
   ssr: false,
 })
 
 const DesignShowcase = dynamic(() => import('@/components/home/DesignShowcase'), {
-  loading: () => <div className="py-16 bg-gray-50 dark:bg-gray-900" />,
+  loading: () => <div className="py-16 bg-[#171717]" />,
   ssr: false,
 })
 
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
-  loading: () => <div className="py-16 bg-slate-50 dark:bg-slate-900" />,
+  loading: () => <div className="py-16 bg-[#171717]" />,
   ssr: false,
 })
 
 const AboutPreview = dynamic(() => import('@/components/home/AboutPreview'), {
-  loading: () => <div className="py-16 bg-gray-50 dark:bg-gray-900" />,
+  loading: () => <div className="py-16 bg-[#171717]" />,
   ssr: false,
 })
 
 const CTASection = dynamic(() => import('@/components/home/CTASection'), {
-  loading: () => <div className="py-16 bg-white dark:bg-slate-950" />,
+  loading: () => <div className="py-16 bg-[#171717]" />,
   ssr: false,
 })
 
@@ -68,15 +68,15 @@ const HomePage = () => {
   const finalCursorLabel = cursorLabel || (hoveredCardId !== null ? 'OPEN CASE STUDY' : null)
 
   return (
-    <div className="min-h-screen">
-      {/* Hero + Featured Projects - Unified Background */}
-      <div className="relative bg-white dark:bg-slate-950 overflow-hidden">
+    <div className="min-h-screen bg-[#171717]">
+      {/* Hero Section - no overflow-hidden so slide-in animation isn't clipped */}
+      <div className="relative bg-[#171717]">
         {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 bg-animated-grid" />
-        
+
         {/* Animated Orbs */}
         <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/60 to-purple-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 150, -50, 0],
@@ -90,9 +90,9 @@ const HomePage = () => {
             repeatType: "loop",
           }}
         />
-        
+
         <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, -180, 60, 0],
@@ -106,9 +106,9 @@ const HomePage = () => {
             repeatType: "loop",
           }}
         />
-        
+
         <motion.div
-          className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/60 to-indigo-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 220, -80, 0],
@@ -123,16 +123,17 @@ const HomePage = () => {
           }}
         />
 
-        {/* Hero Section */}
-        <HeroSection 
+        <HeroSection
           isDesktop={isDesktop}
           cursorLabel={finalCursorLabel}
           showCursorPill={showCursorPill}
           onLabelChange={setCursorLabel}
         />
+      </div>
 
-        {/* Featured Projects Section */}
-        <FeaturedProjects 
+      {/* Featured Projects - overflow-hidden to contain its own orbs */}
+      <div className="relative bg-[#171717] overflow-hidden">
+        <FeaturedProjects
           isDesktop={isDesktop}
           onCardHover={setHoveredCardId}
         />

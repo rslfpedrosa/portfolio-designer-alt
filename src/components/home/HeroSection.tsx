@@ -45,16 +45,9 @@ export default function HeroSection({
       return
     }
 
-    const sessionAnimated = sessionStorage.getItem('homeV2Animated')
-    if (sessionAnimated === '1') {
-      setEntered(true)
-      return
-    }
-
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setEntered(true)
-        sessionStorage.setItem('homeV2Animated', '1')
       })
     })
   }, [shouldReduceMotion])
@@ -217,7 +210,7 @@ export default function HeroSection({
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-end sm:items-center justify-center px-4 sm:px-6 lg:px-8 pb-20 sm:pb-0">
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
       {/* Main Content */}
       <div className="max-w-7xl mx-auto text-center relative z-10">
         {/* Badge */}
@@ -241,10 +234,10 @@ export default function HeroSection({
         </motion.div>
 
         {/* Headline with selection frames */}
-        <div className="relative mb-8 lg:mb-10">
-          <h1 
+        <div className="relative mb-8 lg:mb-10 overflow-visible">
+          <h1
             ref={headlineRef}
-            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-gray-900 dark:text-white leading-none sm:leading-tight relative flex flex-wrap justify-center items-center gap-0 sm:gap-3"
+            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-gray-900 dark:text-white leading-tight relative flex flex-wrap justify-center items-center gap-0 sm:gap-3 overflow-visible"
           >
             <Link
               ref={ritaRef}
@@ -253,17 +246,20 @@ export default function HeroSection({
               onMouseLeave={() => handleRitaHover(false)}
               onFocus={() => handleRitaFocus(true)}
               onBlur={() => handleRitaFocus(false)}
-              className="inline-block focus:outline-none"
+              className="inline-block overflow-visible focus:outline-none"
               aria-label="About Me"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
-              <span
+              <motion.span
                 ref={leftSpanRef}
                 id="hero-left"
-                className={`inline-block ${entered ? 'h-enter' : 'h-init'}`}
+                className="inline-block overflow-visible py-1"
+                initial={shouldReduceMotion ? false : { x: '-100vw', opacity: 0 }}
+                animate={entered ? { x: 0, opacity: 1 } : {}}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
               >
                 I'm Rita,
-              </span>
+              </motion.span>
             </Link>
             <Link
               ref={designRef}
@@ -272,17 +268,20 @@ export default function HeroSection({
               onMouseLeave={() => handleDesignHover(false)}
               onFocus={() => handleDesignFocus(true)}
               onBlur={() => handleDesignFocus(false)}
-              className="inline-block focus:outline-none"
+              className="inline-block overflow-visible focus:outline-none"
               aria-label="View Work"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
-              <span
+              <motion.span
                 ref={rightSpanRef}
                 id="hero-right"
-                className={`inline-block text-gradient ${entered ? 'h-enter-r' : 'h-init-r'}`}
+                className="inline-block text-gradient overflow-visible py-1"
+                initial={shouldReduceMotion ? false : { x: '100vw', opacity: 0 }}
+                animate={entered ? { x: 0, opacity: 1 } : {}}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               >
                 I Design.
-              </span>
+              </motion.span>
             </Link>
           </h1>
 
@@ -323,7 +322,7 @@ export default function HeroSection({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="group bg-gray-gray-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
               <span>View My Work</span>
@@ -334,7 +333,7 @@ export default function HeroSection({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white px-8 py-4 rounded-full font-medium text-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors backdrop-blur-sm w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="group bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white px-8 py-4 rounded-full font-medium text-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors backdrop-blur-sm w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
               Let's Connect
@@ -348,7 +347,7 @@ export default function HeroSection({
         initial={{ opacity: 0, y: 20 }}
         animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.5, duration: 0.6 }}
-        className="hidden sm:block absolute bottom-24 left-1/2 transform -translate-x-1/2"
+        className="block absolute bottom-24 left-1/2 transform -translate-x-1/2"
       >
         <motion.div
           animate={shouldReduceMotion ? {} : { y: [0, 10, 0] }}

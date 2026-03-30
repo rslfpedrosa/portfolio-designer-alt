@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState, memo } from 'react'
 import { createPortal } from 'react-dom'
 
 export interface ViewportBounds {
@@ -17,10 +18,17 @@ interface CardHoverFramePortalProps {
 const SQUARE_SIZE = 8
 const SQUARE_OFFSET = 4
 const BORDER_WIDTH = 2
-/** Below navbar (10001) and cursor (10002) so they stay on top */
 const PORTAL_Z_INDEX = 1000
+const HOVER_SCALE = 1.03
 
-function FrameContent({ bounds }: { bounds: ViewportBounds }) {
+const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
+  const [grown, setGrown] = useState(false)
+
+  useEffect(() => {
+    const t = requestAnimationFrame(() => setGrown(true))
+    return () => cancelAnimationFrame(t)
+  }, [])
+
   return (
     <div
       role="presentation"
@@ -44,58 +52,32 @@ function FrameContent({ bounds }: { bounds: ViewportBounds }) {
           width: bounds.width,
           height: bounds.height,
           boxSizing: 'border-box',
-          border: `${BORDER_WIDTH}px solid rgb(99 102 241)`,
+          border: `${BORDER_WIDTH}px solid #18a0fb`,
           overflow: 'visible',
+          transformOrigin: 'center',
+          transform: grown ? `scale(${HOVER_SCALE})` : 'scale(0.98)',
+          transition: 'transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
-        className="dark:border-indigo-400"
       >
-        <div
-          className="bg-indigo-500 dark:bg-indigo-400"
-          style={{
-            position: 'absolute',
-            top: -SQUARE_OFFSET,
-            left: -SQUARE_OFFSET,
-            width: SQUARE_SIZE,
-            height: SQUARE_SIZE,
-          }}
-        />
-        <div
-          className="bg-indigo-500 dark:bg-indigo-400"
-          style={{
-            position: 'absolute',
-            top: -SQUARE_OFFSET,
-            right: -SQUARE_OFFSET,
-            width: SQUARE_SIZE,
-            height: SQUARE_SIZE,
-          }}
-        />
-        <div
-          className="bg-indigo-500 dark:bg-indigo-400"
-          style={{
-            position: 'absolute',
-            bottom: -SQUARE_OFFSET,
-            left: -SQUARE_OFFSET,
-            width: SQUARE_SIZE,
-            height: SQUARE_SIZE,
-          }}
-        />
-        <div
-          className="bg-indigo-500 dark:bg-indigo-400"
-          style={{
-            position: 'absolute',
-            bottom: -SQUARE_OFFSET,
-            right: -SQUARE_OFFSET,
-            width: SQUARE_SIZE,
-            height: SQUARE_SIZE,
-          }}
-        />
+        <div style={{ position: 'absolute', top: -SQUARE_OFFSET, left: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
+        <div style={{ position: 'absolute', top: -SQUARE_OFFSET, right: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
+        <div style={{ position: 'absolute', bottom: -SQUARE_OFFSET, left: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
+        <div style={{ position: 'absolute', bottom: -SQUARE_OFFSET, right: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
       </div>
     </div>
   )
-}
+})
+
+FrameContent.displayName = 'FrameContent'
 
 export default function CardHoverFramePortal({ bounds, isVisible }: CardHoverFramePortalProps) {
-  if (typeof document === 'undefined' || !bounds || !isVisible) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted || typeof document === 'undefined' || !bounds || !isVisible) {
     return null
   }
 

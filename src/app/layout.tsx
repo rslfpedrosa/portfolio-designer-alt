@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   other: {
-    'font-link': 'https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap',
+    'font-link': 'https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap',
   },
 }
 
@@ -45,14 +45,14 @@ export default function RootLayout({
         
         {/* Font loading with display=swap for better performance */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
           rel="stylesheet"
         />
         
         {/* Viewport meta for mobile optimization */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
       </head>
-      <body className="overflow-x-hidden">
+      <body className="overflow-x-clip">
         <ConditionalLayout>
           {children}
         </ConditionalLayout>

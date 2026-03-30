@@ -6,10 +6,10 @@ import { ArrowRight } from 'lucide-react'
 
 export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
   return (
-    <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 overflow-hidden">
+    <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
       {/* Animated Orbs */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/30 to-purple-400/30 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-gray-400/30 to-gray-400/30 rounded-full blur-3xl pointer-events-none"
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, 150, -50, 0],
@@ -25,7 +25,7 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
       />
       
       <motion.div
-        className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/30 to-pink-400/30 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-400/30 to-pink-400/30 rounded-full blur-3xl pointer-events-none"
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, -180, 60, 0],
@@ -41,7 +41,7 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
       />
       
       <motion.div
-        className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-indigo-400/30 rounded-full blur-3xl pointer-events-none"
+        className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-gray-gray-400/30 rounded-full blur-3xl pointer-events-none"
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, 220, -80, 0],
@@ -78,7 +78,7 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2"
+                className="bg-gray-gray-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 transition-colors flex items-center space-x-2"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>Get In Touch</span>

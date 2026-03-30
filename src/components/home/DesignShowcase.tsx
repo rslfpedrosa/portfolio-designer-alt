@@ -16,7 +16,7 @@ const designShowcase = [
     id: 2,
     type: 'video',
     media: '/explorations/exploration-2.mp4',
-    gradient: 'from-pink-400 to-purple-500',
+    gradient: 'from-pink-400 to-gray-500',
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
 
   return (
     <>
-      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-[#171717]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -53,7 +53,7 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
               viewport={{ once: true }}
               className="inline-block mb-3 sm:mb-4"
             >
-              <span className="text-sm font-medium tracking-wider text-indigo-600 dark:text-indigo-400 uppercase">
+              <span className="text-sm font-medium tracking-wider text-gray-gray-600 dark:text-gray-gray-400 uppercase">
                 Design Showcase
               </span>
             </motion.div>
@@ -69,24 +69,24 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
             {designShowcase.map((item, index) => (
               <div
                 key={item.id}
-                className="group cursor-pointer"
+                className="group cursor-pointer relative overflow-visible"
                 onClick={() => item.type === 'video' && setSelectedVideo(item.media)}
-                onMouseEnter={() => isDesktop && onLabelChange?.('EXPAND')}
-                onMouseLeave={() => isDesktop && onLabelChange?.(null)}
+                onMouseEnter={e => { if (isDesktop) onLabelChange?.('EXPAND'); e.currentTarget.style.outline = '2px solid #18a0fb' }}
+                onMouseLeave={e => { if (isDesktop) onLabelChange?.(null); e.currentTarget.style.outline = '' }}
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
+                {/* Corner Squares */}
+                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="relative bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 hover:border-2 hover:border-indigo-500/50 hover:dark:border-indigo-400/50 hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
+                  className="relative bg-[#1e1e1e] backdrop-blur-sm hover:shadow-xl hover:scale-[1.05] transition-all duration-500 ease-out overflow-hidden"
                 >
-                  {/* Corner Squares - centered on edges */}
-                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   <div className="aspect-video relative overflow-hidden bg-gray-200 dark:bg-gray-800">
                     {item.type === 'video' ? (
@@ -138,7 +138,7 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-indigo-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-gray-gray-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>See More</span>

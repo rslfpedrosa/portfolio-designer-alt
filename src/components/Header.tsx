@@ -2,12 +2,21 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (pathname === '/') {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   useEffect(() => {
     document.documentElement.classList.add('dark')
@@ -33,18 +42,18 @@ const Header = () => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-[10001] transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200/20 dark:border-slate-700/30'
+          ? 'bg-[#171717]/90 backdrop-blur-md border-b border-white/10'
           : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" onClick={handleLogoClick} className="flex items-center space-x-2">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-600 rounded-lg flex items-center justify-center"
             >
               <span className="text-white font-bold text-sm">R</span>
             </motion.div>
@@ -66,7 +75,7 @@ const Header = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-indigo-600 text-white px-6 py-2 rounded-full font-medium hover:bg-indigo-700 transition-colors"
+                className="bg-white text-gray-900 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors"
               >
                 Get in Touch
               </motion.button>
@@ -93,7 +102,7 @@ const Header = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700"
+            className="md:hidden bg-[#171717]/90 backdrop-blur-md border-t border-white/10"
           >
             <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
@@ -111,7 +120,7 @@ const Header = () => {
                 onClick={() => setIsOpen(false)}
                 className="block"
               >
-                <button className="w-full bg-indigo-600 text-white px-6 py-2 rounded-full font-medium hover:bg-indigo-700 transition-colors">
+                <button className="w-full bg-white text-gray-900 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
                   Get in Touch
                 </button>
               </Link>

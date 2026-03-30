@@ -115,15 +115,36 @@ export interface ProjectSections {
   reflection?: ProjectReflectionSection
 }
 
+export interface ProjectSummary {
+  problem: string
+  solution: string
+  impact: string
+  role: string
+}
+
+export interface ProjectTimelinePhase {
+  phase: string
+  duration: string
+  activities: string[]
+  date?: string
+  description?: string
+  marker?: 'dot' | 'shield' | 'square'
+  startWeek?: number
+  endWeek?: number
+}
+
 export interface Project {
   id: number
   title: string
   subtitle: string
+  tagline?: string
   description: string
   category: string
   type: string
   role: string
   timeline: string
+  industry: string
+  year: string
   team: string
   tools: string[]
   productWebsite?: {
@@ -135,6 +156,9 @@ export interface Project {
   heroImage: string
   cardImage?: string
   challenge: string
+  projectSummary?: ProjectSummary
+  projectTimeline?: ProjectTimelinePhase[]
+  timelineColumnLabels?: string[]
   theme: ProjectTheme
   sections: ProjectSections
   sectionBreaks?: SectionBreakMedia[]
@@ -145,12 +169,15 @@ export const projectsData: { [key: number]: Project } = {
     id: 1,
     title: 'Bocca Moments',
     subtitle: 'Designing a sensorial brand and digital experience for a curated gastronomic gifting box',
+    tagline: 'A premium brand and e-commerce experience built around the ritual of gifting.',
     description:
       'Designing a sensorial brand and digital experience that celebrates curated gastronomic rituals.',
     category: 'Web Design',
     type: 'Case Study',
     role: 'Lead Product Designer',
     timeline: '6 months',
+    industry: 'E-Commerce',
+    year: '2023',
     team: '1 Designer, 1 Developer',
     tools: ['Figma', 'Adobe Illustrator', 'Adobe Photoshop', 'Adobe After Effects'],
     productWebsite: {
@@ -162,6 +189,19 @@ export const projectsData: { [key: number]: Project } = {
     heroImage: '/projects/bocca-moments-hero.webp',
     cardImage: '/projects/bocca-moments-hero.webp',
     challenge: `The challenge was to bring emotional depth to a market saturated with subscription boxes focused on convenience. Bocca aimed to stand apart by offering a curated, sensorial experience, not just products, designed to surprise, nurture, and connect people through moments around the table.`,
+    projectSummary: {
+      problem: 'The gifting market lacked emotional depth most boxes felt transactional rather than meaningful or memorable.',
+      solution: 'A premium brand and e-commerce experience that transforms a gastronomic gift into a curated, sensorial ritual.',
+      impact: 'A cohesive brand identity and digital presence that launched Bocca Moments as a distinctive, story-driven product.',
+      role: 'Lead Product Designer brand identity, packaging design, and full e-commerce experience.',
+    },
+    projectTimeline: [
+      { phase: 'Brand Discovery', duration: 'Month 1', activities: [], startWeek: 1, endWeek: 1 },
+      { phase: 'Identity Design', duration: 'Month 2', activities: [], startWeek: 2, endWeek: 2 },
+      { phase: 'Packaging Design', duration: 'Month 3', activities: [], startWeek: 3, endWeek: 3 },
+      { phase: 'Digital Design', duration: 'Months 4–5', activities: [], startWeek: 4, endWeek: 5 },
+      { phase: 'Launch', duration: 'Month 6', activities: [], startWeek: 6, endWeek: 6 },
+    ],
     theme: {
       tagBg: 'rgba(99, 88, 51, 0.2)',
       tagText: '#635833',
@@ -271,7 +311,7 @@ export const projectsData: { [key: number]: Project } = {
       },
       physicalTouchpoint: {
         tag: 'Physical touchpoint',
-        heading: 'The Bocca box — a ritual of opening',
+        heading: 'The Bocca box a ritual of opening',
         description:
           'The digital story mirrors the unboxing journey: anticipation → reveal → savor. Materials and colors in the UI echo kraft, ribbon, and wax packaging while CTAs adopt ceremonial language.',
         bullets: [
@@ -326,7 +366,7 @@ export const projectsData: { [key: number]: Project } = {
         tag: 'Solution',
         heading: 'A narrative-led experience that feels like opening a gift',
         description:
-          'I structured the site as a guided story: gentle motion to suggest tactility, warm typography, and focused decisions. The purchase moment is intentionally quiet — fewer choices, more certainty — amplifying exclusivity rather than variety.',
+          'I structured the site as a guided story: gentle motion to suggest tactility, warm typography, and focused decisions. The purchase moment is intentionally quiet fewer choices, more certainty amplifying exclusivity rather than variety.',
         highlights: [
           {
             title: 'Emotional Storytelling',
@@ -359,7 +399,7 @@ export const projectsData: { [key: number]: Project } = {
           {
             title: 'Design System & Motion',
             description:
-              'Built a small token system (spacing, type scales, elevations). Motion emphasizes presence, not spectacle — 200–350ms easing, stagger on enter.',
+              'Built a small token system (spacing, type scales, elevations). Motion emphasizes presence, not spectacle 200–350ms easing, stagger on enter.',
             icon: 'cog',
           },
           {
@@ -402,7 +442,7 @@ export const projectsData: { [key: number]: Project } = {
         outcome:
           'The final experience communicates care and exclusivity through rhythm, motion, and language. While we didn’t capture quantified metrics, qualitative feedback emphasized how “calm and intentional” the journey felt.',
         quote:
-          'Luxury isn’t about complexity — it’s about intention. The simplest path, crafted well, felt premium.',
+          'Luxury isn’t about complexity it’s about intention. The simplest path, crafted well, felt premium.',
         learnings: [
           'Designing emotion requires pacing as much as visuals.',
           'Micro-copy and motion timing shape perceived quality.',
@@ -420,32 +460,47 @@ export const projectsData: { [key: number]: Project } = {
     id: 2,
     title: 'Cortado',
     subtitle: 'Streamlining Rental Operations with the Power of GenAI',
+    tagline: 'A GenAI-powered workspace that simplifies rental management for independent landlords.',
     description: 'Streamlining Rental Operations with the Power of GenAI',
     category: 'UX Design',
     type: 'Case Study',
     role: 'Product Designer',
     timeline: '4 months',
+    industry: 'PropTech / SaaS',
+    year: '2024',
     team: '4 designers',
     tools: ['Figma', 'FigJam'],
-    gradient: 'from-purple-400 to-pink-500',
+    gradient: 'from-gray-400 to-pink-500',
     tags: ['UX Design', 'Mobile Design', 'User Research'],
     heroImage: '/projects/Cortado/015.webp',
     cardImage: '/projects/Cortado/015.webp',
-    challenge: `Cortado is a GenAI-powered SaaS platform built to simplify the lives of independent landlords 
-and small property managers. The goal: to take fragmented, manual rental operations and 
-centralize them into one AI-assisted workspace, from messaging and leasing to maintenance and 
+    challenge: `Cortado is a GenAI-powered SaaS platform built to simplify the lives of independent landlords
+and small property managers. The goal: to take fragmented, manual rental operations and
+centralize them into one AI-assisted workspace, from messaging and leasing to maintenance and
 marketing.`,
+    projectSummary: {
+      problem: 'Independent landlords manage rentals across disconnected tools leading to missed messages, slow responses, and operational chaos.',
+      solution: 'A GenAI-powered SaaS workspace that centralizes messaging, leasing, maintenance, and marketing in one place.',
+      impact: 'Reduced operational overhead for small landlords, with AI automating the most repetitive and time-consuming tasks.',
+      role: 'Product Designer end-to-end UX, user research, and interaction design across a 4-month sprint.',
+    },
+    projectTimeline: [
+      { phase: 'Research', duration: 'Month 1', activities: [], startWeek: 1, endWeek: 1 },
+      { phase: 'Architecture', duration: 'Month 2', activities: [], startWeek: 2, endWeek: 2 },
+      { phase: 'Design', duration: 'Month 3', activities: [], startWeek: 3, endWeek: 3 },
+      { phase: 'Testing & Handoff', duration: 'Month 4', activities: [], startWeek: 4, endWeek: 4 },
+    ],
     theme: {
-      tagBg: 'rgba(196, 181, 253, 0.45)',
-      tagText: '#5b21b6',
-      badgeBg: 'rgba(196, 181, 253, 0.45)',
-      badgeText: '#5b21b6',
-      accentText: '#7c3aed',
-      accentHoverText: '#a855f7',
-      iconBg: 'rgba(167, 139, 250, 0.35)',
-      iconText: '#7c3aed',
-      surfaceBg: 'rgba(196, 181, 253, 0.2)',
-      surfaceRing: 'rgba(167, 139, 250, 0.3)',
+      tagBg: 'rgba(163, 163, 163, 0.15)',
+      tagText: '#525252',
+      badgeBg: 'rgba(163, 163, 163, 0.15)',
+      badgeText: '#525252',
+      accentText: '#737373',
+      accentHoverText: '#a3a3a3',
+      iconBg: 'rgba(163, 163, 163, 0.15)',
+      iconText: '#737373',
+      surfaceBg: 'rgba(163, 163, 163, 0.1)',
+      surfaceRing: 'rgba(163, 163, 163, 0.2)',
     },
     sections: {
       visualDesign: {
@@ -628,7 +683,7 @@ marketing.`,
         outcome:
           'Qualitative feedback highlighted how approachable the flow felt compared to existing meditation apps. The design balanced personalization with calm defaults.',
         learnings: [
-          'Routine support needs to be flexible — rigid streaks discourage newcomers.',
+          'Routine support needs to be flexible rigid streaks discourage newcomers.',
           'Session transitions must feel deliberate; fast UI equals anxious UI in this context.',
           'Tone guidelines are as critical as visual design for perceived care.',
         ],
@@ -643,30 +698,50 @@ marketing.`,
   3: {
     id: 3,
     title: 'Onyx',
-    subtitle: 'Designing a Human-Centered Digital Health Solution for CPPS Care',
-    description: 'Designing a Human-Centered Digital Health Solution for CPPS Care',
+    subtitle: 'Designing a Platform for CPPS Care',
+    tagline: 'Improving communication and treatment tracking for patients with Chronic Pelvic Pain Syndrome.',
+    description: 'Designing a Platform for CPPS Care',
     category: 'UI Design',
     type: 'Case Study',
     role: 'Senior UI Designer',
     timeline: '5 months',
+    industry: 'Digital Health',
+    year: '2024',
     team: '4 designers, 5 developers, 2 PMs',
     tools: ['Figma', 'After Effects', 'ProtoPie', 'Zeplin'],
-    gradient: 'from-blue-400 to-indigo-500',
-    tags: ['UI Design', 'IoT', 'Accessibility'],
+    gradient: 'from-gray-400 to-gray-600',
+    tags: ['Product Design', 'Design Sprint', 'Healthcare UX'],
     heroImage: '/projects/Onyx/B-Mockups, PSD.webp',
     cardImage: '/projects/Onyx/B-Mockups, PSD.webp',
-    challenge: `Managing multiple smart home devices required juggling various apps and interfaces, creating a fragmented and frustrating user experience. Users with accessibility needs faced particular challenges with existing solutions.`,
+    challenge: `This project originated from the Loka Innovators Award, an initiative designed to explore new opportunities in healthcare innovation.
+
+Working alongside Stanford Biodesign fellows and a cross-functional team, we conducted a design sprint to investigate how digital tools could improve the care journey for patients with Chronic Pelvic Pain Syndrome (CPPS).
+
+The sprint brought together clinicians, designers, and engineers to explore the problem space and prototype potential solutions. The result was Onyx, a platform designed to help clinicians track treatment progress and communicate with patients more effectively.`,
+    projectSummary: {
+      problem: 'CPPS patients face fragmented care, years of uncertainty, and little structured guidance.',
+      solution: 'A health platform for symptom tracking, education, and clinician-patient communication.',
+      impact: 'Clearer care continuity, better treatment tracking, and a more supported patient experience.',
+      role: 'Interface design, design system, and prototyping in collaboration with clinicians and Stanford Biodesign participants.',
+    },
+    projectTimeline: [
+      { phase: 'Award', duration: 'June 2025', activities: [], description: 'Team Onyx wins the 1st Loka Innovators Award.', marker: 'dot' },
+      { phase: 'Project Kick-off', duration: 'June – July 2025', activities: [], description: 'Project prep and goal alignment', marker: 'dot' },
+      { phase: 'Design Sprint', duration: 'July 2025', activities: [], description: 'In-person Design Sprint: Understand, Define, Ideate', marker: 'shield' },
+      { phase: 'Synthesis', duration: 'July – August 2025', activities: [], description: 'Insights synthesis and prototype development', marker: 'square' },
+      { phase: 'Delivery', duration: 'August 2025', activities: [], description: 'Prototype delivery and presentation', marker: 'dot' },
+    ],
     theme: {
-      tagBg: 'rgba(191, 219, 254, 0.5)',
-      tagText: '#1d4ed8',
-      badgeBg: 'rgba(191, 219, 254, 0.5)',
-      badgeText: '#1d4ed8',
-      accentText: '#0284c7',
-      accentHoverText: '#38bdf8',
-      iconBg: 'rgba(125, 211, 252, 0.35)',
-      iconText: '#0284c7',
-      surfaceBg: 'rgba(191, 219, 254, 0.2)',
-      surfaceRing: 'rgba(125, 211, 252, 0.25)',
+      tagBg: 'rgba(67, 106, 255, 0.15)',
+      tagText: '#436aff',
+      badgeBg: 'rgba(67, 106, 255, 0.15)',
+      badgeText: '#436aff',
+      accentText: '#436aff',
+      accentHoverText: '#7a96ff',
+      iconBg: 'rgba(67, 106, 255, 0.15)',
+      iconText: '#436aff',
+      surfaceBg: 'rgba(67, 106, 255, 0.1)',
+      surfaceRing: 'rgba(67, 106, 255, 0.2)',
     },
     sections: {
       visualDesign: {
@@ -849,7 +924,7 @@ marketing.`,
         outcome:
           'The hub unified disparate device experiences into one accessible platform and gave households shared visibility into automations.',
         learnings: [
-          'Household roles vary—interfaces must flex between admins and casual users.',
+          'Household roles vary interfaces must flex between admins and casual users.',
           'Accessibility upfront prevents retrofitting later; it also benefits power users.',
           'Device ecosystems change rapidly, so the design system must prefer composability.',
         ],

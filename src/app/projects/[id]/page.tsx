@@ -28,7 +28,7 @@ import {
 } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
-import { RefreshCw, MessageSquare, Settings, Eye, Search, MapPin, Lightbulb, Clock, BookOpen, Link2, FileText, Layers, Target, Compass } from 'lucide-react'
+import { RefreshCw, MessageSquare, Settings, Eye, Search, MapPin, Lightbulb, Clock, BookOpen, Link2, FileText, Layers, Compass, Heart, Sparkles, Globe } from 'lucide-react'
 import {
   projectsData,
   getNextProject,
@@ -39,16 +39,16 @@ import {
 import FigmaCursor from '@/components/FigmaCursor'
 
 const defaultTheme: ProjectTheme = {
-  tagBg: 'rgba(199, 210, 254, 0.5)',
-  tagText: '#4338ca',
-  badgeBg: 'rgba(199, 210, 254, 0.5)',
-  badgeText: '#4338ca',
-  accentText: '#4f46e5',
-  accentHoverText: '#6366f1',
-  iconBg: 'rgba(165, 180, 252, 0.4)',
-  iconText: '#4338ca',
-  surfaceBg: 'rgba(199, 210, 254, 0.2)',
-  surfaceRing: 'rgba(165, 180, 252, 0.3)',
+  tagBg: 'rgba(163, 163, 163, 0.15)',
+  tagText: '#a3a3a3',
+  badgeBg: 'rgba(163, 163, 163, 0.15)',
+  badgeText: '#a3a3a3',
+  accentText: '#a3a3a3',
+  accentHoverText: '#d4d4d4',
+  iconBg: 'rgba(163, 163, 163, 0.15)',
+  iconText: '#a3a3a3',
+  surfaceBg: 'rgba(163, 163, 163, 0.1)',
+  surfaceRing: 'rgba(163, 163, 163, 0.2)',
 }
 
 const renderMediaCard = (media: ProjectMediaItem, className = '') => {
@@ -248,13 +248,13 @@ const ProjectDetailPage = () => {
         image: '/api/placeholder/600/400',
       },
     ],
-    solution: `The Bocca experience was designed to blend emotion and elegance — transforming a simple product into a ritual of connection. The brand and digital touchpoints were crafted to feel intimate, sensory, and story-driven.
+    solution: `The Bocca experience was designed to blend emotion and elegance transforming a simple product into a ritual of connection. The brand and digital touchpoints were crafted to feel intimate, sensory, and story-driven.
 
 Key design focuses included:
 
-- Emotional Storytelling: A narrative-led website that guides users through discovery, curiosity, and anticipation — reflecting the journey of receiving the box.
+- Emotional Storytelling: A narrative-led website that guides users through discovery, curiosity, and anticipation reflecting the journey of receiving the box.
 - Warm Visual Identity: Earthy tones, delicate typography, and soft motion evoke the brand’s artisanal, grounded character.
-- Seamless User Flow: A clear, minimal purchase path that emphasizes exclusivity — one edition at a time.
+- Seamless User Flow: A clear, minimal purchase path that emphasizes exclusivity one edition at a time.
 - Human Photography: Lifestyle imagery that celebrates connection and authenticity, capturing real emotion over perfection.
 - Launch Ecosystem: A digital-first campaign (social + newsletter) designed to communicate the brand’s values and introduce each limited edition with excitement and calm confidence.`
 ,
@@ -270,7 +270,7 @@ Key design focuses included:
       title: 'Mindful Meditation',
       description: 'Creating a calming space for digital wellness and mindfulness',
       image: '/api/placeholder/400/300',
-      gradient: 'from-purple-400 to-pink-500',
+      gradient: 'from-gray-400 to-pink-500',
       },
     },
     2: {
@@ -284,7 +284,7 @@ Key design focuses included:
       timeline: '4 months',
       team: '2 designers, 3 developers, 1 PM',
       tools: ['Figma', 'Sketch', 'InVision', 'UserTesting'],
-      gradient: 'from-purple-400 to-pink-500',
+      gradient: 'from-gray-400 to-pink-500',
       tags: ['UX Design', 'Mobile Design', 'User Research'],
       challenge: `Users were struggling to maintain consistent meditation practices due to overwhelming app interfaces and lack of personalization. The existing meditation apps felt impersonal and didn't adapt to users' individual needs and preferences.`,
       process: [
@@ -327,7 +327,7 @@ Key design focuses included:
         title: 'Smart Home Hub',
         description: 'Unifying smart home control with intuitive, accessible design',
         image: '/api/placeholder/400/300',
-        gradient: 'from-blue-400 to-indigo-500',
+        gradient: 'from-gray-400 to-gray-500',
       },
     },
     3: {
@@ -341,7 +341,7 @@ Key design focuses included:
       timeline: '5 months',
       team: '4 designers, 5 developers, 2 PMs',
       tools: ['Figma', 'Framer', 'Lottie', 'Zeplin'],
-      gradient: 'from-blue-400 to-indigo-500',
+      gradient: 'from-gray-400 to-gray-500',
       tags: ['UI Design', 'IoT', 'Accessibility'],
       challenge: `Managing multiple smart home devices was fragmented across different apps, creating a confusing and inefficient user experience. Users needed a centralized hub that could control all their devices while remaining accessible to users of all technical abilities.`,
       process: [
@@ -384,7 +384,7 @@ Key design focuses included:
         title: 'EcoFlow Dashboard',
         description: 'Redesigning the energy management experience for sustainable living',
         image: '/api/placeholder/400/300',
-        gradient: 'from-green-400 to-blue-500',
+        gradient: 'from-green-400 to-gray-500',
       },
     },
   }
@@ -412,15 +412,24 @@ Key design focuses included:
     if (project.id === 1) {
       // Bocca sections
       sections.push(
+        { id: 'summary', label: 'Project Summary' },
         { id: 'overview', label: 'Overview' },
-        { id: 'context', label: 'Context & My Role' },
-        { id: 'design-focus', label: 'Design Focus' }
+
+        { id: 'context', label: 'My Role' },
+        { id: 'design-focus', label: 'Designing the Experience' },
+        { id: 'branding', label: 'Branding & Visual Identity' },
+        { id: 'packaging', label: 'Packaging Design' },
+        { id: 'digital', label: 'Digital Experience' },
+        { id: 'impact', label: 'Impact' },
+        { id: 'reflection-bocca', label: 'Reflection' }
       )
     } else if (project.id === 2) {
       // Cortado sections
       sections.push(
+        { id: 'summary', label: 'Project Summary' },
         { id: 'overview', label: 'Overview' },
-        { id: 'context', label: 'Context & My Role' },
+
+        { id: 'context', label: 'My Role' },
         { id: 'understanding', label: 'Understanding the Users' },
         { id: 'design-focus', label: 'Design Focus' },
         { id: 'solution', label: 'Solution' },
@@ -429,13 +438,16 @@ Key design focuses included:
     } else if (project.id === 3) {
       // Onyx sections
       sections.push(
+        { id: 'summary', label: 'Project Summary' },
         { id: 'overview', label: 'Overview' },
-        { id: 'context', label: 'Context & My Role' },
+
+        { id: 'context', label: 'My Role' },
+        { id: 'design-sprint', label: 'The Design Sprint' },
         { id: 'understanding', label: 'Understanding the Problem' },
         { id: 'clinician', label: 'The Clinician Perspective' },
         { id: 'design-focus', label: 'Design Focus' },
-        { id: 'viewport', label: 'The Physical Therapist Viewport' },
-        { id: 'features', label: 'Key Features' }
+        { id: 'features', label: 'The Solution' },
+        { id: 'reflection', label: 'Reflection' }
       )
     }
 
@@ -508,14 +520,23 @@ Key design focuses included:
   const getNavigationSections = () => {
     if (project.id === 1) {
       return [
+        { id: 'summary', label: 'Project Summary' },
         { id: 'overview', label: 'Overview' },
-        { id: 'context', label: 'Context & My Role' },
-        { id: 'design-focus', label: 'Design Focus' },
+
+        { id: 'context', label: 'My Role' },
+        { id: 'design-focus', label: 'Designing the Experience' },
+        { id: 'branding', label: 'Branding & Visual Identity' },
+        { id: 'packaging', label: 'Packaging Design' },
+        { id: 'digital', label: 'Digital Experience' },
+        { id: 'impact', label: 'Impact' },
+        { id: 'reflection-bocca', label: 'Reflection' },
       ]
     } else if (project.id === 2) {
       return [
+        { id: 'summary', label: 'Project Summary' },
         { id: 'overview', label: 'Overview' },
-        { id: 'context', label: 'Context & My Role' },
+
+        { id: 'context', label: 'My Role' },
         { id: 'understanding', label: 'Understanding the Users' },
         { id: 'design-focus', label: 'Design Focus' },
         { id: 'solution', label: 'Solution' },
@@ -523,13 +544,16 @@ Key design focuses included:
       ]
     } else if (project.id === 3) {
       return [
+        { id: 'summary', label: 'Project Summary' },
         { id: 'overview', label: 'Overview' },
-        { id: 'context', label: 'Context & My Role' },
+
+        { id: 'context', label: 'My Role' },
+        { id: 'design-sprint', label: 'The Design Sprint' },
         { id: 'understanding', label: 'Understanding the Problem' },
         { id: 'clinician', label: 'The Clinician Perspective' },
         { id: 'design-focus', label: 'Design Focus' },
-        { id: 'viewport', label: 'The Physical Therapist Viewport' },
-        { id: 'features', label: 'Key Features' },
+        { id: 'features', label: 'The Solution' },
+        { id: 'reflection', label: 'Reflection' },
       ]
     }
     return []
@@ -538,140 +562,196 @@ Key design focuses included:
   const navigationSections = getNavigationSections()
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 bg-animated-grid relative z-10">
+    <div className="min-h-screen bg-white dark:bg-[#171717] relative z-10">
       {/* Hero Section */}
       <section 
         ref={(el) => {
           if (el) heroRef.current = el
         }}
-        className="relative -mt-16 pt-24 sm:pt-28 pb-16 sm:pb-24 bg-white dark:bg-slate-950"
+        className="relative -mt-16 pt-36 sm:pt-36 pb-0 bg-white dark:bg-[#171717] overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="px-0 sm:px-0">
-          {/* Back Button */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="pt-8 mb-8"
-          >
-            <Link href="/projects">
-              <button className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors">
-                <ArrowLeft size={20} />
-                <span>Back to Projects</span>
-              </button>
-            </Link>
-          </motion.div>
+        {/* Radial gradient accent */}
+        <div
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-[70vh] opacity-50 blur-3xl"
+          style={{ background: `radial-gradient(ellipse at top, ${themeColors.accentText} 0%, transparent 70%)` }}
+        />
+        <div className="max-w-7xl mx-auto px-6 lg:px-0">
+          <div className="flex flex-col lg:flex-row lg:min-h-[80vh] lg:items-center gap-x-20">
 
-          {/* Header Section - Logo, Description, Summary, and Details */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="py-8 sm:py-12 mb-8"
-          >
-            <div className="space-y-12">
-              {/* Top Row - Logo and Description */}
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr,1fr] gap-8 lg:gap-12 items-start">
-                {/* Left Side - Logo */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                  {project.id === 1 ? (
-                    <Image
-                      src="/Logos/Logo.svg"
-                      alt="Bocca Moments Logo"
-                      width={200}
-                      height={45}
-                      className="h-8 sm:h-10 lg:h-12 w-auto brightness-0 invert"
-                    />
-                  ) : project.id === 3 ? (
-                    <Image
-                      src="/Logos/Onyx.svg"
-                      alt="Onyx Logo"
-                      width={473}
-                      height={169}
-                      className="h-8 sm:h-10 lg:h-12 w-auto brightness-0 invert"
-                    />
-                  ) : project.id === 2 ? (
-                    <Image
-                      src="/Logos/Cortado.svg"
-                      alt="Cortado Logo"
-                      width={132}
-                      height={44}
-                      className="h-8 sm:h-10 lg:h-12 w-auto brightness-0 invert"
-                    />
-                  ) : null}
-                </motion.div>
+            {/* ── MOBILE/TABLET ONLY ── */}
 
-                {/* Right Side - Description/Title */}
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium text-gray-900 dark:text-white leading-tight"
-                >
-                  {project.subtitle}
-                </motion.h1>
-              </div>
+            {/* 1. Back Link */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="lg:hidden order-1 mb-6"
+            >
+              <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors">
+                <ArrowLeft size={14} />
+                <span>All Projects</span>
+              </Link>
+            </motion.div>
 
-              {/* Details Row - Role, Timeline, Type */}
+            {/* 2. Logo + Title (mobile/tablet only) */}
+            <div className="lg:hidden order-2 mb-6 space-y-4">
               <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                {project.id === 1 ? (
+                  <Image src="/Logos/Logo.svg" alt="Bocca Moments Logo" width={200} height={45} className="h-7 w-auto brightness-0 invert" />
+                ) : project.id === 3 ? (
+                  <Image src="/Logos/Onyx.svg" alt="Onyx Logo" width={473} height={169} className="h-7 w-auto brightness-0 invert" />
+                ) : project.id === 2 ? (
+                  <Image src="/Logos/Cortado.svg" alt="Cortado Logo" width={132} height={44} className="h-7 w-auto brightness-0 invert" />
+                ) : null}
+              </motion.div>
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-4 border-t border-gray-200 dark:border-gray-800"
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-3xl sm:text-4xl font-semibold text-white leading-tight tracking-tight"
               >
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Role</p>
-                  <p className="text-base text-gray-900 dark:text-white leading-relaxed">{project.role}</p>
+                {project.subtitle}
+              </motion.h1>
+            </div>
+
+            {/* 3. Hero Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="order-3 lg:order-2 relative w-full lg:flex-1 lg:min-w-0 aspect-square rounded-2xl overflow-hidden mb-8 lg:mb-0"
+            >
+              {project.heroImage ? (
+                <Image
+                  src={project.heroImage}
+                  alt={`${project.title} hero image`}
+                  fill
+                  priority
+                  quality={95}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover object-left"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+                  <div className={`w-20 h-20 bg-gradient-to-br ${project.gradient} rounded-2xl flex items-center justify-center`}>
+                    <span className="text-white text-2xl font-medium">{projectInitials}</span>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Timeline</p>
-                  <p className="text-base text-gray-900 dark:text-white">{project.timeline}</p>
+              )}
+            </motion.div>
+
+            {/* 4. Tagline + Details (mobile/tablet only) */}
+            <div className="lg:hidden order-4 pb-12">
+              {project.tagline && (
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8"
+                >
+                  {project.tagline}
+                </motion.p>
+              )}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.35 }}
+                className="border-t border-gray-800 pt-6 grid grid-cols-2 sm:grid-cols-3 gap-6"
+              >
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-white">Typology</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="px-2.5 py-1 rounded-full border border-gray-700 text-sm text-gray-300">{tag}</span>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Type</p>
-                  <p className="text-base text-gray-900 dark:text-white">{project.category}</p>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-white">Industry</p>
+                  <p className="text-base text-gray-400">{project.industry}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-white">Year</p>
+                  <p className="text-base text-gray-400">{project.year}</p>
                 </div>
               </motion.div>
             </div>
-          </motion.div>
-          </div>
 
-          {/* Hero Image - Full Width */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="relative aspect-[16/9] overflow-hidden mb-2 sm:mb-4 w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
-          >
-            {project.heroImage ? (
-              <Image
-                src={project.heroImage}
-                alt={`${project.title} hero image`}
-                fill
-                priority={projectId === project.id}
-                quality={95}
-                sizes="100vw"
-                className="object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-                <div className="text-center">
-                  <div
-                    className={`w-24 h-24 bg-gradient-to-br ${project.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4`}
-                  >
-                    <span className="text-white text-2xl font-medium">{projectInitials}</span>
+            {/* ── DESKTOP ONLY ── Full left column */}
+            <div className="hidden lg:flex order-1 flex-col justify-center py-16 w-full max-w-[calc(50%-4rem)] pl-2 pr-4">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="mb-8"
+              >
+                <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors">
+                  <ArrowLeft size={14} />
+                  <span>All Projects</span>
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mb-6"
+              >
+                {project.id === 1 ? (
+                  <Image src="/Logos/Logo.svg" alt="Bocca Moments Logo" width={200} height={45} className="h-7 w-auto brightness-0 invert" />
+                ) : project.id === 3 ? (
+                  <Image src="/Logos/Onyx.svg" alt="Onyx Logo" width={473} height={169} className="h-7 w-auto brightness-0 invert" />
+                ) : project.id === 2 ? (
+                  <Image src="/Logos/Cortado.svg" alt="Cortado Logo" width={132} height={44} className="h-7 w-auto brightness-0 invert" />
+                ) : null}
+              </motion.div>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-tight tracking-tight mb-4"
+              >
+                {project.subtitle}
+              </motion.h1>
+              {project.tagline && (
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8"
+                >
+                  {project.tagline}
+                </motion.p>
+              )}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.35 }}
+                className="border-t border-gray-800 pt-6 grid grid-cols-3 gap-6"
+              >
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-white">Typology</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="px-2.5 py-1 rounded-full border border-gray-700 text-sm text-gray-300">{tag}</span>
+                    ))}
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400">Hero image coming soon</p>
                 </div>
-              </div>
-            )}
-          </motion.div>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-white">Industry</p>
+                  <p className="text-base text-gray-400">{project.industry}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-white">Year</p>
+                  <p className="text-base text-gray-400">{project.year}</p>
+                </div>
+              </motion.div>
+            </div>
 
+          </div>
         </div>
       </section>
 
@@ -682,11 +762,11 @@ Key design focuses included:
           <nav className="hidden lg:block sticky top-24 w-48 flex-shrink-0 pl-2 pr-4 pt-8 pb-8 self-start">
             <div className="relative">
               {/* Vertical Line - Full Height */}
-              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-300 dark:bg-gray-700">
+              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-800">
                 {/* Active indicator line segment */}
                 {activeSection && (
                   <div
-                    className="absolute left-0 w-full bg-gray-900 dark:bg-white transition-all duration-300"
+                    className="absolute left-0 w-full bg-white transition-all duration-300"
                     style={{
                       height: '1.5rem',
                       top: `${(navigationSections.findIndex(s => s.id === activeSection)) * 2.5}rem`,
@@ -726,6 +806,51 @@ Key design focuses included:
 
         {/* Main Content - Centered */}
         <div className="flex-1 min-w-0 max-w-4xl mx-auto lg:mx-0">
+
+          {/* Project Summary Section */}
+          {project.projectSummary && (
+            <section
+              id="summary"
+              ref={(el) => { if (el) sectionRefs.current['summary'] = el }}
+              className="py-6 sm:py-8 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
+              <div className="max-w-4xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden"
+                >
+                  <div className="px-6 sm:px-10 pt-8 pb-2">
+                    <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Project Summary</h2>
+                  </div>
+                  <div className="divide-y divide-gray-100 dark:divide-gray-800 px-6 sm:px-10 pb-4">
+                    {(
+                      [
+                        { label: 'Problem', value: project.projectSummary.problem },
+                        { label: 'Solution', value: project.projectSummary.solution },
+                        { label: 'Impact', value: project.projectSummary.impact },
+                        { label: 'Role', value: project.projectSummary.role },
+                      ] as { label: string; value: string }[]
+                    ).map(({ label, value }, i) => (
+                      <motion.div
+                        key={label}
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: i * 0.07 }}
+                        viewport={{ once: true }}
+                        className="grid grid-cols-1 sm:grid-cols-[120px,1fr] gap-1 sm:gap-8 py-5"
+                      >
+                        <span className="text-xs font-semibold uppercase tracking-wide pt-1 text-gray-600 dark:text-gray-400">{label}</span>
+                        <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">{value}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
           {/* Overview Section - Bocca Only */}
       {project.id === 1 && (
         <section
@@ -733,7 +858,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-4 sm:pt-6 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -743,8 +868,8 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Overview</h2>
-              <div className="space-y-4 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Overview</h2>
+              <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Bocca is a curated gastronomic gifting experience designed to celebrate food, craft, and storytelling. The project brings together physical products and digital touchpoints to create a sensorial journey that begins before the box is opened and continues beyond the moment of gifting.
                 </p>
@@ -804,14 +929,14 @@ Key design focuses included:
         </section>
       )}
 
-      {/* Context & My Role Section - Bocca Only */}
+      {/* My Role Section - Bocca Only */}
       {project.id === 1 && (
         <section
           id="context"
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -821,111 +946,31 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Context & My Role</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  Bocca was developed as a brand and digital experience design project, with a strong focus on storytelling, sensorial cues, and emotional connection.
-                </p>
-                <p>
-                  My role included:
-                </p>
-                <div className="space-y-0 my-6">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">My Role</h2>
+              <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
+                {([
+                  { icon: <BookOpen className="w-5 h-5" strokeWidth={1.5} />, title: 'Brand concept & storytelling', description: 'Defining the brand concept and storytelling' },
+                  { icon: <Palette className="w-5 h-5" strokeWidth={1.5} />, title: 'Packaging & printed materials', description: 'Designing packaging and printed materials' },
+                  { icon: <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />, title: 'Digital presence & website', description: 'Designing the digital presence and website' },
+                  { icon: <Compass className="w-5 h-5" strokeWidth={1.5} />, title: 'Experience strategy', description: 'Developing the overall experience strategy' },
+                ] as { icon: React.ReactNode; title: string; description: string }[]).map((item, i) => (
                   <motion.div
+                    key={i}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
                     viewport={{ once: true }}
-                    className="flex items-start gap-3 py-4"
+                    className="flex items-start gap-4 py-4"
                   >
-                    <div className="mt-0.5 flex-shrink-0">
-                      <Target className="w-5 h-5" style={{ color: themeColors.accentText }} strokeWidth={1.5} />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-white">
+                      {item.icon}
                     </div>
-                    <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Brand strategy and positioning</p>
-                  </motion.div>
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    viewport={{ once: true }}
-                    className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                  />
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.25 }}
-                    viewport={{ once: true }}
-                    className="flex items-start gap-3 py-4"
-                  >
-                    <div className="mt-0.5 flex-shrink-0">
-                      <Palette className="w-5 h-5" style={{ color: themeColors.accentText }} strokeWidth={1.5} />
+                    <div>
+                      <p className="text-base font-semibold text-white">{item.title}</p>
+                      <p className="text-base text-gray-400 mt-1 leading-relaxed">{item.description}</p>
                     </div>
-                    <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Visual identity design</p>
                   </motion.div>
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.5, delay: 0.35 }}
-                    viewport={{ once: true }}
-                    className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                  />
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    viewport={{ once: true }}
-                    className="flex items-start gap-3 py-4"
-                  >
-                    <div className="mt-0.5 flex-shrink-0">
-                      <LayoutDashboard className="w-5 h-5" style={{ color: themeColors.accentText }} strokeWidth={1.5} />
-                    </div>
-                    <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Digital experience and UX design</p>
-                  </motion.div>
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    viewport={{ once: true }}
-                    className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                  />
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.55 }}
-                    viewport={{ once: true }}
-                    className="flex items-start gap-3 py-4"
-                  >
-                    <div className="mt-0.5 flex-shrink-0">
-                      <BookOpen className="w-5 h-5" style={{ color: themeColors.accentText }} strokeWidth={1.5} />
-                    </div>
-                    <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Content structure and storytelling</p>
-                  </motion.div>
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.5, delay: 0.65 }}
-                    viewport={{ once: true }}
-                    className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                  />
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                    viewport={{ once: true }}
-                    className="flex items-start gap-3 py-4"
-                  >
-                    <div className="mt-0.5 flex-shrink-0">
-                      <Compass className="w-5 h-5" style={{ color: themeColors.accentText }} strokeWidth={1.5} />
-                    </div>
-                    <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">End-to-end design direction</p>
-                  </motion.div>
-                </div>
-                <p>
-                  I led the project from early concept to final execution, shaping both the physical and digital expressions of the brand.
-                </p>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -939,103 +984,257 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="space-y-16"
+              className="space-y-6"
             >
-              {/* Header */}
-              <div className="max-w-4xl">
-                <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white mb-6">Design Focus</h2>
-                <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                  The project focused on designing for depth over novelty, guided by three principles.
-                </p>
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Design Focus</h2>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                The project focused on designing for depth over novelty, guided by three core principles.
+              </p>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {[
+                  { icon: Heart, title: 'Intimacy through design', description: 'Every element, from tone of voice to interaction pacing, reinforces closeness and attention.', image: '/projects/bocca/2.webp' },
+                  { icon: Clock, title: 'Ritual instead of routine', description: 'The experience encourages slowing down, transforming consumption into a shared moment.', image: '/projects/bocca/3.webp' },
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="rounded-2xl border border-gray-800 overflow-hidden flex flex-col"
+                    style={{ backgroundColor: '#171717' }}
+                  >
+                    <div className="p-6 space-y-3">
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(99, 88, 51, 0.25)' }}>
+                        <item.icon size={16} style={{ color: '#c9a84c' }} />
+                      </div>
+                      <p className="text-base font-semibold text-white">{item.title}</p>
+                      <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
+                    </div>
+                    <div className="p-4 mt-auto">
+                      <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 800px"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
-              {/* Principle 1 - Image on right */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="space-y-4"
-                >
-                  <h3 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white">Intimacy through design</h3>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                    Every element, from tone of voice to interaction pacing, reinforces closeness and attention.
-                  </p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="relative w-full aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800"
-                >
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-600">
-                    <Camera size={32} />
-                  </div>
-                </motion.div>
+      {/* Branding & Visual Identity Section - Bocca Only */}
+      {project.id === 1 && (
+        <section
+          id="branding"
+          ref={(el) => {
+            if (el) sectionRefs.current['branding'] = el
+          }}
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+        >
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Branding & Visual Identity</h2>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                Bocca&apos;s visual identity was designed to reflect warmth, authenticity, and the joy of sharing food.
+              </p>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                The brand needed to feel premium while remaining approachable, drawing inspiration from Mediterranean culinary culture and artisanal food markets.
+              </p>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                The visual language combines earthy tones, expressive typography, and organic textures to create a brand that feels both refined and personal.
+              </p>
+              <div className="relative w-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/projects/Bocca/Branding Bocca.webp"
+                  alt="Bocca branding and visual identity"
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto object-cover"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                />
               </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
-              {/* Principle 2 - Image on left */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="relative w-full aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 lg:order-1"
-                >
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-600">
-                    <Camera size={32} />
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="space-y-4 lg:order-2"
-                >
-                  <h3 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white">Ritual instead of routine</h3>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                    The experience encourages slowing down, transforming consumption into a shared moment.
-                  </p>
-                </motion.div>
+      {/* Packaging Design Section - Bocca Only */}
+      {project.id === 1 && (
+        <section
+          id="packaging"
+          ref={(el) => {
+            if (el) sectionRefs.current['packaging'] = el
+          }}
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+        >
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Packaging Design</h2>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                Packaging plays a key role in the Bocca experience.
+              </p>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                The design needed to feel premium, warm and personal, and visually distinctive. Natural textures, earthy colors, and simple typography were used to create a brand identity that feels authentic and timeless.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {[
+                  '/projects/Bocca/packaging-1.webp',
+                  '/projects/Bocca/packaging-2.webp',
+                  '/projects/Bocca/packaging-3.webp',
+                ].map((src, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden"
+                  >
+                    <Image
+                      src={src}
+                      alt={`Bocca packaging ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                    />
+                  </motion.div>
+                ))}
               </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
-              {/* Principle 3 - Image on right */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="space-y-4"
-                >
-                  <h3 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white">Agency and personalization</h3>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                    Users decide how, when, and with whom the experience unfolds.
-                  </p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="relative w-full aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800"
-                >
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-600">
-                    <Camera size={32} />
-                  </div>
-                </motion.div>
+      {/* Digital Experience Section - Bocca Only */}
+      {project.id === 1 && (
+        <section
+          id="digital"
+          ref={(el) => {
+            if (el) sectionRefs.current['digital'] = el
+          }}
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+        >
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Digital Experience</h2>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                To complement the physical product, I also designed a digital presence for Bocca.
+              </p>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                The website allows users to explore the different box experiences, discover the stories behind each box, and purchase curated gastronomic gifts. The design emphasizes storytelling and visual immersion to reflect the tactile nature of the product.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Impact Section - Bocca Only */}
+      {project.id === 1 && (
+        <section
+          id="impact"
+          ref={(el) => {
+            if (el) sectionRefs.current['impact'] = el
+          }}
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+        >
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Impact</h2>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                Bocca demonstrates how thoughtful design can elevate everyday experiences.
+              </p>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                The project explores how branding, product design, and storytelling can work together to transform a simple gift into a meaningful shared moment.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Reflection Section - Bocca Only */}
+      {project.id === 1 && (
+        <section
+          id="reflection-bocca"
+          ref={(el) => {
+            if (el) sectionRefs.current['reflection-bocca'] = el
+          }}
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+        >
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Reflection</h2>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                Designing Bocca highlighted the importance of thinking beyond individual touchpoints and designing complete experiences.
+              </p>
+              <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
+                {([
+                  { icon: <Heart className="w-5 h-5" strokeWidth={1.5} />, title: 'Emotion over function', description: 'Experiences create stronger emotional connections than products alone.' },
+                  { icon: <Sparkles className="w-5 h-5" strokeWidth={1.5} />, title: 'Storytelling as design', description: 'Storytelling can transform simple products into memorable moments.' },
+                  { icon: <Globe className="w-5 h-5" strokeWidth={1.5} />, title: 'Cohesive identity', description: 'Cohesive design across physical and digital touchpoints strengthens brand identity.' },
+                ] as { icon: React.ReactNode; title: string; description: string }[]).map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-start gap-4 py-4"
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-white">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="text-base font-semibold text-white">{item.title}</p>
+                      <p className="text-base text-gray-400 mt-1 leading-relaxed">{item.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -1049,7 +1248,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-4 sm:pt-6 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1059,8 +1258,8 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Overview</h2>
-              <div className="space-y-4 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Overview</h2>
+              <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Cortado is a GenAI-powered rental management SaaS designed to simplify the day-to-day operations of independent landlords and small property managers. The goal was to reduce fragmentation across tools and automate repetitive work by bringing messaging, leasing, pricing, and maintenance into one AI-assisted workspace.
                 </p>
@@ -1073,6 +1272,7 @@ Key design focuses included:
         </section>
       )}
 
+
       {/* Overview Section - Onyx Only */}
       {project.id === 3 && (
         <section 
@@ -1080,7 +1280,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-4 sm:pt-6 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1090,13 +1290,16 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Overview</h2>
-              <div className="space-y-4 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Overview</h2>
+              <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
-                  Onyx is a human-centered digital health platform designed to support people living with Chronic Pelvic Pain Syndrome (CPPS), a condition affecting millions, yet widely misunderstood, underdiagnosed, and difficult to treat.
+                  This project originated from the Loka Innovators Award, an initiative designed to explore new opportunities in healthcare innovation.
                 </p>
                 <p>
-                  CPPS is complex, and deeply personal. Patients often navigate years of uncertainty, fragmented care, and trial-and-error treatments with little guidance or validation. Onyx was created to change that experience by empowering patients with structure, education, and actionable insights, while supporting clinicians with clearer context and continuity of care.
+                  Working alongside Stanford Biodesign student winners, we conducted a design sprint to investigate how digital tools could improve the care journey for patients with Chronic Pelvic Pain Syndrome (CPPS).
+                </p>
+                <p>
+                  The sprint brought together designers, healthcare innovators, and a physical therapist to explore the problem space and prototype potential solutions. The result was Onyx, a platform concept designed to help clinicians track treatment progress and communicate with patients more effectively.
                 </p>
               </div>
             </motion.div>
@@ -1106,7 +1309,7 @@ Key design focuses included:
 
       {/* Image Section - Cortado Only */}
       {project.id === 2 && (
-        <section className="py-4 sm:py-8 px-0 sm:px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950">
+        <section className="py-4 sm:py-8 px-0 sm:px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1133,7 +1336,7 @@ Key design focuses included:
 
       {/* Image Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950">
+        <section className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1154,14 +1357,14 @@ Key design focuses included:
         </section>
       )}
 
-      {/* Context & My Role Section - Onyx Only */}
+      {/* My Role Section - Onyx Only */}
       {project.id === 3 && (
-        <section 
+        <section
           id="context"
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="pt-8 sm:pt-16 pb-2 sm:pb-4 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1171,90 +1374,33 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Context & My Role</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  My responsibilities included:
-                </p>
-              </div>
-              <div className="space-y-0 my-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <Search className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Participated in end-to-end discovery and synthesis</p>
-                </motion.div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Led an on-site, cross-functional design sprint at Stanford University to define the problem space, and explore early solution directions</p>
-                </motion.div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, delay: 0.35 }}
-                  viewport={{ once: true }}
-                  className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <PenLine className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Contributed to overall experience definition and product framing</p>
-                </motion.div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  viewport={{ once: true }}
-                  className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.55 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <LayoutDashboard className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Owned the UI/UX design for the Physical Therapist viewport</p>
-                </motion.div>
-              </div>
-              <div className="mt-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  While the broader product included both patient and clinician, my hands-on design work concentrated on the therapist experience, where time constraints, cognitive load, and trust in data are especially critical.
-                </p>
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">My Role</h2>
+              <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
+                {([
+                  { icon: <Search className="w-5 h-5" strokeWidth={1.5} />, title: 'Discovery & Synthesis', description: 'Participated in end-to-end discovery and synthesis' },
+                  { icon: <MapPin className="w-5 h-5" strokeWidth={1.5} />, title: 'Design Sprint', description: 'Led an on-site, cross-functional design sprint at Stanford University to define the problem space, and explore early solution directions' },
+                  { icon: <PenLine className="w-5 h-5" strokeWidth={1.5} />, title: 'Experience Definition', description: 'Contributed to overall experience definition and product framing' },
+                  { icon: <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />, title: 'UI/UX Design', description: 'Owned the UI/UX design for the Physical Therapist viewport' },
+                ] as { icon: React.ReactNode; title: string; description: string }[]).map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-start gap-4 py-4"
+                  >
+                    <div
+                      className="flex-shrink-0 w-12 h-12 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-white"
+                    >
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="text-base font-semibold text-white">{item.title}</p>
+                      <p className="text-base text-gray-400 mt-1 leading-relaxed">{item.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -1263,7 +1409,7 @@ Key design focuses included:
 
       {/* Stanford Images Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="pt-4 px-0 sm:px-6 lg:px-12 bg-white dark:bg-slate-950">
+        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
               <motion.div
@@ -1309,6 +1455,59 @@ Key design focuses included:
         </section>
       )}
 
+      {/* Design Sprint Section - Onyx Only */}
+      {project.id === 3 && (
+        <section
+          id="design-sprint"
+          ref={(el) => {
+            if (el) sectionRefs.current['design-sprint'] = el
+          }}
+          className="pt-8 sm:pt-16 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+        >
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">The Design Sprint</h2>
+              <div className="w-full rounded-2xl overflow-hidden">
+                <video
+                  src="/projects/Onyx/Design Sprint.webm"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full rounded-2xl"
+                />
+              </div>
+              <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                <p>
+                  We conducted a design sprint with Loka designers, Stanford Biodesign student winners, and a physical therapist to better understand the CPPS care journey and explore potential solutions.
+                </p>
+                <p>
+                  Through exercises such as <span className="text-white font-medium">user persona creation, problem framing, journey mapping, and rapid ideation</span>, the team identified key opportunities to improve clinician visibility into patient progress and communication.
+                </p>
+                <p>
+                  The sprint ultimately shaped the core direction for the Onyx platform.
+                </p>
+              </div>
+              <div className="w-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/projects/Onyx/Design Sprint board.webp"
+                  alt="Design Sprint board"
+                  width={1200}
+                  height={800}
+                  className="w-full rounded-2xl"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* Understanding the Problem Section - Onyx Only */}
       {project.id === 3 && (
         <section 
@@ -1316,7 +1515,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['understanding'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1326,10 +1525,10 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Understanding the Problem</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Understanding the Problem</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
                 {/* Text Content - Left Side */}
-                <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed flex flex-col">
+                <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed flex flex-col">
                   <div>
                     <h3 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white mb-4">CPPS as a Care Challenge</h3>
                     <p>
@@ -1337,7 +1536,13 @@ Key design focuses included:
                     </p>
                   </div>
                   <p>
-                    For patients, this often leads to frustration and emotional fatigue. For clinicians, particularly physical therapists. It creates a different problem: making informed decisions with incomplete, anecdotal, and hard-to-compare information.
+                    <span className="text-white font-medium">Patients</span> often interact with multiple specialists throughout their treatment journey, which makes care coordination challenging.
+                  </p>
+                  <p>
+                    <span className="text-white font-medium">Clinicians</span> frequently lack tools to track patient progress between visits and maintain consistent communication with patients.
+                  </p>
+                  <p>
+                    This creates fragmented care and limited visibility into treatment adherence.
                   </p>
                 </div>
                 {/* Video - Right Side */}
@@ -1372,7 +1577,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['clinician'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1382,68 +1587,38 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">The Clinician Perspective</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">The Clinician Perspective</h2>
+              <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Through discovery and direct collaboration with pelvic floor physical therapists, several recurring constraints emerged:
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
-                >
-                  <Clock className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
-                  <p className="text-gray-800 dark:text-gray-200">Limited session time, requiring fast context-building and decision-making</p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
-                >
-                  <BookOpen className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
-                  <p className="text-gray-800 dark:text-gray-200">A high education burden, with therapists needing to tailor explanations to different learning styles</p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
-                >
-                  <Link2 className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
-                  <p className="text-gray-800 dark:text-gray-200">Low continuity between sessions, due to cancellations, flare-ups, and difficulty keeping patients engaged remotely</p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
-                >
-                  <FileText className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
-                  <p className="text-gray-800 dark:text-gray-200">Fragmented charting systems, making it hard to track symptom progression over time</p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
-                >
-                  <Layers className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
-                  <p className="text-gray-800 dark:text-gray-200">The inherent complexity of CPPS, spanning physical, emotional, dietary, sexual, and stress-related factors</p>
-                </motion.div>
-              </div>
-              <div className="mt-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  Rather than a lack of data, therapists struggled with synthesizing patient information into something actionable within the realities of clinical care.
-                </p>
+                {([
+                  { icon: <Clock className="w-5 h-5" strokeWidth={1.5} />, title: 'Limited Session Time', description: 'Requiring fast context-building and decision-making within each appointment' },
+                  { icon: <BookOpen className="w-5 h-5" strokeWidth={1.5} />, title: 'High Education Burden', description: 'Therapists must tailor explanations to different learning styles, every session' },
+                  { icon: <Link2 className="w-5 h-5" strokeWidth={1.5} />, title: 'Low Continuity', description: 'Cancellations, flare-ups, and remote disengagement break the care thread between visits' },
+                  { icon: <FileText className="w-5 h-5" strokeWidth={1.5} />, title: 'Fragmented Charting', description: 'Existing systems make it hard to track symptom progression over time' },
+                  { icon: <Layers className="w-5 h-5" strokeWidth={1.5} />, title: 'CPPS Complexity', description: 'Spanning physical, emotional, dietary, sexual, and stress-related factors simultaneously' },
+                ] as { icon: React.ReactNode; title: string; description: string }[]).map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="rounded-2xl border border-gray-800 p-6 flex flex-col items-start gap-4"
+                    style={{ backgroundColor: '#171717' }}
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center" style={{ color: themeColors.iconText }}>
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="text-base font-semibold text-white">{item.title}</p>
+                      <p className="text-base text-gray-400 mt-1 leading-relaxed">{item.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -1457,7 +1632,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1467,147 +1642,49 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Design Focus</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  Insights from discovery were synthesized into a small set of How Might We questions that guided ideation and prioritization:
-                </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 20, rotate: -2 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -2 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-yellow-200 dark:bg-yellow-900/30 rounded-lg p-6 shadow-lg transform"
-                  style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)' }}
-                >
-                  <p className="text-gray-900 dark:text-yellow-100 font-medium leading-relaxed">
-                    How might we evaluate patient progress in the least burdensome way?
-                  </p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20, rotate: 1 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="bg-pink-200 dark:bg-pink-900/30 rounded-lg p-6 shadow-lg transform"
-                  style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)' }}
-                >
-                  <p className="text-gray-900 dark:text-pink-100 font-medium leading-relaxed">
-                    How might we make it easier for physical therapists to quickly scan patient data and updates?
-                  </p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20, rotate: -1 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -1 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  viewport={{ once: true }}
-                  className="bg-blue-200 dark:bg-blue-900/30 rounded-lg p-6 shadow-lg transform"
-                  style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)' }}
-                >
-                  <p className="text-gray-900 dark:text-blue-100 font-medium leading-relaxed">
-                    How might we reduce the cognitive and emotional load of treating CPPS patients?
-                  </p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20, rotate: 2 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: 2 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  viewport={{ once: true }}
-                  className="bg-green-200 dark:bg-green-900/30 rounded-lg p-6 shadow-lg transform"
-                  style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)' }}
-                >
-                  <p className="text-gray-900 dark:text-green-100 font-medium leading-relaxed">
-                    How might we support therapists in assigning personalized exercises and education, while understanding whether patients are able to complete them correctly on their own?
-                  </p>
-                </motion.div>
-              </div>
-              <div className="mt-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  These questions intentionally balanced clinical rigor with human realities, and directly informed the structure and focus of the Physical Therapist viewport.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* The Physical Therapist Viewport Section - Onyx Only */}
-      {project.id === 3 && (
-        <section 
-          id="viewport"
-          ref={(el) => {
-            if (el) sectionRefs.current['viewport'] = el
-          }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
-        >
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">The Physical Therapist Viewport</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  The Physical Therapist viewport was designed as a connected, clinician-facing surface that works in tandem with the patient app—supporting both in-session care and between-session continuity.
-                </p>
-                <p>
-                  Rather than existing in isolation, the viewport allows therapists to:
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Assign personalized therapy plans and exercises directly to patients</li>
-                  <li>Review daily patient-reported symptoms, progress, and adherence collected through the patient app</li>
-                  <li>See longitudinal patterns without needing to manually reconstruct history at the start of each session</li>
-                </ul>
-              </div>
-              {/* Devices Image */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="relative w-full rounded-2xl overflow-hidden"
-              >
-                <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
-                  <Image
-                    src="/projects/Onyx/Devices.webp"
-                    alt="Physical Therapist Viewport devices"
-                    fill
-                    className="object-cover rounded-2xl"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
-                  />
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Design Focus</h2>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                Based on research insights, we identified key design priorities to guide the platform experience.
+              </p>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-4">Focus areas</p>
+                <div className="divide-y divide-gray-800">
+                  {[
+                    { title: 'Improve visibility into patient progress', description: 'Design a clear dashboard that helps clinicians quickly understand patient status and treatment activity.' },
+                    { title: 'Enable clinician-patient communication', description: 'Provide an integrated messaging system to support ongoing communication and follow-ups.' },
+                    { title: 'Support treatment tracking', description: 'Allow clinicians to monitor exercises and patient activity over time.' },
+                    { title: 'Reduce workflow friction', description: 'Design an interface that fits naturally into clinicians\' existing workflows.' },
+                  ].map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: i * 0.08 }}
+                      viewport={{ once: true }}
+                      className="py-4 flex gap-4"
+                    >
+                      <span className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-sm font-semibold text-white shrink-0">{i + 1}</span>
+                      <div>
+                        <p className="text-base font-semibold text-white">{item.title}</p>
+                        <p className="text-base text-gray-400 mt-1 leading-relaxed">{item.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-              </motion.div>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  Instead of presenting raw logs, the interface surfaces:
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Summaries of patient-reported data over time</li>
-                  <li>Visual patterns that highlight change, stability, or volatility</li>
-                  <li>Context that helps therapists ask better questions, faster</li>
-                </ul>
-                <p>
-                  The viewport functions as a shared reference point during sessions—supporting conversation rather than replacing clinical judgment. By tightly coupling therapist tools with patient input, the experience reinforces continuity, accountability, and shared understanding across the care journey.
-                </p>
               </div>
             </motion.div>
           </div>
         </section>
       )}
 
-      {/* Key Features Section - Onyx Only */}
+      {/* The Physical Therapist Viewport / Key Features Section - Onyx Only */}
       {project.id === 3 && (
         <section 
           id="features"
           ref={(el) => {
             if (el) sectionRefs.current['features'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1615,112 +1692,119 @@ Key design focuses included:
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="space-y-16"
+              className="space-y-6"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Key Features</h2>
-              
-              {/* Feature 1: Patient Profile & Therapy Plan */}
-              <div className="space-y-6">
-                <h3 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">Patient Profile & Therapy Plan</h3>
-                {/* Video */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="relative w-full rounded-2xl overflow-hidden"
-                >
-                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
-                    <video
-                      src="/projects/Onyx/Patient-Profile.webm"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
-                  </div>
-                </motion.div>
-                {/* Text Content */}
-                <div className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                  <p>
-                    The patient profile serves as the central hub for each care relationship. It gives physical therapists a consolidated view of patient history, current symptoms, and progress over time, while allowing them to define and adjust personalized therapy plans as treatment evolves. By anchoring decisions in a shared profile, therapists can maintain continuity across sessions despite cancellations or non-linear recovery.
-                  </p>
-                </div>
-              </div>
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">The Solution</h2>
 
-              {/* Feature 2: Exercise Creation & Library */}
-              <div className="space-y-6">
-                <h3 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">Exercise Creation & Library</h3>
-                {/* Video */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="relative w-full rounded-2xl overflow-hidden"
-                >
-                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
-                    <video
-                      src="/projects/Onyx/Library.webm"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
-                  </div>
-                </motion.div>
-                {/* Text Content */}
-                <div className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                  <p>
-                    To support personalized care at scale, the platform includes a flexible exercise and education library. Therapists can create, customize, and reuse exercises or educational content based on individual patient needs. This reduces repetitive work while still allowing plans to be tailored, and helps standardize guidance without forcing a one-size-fits-all approach.
-                  </p>
-                </div>
-              </div>
-
-              {/* Feature 3: In‑App Messaging & Online Consultations */}
-              <div className="space-y-6">
-                <h3 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">In‑App Messaging & Online Consultations</h3>
-                {/* Video */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="relative w-full rounded-2xl overflow-hidden"
-                >
-                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
-                    <video
-                      src="/projects/Onyx/Messages.webm"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
-                  </div>
-                </motion.div>
-                {/* Text Content */}
-                <div className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                  <p>
-                    Recognizing that progress often happens between sessions, Onyx supports in-app messaging and remote consultations. These tools allow therapists to answer questions, clarify instructions, and adjust plans without requiring in-person visits. This was especially important given high cancellation rates and the sensitivity of CPPS symptoms, helping maintain engagement and continuity of care.
-                  </p>
-                </div>
+              {/* Feature Cards */}
+              <div className="space-y-10">
+                {[
+                  {
+                    title: 'Patient Management Dashboard',
+                    video: '/projects/Onyx/Patient-Profile.webm',
+                    problem: 'Clinicians needed a clear overview of patient status and treatment progress.',
+                    solution: 'A dashboard that centralizes patient information, treatment progress, and activity updates.',
+                    outcome: 'Clinicians can quickly understand patient status and prioritize follow-ups.',
+                  },
+                  {
+                    title: 'In-App Messaging & Care Coordination',
+                    video: '/projects/Onyx/Messages.webm',
+                    problem: 'Clinicians often rely on external tools like email or phone calls to communicate with patients, which fragments conversations and raises patient data privacy concerns.',
+                    solution: 'A secure in-app messaging system enables clinicians and patients to communicate directly within the platform.',
+                    outcome: 'Centralized conversations, faster communication, and improved protection of sensitive patient information.',
+                  },
+                  {
+                    title: 'Exercise Creation & Library',
+                    video: '/projects/Onyx/Library.webm',
+                    problem: 'Creating exercise plans from scratch for every patient slowed down clinicians and created inconsistent treatment workflows.',
+                    solution: 'An exercise creation tool combined with a reusable library allows therapists to quickly assign previously created exercises to patients.',
+                    outcome: 'Faster treatment plan creation and more consistent exercise programs across patients.',
+                  },
+                ].map((feature, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="rounded-2xl border border-gray-800 overflow-hidden"
+                    style={{ backgroundColor: '#171717' }}
+                  >
+                    <div className="relative w-full aspect-video">
+                      <video
+                        src={feature.video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="border-t border-gray-800">
+                      <div className="p-6 flex items-center gap-3">
+                        <span className="w-8 h-8 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-sm font-semibold text-white shrink-0">{i + 1}</span>
+                        <h3 className="text-base font-semibold text-white">{feature.title}</h3>
+                      </div>
+                      <div className="divide-y divide-gray-800">
+                        {[
+                          { label: 'Problem', text: feature.problem },
+                          { label: 'Solution', text: feature.solution },
+                          { label: 'Outcome', text: feature.outcome },
+                        ].map((item) => (
+                          <div key={item.label} className="px-6 py-4 flex gap-4">
+                            <span className="text-xs font-semibold uppercase tracking-widest w-20 shrink-0 pt-0.5 text-gray-500">{item.label}</span>
+                            <p className="text-sm text-gray-400 leading-relaxed">{item.text}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
         </section>
       )}
 
-      {/* Context & My Role Section - Cortado Only */}
+      {/* Reflection Section - Onyx Only */}
+      {project.id === 3 && (
+        <section
+          id="reflection"
+          ref={(el) => {
+            if (el) sectionRefs.current['reflection'] = el
+          }}
+          className="pt-8 sm:pt-16 pb-24 sm:pb-32 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+        >
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Reflection</h2>
+              <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                <p>
+                  Designing Onyx highlighted how important visibility and communication are in complex healthcare journeys. Working closely with clinicians helped ensure the platform addressed real workflow challenges rather than theoretical ones.
+                </p>
+                <p>
+                  The design sprint proved particularly valuable in aligning stakeholders and quickly identifying the most impactful product opportunities.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* My Role Section - Cortado Only */}
       {project.id === 2 && (
         <section 
           id="context"
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1730,93 +1814,31 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Context & My Role</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  Cortado was developed following a Loka-led design sprint that explored the challenges faced by small rental operators.
-                </p>
-                <p>
-                  I did not participate directly in the sprint sessions. Instead, my role focused on:
-                </p>
-              </div>
-              <div className="space-y-0 my-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <Eye className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Reviewing and synthesizing insights generated from the design sprint</p>
-                </motion.div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <PenLine className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Translating research outcomes into product concepts and UX decisions</p>
-                </motion.div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, delay: 0.35 }}
-                  viewport={{ once: true }}
-                  className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <LayoutDashboard className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Designing key UI screens and interaction patterns</p>
-                </motion.div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  viewport={{ once: true }}
-                  className="border-t border-gray-200 dark:border-gray-800 origin-left"
-                />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.55 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 py-4"
-                >
-                  <div className="mt-0.5 flex-shrink-0">
-                    <Grid className="w-5 h-5 text-indigo-600 dark:text-indigo-400" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200">Supporting the team with visual clarity and system-level consistency</p>
-                </motion.div>
-              </div>
-              <div className="mt-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                <p>
-                  This allowed the team to move quickly from insight to execution.
-                </p>
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">My Role</h2>
+              <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
+                {([
+                  { icon: <Eye className="w-5 h-5" strokeWidth={1.5} />, title: 'Research Synthesis', description: 'Reviewing and synthesizing insights generated from the design sprint' },
+                  { icon: <PenLine className="w-5 h-5" strokeWidth={1.5} />, title: 'Experience & UX', description: 'Translating research outcomes into product concepts and UX decisions' },
+                  { icon: <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />, title: 'UI Design', description: 'Designing key UI screens and interaction patterns' },
+                  { icon: <Grid className="w-5 h-5" strokeWidth={1.5} />, title: 'Design System', description: 'Supporting the team with visual clarity and system-level consistency' },
+                ] as { icon: React.ReactNode; title: string; description: string }[]).map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-start gap-4 py-4"
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-white">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="text-base font-semibold text-white">{item.title}</p>
+                      <p className="text-base text-gray-400 mt-1 leading-relaxed">{item.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -1830,7 +1852,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['understanding'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1840,8 +1862,8 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Understanding the Users</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Understanding the Users</h2>
+              <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Reviewing the outcomes of the design sprint revealed a clear pattern in how rental operators work today:
                 </p>
@@ -1854,7 +1876,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <RefreshCw className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                  <RefreshCw className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                   <h3 className="font-medium text-gray-900 dark:text-white mb-2">Work is fragmented across too many tools</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Listings, guest communication, pricing, and operations live in separate platforms, forcing constant context switching.</p>
                 </motion.div>
@@ -1865,7 +1887,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <MessageSquare className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                  <MessageSquare className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                   <h3 className="font-medium text-gray-900 dark:text-white mb-2">Guest communication dominates daily work</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Responding to repetitive guest messages takes up several hours a day and frequently interrupts higher-value tasks.</p>
                 </motion.div>
@@ -1876,12 +1898,12 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Eye className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                  <Eye className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                   <h3 className="font-medium text-gray-900 dark:text-white mb-2">Automation must remain transparent</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Operators are open to AI assistance, but only when they can understand, review, and stay in control of system actions.</p>
                 </motion.div>
               </div>
-              <div className="mt-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <div className="mt-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   These takeaways shaped both the product scope and how AI would be positioned within the experience.
                 </p>
@@ -1898,7 +1920,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1908,8 +1930,8 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Design Focus</h2>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Design Focus</h2>
+              <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Based on the synthesized insights, guest messaging emerged as the highest-impact area for improvement.
                 </p>
@@ -1925,7 +1947,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Accessibility className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                  <Accessibility className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Reducing cognitive load in message-heavy workflows</p>
                 </motion.div>
                 <motion.div
@@ -1935,7 +1957,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Eye className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                  <Eye className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Making AI assistance visible without feeling intrusive</p>
                 </motion.div>
                 <motion.div
@@ -1945,7 +1967,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Settings className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                  <Settings className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Supporting fast decisions while preserving user control</p>
                 </motion.div>
                 <motion.div
@@ -1955,7 +1977,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <LayoutDashboard className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                  <LayoutDashboard className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Structuring complex information into calm, scannable layouts</p>
                 </motion.div>
               </div>
@@ -1966,7 +1988,7 @@ Key design focuses included:
 
       {/* Design Focus Images Section - Cortado Only */}
       {project.id === 2 && (
-        <section className="pt-4 px-0 sm:px-6 lg:px-8 bg-white dark:bg-slate-950">
+        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
               <motion.div
@@ -2019,7 +2041,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['solution'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2030,10 +2052,10 @@ Key design focuses included:
               className="space-y-8"
             >
               <div>
-                <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white mb-2">Solution</h2>
+                <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white mb-2">Solution</h2>
                 <h3 className="text-xl sm:text-2xl font-medium text-gray-700 dark:text-gray-300 mb-6">An AI-Assisted Inbox</h3>
               </div>
-              <div className="space-y-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   The core experience centers around an AI-assisted inbox designed to help operators respond to guests faster and more confidently.
                 </p>
@@ -2059,7 +2081,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <PenLine className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                    <PenLine className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                     <p className="text-gray-800 dark:text-gray-200">Suggests draft replies that users can review and edit</p>
                   </div>
                 </motion.div>
@@ -2080,7 +2102,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <LayoutDashboard className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                    <LayoutDashboard className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                     <p className="text-gray-800 dark:text-gray-200">Pulls context from reservations, policies, and property data</p>
                   </div>
                 </motion.div>
@@ -2101,12 +2123,12 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <Rocket className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                    <Rocket className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
                     <p className="text-gray-800 dark:text-gray-200">Learns from user feedback to improve future suggestions</p>
                   </div>
                 </motion.div>
               </div>
-              <div className="mt-6 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <div className="mt-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   This approach balances efficiency with trust, keeping users in the loop at all times.
                 </p>
@@ -2189,7 +2211,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['reflection'] = el
           }}
-          className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2199,8 +2221,8 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 dark:text-white">Reflection</h2>
-              <div className="space-y-4 text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Reflection</h2>
+              <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   This project highlighted the value of synthesis and execution in early-stage product work. Turning research insights into a clear, usable interface was critical in making the concept tangible and credible.
                 </p>
@@ -2222,7 +2244,7 @@ Key design focuses included:
         ref={(el) => {
           if (el) nextProjectRef.current = el
         }}
-        className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900"
+        className="py-24 px-6 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900"
       >
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -2231,16 +2253,19 @@ Key design focuses included:
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-              <h2 className="text-3xl font-semibold text-gray-900 dark:text-white text-center mb-12 tracking-tight">Next Project</h2>
+              <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white text-center mb-12 tracking-tight">Next Project</h2>
               <Link href={`/projects/${nextProject.id}`} className="group">
               <div
-                className="relative cursor-pointer bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 hover:border-2 hover:border-indigo-500/50 hover:dark:border-indigo-400/50 hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
+                className="relative cursor-pointer bg-white dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 hover:shadow-xl hover:shadow-gray-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
+                style={{ ['--hover-border' as string]: '2px solid #18a0fb' }}
+                onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #18a0fb')}
+                onMouseLeave={e => (e.currentTarget.style.outline = '')}
               >
-                {/* Corner Squares - centered on edges */}
-                <div className="absolute -top-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-indigo-500 dark:bg-indigo-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Corner Squares */}
+                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
                   <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 min-h-[300px] overflow-hidden">
                     <div className="relative overflow-hidden min-h-[300px]">
                       {nextProject.heroImage ? (
@@ -2265,13 +2290,13 @@ Key design focuses included:
                       )}
                     </div>
                     <div className="p-8 sm:p-10 lg:p-14 flex flex-col justify-center text-left space-y-5">
-                    <h3 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight">
+                    <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight">
                         {nextProject.title}
                     </h3>
-                    <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                         {nextProject.description}
                     </p>
-                    <div className="flex items-center font-medium text-indigo-600 dark:text-indigo-400 group-hover:translate-x-2 transition-transform duration-300 pt-2">
+                    <div className="flex items-center font-medium text-gray-600 dark:text-gray-400 group-hover:translate-x-2 transition-transform duration-300 pt-2">
                       <span>View case study</span>
                       <ArrowRight size={18} className="ml-2" />
                     </div>

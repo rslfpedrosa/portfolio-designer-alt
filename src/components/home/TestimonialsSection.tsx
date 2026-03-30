@@ -44,14 +44,19 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
     setIsMounted(true)
   }, [])
 
-  // Lock body scroll when modal is open
+  // Lock body scroll and handle Escape key when modal is open
   useEffect(() => {
     if (expandedTestimonial !== null) {
       document.body.style.overflow = 'hidden'
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setExpandedTestimonial(null)
+      }
+      document.addEventListener('keydown', handleKeyDown)
+      return () => {
+        document.body.style.overflow = 'unset'
+        document.removeEventListener('keydown', handleKeyDown)
+      }
     } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
       document.body.style.overflow = 'unset'
     }
   }, [expandedTestimonial])
@@ -121,13 +126,13 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
 
   return (
     <>
-    <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 overflow-hidden">
+    <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
       {/* Subtle Grid Pattern */}
       <div className="absolute inset-0 bg-animated-grid" />
       
       {/* Animated Orbs */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/60 to-purple-400/60 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-gray-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, 150, -50, 0],
@@ -143,7 +148,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
       />
       
       <motion.div
-        className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-purple-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
+        className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-gray-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, -100, 120, 0],
@@ -166,7 +171,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-12"
         >
-          <span className="text-sm font-medium tracking-wider text-indigo-400 uppercase mb-3 sm:mb-4 block">
+          <span className="text-sm font-medium tracking-wider text-gray-gray-400 uppercase mb-3 sm:mb-4 block">
             TESTIMONIALS
           </span>
           <h2 className="text-4xl sm:text-5xl font-medium text-white mb-4 sm:mb-6">
@@ -202,7 +207,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                   
                   {/* Quote Icon */}
                   <div className="mb-6 relative z-10">
-                    <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-indigo-400/40">
+                    <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-gray-gray-400/40">
                       <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
                       <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
                     </svg>
@@ -216,7 +221,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                   {/* Author Info */}
                   <div className="flex items-center justify-between pt-6 mt-auto border-t border-white/10 relative z-10">
                     <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
                         <span className="text-white font-semibold text-base">{testimonials[currentIndex].avatar}</span>
                       </div>
                       <div>
@@ -230,7 +235,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                     </div>
                     
                     {/* Read More Indicator - Aligned with author */}
-                    <div className="text-indigo-400 text-sm font-medium flex items-center gap-2 flex-shrink-0">
+                    <div className="text-gray-gray-400 text-sm font-medium flex items-center gap-2 flex-shrink-0">
                       <span className="hidden lg:inline">Click to read full review</span>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -255,7 +260,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                 >
                   {/* Quote Icon */}
                   <div className="mb-4 relative z-10">
-                    <svg width="48" height="48" viewBox="0 0 40 40" fill="none" className="text-indigo-400/40">
+                    <svg width="48" height="48" viewBox="0 0 40 40" fill="none" className="text-gray-gray-400/40">
                       <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
                       <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
                     </svg>
@@ -269,7 +274,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                   {/* Author Info */}
                   <div className="flex items-center justify-between pt-6 mt-auto border-t border-white/10 relative z-10">
                     <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
                         <span className="text-white font-semibold text-base">{testimonial.avatar}</span>
                       </div>
                       <div>
@@ -283,7 +288,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                     </div>
                     
                     {/* Read More Indicator - Aligned with author */}
-                    <div className="text-indigo-400 text-sm font-medium flex items-center gap-2 flex-shrink-0">
+                    <div className="text-gray-gray-400 text-sm font-medium flex items-center gap-2 flex-shrink-0">
                       <span className="hidden sm:inline">Tap to read full review</span>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -309,8 +314,8 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                 }}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? 'w-8 bg-indigo-600'
-                    : 'w-2 bg-gray-400 dark:bg-gray-600 hover:bg-gray-500'
+                    ? 'w-8 bg-white'
+                    : 'w-2 bg-gray-600 hover:bg-gray-400'
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
@@ -400,7 +405,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                 >
                   {/* Quote Icon */}
                   <div className="mb-6 relative z-10">
-                    <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-indigo-400/40">
+                    <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-gray-gray-400/40">
                       <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
                       <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
                     </svg>
@@ -413,7 +418,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
 
                   {/* Author Info */}
                   <div className="flex items-center space-x-4 pt-6 border-t border-white/10 relative z-10">
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
                       <span className="text-white font-semibold text-base">
                         {testimonials.find(t => t.id === expandedTestimonial)?.avatar}
                       </span>

@@ -179,7 +179,7 @@ const ContactPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
                     placeholder="Your name"
                   />
                 </div>
@@ -195,7 +195,7 @@ const ContactPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -211,7 +211,7 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors resize-none"
                     placeholder="Tell me about your project..."
                   />
                 </div>
@@ -221,7 +221,7 @@ const ContactPage = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-indigo-600 text-white px-6 py-4 rounded-full font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-white text-gray-900 px-6 py-4 rounded-full font-medium hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                   style={isDesktop ? { cursor: 'none' } : {}}
                 >
                   {isSubmitting ? (
@@ -266,8 +266,8 @@ const ContactPage = () => {
                       whileHover={{ x: 8 }}
                       className="flex items-center space-x-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
                     >
-                      <div className="flex-shrink-0 w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800 transition-colors">
-                        <Icon size={20} className="text-indigo-600 dark:text-indigo-400" />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gray-100 dark:bg-gray-900 rounded-lg flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-800 transition-colors">
+                        <Icon size={20} className="text-gray-600 dark:text-gray-400" />
                       </div>
                       <div>
                         <h3 className="font-medium text-gray-900 dark:text-white">
@@ -309,7 +309,7 @@ const ContactPage = () => {
               </div>
 
               {/* Availability */}
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-800">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-50 dark:from-gray-900/20 dark:to-gray-900/20 p-6 rounded-2xl border border-gray-100 dark:border-gray-800">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                   Current Availability
                 </h3>
