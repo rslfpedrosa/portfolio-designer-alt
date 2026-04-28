@@ -8,7 +8,7 @@ import SelectionFramePortal from '@/components/SelectionFramePortal'
 import HeroHoverImages from '@/components/HeroHoverImages'
 import { projectsData } from '@/data/projects'
 
-const HERO_RITA_PHOTOS: [string, string, string] = ['/Me/IMG_0426.webp', '/conferences/dm-group.webp', '/projects/Onyx/Stanford.webp']
+const HERO_RITA_PHOTOS: [string, string, string] = ['/Me/IMG_0426.webp', '/Me/cefda5d2-eb6d-4e79-8fa6-b484bc03be29.webp', '/projects/Onyx/Stanford.webp']
 const HERO_DESIGN_PHOTOS: [string, string, string] = [projectsData[1].heroImage, projectsData[2].heroImage, projectsData[3].heroImage]
 
 export default function HeroSection({ 
@@ -210,9 +210,9 @@ export default function HeroSection({
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <section className="relative z-20 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto text-center relative z-10">
+      <div className="max-w-7xl mx-auto text-center relative z-20">
         {/* Badge */}
         <motion.div
           className="mb-8"
@@ -221,11 +221,9 @@ export default function HeroSection({
           transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.5, type: 'spring', stiffness: 200 }}
         >
           <div className="status-badge inline-flex items-center space-x-2 rounded-full px-4 py-2">
-            <div className="relative flex items-center justify-center">
-              <div className="status-dot-inner w-2 h-2 rounded-full bg-green-500"></div>
-              {!shouldReduceMotion && (
-                <div className="status-dot-pulse absolute w-2 h-2 rounded-full bg-green-500"></div>
-              )}
+            <div className="relative flex items-center justify-center w-2 h-2">
+              <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
+              <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
             </div>
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Available for new projects
@@ -253,7 +251,7 @@ export default function HeroSection({
               <motion.span
                 ref={leftSpanRef}
                 id="hero-left"
-                className="inline-block overflow-visible py-1"
+                className="inline-block overflow-visible pt-1 pb-3"
                 initial={shouldReduceMotion ? false : { x: '-100vw', opacity: 0 }}
                 animate={entered ? { x: 0, opacity: 1 } : {}}
                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
@@ -275,7 +273,7 @@ export default function HeroSection({
               <motion.span
                 ref={rightSpanRef}
                 id="hero-right"
-                className="inline-block text-gradient overflow-visible py-1"
+                className="inline-block text-gradient overflow-visible pt-1 pb-3"
                 initial={shouldReduceMotion ? false : { x: '100vw', opacity: 0 }}
                 animate={entered ? { x: 0, opacity: 1 } : {}}
                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
@@ -322,7 +320,7 @@ export default function HeroSection({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-gray-gray-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="group bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
               <span>View My Work</span>
@@ -333,7 +331,7 @@ export default function HeroSection({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white px-8 py-4 rounded-full font-medium text-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors backdrop-blur-sm w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="group bg-white/15 text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-white/25 transition-colors w-full sm:w-auto focus:outline-none"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
               Let's Connect

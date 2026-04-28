@@ -51,7 +51,7 @@ export default function FeaturedProjects({
                   <div
                     className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible"
                     style={hoveredCardId === project.id ? {
-                      outline: '2px solid #18a0fb',
+                      outline: '2px solid #0f8be8',
                       outlineOffset: '0px',
                     } : {
                       outline: '1px solid rgba(255,255,255,0.08)',
@@ -61,10 +61,10 @@ export default function FeaturedProjects({
                     {/* Corner Squares */}
                     {hoveredCardId === project.id && (
                       <>
-                        <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
-                        <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
-                        <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
-                        <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#18a0fb' }} />
+                        <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
+                        <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
+                        <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
+                        <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
                       </>
                     )}
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
@@ -153,7 +153,7 @@ export default function FeaturedProjects({
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-gray-gray-600 dark:bg-gray-gray-500 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 dark:hover:bg-gray-gray-600 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>View All Projects</span>

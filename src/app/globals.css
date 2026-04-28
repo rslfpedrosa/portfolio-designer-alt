@@ -150,7 +150,7 @@ button, a, input, textarea, select {
 
 /* Typography utilities */
 .text-gradient {
-  background: linear-gradient(135deg, rgb(var(--accent-rgb)), #a3a3a3);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -169,13 +169,13 @@ button, a, input, textarea, select {
   background-image: 
     linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
-  background-size: 30px 30px;
+  background-size: 24px 24px;
 }
 .dark .bg-animated-grid {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 30px 30px;
+  background-image:
+    linear-gradient(rgba(23, 23, 23, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 23, 23, 0.25) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 /* Animation utilities */
@@ -389,7 +389,16 @@ button, a, input, textarea, select {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-/* Status Dot Pulse Animation */
+/* Status Dot Animations */
+.status-dot-inner {
+  animation: status-blink 2s ease-in-out infinite;
+}
+
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
 .status-dot-pulse {
   animation: status-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

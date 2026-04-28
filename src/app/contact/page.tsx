@@ -221,7 +221,7 @@ const ContactPage = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-white text-gray-900 px-6 py-4 rounded-full font-medium hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                   style={isDesktop ? { cursor: 'none' } : {}}
                 >
                   {isSubmitting ? (
@@ -317,9 +317,12 @@ const ContactPage = () => {
                   I'm currently available for select projects and collaborations. 
                   Let's discuss how we can work together.
                 </p>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span className="text-sm font-medium text-green-600 dark:text-green-400">
+                <div className="status-badge inline-flex items-center space-x-2 rounded-full px-4 py-2">
+                  <div className="relative flex items-center justify-center w-2 h-2">
+                    <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
+                    <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Available for new projects
                   </span>
                 </div>

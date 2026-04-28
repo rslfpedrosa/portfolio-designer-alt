@@ -1,8 +1,7 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
-import Link from 'next/link'
-import { Download, Award, Users, Lightbulb, Heart, Figma, Palette, Layers, Code, Coffee, Dog, Plane, ArrowRight, Calendar, Briefcase, Globe, ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion'
+import { Plane, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import FigmaCursor from '@/components/FigmaCursor'
 import CTASection from '@/components/home/CTASection'
@@ -32,7 +31,7 @@ const ConferenceCard = ({
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -57,7 +56,7 @@ const ConferenceCard = ({
             opacity: 0 
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute top-1/4 left-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-4 border-white/20"
+          className="absolute top-1/4 left-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10"
         >
           <img src={conference.photos[0]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
@@ -78,7 +77,7 @@ const ConferenceCard = ({
             opacity: 0 
           }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-          className="absolute bottom-1/4 right-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-4 border-white/20"
+          className="absolute bottom-1/4 right-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10"
         >
           <img src={conference.photos[1]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
@@ -97,7 +96,7 @@ const ConferenceCard = ({
             opacity: 0 
           }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="absolute top-0 right-1/4 w-44 h-44 rounded-xl shadow-2xl overflow-hidden border-4 border-white/20"
+          className="absolute top-0 right-1/4 w-44 h-44 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10"
         >
           <img src={conference.photos[2]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
@@ -171,7 +170,7 @@ const VideoCard = ({ joy, index }: { joy: { title: string; description: string; 
     <motion.div
       initial={{ opacity: 0, x: 50 }}
       whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
       viewport={{ once: true }}
       className="relative w-full h-full group cursor-pointer"
     >
@@ -220,6 +219,9 @@ const AboutPage = () => {
   const shouldReduceMotion = useReducedMotion()
   const [isDesktop, setIsDesktop] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start end', 'end end'] })
+  const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.001 })
   const [containerWidth, setContainerWidth] = useState(0)
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -289,67 +291,88 @@ const AboutPage = () => {
   const timeline = [
     {
       year: '2024',
+      period: '2024 – Present',
+      location: 'Remote',
       title: 'Senior Product Designer',
       company: 'Loka',
       companyUrl: 'https://loka.com',
-      description: 'Currently leading product design efforts across multiple AI-driven tools at Loka. I collaborate closely with product managers and engineers to shape the design vision, drive design strategy, and ship scalable solutions. I mentor junior designers, refine design systems, and ensure our interfaces are intuitive, efficient, and aligned with both user needs and business goals.',
-      tags: ['Product Strategy', 'Design Systems', 'Mentorship', 'AI Tools', 'Cross-Functional Collaboration']
+      description: 'Leading end-to-end design for complex digital products, with a focus on healthcare and emerging technologies.',
+      bullets: [
+        'Facilitated design sprints and discovery workshops',
+        'Designed scalable systems and end-to-end flows',
+        'Bridged design, product, and engineering teams',
+      ],
     },
     {
       year: '2022',
+      period: '2022 – 2024',
+      location: 'Remote',
       title: 'Mid Product Designer',
       company: 'Loka',
       companyUrl: 'https://loka.com',
-      description: 'Contributed to the design of AI-powered web platforms used in healthcare and property management. I was responsible for improving user flows, enhancing visual consistency, and supporting usability testing. Collaborated with cross-functional teams to rapidly iterate on solutions, resulting in cleaner interfaces and increased task completion rates.',
-      tags: ['UI Design', 'UX Optimization', 'Prototyping', 'Usability Testing', 'Agile Teams']
+      description: 'Owned key product areas, contributing from early concepts to high-fidelity delivery.',
+      bullets: [
+        'Translated complex requirements into clear experiences',
+        'Collaborated closely with engineers to ensure feasibility',
+        'Improved usability across core product journeys',
+      ],
     },
     {
       year: '2022',
+      period: '2022',
+      location: 'Remote',
       title: 'Junior Product Designer',
       company: 'Loka',
       companyUrl: 'https://loka.com',
-      description: 'Joined the Loka team as a junior designer, assisting in interface design and user research. I contributed to design explorations, refined components within existing systems, and supported hand-off workflows with developers. This role helped me build strong foundations in UX principles and collaborative design processes.',
-      tags: ['UI Design', 'User Research', 'Component Design', 'Dev Handoff', 'Foundational UX']
+      description: 'Built a strong foundation in UX and UI across multiple projects and industries.',
+      bullets: [
+        'Supported user research',
+        'Designed interfaces and interaction patterns',
+        'Balanced user needs with business goals',
+      ],
     },
     {
       year: '2020',
+      period: '2020 – 2021',
+      location: 'Lisbon, Portugal',
       title: 'UX & UI Specialization',
       company: 'Edit.',
       companyUrl: 'https://edit.com.pt',
       description: 'An intensive course focused on human-centered design, usability, and digital product strategy. I developed skills in user research, journey mapping, wireframing, and prototyping using modern tools and practices. As part of the final project, I collaborated with a team to redesign a real e-commerce experience for Fnac.pt, addressing key UX pain points and proposing data-informed improvements.',
-      tags: ['Human-Centered Design', 'Wireframing', 'Team Collaboration', 'Design Thinking', 'UX Case Study']
     },
     {
       year: '2019',
+      period: '2019',
+      location: 'Coimbra, Portugal',
       title: 'Summer Internship',
       company: 'Whitesmith',
       companyUrl: 'https://whitesmith.co',
       description: 'During this internship, I took on the role of Product Owner for a self-initiated product idea. I led early-stage product discovery by conducting market research, user interviews, and questionnaires to validate the concept. This experience gave me a full view of the business side of product development, from identifying user pain points to shaping value propositions. It was a foundational moment that sparked my transition into product design.',
-      tags: ['Product Discovery', 'Market Research', 'User Interviews', 'Concept Validation', 'Business Thinking']
     },
     {
       year: '2017',
+      period: '2017 – 2020',
+      location: 'Coimbra, Portugal',
       title: 'Bachelor\'s in Design and Multimedia',
       company: 'University of Coimbra',
       companyUrl: 'https://www.uc.pt',
       description: 'A multidisciplinary design program with a strong digital focus. I explored everything from web development and interactive installations to motion graphics and game design. This broad foundation gave me both creative range and technical adaptability.',
-      tags: ['Web Design', 'Motion Design', 'Creative Coding', 'Interactive Media', 'Design Foundations']
     },
   ]
 
   const values = [
     {
-      icon: Heart,
+      illustration: '/Me/Light bulb.svg',
       title: 'Clarity over complexity',
       description: 'I aim to make complex systems feel understandable and usable.',
     },
     {
-      icon: Lightbulb,
+      illustration: '/Me/Scribble.svg',
       title: 'Human-centered thinking',
       description: 'Decisions start with real user needs, not assumptions.',
     },
     {
-      icon: Users,
+      illustration: '/Me/Wave.svg',
       title: 'Collaboration by default',
       description: 'The best outcomes come from working closely with engineers and stakeholders.',
     },
@@ -359,74 +382,100 @@ const AboutPage = () => {
     <div className="min-h-screen pt-16 bg-[#171717]">
       {/* Hero Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Profile Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24"
-          >
-            <div className="relative order-2 lg:order-1">
-      <div className="w-96 h-96 sm:w-[28rem] sm:h-[28rem] mx-auto rounded-2xl overflow-hidden shadow-large">
-        <img
-          src="/Me/IMG_0426.webp"
-          alt="Rita Pedrosa"
-          className="w-full h-full object-cover"
-        />
-      </div>
-            </div>
-            <div className="space-y-6 order-1 lg:order-2">
-              <h1 className="text-5xl sm:text-6xl font-medium text-gray-900 dark:text-white mb-6">
-                About <span className="text-gradient">Me</span>
-              </h1>
-              <div className="space-y-4 text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                <p>
-                  I'm a Product Designer with a background in building digital products in healthcare, B2B, and consumer spaces.
-                </p>
-                <p>
-                  I focus on clarity, usability, and collaboration, working closely with teams to turn complex problems into products that work in real-world constraints.
-                </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch mb-24">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+              className="relative order-2 lg:order-1"
+            >
+              <div className="w-full h-full min-h-[24rem] rounded-2xl overflow-hidden shadow-large">
+                <img
+                  src="/Me/IMG_0426.webp"
+                  alt="Rita Pedrosa"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              
-              {/* Stats Tags */}
-              <div className="flex flex-wrap gap-3 mt-6">
-                <div className="status-badge inline-flex items-center space-x-2 rounded-full px-4 py-2">
-                  <Calendar size={16} className="text-gray-700 dark:text-gray-300" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    4+ Years of Experience
-                  </span>
-                </div>
-                <div className="status-badge inline-flex items-center space-x-2 rounded-full px-4 py-2">
-                  <Briefcase size={16} className="text-gray-700 dark:text-gray-300" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    20+ Projects & Clients
-                  </span>
-                </div>
-                <div className="status-badge inline-flex items-center space-x-2 rounded-full px-4 py-2">
-                  <Globe size={16} className="text-gray-700 dark:text-gray-300" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Worked with teams from 5+ countries
-                  </span>
-                </div>
-      </div>
+            </motion.div>
+            <div className="space-y-6 order-1 lg:order-2">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                className="text-5xl sm:text-6xl font-medium text-white mb-2 flex items-center gap-1"
+              >
+                Hi, I&apos;m Rita
+                <img src="/Me/Sparkle.svg" alt="" className="w-16 h-16 inline-block rotate-45" />
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                className="text-xl sm:text-2xl text-gray-300 font-medium"
+              >
+                A Product Designer crafting clarity in complex products
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                className="text-base sm:text-lg text-gray-400 leading-relaxed"
+              >
+                Over the past few years, I&apos;ve worked on end-to-end product experiences, from early discovery to final implementation, collaborating closely with cross-functional teams to turn ideas into meaningful, usable solutions.
+              </motion.p>
+
+              {/* Highlights */}
+              <ul className="text-base sm:text-lg text-white divide-y divide-white/10">
+                {['4+ years designing complex digital products', 'Led design sprints with cross-functional teams', 'Focused on healthcare and AI-driven experiences'].map((item, i) => (
+                  <motion.li
+                    key={item}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="py-3"
+                  >
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Design Philosophy */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+      <section className="relative py-8 lg:pb-24 px-4 sm:px-6 lg:px-8">
+        {/* Animated blobs */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.2), rgba(96,165,250,0.2))' }}
+          animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+        />
+        <motion.div
+          className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2), rgba(59,130,246,0.2))' }}
+          animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.2), rgba(37,99,235,0.2))' }}
+          animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+        />
+        <div className="max-w-6xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
-              My Design <span className="text-gradient">Philosophy</span>
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
+              My Design Philosophy
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
               Three core principles that guide every design decision I make
@@ -434,46 +483,33 @@ const AboutPage = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {values.map((value, index) => {
-              const Icon = value.icon
-              return (
-                <motion.div
-                  key={value.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative group overflow-visible"
+            {values.map((value, index) => (
+              <motion.div
+                key={value.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                <div
+                  className="relative bg-[#1e1e1e] rounded-2xl p-8 h-full flex flex-col"
+                  style={{ outline: '1px solid rgba(255,255,255,0.08)', outlineOffset: '0px' }}
                 >
-                  <div
-                    className="relative bg-[#1e1e1e] p-8 transition-all duration-300 ease-out overflow-visible"
-                    style={{ outline: '1px solid rgba(255,255,255,0.08)', outlineOffset: '0px' }}
-                    onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #18a0fb')}
-                    onMouseLeave={e => (e.currentTarget.style.outline = '1px solid rgba(255,255,255,0.08)')}
-                  >
-                    <div className="absolute -top-[5px] -left-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute -top-[5px] -right-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 bg-[#18a0fb] z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="flex flex-col items-start">
-                      <div className="mb-4">
-                        <div className="w-12 h-12 bg-white/5 flex items-center justify-center">
-                          <Icon size={24} className="text-gray-400" />
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-medium text-white mb-2">
-                          {value.title}
-                        </h3>
-                        <p className="text-base sm:text-lg text-gray-400 leading-relaxed">
-                          {value.description}
-                        </p>
-                      </div>
-                    </div>
+                  <div className="mb-4">
+                    <img src={value.illustration} alt="" className="w-20 h-20 object-contain" />
                   </div>
-                </motion.div>
-              )
-            })}
+                  <div>
+                    <h3 className="text-xl font-medium text-white mb-2">
+                      {value.title}
+                    </h3>
+                    <p className="text-base sm:text-lg text-gray-400 leading-relaxed">
+                      {value.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -484,79 +520,91 @@ const AboutPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6 flex items-center justify-center gap-3">
               My Journey
+              <img src="/Me/Arrow.svg" alt="" className="w-20 h-20 inline-block" />
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400">
-              A timeline of my design career and key milestones
+              A path shaped by curiosity, ownership, and continuous learning
             </p>
           </motion.div>
 
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gray-500 to-gray-600" />
+          <div className="relative" ref={timelineRef}>
+            {/* Timeline Line background */}
+            <div className="absolute left-[9px] top-0 bottom-0 w-0.5 bg-white/10" />
+            {/* Timeline Line fill */}
+            <motion.div
+              className="absolute left-[9px] top-0 bottom-0 w-0.5 bg-blue-500 origin-top"
+              style={{ scaleY: lineProgress }}
+            />
 
-            <div className="space-y-12">
+            <div className="space-y-8">
               {timeline.map((item, index) => (
                 <motion.div
                   key={item.year + item.title}
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                   viewport={{ once: true }}
-                  className="relative flex items-start space-x-8"
+                  className="relative flex items-start gap-8"
                 >
                   {/* Timeline Dot */}
-                  <div className="flex-shrink-0 w-16 h-16 bg-white dark:bg-gray-800 border-4 border-gray-500 rounded-full flex items-center justify-center relative z-10">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      {item.year}
-                    </span>
+                  <div className="flex-shrink-0 w-5 flex justify-center items-start pt-6">
+                    <motion.div
+                      className="w-[10px] h-[10px] rounded-full relative z-10"
+                      initial={{ backgroundColor: 'rgba(255,255,255,0.15)', boxShadow: '0 0 0 3px rgba(59,130,246,0)' }}
+                      whileInView={{ backgroundColor: 'rgb(59, 130, 246)', boxShadow: '0 0 0 3px rgba(59,130,246,0.25)' }}
+                      transition={{ duration: 0.5, delay: index * 0.08 }}
+                      viewport={{ once: true }}
+                    />
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-soft">
+                  <div
+                    className="flex-1 bg-[#1e1e1e] p-8 rounded-2xl"
+                    style={{ outline: '1px solid rgba(255,255,255,0.08)', outlineOffset: '0px' }}
+                  >
                     <div className="mb-3">
-                      <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
+                      <p className="text-sm text-gray-500 mb-1">
+                        {item.period}{item.location && <span className="ml-3">·<span className="ml-3">{item.location}</span></span>}
+                      </p>
+                      <h3 className="text-xl font-medium text-white mb-1">
                         {item.title}
+                        {item.company && (
+                          <>
+                            {' at '}
+                            {item.companyUrl ? (
+                              <a
+                                href={item.companyUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline underline-offset-2 hover:text-gray-300 transition-colors"
+                              >
+                                {item.company}
+                              </a>
+                            ) : (
+                              item.company
+                            )}
+                          </>
+                        )}
                       </h3>
-                      {item.company && (
-                        item.companyUrl ? (
-                          <a 
-                            href={item.companyUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-gray-600 dark:text-gray-400 hover:underline inline-flex items-center gap-1"
-                          >
-                            {item.company}
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                          </a>
-                        ) : (
-                          <p className="text-sm text-gray-500 dark:text-gray-500">
-                            {item.company}
-                          </p>
-                        )
-                      )}
                     </div>
-                    <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                    <p className="text-[1rem] text-gray-400 leading-relaxed mb-4">
                       {item.description}
                     </p>
-                    {item.tags && item.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {item.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-3 py-1 rounded-full"
-                          >
-                            {tag}
-                          </span>
+                    {'bullets' in item && item.bullets && item.bullets.length > 0 && (
+                      <ul className="mb-4 space-y-1">
+                        {item.bullets.map((bullet: string) => (
+                          <li key={bullet} className="text-[1rem] text-gray-400 flex items-start gap-2">
+                            <span className="mt-2 w-1 h-1 rounded-full bg-gray-500 flex-shrink-0" />
+                            {bullet}
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     )}
                   </div>
                 </motion.div>
@@ -566,60 +614,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Tools & Expertise Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
-              Tools & Expertise
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Technologies and tools I use to bring ideas to life
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {[
-              { name: 'Figma', category: 'Design', icon: Figma },
-              { name: 'Framer', category: 'Design', icon: Code },
-              { name: 'Adobe Suite', category: 'Design', icon: Palette },
-              { name: 'After Effects', category: 'Animation', icon: Award },
-              { name: 'Premiere Pro', category: 'Animation', icon: Award },
-              { name: 'Cinema 4D', category: 'Animation', icon: Lightbulb },
-              { name: 'Lovable', category: 'AI tools', icon: Code },
-              { name: 'Claude', category: 'AI tools', icon: Code },
-              { name: 'ChatGPT', category: 'AI tools', icon: Code },
-              { name: 'Notion', category: 'Process & communication', icon: Layers },
-              { name: 'Slack', category: 'Process & communication', icon: Users },
-              { name: 'Jira', category: 'Process & communication', icon: Layers },
-            ].map((tool, index) => (
-              <motion.div
-                key={tool.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
-                className="bg-[#1e1e1e] p-6 rounded-xl border border-white/8 hover:border-white/20 transition-all"
-              >
-                <tool.icon className="w-8 h-8 text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-white mb-1">
-                  {tool.name}
-                </h3>
-                <p className="text-sm text-gray-400">
-                  {tool.category}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Small Joys Section */}
       <section className="py-24">
@@ -628,15 +622,13 @@ const AboutPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
             className="text-center"
           >
-            <p className="text-sm font-medium text-gray-400 mb-4 tracking-wider uppercase">
-              Offline Mode
-            </p>
+            <img src="/Me/Vinyl.svg" alt="" className="w-16 h-16 mx-auto mb-4" />
             <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
-              Small Joys, <span className="text-gradient">Big Inspiration</span>
+              Small Joys, Big Inspiration
             </h2>
             <p className="text-xl text-gray-400">
               These are the little things that refill my creative energy.
@@ -705,22 +697,20 @@ const AboutPage = () => {
       </section>
 
       {/* Design Conferences Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+      <section className="pt-24 pb-40 px-4 sm:px-6 lg:px-8 bg-[#171717]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-24"
           >
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-4 tracking-wider uppercase">
-              Learning & Growth
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
-              Favourite Design Conferences <span className="text-gradient">I Attended</span>
+            <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 mx-auto mb-4" />
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
+              Favourite Conferences I&apos;ve Attended
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-2">
               Design Conferences are one of my favourite ways of being inspired and to learn from 
               other companies and Designers. A great place for networking and become a better professional
             </p>
@@ -736,8 +726,8 @@ const AboutPage = () => {
                 code: 'LIS',
                 destCode: 'BCN',
                 description: 'Drew inspiration from top creatives across motion, branding, and interactive design.',
-                gradient: 'from-blue-400 to-gray-500',
-                cardBg: 'linear-gradient(to bottom right, #1e4db8, #1a3a8a)',
+                gradient: 'from-[#3372D6] to-[#1a3a8a]',
+                cardBg: 'linear-gradient(to bottom right, #3372D6, #1a3a8a)',
                 photos: [
                     '/conferences/offf-group.jpg',
                     '/conferences/offf-stage.jpg',
@@ -751,9 +741,9 @@ const AboutPage = () => {
                 destination: 'Copenhagen, Denmark',
                 code: 'LIS',
                 destCode: 'CPH',
-                description: 'Explored cutting-edge digital design topics and connected with global UX leaders.',
-                gradient: 'from-orange-400 to-red-500',
-                cardBg: 'linear-gradient(to bottom right, #c2410c, #9a1f07)',
+                description: 'Gained new perspectives on AI in product design, and learned from real-world case studies.',
+                gradient: 'from-[#FE7747] to-[#c2410c]',
+                cardBg: 'linear-gradient(to bottom right, #FE7747, #c2410c)',
                 photos: [
                     '/conferences/dm-coffee.jpg',
                     '/conferences/dm-group.jpg',

@@ -53,10 +53,8 @@ const Header = () => {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-600 rounded-lg flex items-center justify-center"
-            >
-              <span className="text-white font-bold text-sm">R</span>
-            </motion.div>
+              style={{ width: 16, height: 16, backgroundColor: '#3b82f6', borderRadius: 3, flexShrink: 0 }}
+            ></motion.div>
             <span className="font-semibold text-gray-900 dark:text-white">Rita Pedrosa</span>
           </Link>
 
@@ -75,7 +73,7 @@ const Header = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-gray-900 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors"
+                className="bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors"
               >
                 Get in Touch
               </motion.button>
@@ -86,7 +84,7 @@ const Header = () => {
           <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-2xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -120,7 +118,7 @@ const Header = () => {
                 onClick={() => setIsOpen(false)}
                 className="block"
               >
-                <button className="w-full bg-white text-gray-900 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                <button className="w-full bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors">
                   Get in Touch
                 </button>
               </Link>

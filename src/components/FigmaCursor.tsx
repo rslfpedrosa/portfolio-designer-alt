@@ -108,12 +108,17 @@ export default function FigmaCursor({ label, showPill, shouldReduceMotion, isDes
     >
       <div className="relative" style={{ transform: 'translate(2px, 2px)' }}>
         {/* Figma cursor arrow */}
-        <svg 
-          width="20" 
-          height="22" 
-          viewBox="0 0 144 159" 
-          fill="none" 
-          className="absolute -top-3 -left-1.5 text-gray-gray-600 dark:text-gray-gray-400"
+        <svg
+          width="20"
+          height="22"
+          viewBox="0 0 144 159"
+          fill="none"
+          className="absolute -top-3 -left-1.5"
+          style={{
+            color: showPill ? '#3b82f6' : '#525252',
+            transition: shouldReduceMotion ? 'none' : 'color 200ms ease-out',
+            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
+          }}
         >
           <path
             d="M32.1753 150.405C21.3357 104.423 6.46159 40.2274 0.218053 9.72129C-1.32121 2.20039 5.56282 -2.44979 12.2294 1.35683L138.377 73.3872C146.115 77.8056 144.646 89.3743 136.049 91.7188L86.8595 105.134C84.6005 105.75 82.6292 107.14 81.2894 109.06L50.0785 153.796C45.1371 160.878 34.1568 158.811 32.1753 150.405Z"
@@ -122,13 +127,15 @@ export default function FigmaCursor({ label, showPill, shouldReduceMotion, isDes
         </svg>
         {/* Pill label */}
         {label && (
-          <span 
+          <span
             ref={pillRef}
-            className="bg-gray-gray-600 dark:bg-gray-gray-500 text-white text-base font-semibold px-4 py-2 rounded-full whitespace-nowrap shadow-lg inline-block mt-1 ml-2"
+            className="text-white text-base font-semibold px-4 py-2 rounded-full whitespace-nowrap inline-block mt-1 ml-2"
             style={{
+              backgroundColor: showPill ? '#3b82f6' : '#525252',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)',
               opacity: 0,
               transform: 'scale(0.8) translateY(-4px)',
-              transition: shouldReduceMotion ? 'none' : 'opacity 200ms ease-out, transform 200ms ease-out',
+              transition: shouldReduceMotion ? 'none' : 'opacity 200ms ease-out, transform 200ms ease-out, background-color 200ms ease-out',
             }}
           >
             {label}

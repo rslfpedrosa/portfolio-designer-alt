@@ -71,15 +71,15 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
                 key={item.id}
                 className="group cursor-pointer relative overflow-visible"
                 onClick={() => item.type === 'video' && setSelectedVideo(item.media)}
-                onMouseEnter={e => { if (isDesktop) onLabelChange?.('EXPAND'); e.currentTarget.style.outline = '2px solid #18a0fb' }}
+                onMouseEnter={e => { if (isDesktop) onLabelChange?.('EXPAND'); e.currentTarget.style.outline = '2px solid #0f8be8' }}
                 onMouseLeave={e => { if (isDesktop) onLabelChange?.(null); e.currentTarget.style.outline = '' }}
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 {/* Corner Squares */}
-                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
-                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
-                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
-                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
+                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
+                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
+                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -138,7 +138,7 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-gray-gray-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>See More</span>

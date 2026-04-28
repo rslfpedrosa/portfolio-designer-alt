@@ -61,6 +61,7 @@ const HoverImagesContent = memo<{
   const x3 = cx - IMG_W_SM / 2
   const y3 = belowY
 
+
   return (
     <div
       role="presentation"
@@ -69,7 +70,7 @@ const HoverImagesContent = memo<{
       style={{ zIndex: PORTAL_Z_INDEX }}
     >
       <div
-        className="absolute rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700 transition-[opacity,transform] duration-300 ease-out"
+        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30 transition-[opacity,transform] duration-300 ease-out"
         style={{
           left: x1,
           top: y1,
@@ -92,7 +93,7 @@ const HoverImagesContent = memo<{
         />
       </div>
       <div
-        className="absolute rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700 transition-[opacity,transform] duration-300 ease-out delay-75"
+        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30 transition-[opacity,transform] duration-300 ease-out delay-75"
         style={{
           left: x2,
           top: y2,
@@ -115,7 +116,7 @@ const HoverImagesContent = memo<{
         />
       </div>
       <div
-        className="absolute rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-slate-700 transition-[opacity,transform] duration-300 ease-out delay-150"
+        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30 transition-[opacity,transform] duration-300 ease-out delay-150"
         style={{
           left: x3,
           top: y3,
@@ -137,6 +138,7 @@ const HoverImagesContent = memo<{
           fetchPriority="high"
         />
       </div>
+
     </div>
   )
 })

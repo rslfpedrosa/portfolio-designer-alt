@@ -52,17 +52,17 @@ const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
           width: bounds.width,
           height: bounds.height,
           boxSizing: 'border-box',
-          border: `${BORDER_WIDTH}px solid #18a0fb`,
+          border: `${BORDER_WIDTH}px solid #0f8be8`,
           overflow: 'visible',
           transformOrigin: 'center',
           transform: grown ? `scale(${HOVER_SCALE})` : 'scale(0.98)',
           transition: 'transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
-        <div style={{ position: 'absolute', top: -SQUARE_OFFSET, left: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
-        <div style={{ position: 'absolute', top: -SQUARE_OFFSET, right: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
-        <div style={{ position: 'absolute', bottom: -SQUARE_OFFSET, left: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
-        <div style={{ position: 'absolute', bottom: -SQUARE_OFFSET, right: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#18a0fb' }} />
+        <div style={{ position: 'absolute', top: -SQUARE_OFFSET, left: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#0f8be8' }} />
+        <div style={{ position: 'absolute', top: -SQUARE_OFFSET, right: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#0f8be8' }} />
+        <div style={{ position: 'absolute', bottom: -SQUARE_OFFSET, left: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#0f8be8' }} />
+        <div style={{ position: 'absolute', bottom: -SQUARE_OFFSET, right: -SQUARE_OFFSET, width: SQUARE_SIZE, height: SQUARE_SIZE, backgroundColor: '#0f8be8' }} />
       </div>
     </div>
   )

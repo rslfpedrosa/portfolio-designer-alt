@@ -54,7 +54,7 @@ const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
           width: bounds.width,
           height: bounds.height,
           boxSizing: 'border-box',
-          border: `${BORDER_WIDTH}px solid #18a0fb`,
+          border: `${BORDER_WIDTH}px solid #0f8be8`,
           overflow: 'visible',
           transformOrigin: 'center',
           transform: grown ? `scale(${HOVER_SCALE})` : 'scale(0.98)',
@@ -69,7 +69,7 @@ const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
             left: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
-            backgroundColor: '#18a0fb',
+            backgroundColor: '#0f8be8',
           }}
         />
         <div
@@ -79,7 +79,7 @@ const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
             right: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
-            backgroundColor: '#18a0fb',
+            backgroundColor: '#0f8be8',
           }}
         />
         <div
@@ -89,7 +89,7 @@ const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
             left: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
-            backgroundColor: '#18a0fb',
+            backgroundColor: '#0f8be8',
           }}
         />
         <div
@@ -99,7 +99,7 @@ const FrameContent = memo<{ bounds: ViewportBounds }>(({ bounds }) => {
             right: -HANDLE_OFFSET,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
-            backgroundColor: '#18a0fb',
+            backgroundColor: '#0f8be8',
           }}
         />
       </div>

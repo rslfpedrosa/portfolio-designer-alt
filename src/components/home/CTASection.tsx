@@ -9,7 +9,8 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
     <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
       {/* Animated Orbs */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-gray-400/30 to-gray-400/30 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, 150, -50, 0],
@@ -25,7 +26,8 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
       />
       
       <motion.div
-        className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-400/30 to-pink-400/30 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.25))' }}
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, -180, 60, 0],
@@ -41,7 +43,8 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
       />
       
       <motion.div
-        className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-gray-gray-400/30 rounded-full blur-3xl pointer-events-none"
+        className="absolute bottom-1/4 left-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.25), rgba(37,99,235,0.25))' }}
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, 220, -80, 0],
@@ -68,17 +71,18 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
           className="space-y-6 sm:space-y-8"
         >
           <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white">
-            Let's Build Something <span className="text-gradient">Together</span>
+            Have a product challenge?<br />
+            <span className="text-gradient">Let's solve it together.</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-            I'm always open to collaborating on thoughtful projects, from early product strategy to polished, production ready experiences.
+          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl mx-auto">
+            I'm always open to collaborating on thoughtful, impactful products, from early ideas to refined experiences.
           </p>
           <div className="flex justify-center">
             <Link href="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gray-gray-600 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-gray-700 transition-colors flex items-center space-x-2"
+                className="bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors flex items-center space-x-2"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>Get In Touch</span>

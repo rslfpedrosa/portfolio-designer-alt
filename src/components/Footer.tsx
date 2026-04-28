@@ -18,9 +18,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">R</span>
-              </div>
+              <div style={{ width: 16, height: 16, backgroundColor: '#3b82f6', borderRadius: 3, flexShrink: 0 }}></div>
               <span className="font-semibold text-gray-900 dark:text-white">Rita Pedrosa</span>
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-sm max-w-xs">
@@ -88,9 +86,6 @@ const Footer = () => {
                 All images and content are protected by copyright law. Unauthorized use is prohibited.
               </p>
             </div>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">
-              Built with Next.js & Tailwind CSS
-            </p>
           </div>
         </div>
       </div>

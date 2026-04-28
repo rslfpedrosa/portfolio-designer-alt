@@ -72,11 +72,12 @@ const HomePage = () => {
       {/* Hero Section - no overflow-hidden so slide-in animation isn't clipped */}
       <div className="relative bg-[#171717]">
         {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-animated-grid" />
+        <div className="absolute inset-0 bg-animated-grid z-10" />
 
         {/* Animated Orbs */}
         <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none z-0"
+          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 150, -50, 0],
@@ -92,7 +93,8 @@ const HomePage = () => {
         />
 
         <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none z-0"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.25))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, -180, 60, 0],
@@ -108,7 +110,8 @@ const HomePage = () => {
         />
 
         <motion.div
-          className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-blue-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
+          className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none z-0"
+          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.25), rgba(37,99,235,0.25))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{
             x: [0, 220, -80, 0],

@@ -2257,15 +2257,15 @@ Key design focuses included:
               <Link href={`/projects/${nextProject.id}`} className="group">
               <div
                 className="relative cursor-pointer bg-white dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 hover:shadow-xl hover:shadow-gray-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
-                style={{ ['--hover-border' as string]: '2px solid #18a0fb' }}
-                onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #18a0fb')}
+                style={{ ['--hover-border' as string]: '2px solid #0f8be8' }}
+                onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #0f8be8')}
                 onMouseLeave={e => (e.currentTarget.style.outline = '')}
               >
                 {/* Corner Squares */}
-                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
-                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
-                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
-                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#18a0fb' }} />
+                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
+                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
+                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
+                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
                   <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 min-h-[300px] overflow-hidden">
                     <div className="relative overflow-hidden min-h-[300px]">
                       {nextProject.heroImage ? (
