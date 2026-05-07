@@ -3,6 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
@@ -21,6 +31,10 @@
     --muted-rgb: 163, 163, 163;
     --border-rgb: 40, 40, 40;
   }
+}
+
+body.modal-open header {
+  display: none;
 }
 
 h1, h2, h3, h4, h5, h6 {

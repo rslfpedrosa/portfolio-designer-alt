@@ -1,13 +1,13 @@
 'use client'
 
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { X } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { getAllProjects } from '@/data/projects'
 import FigmaCursor from '@/components/FigmaCursor'
 import CTASection from '@/components/home/CTASection'
 import ProjectCard from '@/components/ProjectCard'
 import ShowcaseCard from '@/components/ShowcaseCard'
+import ShowcaseModal from '@/components/ShowcaseModal'
 
 const ProjectsPage = () => {
   const allProjects = getAllProjects()
@@ -16,7 +16,7 @@ const ProjectsPage = () => {
     const order = { 3: 0, 1: 1, 2: 2 }
     return (order[a.id as keyof typeof order] ?? 999) - (order[b.id as keyof typeof order] ?? 999)
   })
-  const [selectedMedia, setSelectedMedia] = useState<{ type: 'video' | 'image'; src: string } | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null)
   const [isDesktop, setIsDesktop] = useState(false)
   const shouldReduceMotion = useReducedMotion()
@@ -44,24 +44,6 @@ const ProjectsPage = () => {
 
   const cursorLabel = hoveredCardId !== null ? 'READ CASE STUDY' : null
   const showCursorPill = cursorLabel !== null
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setSelectedMedia(null)
-      }
-    }
-    if (selectedMedia) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [selectedMedia])
 
   const designShowcase = [
     {
@@ -176,70 +158,19 @@ const ProjectsPage = () => {
                 item={item}
                 index={index}
                 isDesktop={isDesktop}
-                onClick={() => setSelectedMedia({ type: item.type as 'video' | 'image', src: item.media })}
+                onClick={() => setSelectedIndex(index)}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Fullscreen Video / Image Modal */}
-      <AnimatePresence>
-        {selectedMedia && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
-            onClick={() => setSelectedMedia(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setSelectedMedia(null)}
-                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                aria-label="Close"
-              >
-                <X size={24} />
-              </button>
-              {selectedMedia.type === 'video' ? (
-                <video
-                  src={selectedMedia.src}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  onLoadedData={(e) => {
-                    const video = e.currentTarget
-                    const playPromise = video.play()
-                    if (playPromise !== undefined) {
-                      playPromise.catch(() => {
-                        video.muted = true
-                      })
-                    }
-                  }}
-                  onError={(e) => {
-                    console.warn('Video failed to load:', selectedMedia.src)
-                  }}
-                  className="w-full h-full object-contain rounded-lg"
-                />
-              ) : (
-                <img
-                  src={selectedMedia.src}
-                  alt="Exploration full screen"
-                  className="w-full h-full object-contain rounded-lg"
-                />
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <ShowcaseModal
+        items={designShowcase}
+        currentIndex={selectedIndex}
+        onClose={() => setSelectedIndex(null)}
+        onNavigate={setSelectedIndex}
+      />
 
       <CTASection isDesktop={isDesktop} />
 

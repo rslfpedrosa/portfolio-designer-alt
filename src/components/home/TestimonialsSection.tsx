@@ -32,6 +32,52 @@ const testimonials = [
   },
 ]
 
+function TestimonialCard({ expandedTestimonial, slideDirection, testimonials }: {
+  expandedTestimonial: number
+  slideDirection: 'left' | 'right'
+  testimonials: { id: number; name: string; role: string; fullContent: string; avatar: string }[]
+}) {
+  const t = testimonials.find(t => t.id === expandedTestimonial)
+  return (
+    <div className="bg-slate-900/90 backdrop-blur-2xl border border-white/20 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none">
+      <AnimatePresence mode="wait" initial={false} custom={slideDirection}>
+        <motion.div
+          key={expandedTestimonial}
+          custom={slideDirection}
+          variants={{
+            enter: (direction: string) => ({ x: direction === 'right' ? 100 : -100, opacity: 0 }),
+            center: { x: 0, opacity: 1 },
+            exit: (direction: string) => ({ x: direction === 'right' ? -100 : 100, opacity: 0 }),
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
+        >
+          <div className="mb-6 relative z-10">
+            <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-gray-400/40">
+              <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
+              <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl font-medium relative z-10">
+            "{t?.fullContent}"
+          </p>
+          <div className="flex items-center space-x-4 pt-6 border-t border-white/10 relative z-10">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-semibold text-base">{t?.avatar}</span>
+            </div>
+            <div>
+              <h4 className="font-semibold text-white text-lg">{t?.name}</h4>
+              <p className="text-base text-gray-400">{t?.role}</p>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+
 export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDesktop?: boolean, onLabelChange?: (label: string | null) => void } = {}) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -39,25 +85,36 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
   const [expandedTestimonial, setExpandedTestimonial] = useState<number | null>(null)
   const [isMounted, setIsMounted] = useState(false)
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
+  const [isPortrait, setIsPortrait] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
+    const mq = window.matchMedia('(orientation: portrait)')
+    setIsPortrait(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsPortrait(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   }, [])
 
-  // Lock body scroll and handle Escape key when modal is open
+  // Lock body scroll, hide header, and handle keyboard when modal is open
   useEffect(() => {
     if (expandedTestimonial !== null) {
       document.body.style.overflow = 'hidden'
+      document.body.classList.add('modal-open')
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') setExpandedTestimonial(null)
+        if (e.key === 'ArrowLeft') prevModalTestimonial()
+        if (e.key === 'ArrowRight') nextModalTestimonial()
       }
       document.addEventListener('keydown', handleKeyDown)
       return () => {
         document.body.style.overflow = 'unset'
+        document.body.classList.remove('modal-open')
         document.removeEventListener('keydown', handleKeyDown)
       }
     } else {
       document.body.style.overflow = 'unset'
+      document.body.classList.remove('modal-open')
     }
   }, [expandedTestimonial])
 
@@ -335,105 +392,112 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 lg:p-8"
             onClick={() => setExpandedTestimonial(null)}
-            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh' }}
           >
-            {/* Navigation Arrows - Outside the card */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                prevModalTestimonial()
-              }}
-              className="absolute left-4 md:left-8 lg:left-16 top-1/2 -translate-y-1/2 z-20 p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-110"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft size={28} />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                nextModalTestimonial()
-              }}
-              className="absolute right-4 md:right-8 lg:right-16 top-1/2 -translate-y-1/2 z-20 p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-110"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight size={28} />
-            </button>
-
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="bg-slate-900/90 backdrop-blur-2xl border border-white/20 rounded-2xl p-8 md:p-12 lg:p-16 max-w-4xl w-full shadow-2xl relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none"
+              className="w-full max-w-4xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setExpandedTestimonial(null)}
-                className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                aria-label="Close"
-              >
-                <X size={24} />
-              </button>
-
-              {/* Animated Content */}
-              <AnimatePresence mode="wait" initial={false} custom={slideDirection}>
-                <motion.div
-                  key={expandedTestimonial}
-                  custom={slideDirection}
-                  variants={{
-                    enter: (direction: string) => ({
-                      x: direction === 'right' ? 100 : -100,
-                      opacity: 0
-                    }),
-                    center: {
-                      x: 0,
-                      opacity: 1
-                    },
-                    exit: (direction: string) => ({
-                      x: direction === 'right' ? -100 : 100,
-                      opacity: 0
-                    })
-                  }}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    duration: 0.4,
-                    ease: 'easeInOut'
-                  }}
+              {/* Close */}
+              <div className="flex justify-end pb-3 flex-shrink-0">
+                <button
+                  onClick={() => setExpandedTestimonial(null)}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  aria-label="Close"
                 >
-                  {/* Quote Icon */}
-                  <div className="mb-6 relative z-10">
-                    <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-gray-gray-400/40">
-                      <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
-                      <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
-                    </svg>
-                  </div>
+                  <X size={24} />
+                </button>
+              </div>
 
-                  {/* Full Testimonial Text */}
-                  <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl lg:text-3xl font-medium relative z-10">
-                    "{testimonials.find(t => t.id === expandedTestimonial)?.fullContent}"
-                  </p>
-
-                  {/* Author Info */}
-                  <div className="flex items-center space-x-4 pt-6 border-t border-white/10 relative z-10">
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-semibold text-base">
-                        {testimonials.find(t => t.id === expandedTestimonial)?.avatar}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white text-lg">
-                        {testimonials.find(t => t.id === expandedTestimonial)?.name}
-                      </h4>
-                      <p className="text-base text-gray-400">
-                        {testimonials.find(t => t.id === expandedTestimonial)?.role}
-                      </p>
-                    </div>
+              {/* Dot indicators (always visible below card / below arrow row) */}
+              {(() => {
+                const dots = (
+                  <div className="flex items-center justify-center gap-2 pt-3 flex-shrink-0">
+                    {testimonials.map((t) => (
+                      <button
+                        key={t.id}
+                        onClick={() => {
+                          const currentIdx = testimonials.findIndex(x => x.id === expandedTestimonial)
+                          const targetIdx = testimonials.findIndex(x => x.id === t.id)
+                          setSlideDirection(targetIdx > currentIdx ? 'right' : 'left')
+                          setExpandedTestimonial(t.id)
+                        }}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          t.id === expandedTestimonial ? 'w-8 bg-white' : 'w-2 bg-gray-600 hover:bg-gray-400'
+                        }`}
+                        aria-label={`Go to testimonial ${t.id}`}
+                      />
+                    ))}
                   </div>
-                </motion.div>
-              </AnimatePresence>
+                )
+
+                const arrowBtn = (dir: 'prev' | 'next') => (
+                  <button
+                    onClick={dir === 'prev' ? prevModalTestimonial : nextModalTestimonial}
+                    className="flex-shrink-0 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                    aria-label={dir === 'prev' ? 'Previous testimonial' : 'Next testimonial'}
+                  >
+                    {dir === 'prev' ? <ChevronLeft size={22} /> : <ChevronRight size={22} />}
+                  </button>
+                )
+
+                return isPortrait ? (
+                  /* Portrait: card above, arrows flanking dots below */
+                  <>
+                    <div className="flex-1 overflow-y-auto min-h-0">
+                      <TestimonialCard
+                        expandedTestimonial={expandedTestimonial}
+                        slideDirection={slideDirection}
+                        testimonials={testimonials}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 pt-3 flex-shrink-0">
+                      {arrowBtn('prev')}
+                      <div className="flex flex-1 items-center justify-center gap-2">
+                        {testimonials.map((t) => (
+                          <button
+                            key={t.id}
+                            onClick={() => {
+                              const currentIdx = testimonials.findIndex(x => x.id === expandedTestimonial)
+                              const targetIdx = testimonials.findIndex(x => x.id === t.id)
+                              setSlideDirection(targetIdx > currentIdx ? 'right' : 'left')
+                              setExpandedTestimonial(t.id)
+                            }}
+                            className={`h-2 rounded-full transition-all duration-300 ${
+                              t.id === expandedTestimonial ? 'w-8 bg-white' : 'w-2 bg-gray-600 hover:bg-gray-400'
+                            }`}
+                            aria-label={`Go to testimonial ${t.id}`}
+                          />
+                        ))}
+                      </div>
+                      {arrowBtn('next')}
+                    </div>
+                  </>
+                ) : (
+                  /* Landscape / desktop: arrows flank the card, dots centred below */
+                  <>
+                    <div className="flex items-center gap-3 flex-1 min-h-0">
+                      <div className="flex-shrink-0 w-12 flex justify-center">
+                        {arrowBtn('prev')}
+                      </div>
+                      <div className="flex-1 min-w-0 overflow-y-auto">
+                        <TestimonialCard
+                          expandedTestimonial={expandedTestimonial}
+                          slideDirection={slideDirection}
+                          testimonials={testimonials}
+                        />
+                      </div>
+                      <div className="flex-shrink-0 w-12 flex justify-center">
+                        {arrowBtn('next')}
+                      </div>
+                    </div>
+                    {dots}
+                  </>
+                )
+              })()}
             </motion.div>
           </motion.div>
         )}
