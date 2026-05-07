@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, X } from 'lucide-react'
+import ShowcaseCard from '@/components/ShowcaseCard'
 
 const designShowcase = [
   {
@@ -58,71 +59,23 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
               </span>
             </motion.div>
             <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-4 sm:mb-6">
-              Explorations & UI Work
+              Product Explorations
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              A collection of interface explorations, component designs, and visual experiments
+              Explorations in interaction, systems, and visual design.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {designShowcase.map((item, index) => (
-              <div
+              <ShowcaseCard
                 key={item.id}
-                className="group cursor-pointer relative overflow-visible"
+                item={item}
+                index={index}
+                isDesktop={isDesktop}
+                onLabelChange={onLabelChange}
                 onClick={() => item.type === 'video' && setSelectedVideo(item.media)}
-                onMouseEnter={e => { if (isDesktop) onLabelChange?.('EXPAND'); e.currentTarget.style.outline = '2px solid #0f8be8' }}
-                onMouseLeave={e => { if (isDesktop) onLabelChange?.(null); e.currentTarget.style.outline = '' }}
-                style={isDesktop ? { cursor: 'none' } : {}}
-              >
-                {/* Corner Squares */}
-                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative bg-[#1e1e1e] backdrop-blur-sm hover:shadow-xl hover:scale-[1.05] transition-all duration-500 ease-out overflow-hidden"
-                >
-                  
-                  <div className="aspect-video relative overflow-hidden bg-gray-200 dark:bg-gray-800">
-                    {item.type === 'video' ? (
-                      <video
-                        src={item.media}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                        onLoadedData={(e) => {
-                          const video = e.currentTarget
-                          const playPromise = video.play()
-                          if (playPromise !== undefined) {
-                            playPromise.catch(() => {
-                              video.muted = true
-                            })
-                          }
-                        }}
-                        onEnded={(e) => {
-                          e.currentTarget.currentTime = 0
-                          e.currentTarget.play().catch(() => {})
-                        }}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                      />
-                    ) : (
-                      <img
-                        src={item.media}
-                        alt={`Exploration ${item.id}`}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
-                </motion.div>
-              </div>
+              />
             ))}
           </div>
 
@@ -138,7 +91,7 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>See More</span>
