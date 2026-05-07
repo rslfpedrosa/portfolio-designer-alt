@@ -60,7 +60,7 @@ const Header = () => {
               whileTap={{ scale: 0.95 }}
               style={{ width: 16, height: 16, backgroundColor: '#3b82f6', borderRadius: 3, flexShrink: 0 }}
             ></motion.div>
-            <span className="font-semibold text-gray-900 dark:text-white">Rita Pedrosa</span>
+            <span className="font-semibold text-white">Rita Pedrosa</span>
           </Link>
 
           {/* Desktop Navigation */}

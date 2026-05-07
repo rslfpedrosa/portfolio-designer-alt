@@ -12,39 +12,39 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+    <footer className="bg-[#171717] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div style={{ width: 16, height: 16, backgroundColor: '#3b82f6', borderRadius: 3, flexShrink: 0 }}></div>
-              <span className="font-semibold text-gray-900 dark:text-white">Rita Pedrosa</span>
+              <span className="font-semibold text-white">Rita Pedrosa</span>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 text-sm max-w-xs">
+            <p className="text-gray-400 text-sm max-w-xs">
               Product Designer & Creative Thinker crafting meaningful digital experiences.
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Quick Links</h3>
+            <h3 className="font-semibold text-white">Quick Links</h3>
             <div className="space-y-2">
               <Link
                 href="/projects"
-                className="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors text-sm"
+                className="block text-gray-400 hover:text-white transition-colors text-sm"
               >
                 Work
               </Link>
               <Link
                 href="/about"
-                className="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors text-sm"
+                className="block text-gray-400 hover:text-white transition-colors text-sm"
               >
                 About
               </Link>
               <Link
                 href="/contact"
-                className="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors text-sm"
+                className="block text-gray-400 hover:text-white transition-colors text-sm"
               >
                 Contact
               </Link>
@@ -53,7 +53,7 @@ const Footer = () => {
 
           {/* Social Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Connect</h3>
+            <h3 className="font-semibold text-white">Connect</h3>
             <div className="flex space-x-4">
               {socialLinks.map((social) => {
                 const Icon = social.icon
@@ -65,10 +65,10 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+                    className="p-2 rounded-lg bg-white/10 border border-white/10 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
                     aria-label={social.name}
                   >
-                    <Icon size={18} className="text-gray-600 dark:text-gray-400" />
+                    <Icon size={18} className="text-gray-400" />
                   </motion.a>
                 )
               })}
@@ -76,7 +76,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-8 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
               <p className="text-gray-500 dark:text-gray-400 text-sm">

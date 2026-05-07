@@ -95,10 +95,10 @@ const ProjectsPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h1 className="text-5xl sm:text-6xl font-medium text-gray-900 dark:text-white mb-3 sm:mb-6">
+            <h1 className="text-5xl sm:text-6xl font-medium text-white mb-3 sm:mb-6">
               My <span className="text-gradient">Work</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
               Selected work across healthcare, AI, and digital experiences, focused on bringing clarity to complex products.
             </p>
           </motion.div>
@@ -139,14 +139,14 @@ const ProjectsPage = () => {
               viewport={{ once: true }}
               className="inline-block mb-4"
             >
-              <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase">
+              <span className="text-sm font-medium tracking-wider text-gray-400 uppercase">
                 Design Showcase
               </span>
             </motion.div>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Product Explorations
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Explorations in interaction, systems, and visual design.
             </p>
           </motion.div>

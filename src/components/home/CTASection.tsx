@@ -70,11 +70,11 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
           viewport={{ once: true }}
           className="space-y-6 sm:space-y-8"
         >
-          <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white">
+          <h2 className="text-4xl sm:text-5xl font-medium text-white">
             Have a product challenge?<br />
             <span className="text-gradient">Let's solve it together.</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl mx-auto">
+          <p className="text-xl text-gray-400 leading-relaxed max-w-xl mx-auto">
             I'm always open to collaborating on thoughtful, impactful products, from early ideas to refined experiences.
           </p>
           <div className="flex justify-center">

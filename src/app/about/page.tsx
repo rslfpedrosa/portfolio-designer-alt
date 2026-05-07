@@ -477,7 +477,7 @@ const AboutPage = () => {
             <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               My Design Philosophy
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 sm:max-w-3xl sm:mx-auto">
+            <p className="text-xl text-gray-400 sm:max-w-3xl sm:mx-auto">
               Three core principles that guide every design decision I make
             </p>
           </motion.div>
@@ -524,11 +524,11 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-left sm:text-center mb-8 sm:mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6 flex items-center justify-start sm:justify-center gap-3">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6 flex items-center justify-start sm:justify-center gap-3">
               My Journey
               <img src="/Me/Arrow.svg" alt="" className="w-20 h-20 inline-block" />
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-gray-400">
               A path shaped by curiosity, ownership, and continuous learning
             </p>
           </motion.div>
@@ -710,7 +710,7 @@ const AboutPage = () => {
             <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Favourite Conferences I&apos;ve Attended
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 sm:max-w-3xl sm:mx-auto mb-2">
+            <p className="text-xl text-gray-400 sm:max-w-3xl sm:mx-auto mb-2">
               Design Conferences are one of my favourite ways of being inspired and to learn from
               other companies and Designers. A great place for networking and become a better professional
             </p>

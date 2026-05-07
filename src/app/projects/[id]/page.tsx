@@ -789,7 +789,7 @@ Key design focuses included:
                       <span
                         className={`text-base transition-colors duration-200 leading-6 h-6 ${
                           isActive
-                            ? 'text-gray-900 dark:text-white font-medium'
+                            ? 'text-white font-medium'
                             : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'
                         }`}
                       >
@@ -819,7 +819,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm overflow-hidden"
                 >
                   <div className="px-6 sm:px-10 pt-8 pb-2">
                     <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Project Summary</h2>
@@ -841,7 +841,7 @@ Key design focuses included:
                         viewport={{ once: true }}
                         className="grid grid-cols-1 sm:grid-cols-[120px,1fr] gap-1 sm:gap-8 py-5"
                       >
-                        <span className="text-xs font-semibold uppercase tracking-wide pt-1 text-gray-600 dark:text-gray-400">{label}</span>
+                        <span className="text-xs font-semibold uppercase tracking-wide pt-1 text-gray-400">{label}</span>
                         <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">{value}</p>
                       </motion.div>
                     ))}
@@ -868,7 +868,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Overview</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Overview</h2>
               <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Bocca is a curated gastronomic gifting experience designed to celebrate food, craft, and storytelling. The project brings together physical products and digital touchpoints to create a sensorial journey that begins before the box is opened and continues beyond the moment of gifting.
@@ -946,7 +946,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">My Role</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">My Role</h2>
               <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
                 {([
                   { icon: <BookOpen className="w-5 h-5" strokeWidth={1.5} />, title: 'Brand concept & storytelling', description: 'Defining the brand concept and storytelling' },
@@ -994,7 +994,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Design Focus</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Design Focus</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 The project focused on designing for depth over novelty, guided by three core principles.
               </p>
@@ -1055,7 +1055,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Branding & Visual Identity</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Branding & Visual Identity</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 Bocca&apos;s visual identity was designed to reflect warmth, authenticity, and the joy of sharing food.
               </p>
@@ -1097,7 +1097,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Packaging Design</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Packaging Design</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 Packaging plays a key role in the Bocca experience.
               </p>
@@ -1150,7 +1150,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Digital Experience</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Digital Experience</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 To complement the physical product, I also designed a digital presence for Bocca.
               </p>
@@ -1179,7 +1179,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Impact</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Impact</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 Bocca demonstrates how thoughtful design can elevate everyday experiences.
               </p>
@@ -1208,7 +1208,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Reflection</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Reflection</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 Designing Bocca highlighted the importance of thinking beyond individual touchpoints and designing complete experiences.
               </p>
@@ -1258,7 +1258,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Overview</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Overview</h2>
               <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Cortado is a GenAI-powered rental management SaaS designed to simplify the day-to-day operations of independent landlords and small property managers. The goal was to reduce fragmentation across tools and automate repetitive work by bringing messaging, leasing, pricing, and maintenance into one AI-assisted workspace.
@@ -1290,7 +1290,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Overview</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Overview</h2>
               <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   This project originated from the Loka Innovators Award, an initiative designed to explore new opportunities in healthcare innovation.
@@ -1374,7 +1374,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">My Role</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">My Role</h2>
               <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
                 {([
                   { icon: <Search className="w-5 h-5" strokeWidth={1.5} />, title: 'Discovery & Synthesis', description: 'Participated in end-to-end discovery and synthesis' },
@@ -1472,7 +1472,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">The Design Sprint</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">The Design Sprint</h2>
               <div className="w-full rounded-2xl overflow-hidden">
                 <video
                   src="/projects/Onyx/Design Sprint.webm"
@@ -1525,12 +1525,12 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Understanding the Problem</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Understanding the Problem</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
                 {/* Text Content - Left Side */}
                 <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed flex flex-col">
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white mb-4">CPPS as a Care Challenge</h3>
+                    <h3 className="text-xl sm:text-2xl font-medium text-white mb-4">CPPS as a Care Challenge</h3>
                     <p>
                       CPPS affects a significant portion of the population, yet patients often spend years navigating unclear diagnoses, fragmented care, and inconsistent treatment plans. Symptoms fluctuate, progress is rarely linear, and setbacks are common.
                     </p>
@@ -1587,7 +1587,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">The Clinician Perspective</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">The Clinician Perspective</h2>
               <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Through discovery and direct collaboration with pelvic floor physical therapists, several recurring constraints emerged:
@@ -1642,7 +1642,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Design Focus</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Design Focus</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 Based on research insights, we identified key design priorities to guide the platform experience.
               </p>
@@ -1694,7 +1694,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">The Solution</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">The Solution</h2>
 
               {/* Feature Cards */}
               <div className="space-y-10">
@@ -1783,7 +1783,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Reflection</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Reflection</h2>
               <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Designing Onyx highlighted how important visibility and communication are in complex healthcare journeys. Working closely with clinicians helped ensure the platform addressed real workflow challenges rather than theoretical ones.
@@ -1814,7 +1814,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">My Role</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">My Role</h2>
               <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
                 {([
                   { icon: <Eye className="w-5 h-5" strokeWidth={1.5} />, title: 'Research Synthesis', description: 'Reviewing and synthesizing insights generated from the design sprint' },
@@ -1862,7 +1862,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Understanding the Users</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Understanding the Users</h2>
               <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Reviewing the outcomes of the design sprint revealed a clear pattern in how rental operators work today:
@@ -1874,10 +1874,10 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <RefreshCw className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">Work is fragmented across too many tools</h3>
+                  <RefreshCw className="w-6 h-6 text-gray-400 mb-3" />
+                  <h3 className="font-medium text-white mb-2">Work is fragmented across too many tools</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Listings, guest communication, pricing, and operations live in separate platforms, forcing constant context switching.</p>
                 </motion.div>
                 <motion.div
@@ -1885,10 +1885,10 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <MessageSquare className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">Guest communication dominates daily work</h3>
+                  <MessageSquare className="w-6 h-6 text-gray-400 mb-3" />
+                  <h3 className="font-medium text-white mb-2">Guest communication dominates daily work</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Responding to repetitive guest messages takes up several hours a day and frequently interrupts higher-value tasks.</p>
                 </motion.div>
                 <motion.div
@@ -1896,10 +1896,10 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Eye className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">Automation must remain transparent</h3>
+                  <Eye className="w-6 h-6 text-gray-400 mb-3" />
+                  <h3 className="font-medium text-white mb-2">Automation must remain transparent</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Operators are open to AI assistance, but only when they can understand, review, and stay in control of system actions.</p>
                 </motion.div>
               </div>
@@ -1930,7 +1930,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Design Focus</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Design Focus</h2>
               <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   Based on the synthesized insights, guest messaging emerged as the highest-impact area for improvement.
@@ -1945,9 +1945,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Accessibility className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
+                  <Accessibility className="w-6 h-6 text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Reducing cognitive load in message-heavy workflows</p>
                 </motion.div>
                 <motion.div
@@ -1955,9 +1955,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Eye className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
+                  <Eye className="w-6 h-6 text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Making AI assistance visible without feeling intrusive</p>
                 </motion.div>
                 <motion.div
@@ -1965,9 +1965,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Settings className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
+                  <Settings className="w-6 h-6 text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Supporting fast decisions while preserving user control</p>
                 </motion.div>
                 <motion.div
@@ -1975,9 +1975,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 flex flex-col items-start"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <LayoutDashboard className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
+                  <LayoutDashboard className="w-6 h-6 text-gray-400 mb-3" />
                   <p className="text-gray-800 dark:text-gray-200">Structuring complex information into calm, scannable layouts</p>
                 </motion.div>
               </div>
@@ -2052,7 +2052,7 @@ Key design focuses included:
               className="space-y-8"
             >
               <div>
-                <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white mb-2">Solution</h2>
+                <h2 className="text-2xl sm:text-3xl font-medium text-white mb-2">Solution</h2>
                 <h3 className="text-xl sm:text-2xl font-medium text-gray-700 dark:text-gray-300 mb-6">An AI-Assisted Inbox</h3>
               </div>
               <div className="space-y-6 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
@@ -2069,7 +2069,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm overflow-hidden flex flex-col"
                 >
                   <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
                     <Image
@@ -2081,7 +2081,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <PenLine className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
+                    <PenLine className="w-6 h-6 text-gray-400 mb-3" />
                     <p className="text-gray-800 dark:text-gray-200">Suggests draft replies that users can review and edit</p>
                   </div>
                 </motion.div>
@@ -2090,7 +2090,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm overflow-hidden flex flex-col"
                 >
                   <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
                     <Image
@@ -2102,7 +2102,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <LayoutDashboard className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
+                    <LayoutDashboard className="w-6 h-6 text-gray-400 mb-3" />
                     <p className="text-gray-800 dark:text-gray-200">Pulls context from reservations, policies, and property data</p>
                   </div>
                 </motion.div>
@@ -2111,7 +2111,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col"
+                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm overflow-hidden flex flex-col"
                 >
                   <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
                     <Image
@@ -2123,7 +2123,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <Rocket className="w-6 h-6 text-gray-600 dark:text-gray-400 mb-3" />
+                    <Rocket className="w-6 h-6 text-gray-400 mb-3" />
                     <p className="text-gray-800 dark:text-gray-200">Learns from user feedback to improve future suggestions</p>
                   </div>
                 </motion.div>
@@ -2221,7 +2221,7 @@ Key design focuses included:
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">Reflection</h2>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Reflection</h2>
               <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
                   This project highlighted the value of synthesis and execution in early-stage product work. Turning research insights into a clear, usable interface was critical in making the concept tangible and credible.
@@ -2244,7 +2244,7 @@ Key design focuses included:
         ref={(el) => {
           if (el) nextProjectRef.current = el
         }}
-        className="py-24 px-6 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900"
+        className="py-24 px-6 sm:px-6 lg:px-8 bg-[#171717]"
       >
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -2253,10 +2253,10 @@ Key design focuses included:
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-              <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white text-center mb-12 tracking-tight">Next Project</h2>
+              <h2 className="text-2xl sm:text-3xl font-semibold text-white text-center mb-12 tracking-tight">Next Project</h2>
               <Link href={`/projects/${nextProject.id}`} className="group">
               <div
-                className="relative cursor-pointer bg-white dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 hover:shadow-xl hover:shadow-gray-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
+                className="relative cursor-pointer bg-[#1e1e1e]/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 hover:shadow-xl hover:shadow-gray-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
                 style={{ ['--hover-border' as string]: '2px solid #0f8be8' }}
                 onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #0f8be8')}
                 onMouseLeave={e => (e.currentTarget.style.outline = '')}
@@ -2290,13 +2290,13 @@ Key design focuses included:
                       )}
                     </div>
                     <div className="p-8 sm:p-10 lg:p-14 flex flex-col justify-center text-left space-y-5">
-                    <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight">
+                    <h3 className="text-xl sm:text-2xl font-semibold text-white tracking-tight leading-tight">
                         {nextProject.title}
                     </h3>
-                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                         {nextProject.description}
                     </p>
-                    <div className="flex items-center font-medium text-gray-600 dark:text-gray-400 group-hover:translate-x-2 transition-transform duration-300 pt-2">
+                    <div className="flex items-center font-medium text-gray-400 group-hover:translate-x-2 transition-transform duration-300 pt-2">
                       <span>View case study</span>
                       <ArrowRight size={18} className="ml-2" />
                     </div>

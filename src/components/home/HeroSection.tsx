@@ -235,7 +235,7 @@ export default function HeroSection({
         <div className="relative mb-8 lg:mb-10 overflow-visible">
           <h1
             ref={headlineRef}
-            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-gray-900 dark:text-white leading-tight relative flex flex-wrap justify-center items-center gap-0 sm:gap-3 overflow-visible"
+            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-white leading-tight relative flex flex-wrap justify-center items-center gap-0 sm:gap-3 overflow-visible"
           >
             <Link
               ref={ritaRef}
@@ -300,7 +300,7 @@ export default function HeroSection({
             I design products that turn complexity into clarity.
           </motion.h2>
           <motion.p
-            className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-lg mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-gray-400 max-w-lg mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.9 }}

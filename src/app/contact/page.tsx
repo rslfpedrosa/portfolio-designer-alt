@@ -149,10 +149,10 @@ const ContactPage = () => {
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
-            <h1 className="text-5xl sm:text-6xl font-medium text-gray-900 dark:text-white">
+            <h1 className="text-5xl sm:text-6xl font-medium text-white">
               Let's Create Something <span className="text-gradient">Meaningful</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 leading-relaxed max-w-2xl mx-auto">
               I'm always excited to collaborate on projects that make a difference. 
               Whether you need help with product strategy, design systems, or creating 
               beautiful user experiences, I'd love to hear from you.
@@ -173,10 +173,10 @@ const ContactPage = () => {
               className="space-y-8"
             >
               <div>
-                <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">
+                <h2 className="text-3xl font-medium text-white mb-4">
                   Send me a message
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400">
                   Fill out the form below and I'll get back to you within 24 hours.
                 </p>
               </div>
@@ -193,7 +193,7 @@ const ContactPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors"
                     placeholder="Your name"
                   />
                 </div>
@@ -209,7 +209,7 @@ const ContactPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -225,7 +225,7 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors resize-none"
                     placeholder="Tell me about your project..."
                   />
                 </div>
@@ -261,10 +261,10 @@ const ContactPage = () => {
               className="space-y-8"
             >
               <div>
-                <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">
+                <h2 className="text-3xl font-medium text-white mb-4">
                   Get in touch
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400">
                   Prefer to reach out directly? Here are a few ways to connect with me.
                 </p>
               </div>
@@ -329,10 +329,10 @@ const ContactPage = () => {
 
               {/* Availability */}
               <div className="bg-gradient-to-br from-gray-50 to-gray-50 dark:from-gray-900/20 dark:to-gray-900/20 p-6 rounded-2xl border border-gray-100 dark:border-gray-800">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                <h3 className="text-lg font-medium text-white mb-2">
                   Current Availability
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-gray-400 mb-4">
                   I'm currently available for select projects and collaborations. 
                   Let's discuss how we can work together.
                 </p>

@@ -82,7 +82,7 @@ const CustomCursor = ({ label, isCursorActive, shouldReduceMotion }: CustomCurso
     >
       <div className="flex items-center gap-2">
         {/* Figma-like arrow cursor */}
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-gray-600 dark:text-gray-400 flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-gray-400 flex-shrink-0">
           <path
             d="M2 2L14 14M14 2L2 14"
             stroke="currentColor"
@@ -524,7 +524,7 @@ const HomeV2 = () => {
           <div className="relative mb-8 lg:mb-10">
             <h1 
               ref={headlineRef}
-              className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-gray-900 dark:text-white leading-tight relative flex flex-wrap justify-center items-center gap-2 sm:gap-3"
+              className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-white leading-tight relative flex flex-wrap justify-center items-center gap-2 sm:gap-3"
             >
               {/* "I'm Rita," - Interactive span, slides from LEFT */}
               <Link
@@ -545,7 +545,7 @@ const HomeV2 = () => {
                   I'm Rita,
                 </span>
               </Link>
-              <span className="inline-block text-gray-900 dark:text-white"> </span>
+              <span className="inline-block text-white"> </span>
               {/* "I Design." - Interactive span, slides from RIGHT, always purple */}
               <Link
                 ref={designRef}
@@ -585,7 +585,7 @@ const HomeV2 = () => {
               I design products that turn complexity into clarity.
             </motion.h2>
             <motion.p 
-              className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.9 }}
@@ -615,7 +615,7 @@ const HomeV2 = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white px-8 py-4 rounded-full font-medium text-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-100 transition-colors backdrop-blur-sm w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                className="group bg-white/80 dark:bg-gray-800/80 text-white px-8 py-4 rounded-full font-medium text-lg border border-white/10 hover:bg-gray-50 dark:hover:bg-gray-100 transition-colors backdrop-blur-sm w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               >
                 Let's Connect
               </motion.button>
@@ -673,19 +673,19 @@ const HomeV2 = () => {
               viewport={{ once: true }}
               className="inline-block mb-4"
             >
-              <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase">
+              <span className="text-sm font-medium tracking-wider text-gray-400 uppercase">
                 Featured Work
               </span>
             </motion.div>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Selected Projects
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               A selection of projects that showcase my approach to design and problem-solving
             </p>
           </motion.div>
 
-          <div className="space-y-0 border-t border-gray-200 dark:border-gray-700 mb-16">
+          <div className="space-y-0 border-t border-white/10 mb-16">
             {featuredProjects.map((project, index) => (
               <Link key={project.id} href={`/projects/${project.id}`} className="block">
                 <motion.div
@@ -695,17 +695,17 @@ const HomeV2 = () => {
                   viewport={{ once: true }}
                   className="group"
                 >
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 py-10 lg:py-14 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50/30 dark:hover:bg-gray-800/20 transition-colors duration-200">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 py-10 lg:py-14 border-b border-white/10 hover:bg-gray-50/30 dark:hover:bg-gray-800/20 transition-colors duration-200">
                     {/* Project Name - Left */}
                     <div className="lg:col-span-3 flex items-start pt-1">
-                      <h3 className="text-4xl lg:text-5xl font-medium text-gray-900 dark:text-white leading-tight group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+                      <h3 className="text-4xl lg:text-5xl font-medium text-white leading-tight group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
                         {project.title}
                       </h3>
                     </div>
 
                     {/* Description - Middle */}
                     <div className="lg:col-span-5 flex items-center">
-                      <p className="text-base lg:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                      <p className="text-base lg:text-lg text-gray-400 leading-relaxed">
                         {project.description}
                       </p>
                     </div>
@@ -735,10 +735,10 @@ const HomeV2 = () => {
                     {/* CTA Buttons - Far Right */}
                     <div className="lg:col-span-1 flex items-center justify-end lg:justify-start">
                       <div className="flex flex-col gap-2 w-full lg:w-auto">
-                        <span className="text-xs font-medium text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1.5 text-center whitespace-nowrap">
+                        <span className="text-xs font-medium text-white border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1.5 text-center whitespace-nowrap">
                           {project.category}
                         </span>
-                        <span className="text-xs font-medium text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1.5 text-center whitespace-nowrap group-hover:border-gray-900 dark:group-hover:border-gray-100 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
+                        <span className="text-xs font-medium text-white border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1.5 text-center whitespace-nowrap group-hover:border-gray-900 dark:group-hover:border-gray-100 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
                           See Case Study →
                         </span>
                       </div>
@@ -772,7 +772,7 @@ const HomeV2 = () => {
       </section>
 
       {/* Design Showcase Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -788,14 +788,14 @@ const HomeV2 = () => {
               viewport={{ once: true }}
               className="inline-block mb-4"
             >
-              <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase">
+              <span className="text-sm font-medium tracking-wider text-gray-400 uppercase">
                 Design Showcase
               </span>
             </motion.div>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Explorations & UI Work
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               A collection of interface explorations, component designs, and visual experiments
             </p>
           </motion.div>
@@ -890,13 +890,13 @@ const HomeV2 = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <span className="text-sm font-medium tracking-wider text-gray-600 dark:text-gray-400 uppercase mb-4 block">
+            <span className="text-sm font-medium tracking-wider text-gray-400 uppercase mb-4 block">
               TESTIMONIALS
             </span>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Words From My Peers
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Feedback from colleagues and collaborators I've had the privilege of designing alongside.
             </p>
           </motion.div>
@@ -909,7 +909,7 @@ const HomeV2 = () => {
       </section>
 
       {/* About Preview Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -918,10 +918,10 @@ const HomeV2 = () => {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white">
               Design is about <span className="text-gradient">connection</span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-xl text-gray-400 leading-relaxed">
               I believe great design happens when we truly understand the people we're designing for. 
               It's about creating experiences that feel intuitive, meaningful, and delightful whether 
               you're managing your energy consumption or finding your inner peace.
@@ -930,7 +930,7 @@ const HomeV2 = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group text-gray-600 dark:text-gray-400 font-medium text-lg hover:text-gray-700 dark:hover:text-gray-300 transition-colors flex items-center space-x-2 mx-auto"
+                className="group text-gray-400 font-medium text-lg hover:text-gray-700 dark:hover:text-gray-300 transition-colors flex items-center space-x-2 mx-auto"
               >
                 <span>Learn more about my approach</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -1002,10 +1002,10 @@ const HomeV2 = () => {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white">
               Let's Work Together
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-xl text-gray-400 leading-relaxed">
               I'm always excited to collaborate on meaningful projects. Whether you need help with 
               product strategy, design systems, or creating beautiful user experiences, I'd love to hear from you.
             </p>

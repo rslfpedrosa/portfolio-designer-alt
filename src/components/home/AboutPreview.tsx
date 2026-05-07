@@ -86,10 +86,10 @@ export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
               </motion.div>
             </motion.div>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white">
+          <h2 className="text-4xl sm:text-5xl font-medium text-white">
             Design is about <span className="text-gradient">connection</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-xl text-gray-400 leading-relaxed">
             I believe great design starts with deeply understanding the people behind the product.
             It's about creating experiences that feel intuitive, meaningful, and genuinely useful in real life.
           </p>

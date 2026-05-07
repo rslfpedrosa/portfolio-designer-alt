@@ -59,10 +59,10 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
                 Design Showcase
               </span>
             </motion.div>
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-4 sm:mb-6">
+            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-4 sm:mb-6">
               Product Explorations
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Explorations in interaction, systems, and visual design.
             </p>
           </motion.div>
