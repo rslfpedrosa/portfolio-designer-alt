@@ -86,77 +86,47 @@ const HomePage = () => {
   const finalCursorLabel = cursorLabel || (hoveredCardId !== null ? 'READ CASE STUDY' : null)
 
   return (
-    <div className="min-h-screen bg-[#171717]">
-      <div className="relative bg-[#171717] overflow-hidden">
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-animated-grid z-10" />
+    <div className="min-h-screen bg-[#171717] overflow-x-hidden">
+      {/* Hero + Featured Projects share one stacking context so orbs bleed through */}
+      <div className="relative overflow-visible">
+        {/* Subtle Grid Pattern — scoped to hero height only */}
+        <div className="absolute inset-x-0 top-0 h-screen bg-animated-grid pointer-events-none z-0" />
 
         {/* Animated Orbs */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none z-0"
           style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, 150, -50, 0],
-            y: [0, -120, 80, 0],
-            scale: [1, 1.3, 0.9, 1],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
+          animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
         />
-
         <motion.div
           className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none z-0"
           style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.25))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, -180, 60, 0],
-            y: [0, 120, -40, 0],
-            scale: [1, 0.7, 1.2, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
+          animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
         />
-
         <motion.div
           className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none z-0"
           style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.25), rgba(37,99,235,0.25))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{
-            x: [0, 220, -80, 0],
-            y: [0, -80, 100, 0],
-            scale: [1, 1.15, 0.85, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "loop",
-          }}
+          animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
         />
 
-        <HeroSection
-          isDesktop={isDesktop}
-          cursorLabel={finalCursorLabel}
-          showCursorPill={showCursorPill}
-          onLabelChange={setCursorLabel}
-        />
-      </div>
-
-      {/* Featured Projects - overflow-hidden to contain its own orbs */}
-      <div className="relative bg-[#171717] overflow-hidden">
-        <FeaturedProjects
-          isDesktop={isDesktop}
-          onCardHover={setHoveredCardId}
-        />
+        <div className="relative z-10">
+          <HeroSection
+            isDesktop={isDesktop}
+            cursorLabel={finalCursorLabel}
+            showCursorPill={showCursorPill}
+            onLabelChange={setCursorLabel}
+          />
+          <FeaturedProjects
+            isDesktop={isDesktop}
+            onCardHover={setHoveredCardId}
+          />
+        </div>
       </div>
 
       {/* Design Showcase Section */}
