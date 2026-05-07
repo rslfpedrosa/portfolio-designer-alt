@@ -69,8 +69,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-[#171717]">
-      {/* Hero Section - no overflow-hidden so slide-in animation isn't clipped */}
-      <div className="relative bg-[#171717]">
+      <div className="relative bg-[#171717] overflow-hidden">
         {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 bg-animated-grid z-10" />
 

@@ -37,7 +37,7 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
 
   return (
     <>
-      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

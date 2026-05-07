@@ -118,9 +118,6 @@ export default function FeaturedProjects({
                               </span>
                             ))}
                           </div>
-                          <span className="text-sm text-gray-400 dark:text-gray-500">
-                            {project.id === 1 ? '2025' : project.id === 3 ? '2025' : project.id === 2 ? '2023' : '2024'}
-                          </span>
                         </div>
                       </div>
                       {/* Right Column - Hero image */}

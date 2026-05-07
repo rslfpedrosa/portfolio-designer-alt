@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
   return (
-    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -19,7 +19,7 @@ export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
           {/* Three Stacked Photos */}
           <div className="flex justify-center mb-8 sm:mb-12">
             <motion.div 
-              className="relative w-[350px] h-[240px] sm:w-[450px] sm:h-[300px]"
+              className="relative w-[350px] max-w-[calc(100vw-2rem)] h-[240px] sm:w-[450px] sm:h-[300px]"
               initial="rest"
               whileHover="hover"
               animate="rest"

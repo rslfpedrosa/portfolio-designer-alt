@@ -381,15 +381,15 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen pt-16 bg-[#171717]">
       {/* Hero Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+      <section className="pt-10 pb-8 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Profile Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch mb-4 sm:mb-24">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative order-2 lg:order-1"
+              className="relative order-1 lg:order-1"
             >
               <div className="w-full h-full min-h-[24rem] rounded-2xl overflow-hidden shadow-large">
                 <img
@@ -399,7 +399,7 @@ const AboutPage = () => {
                 />
               </div>
             </motion.div>
-            <div className="space-y-6 order-1 lg:order-2">
+            <div className="space-y-6 order-2 lg:order-2">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -472,17 +472,17 @@ const AboutPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-left sm:text-center mb-8 sm:mb-16"
           >
             <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               My Design Philosophy
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-400 sm:max-w-3xl sm:mx-auto">
               Three core principles that guide every design decision I make
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
             {values.map((value, index) => (
               <motion.div
                 key={value.title}
@@ -515,16 +515,16 @@ const AboutPage = () => {
       </section>
 
       {/* Timeline Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-left sm:text-center mb-8 sm:mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6 flex items-center justify-center gap-3">
+            <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6 flex items-center justify-start sm:justify-center gap-3">
               My Journey
               <img src="/Me/Arrow.svg" alt="" className="w-20 h-20 inline-block" />
             </h2>
@@ -616,17 +616,17 @@ const AboutPage = () => {
 
 
       {/* Small Joys Section */}
-      <section className="py-24">
+      <section className="py-12 sm:py-24">
         {/* Heading — contained */}
-        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-12">
+        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-6 sm:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-center"
+            className="text-left sm:text-center"
           >
-            <img src="/Me/Vinyl.svg" alt="" className="w-16 h-16 mx-auto mb-4" />
+            <img src="/Me/Vinyl.svg" alt="" className="w-16 h-16 sm:mx-auto mb-4" />
             <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Small Joys, Big Inspiration
             </h2>
@@ -697,21 +697,21 @@ const AboutPage = () => {
       </section>
 
       {/* Design Conferences Section */}
-      <section className="pt-24 pb-40 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+      <section className="pt-12 sm:pt-24 pb-20 sm:pb-40 px-4 sm:px-6 lg:px-8 bg-[#171717]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-center mb-24"
+            className="text-left sm:text-center mb-12 sm:mb-24"
           >
-            <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 mx-auto mb-4" />
+            <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 sm:mx-auto mb-4" />
             <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
               Favourite Conferences I&apos;ve Attended
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-2">
-              Design Conferences are one of my favourite ways of being inspired and to learn from 
+            <p className="text-xl text-gray-600 dark:text-gray-400 sm:max-w-3xl sm:mx-auto mb-2">
+              Design Conferences are one of my favourite ways of being inspired and to learn from
               other companies and Designers. A great place for networking and become a better professional
             </p>
           </motion.div>

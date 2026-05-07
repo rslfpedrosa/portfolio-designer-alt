@@ -1,50 +1,28 @@
 'use client'
 
 import { useEffect } from 'react'
+import Lenis from 'lenis'
 
 const SmoothScroll = () => {
   useEffect(() => {
-    // Enhanced smooth scrolling for all anchor links
-    const handleSmoothScroll = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      const link = target.closest('a[href^="#"]') as HTMLAnchorElement
-      
-      if (link) {
-        const href = link.getAttribute('href')
-        if (href && href.startsWith('#')) {
-          const targetId = href.substring(1)
-          const targetElement = document.getElementById(targetId)
-          
-          if (targetElement) {
-            e.preventDefault()
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-            })
-          }
-        }
-      }
+    const lenis = new Lenis({
+      lerp: 0.09,
+      smoothWheel: true,
+      syncTouch: false,
+    })
+
+    let rafId: number
+
+    function raf(time: number) {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
     }
 
-    // Apply smooth scrolling to all internal links
-    document.addEventListener('click', handleSmoothScroll, true)
-
-    // Smooth scroll on page load if there's a hash
-    if (window.location.hash) {
-      const targetId = window.location.hash.substring(1)
-      const targetElement = document.getElementById(targetId)
-      if (targetElement) {
-        setTimeout(() => {
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          })
-        }, 100)
-      }
-    }
+    rafId = requestAnimationFrame(raf)
 
     return () => {
-      document.removeEventListener('click', handleSmoothScroll, true)
+      cancelAnimationFrame(rafId)
+      lenis.destroy()
     }
   }, [])
 
