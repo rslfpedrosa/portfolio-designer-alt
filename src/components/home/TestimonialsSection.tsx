@@ -55,7 +55,7 @@ function TestimonialCard({ expandedTestimonial, slideDirection, testimonials }: 
           transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
           <div className="mb-6 relative z-10">
-            <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-gray-400/40">
+            <svg width="56" height="56" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
               <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
               <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
             </svg>
@@ -63,14 +63,9 @@ function TestimonialCard({ expandedTestimonial, slideDirection, testimonials }: 
           <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl font-medium relative z-10">
             "{t?.fullContent}"
           </p>
-          <div className="flex items-center space-x-4 pt-6 border-t border-white/10 relative z-10">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-semibold text-base">{t?.avatar}</span>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white text-lg">{t?.name}</h4>
-              <p className="text-base text-gray-400">{t?.role}</p>
-            </div>
+          <div className="pt-6 border-t border-white/10 relative z-10">
+            <h4 className="font-semibold text-white text-lg">{t?.name}</h4>
+            <p className="text-base text-gray-400">{t?.role}</p>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -183,13 +178,14 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
 
   return (
     <>
-    <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
+    <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#171717]">
       {/* Subtle Grid Pattern */}
       <div className="absolute inset-0 bg-animated-grid" />
       
       {/* Animated Orbs */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-gray-400/60 to-gray-400/60 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.2))' }}
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, 150, -50, 0],
@@ -203,9 +199,10 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
           repeatType: "loop",
         }}
       />
-      
+
       <motion.div
-        className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-gray-400/60 to-pink-400/60 rounded-full blur-3xl pointer-events-none"
+        className="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.2))' }}
         initial={{ x: 0, y: 0, scale: 1 }}
         animate={{
           x: [0, -100, 120, 0],
@@ -241,67 +238,74 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
 
         {/* Cards Container */}
         <div className="relative max-w-4xl mx-auto overflow-visible">
-          {/* Desktop: Single card carousel */}
-          <div className="hidden md:block relative h-[400px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                className="absolute inset-0 group"
-                onClick={() => setExpandedTestimonial(testimonials[currentIndex].id)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{
-                  duration: 0.4,
-                  ease: 'easeInOut',
-                }}
+          {/* Desktop: Single card carousel with flanking arrows */}
+          <div
+            className="hidden md:flex items-center gap-3"
+            onMouseEnter={() => isDesktop && onLabelChange?.('READ FULL REVIEW')}
+            onMouseLeave={() => isDesktop && onLabelChange?.(null)}
+          >
+            {/* Prev arrow */}
+            <div className="flex-shrink-0 w-12 flex justify-center items-center h-[400px]">
+              <button
+                onClick={previousTestimonial}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                style={isDesktop ? { cursor: 'none' } : {}}
+                aria-label="Previous testimonial"
               >
-                <div
-                  className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-10 lg:px-12 py-8 lg:py-10 shadow-2xl shadow-black/50 flex flex-col h-full justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none cursor-pointer"
-                  onMouseEnter={() => isDesktop && onLabelChange?.('READ FULL REVIEW')}
-                  onMouseLeave={() => isDesktop && onLabelChange?.(null)}
+                <ChevronLeft size={22} />
+              </button>
+            </div>
+
+            {/* Card */}
+            <div
+              className="flex-1 relative h-[400px]"
+              style={isDesktop ? { cursor: 'none' } : { cursor: 'pointer' }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  className="absolute inset-0"
+                  onClick={() => setExpandedTestimonial(testimonials[currentIndex].id)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: 'easeInOut' }}
                 >
-                  
-                  {/* Quote Icon */}
-                  <div className="mb-6 relative z-10">
-                    <svg width="56" height="56" viewBox="0 0 40 40" fill="none" className="text-gray-gray-400/40">
-                      <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
-                      <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
-                    </svg>
-                  </div>
-                  
-                  {/* Testimonial Text */}
-                  <p className="text-white leading-relaxed mb-8 text-2xl lg:text-3xl font-medium relative z-10">
-                    "{testimonials[currentIndex].content}"
-                  </p>
-                  
-                  {/* Author Info */}
-                  <div className="flex items-center justify-between pt-6 mt-auto border-t border-white/10 relative z-10">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-semibold text-base">{testimonials[currentIndex].avatar}</span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-white text-lg">
-                          {testimonials[currentIndex].name}
-                        </h4>
-                        <p className="text-base text-gray-400">
-                          {testimonials[currentIndex].role}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Read More Indicator - Aligned with author */}
-                    <div className="text-gray-gray-400 text-sm font-medium flex items-center gap-2 flex-shrink-0">
-                      <span className="hidden lg:inline">Click to read full review</span>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <div className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-10 lg:px-12 py-8 lg:py-10 shadow-2xl shadow-black/50 flex flex-col h-full justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none">
+                    {/* Quote Icon */}
+                    <div className="mb-6 relative z-10">
+                      <svg width="56" height="56" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
+                        <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
+                        <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
                       </svg>
                     </div>
+                    {/* Testimonial Text */}
+                    <p className="text-white leading-relaxed mb-8 text-2xl lg:text-3xl font-medium relative z-10">
+                      "{testimonials[currentIndex].content}"
+                    </p>
+                    {/* Author Info */}
+                    <div className="flex items-center pt-6 mt-auto border-t border-white/10 relative z-10">
+                      <div>
+                        <h4 className="font-semibold text-white text-lg">{testimonials[currentIndex].name}</h4>
+                        <p className="text-base text-gray-400">{testimonials[currentIndex].role}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Next arrow */}
+            <div className="flex-shrink-0 w-12 flex justify-center items-center h-[400px]">
+              <button
+                onClick={nextTestimonial}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                style={isDesktop ? { cursor: 'none' } : {}}
+                aria-label="Next testimonial"
+              >
+                <ChevronRight size={22} />
+              </button>
+            </div>
           </div>
 
           {/* Mobile: Horizontal scrollable cards */}
@@ -313,11 +317,12 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                   onClick={() => setExpandedTestimonial(testimonial.id)}
                   onMouseEnter={() => isDesktop && onLabelChange?.('READ FULL REVIEW')}
                   onMouseLeave={() => isDesktop && onLabelChange?.(null)}
-                  className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-6 shadow-2xl shadow-black/50 flex flex-col w-[85vw] max-w-sm flex-shrink-0 snap-start justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none cursor-pointer group"
+                  className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-6 shadow-2xl shadow-black/50 flex flex-col w-[85vw] max-w-sm flex-shrink-0 snap-start justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none group"
+                  style={isDesktop ? { cursor: 'none' } : { cursor: 'pointer' }}
                 >
                   {/* Quote Icon */}
                   <div className="mb-4 relative z-10">
-                    <svg width="48" height="48" viewBox="0 0 40 40" fill="none" className="text-gray-gray-400/40">
+                    <svg width="48" height="48" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
                       <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
                       <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
                     </svg>
@@ -329,28 +334,13 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                   </p>
                   
                   {/* Author Info */}
-                  <div className="flex items-center justify-between pt-6 mt-auto border-t border-white/10 relative z-10">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-gray-500 to-gray-600 flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-semibold text-base">{testimonial.avatar}</span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-white text-lg">
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-base text-gray-400">
-                          {testimonial.role}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Read More Indicator - Aligned with author */}
-                    <div className="text-gray-gray-400 text-sm font-medium flex items-center gap-2 flex-shrink-0">
-                      <span className="hidden sm:inline">Tap to read full review</span>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
+                  <div className="pt-6 mt-auto border-t border-white/10 relative z-10">
+                    <h4 className="font-semibold text-white text-lg">
+                      {testimonial.name}
+                    </h4>
+                    <p className="text-base text-gray-400">
+                      {testimonial.role}
+                    </p>
                   </div>
                 </div>
               ))}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useReducedMotion, motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import FigmaCursor from '@/components/FigmaCursor'
+import { registerCursorSetter, unregisterCursorSetter } from '@/lib/cursorBridge'
 
 // Dynamically import heavy components with loading states
 const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
@@ -40,6 +41,7 @@ const HomePage = () => {
   const [isDesktop, setIsDesktop] = useState(false)
   const [cursorLabel, setCursorLabel] = useState<string | null>(null)
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null)
+  const [cursorBlue, setCursorBlue] = useState(false)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -63,9 +65,25 @@ const HomePage = () => {
     }
   }, [isDesktop])
 
+  useEffect(() => {
+    registerCursorSetter(setCursorLabel)
+    return () => unregisterCursorSetter()
+  }, [])
+
+  useEffect(() => {
+    if (!isDesktop) return
+    const handleOver = (e: MouseEvent) => {
+      const target = e.target as Element
+      const isInteractive = !!target.closest('a, button, [role="button"]')
+      setCursorBlue(prev => prev === isInteractive ? prev : isInteractive)
+    }
+    document.addEventListener('mouseover', handleOver)
+    return () => document.removeEventListener('mouseover', handleOver)
+  }, [isDesktop])
+
   // Determine cursor label
   const showCursorPill = cursorLabel !== null || hoveredCardId !== null
-  const finalCursorLabel = cursorLabel || (hoveredCardId !== null ? 'OPEN CASE STUDY' : null)
+  const finalCursorLabel = cursorLabel || (hoveredCardId !== null ? 'READ CASE STUDY' : null)
 
   return (
     <div className="min-h-screen bg-[#171717]">
@@ -157,6 +175,7 @@ const HomePage = () => {
       <FigmaCursor
         label={finalCursorLabel}
         showPill={showCursorPill}
+        forceBlue={cursorBlue}
         shouldReduceMotion={shouldReduceMotion || false}
         isDesktop={isDesktop}
       />
