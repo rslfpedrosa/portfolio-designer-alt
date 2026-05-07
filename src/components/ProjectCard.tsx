@@ -76,7 +76,7 @@ export default function ProjectCard({ project, index, isDesktop, onHoverChange }
           <div
             className="absolute inset-0 pointer-events-none z-0 rounded-2xl lg:rounded-none"
             style={{
-              background: `radial-gradient(ellipse at 0% 0%, ${cardGradients[project.id] ?? 'transparent'} 0%, transparent 65%)`,
+              background: `radial-gradient(circle at 0% 50%, ${cardGradients[project.id] ?? 'transparent'} 0%, transparent 55%)`,
             }}
           />
           <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-2xl lg:rounded-none">

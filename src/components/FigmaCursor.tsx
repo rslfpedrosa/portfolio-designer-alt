@@ -1,15 +1,17 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface FigmaCursorProps {
   label: string | null
   showPill: boolean
+  forceBlue?: boolean
   shouldReduceMotion: boolean
   isDesktop: boolean
 }
 
-export default function FigmaCursor({ label, showPill, shouldReduceMotion, isDesktop }: FigmaCursorProps) {
+export default function FigmaCursor({ label, showPill, forceBlue = false, shouldReduceMotion, isDesktop }: FigmaCursorProps) {
+  const [logoHovered, setLogoHovered] = useState(false)
   const cursorRef = useRef<HTMLDivElement>(null)
   const pillRef = useRef<HTMLSpanElement>(null)
   const mouseXRef = useRef<number>(0)
@@ -19,6 +21,17 @@ export default function FigmaCursor({ label, showPill, shouldReduceMotion, isDes
   const hasMousePositionRef = useRef<boolean>(false)
   const rafIdRef = useRef<number | null>(null)
   const lastUpdateRef = useRef<number>(0)
+
+  useEffect(() => {
+    const onEnter = () => setLogoHovered(true)
+    const onLeave = () => setLogoHovered(false)
+    window.addEventListener('cursor-logo-enter', onEnter)
+    window.addEventListener('cursor-logo-leave', onLeave)
+    return () => {
+      window.removeEventListener('cursor-logo-enter', onEnter)
+      window.removeEventListener('cursor-logo-leave', onLeave)
+    }
+  }, [])
 
   useEffect(() => {
     if (!isDesktop) {
@@ -115,7 +128,7 @@ export default function FigmaCursor({ label, showPill, shouldReduceMotion, isDes
           fill="none"
           className="absolute -top-3 -left-1.5"
           style={{
-            color: showPill ? '#3b82f6' : '#525252',
+            color: (showPill || forceBlue || logoHovered) ? '#3b82f6' : '#525252',
             transition: shouldReduceMotion ? 'none' : 'color 200ms ease-out',
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
           }}
@@ -129,7 +142,7 @@ export default function FigmaCursor({ label, showPill, shouldReduceMotion, isDes
         {label && (
           <span
             ref={pillRef}
-            className="text-white text-base font-semibold px-4 py-2 rounded-full whitespace-nowrap inline-block mt-1 ml-2"
+            className="text-white text-sm font-semibold px-4 py-2 rounded-full whitespace-nowrap inline-block mt-1 ml-2"
             style={{
               backgroundColor: showPill ? '#3b82f6' : '#525252',
               boxShadow: '0 4px 12px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)',

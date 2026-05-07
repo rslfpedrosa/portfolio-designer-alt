@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Send, Mail, Linkedin, Dribbble } from 'lucide-react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { Send, Mail, Linkedin, Dribbble, CheckCircle, X } from 'lucide-react'
 import FigmaCursor from '@/components/FigmaCursor'
 
 const ContactPage = () => {
@@ -14,6 +14,7 @@ const ContactPage = () => {
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -40,65 +41,52 @@ const ContactPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     try {
       // 1. Send to Google Sheets (if configured)
       const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
-      
       if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
         try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
             mode: 'no-cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+              name: formData.name,
+              email: formData.email,
+              message: formData.message,
+              timestamp: new Date().toISOString(),
+            }),
+          })
+        } catch (sheetsError) {
+          console.log('Google Sheets submission failed (non-critical):', sheetsError)
+        }
+      }
+
+      // 2. Send email via FormSubmit AJAX endpoint (stays on page, returns JSON)
+      const res = await fetch('https://formsubmit.co/ajax/ritaslfpedrosa@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           message: formData.message,
-              timestamp: new Date().toISOString(),
+          _subject: `New Contact Form Message from ${formData.name}`,
+          _captcha: 'false',
+          _template: 'table',
+          _autoresponse: `Thank you for reaching out, ${formData.name}! I'll get back to you soon.`,
         }),
       })
-        } catch (sheetsError) {
-          console.log('Google Sheets submission failed (non-critical):', sheetsError)
-          // Continue with email submission even if Sheets fails
-        }
-      }
-      
-      // 2. Send email via FormSubmit
-      const form = e.target as HTMLFormElement
-      form.action = 'https://formsubmit.co/ritaslfpedrosa@gmail.com'
-      form.method = 'POST'
-      
-      // Add hidden fields for FormSubmit
-      const hiddenInputs = [
-        { name: '_subject', value: `New Contact Form Message from ${formData.name}` },
-        { name: '_next', value: `${window.location.origin}/contact?success=true` },
-        { name: '_captcha', value: 'false' },
-        { name: '_template', value: 'table' },
-        { name: '_autoresponse', value: `Thank you for reaching out, ${formData.name}! I'll get back to you soon.` }
-      ]
-      
-      // Remove any existing hidden inputs first
-      const existingHidden = form.querySelectorAll('input[type="hidden"]')
-      existingHidden.forEach(input => input.remove())
-      
-      // Add hidden inputs
-      hiddenInputs.forEach(({ name, value }) => {
-        const input = document.createElement('input')
-        input.type = 'hidden'
-        input.name = name
-        input.value = value
-        form.appendChild(input)
-      })
-      
-      // Submit the form
-      form.submit()
-      
+
+      if (!res.ok) throw new Error('FormSubmit request failed')
+
+      setFormData({ name: '', email: '', message: '' })
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 5000)
     } catch (error) {
       console.error('Error submitting form:', error)
       alert('There was an error sending your message. Please try again or email me directly at ritaslfpedrosa@gmail.com')
+    } finally {
       setIsSubmitting(false)
     }
   }
@@ -125,9 +113,35 @@ const ContactPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-16 bg-[#171717] relative overflow-hidden">
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-animated-grid z-0 pointer-events-none" />
+
+      {/* Animated Orbs */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none z-0"
+        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
+        animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+      />
+      <motion.div
+        className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none z-0"
+        style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.25))' }}
+        animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+      />
+      <motion.div
+        className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none z-0"
+        style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.25), rgba(37,99,235,0.25))' }}
+        animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+      />
+
+      {/* Page content above background layers */}
+      <div className="relative z-10">
+
       {/* Hero Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -221,7 +235,7 @@ const ContactPage = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                   style={isDesktop ? { cursor: 'none' } : {}}
                 >
                   {isSubmitting ? (
@@ -256,26 +270,30 @@ const ContactPage = () => {
               </div>
 
               {/* Contact Information */}
-              <div className="space-y-6">
+              <div className="space-y-3">
                 {contactInfo.map((info) => {
                   const Icon = info.icon
                   return (
                     <motion.a
                       key={info.title}
                       href={info.href}
-                      whileHover={{ x: 8 }}
-                      className="flex items-center space-x-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
+                      whileHover={{ x: 4 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center space-x-4 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200 group cursor-pointer"
                     >
-                      <div className="flex-shrink-0 w-12 h-12 bg-gray-100 dark:bg-gray-900 rounded-lg flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-800 transition-colors">
-                        <Icon size={20} className="text-gray-600 dark:text-gray-400" />
+                      <div className="flex-shrink-0 w-11 h-11 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-white/15 transition-colors">
+                        <Icon size={18} className="text-white/70 group-hover:text-white transition-colors" />
                       </div>
-                      <div>
-                        <h3 className="font-medium text-gray-900 dark:text-white">
-                          {info.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400">
+                      <div className="min-w-0">
+                        <p className="text-xs text-white/40 uppercase tracking-widest mb-0.5">{info.title}</p>
+                        <p className="font-medium text-white group-hover:text-white/90 truncate">
                           {info.value}
                         </p>
+                      </div>
+                      <div className="ml-auto text-white/30 group-hover:text-white/60 transition-colors">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                       </div>
                     </motion.a>
                   )
@@ -284,10 +302,10 @@ const ContactPage = () => {
 
               {/* Social Links */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                <h3 className="text-sm font-medium text-white/40 uppercase tracking-widest">
                   Follow me
                 </h3>
-                <div className="flex space-x-4">
+                <div className="flex gap-3">
                   {socialLinks.map((social) => {
                     const Icon = social.icon
                     return (
@@ -296,12 +314,13 @@ const ContactPage = () => {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 ${social.color} transition-all duration-200`}
+                        className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white/60 hover:text-white transition-all duration-200"
                         aria-label={social.name}
                       >
-                        <Icon size={20} />
+                        <Icon size={18} />
+                        <span className="text-sm font-medium">{social.name}</span>
                       </motion.a>
                     )
                   })}
@@ -331,6 +350,33 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
+
+      </div>{/* end relative z-10 */}
+
+      {/* Success snackbar */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 80 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl"
+          >
+            <CheckCircle size={20} className="text-green-400 shrink-0" />
+            <span className="text-white text-sm font-medium whitespace-nowrap">
+              Message sent! I'll get back to you soon.
+            </span>
+            <button
+              onClick={() => setShowSuccess(false)}
+              className="ml-1 text-white/50 hover:text-white transition-colors"
+              aria-label="Dismiss"
+            >
+              <X size={16} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Unified Figma Cursor */}
       <FigmaCursor

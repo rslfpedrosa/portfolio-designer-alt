@@ -168,7 +168,7 @@ export const projectsData: { [key: number]: Project } = {
   1: {
     id: 1,
     title: 'Bocca Moments',
-    subtitle: 'Designing a sensorial brand and e-commerce experience',
+    subtitle: 'Crafting a sensorial digital commerce experience',
     tagline: 'A premium brand and e-commerce experience built around the ritual of gifting.',
     description:
       'Crafting a premium digital experience around the ritual of gifting.',
@@ -459,7 +459,7 @@ export const projectsData: { [key: number]: Project } = {
   2: {
     id: 2,
     title: 'Cortado',
-    subtitle: 'Streamlining rental operations with GenAI',
+    subtitle: 'Simplifying rental workflows through AI',
     tagline: 'Reducing operational complexity for landlords through AI-powered workflows.',
     description: 'Reducing operational complexity for landlords through AI-powered workflows',
     category: 'UX Design',
@@ -698,7 +698,7 @@ marketing.`,
   3: {
     id: 3,
     title: 'Onyx',
-    subtitle: 'Designing a Platform for CPPS Care',
+    subtitle: 'Rethinking care management for CPPS treatment',
     tagline: 'Making it easier for physical therapists to track progress, make decisions, and adapt care with confidence.',
     description: 'Making it easier for physical therapists to track progress, make decisions, and adapt care with confidence.',
     category: 'UI Design',

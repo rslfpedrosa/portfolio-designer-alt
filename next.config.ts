@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
+  devIndicators: false,
   // Enable compression
   compress: true,
   // Ensure correct tracing root on Vercel

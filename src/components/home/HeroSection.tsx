@@ -320,7 +320,7 @@ export default function HeroSection({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none"
+              className="group bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
               <span>View My Work</span>

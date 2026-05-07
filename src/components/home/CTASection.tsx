@@ -82,7 +82,7 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors flex items-center space-x-2"
+                className="bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center space-x-2"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>Get In Touch</span>

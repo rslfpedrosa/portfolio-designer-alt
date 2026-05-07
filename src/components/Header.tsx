@@ -33,6 +33,7 @@ const Header = () => {
     { name: 'About', href: '/about' },
   ]
 
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -47,7 +48,13 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" onClick={handleLogoClick} className="flex items-center space-x-2">
+          <Link
+            href="/"
+            onClick={handleLogoClick}
+            onMouseEnter={() => window.dispatchEvent(new Event('cursor-logo-enter'))}
+            onMouseLeave={() => window.dispatchEvent(new Event('cursor-logo-leave'))}
+            className="flex items-center space-x-2"
+          >
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -58,23 +65,29 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <MotionLink
-                key={item.name}
-                href={item.href}
-                initial={{ color: '#a3a3a3' }}
-                whileHover={{ color: '#ffffff', y: -1 }}
-                transition={{ duration: 0.15 }}
-                className="relative font-medium after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-full after:bg-white after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200 after:origin-left"
-              >
-                {item.name}
-              </MotionLink>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+              return (
+                <MotionLink
+                  key={item.name}
+                  href={item.href}
+                  initial={false}
+                  animate={{ color: isActive ? '#ffffff' : '#a3a3a3' }}
+                  whileHover={{ color: '#ffffff', y: -1 }}
+                  transition={{ duration: 0.15 }}
+                  className={`relative font-medium after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-full after:bg-white after:transition-transform after:duration-200 after:origin-left ${
+                    isActive ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+                  }`}
+                >
+                  {item.name}
+                </MotionLink>
+              )
+            })}
             <Link href="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors"
+                className="bg-[#2563eb] text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-[#1d4ed8] transition-colors"
               >
                 Get in Touch
               </motion.button>
@@ -97,33 +110,57 @@ const Header = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-[#171717]/90 backdrop-blur-md border-t border-white/10"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="md:hidden bg-[#171717]/95 backdrop-blur-md border-t border-b border-white/10"
           >
-            <div className="px-4 py-4 space-y-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <Link
-                href="/contact"
-                onClick={() => setIsOpen(false)}
-                className="block"
+            <motion.div
+              className="px-4 py-6 space-y-6"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={{
+                open: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+                closed: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
+              }}
+            >
+              {navItems.map((item) => {
+                const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+                return (
+                  <motion.div
+                    key={item.name}
+                    variants={{
+                      open: { opacity: 1, y: 0 },
+                      closed: { opacity: 0, y: -6 },
+                    }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`block font-medium ${isActive ? 'text-white' : 'text-[#a3a3a3]'}`}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                )
+              })}
+              <motion.div
+                variants={{
+                  open: { opacity: 1, y: 0 },
+                  closed: { opacity: 0, y: -6 },
+                }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
               >
-                <button className="w-full bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium text-base hover:bg-gray-100 transition-colors">
-                  Get in Touch
-                </button>
-              </Link>
-            </div>
+                <Link href="/contact" onClick={() => setIsOpen(false)} className="block">
+                  <button className="w-full bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors">
+                    Get in Touch
+                  </button>
+                </Link>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
