@@ -42,7 +42,7 @@ const ProjectsPage = () => {
     }
   }, [isDesktop, hoveredCardId])
 
-  const cursorLabel = hoveredCardId !== null ? 'VIEW CASE STUDY' : null
+  const cursorLabel = hoveredCardId !== null ? 'READ CASE STUDY' : null
   const showCursorPill = cursorLabel !== null
 
   useEffect(() => {
@@ -124,10 +124,22 @@ const ProjectsPage = () => {
     },
   }
 
+  const cardGradients: Record<number, string> = {
+    1: 'rgba(150, 85, 52, 0.18)',   // Bocca — amber/brown
+    2: 'rgba(160, 116, 250, 0.18)', // Cortado — purple
+    3: 'rgba(67, 106, 255, 0.18)',  // Onyx — blue
+  }
+
+  const cardGlows: Record<number, string> = {
+    1: 'rgba(150, 85, 52, 0.18)',   // Bocca — amber/brown
+    2: 'rgba(160, 116, 250, 0.18)', // Cortado — purple
+    3: 'rgba(67, 106, 255, 0.18)',  // Onyx — blue
+  }
+
   return (
     <div className="min-h-screen pt-16 bg-[#171717]">
       {/* Hero Section */}
-      <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+      <section className="pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -135,13 +147,11 @@ const ProjectsPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h1 className="text-5xl sm:text-6xl font-medium text-gray-900 dark:text-white mb-6">
+            <h1 className="text-5xl sm:text-6xl font-medium text-gray-900 dark:text-white mb-3 sm:mb-6">
               My <span className="text-gradient">Work</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              A collection of projects that showcase my approach to design, from initial concept 
-              to final implementation. Each project tells a story of problem-solving, user empathy, 
-              and creative thinking.
+              Selected work across healthcare, AI, and digital experiences, focused on bringing clarity to complex products.
             </p>
           </motion.div>
         </div>
@@ -170,10 +180,11 @@ const ProjectsPage = () => {
                   className="relative overflow-visible transition-all duration-300 ease-out group cursor-pointer"
                 >
                   <div
-                    className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible"
+                    className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible rounded-2xl lg:rounded-none"
                     style={hoveredCardId === project.id ? {
                       outline: '2px solid #0f8be8',
                       outlineOffset: '0px',
+                      boxShadow: `0 0 70px 0 ${cardGlows[project.id] ?? 'rgba(15,139,232,0.18)'}`,
                     } : {
                       outline: '1px solid rgba(255,255,255,0.08)',
                       outlineOffset: '0px',
@@ -187,7 +198,14 @@ const ProjectsPage = () => {
                         <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
                       </>
                     )}
-                    <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
+                    {/* Gradient accent overlay */}
+                    <div
+                      className="absolute inset-0 pointer-events-none z-0 rounded-2xl lg:rounded-none"
+                      style={{
+                        background: `radial-gradient(ellipse at 0% 0%, ${cardGradients[project.id] ?? 'transparent'} 0%, transparent 65%)`,
+                      }}
+                    />
+                    <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-2xl lg:rounded-none">
                       {/* Left Column - Content */}
                       <div className="flex flex-col justify-center space-y-5 z-10 p-8 sm:p-10 lg:p-14">
                         <div className="mb-2">
@@ -207,7 +225,7 @@ const ProjectsPage = () => {
                         <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl">
                           {project.tagline ?? project.description}
                         </p>
-                        <div className="flex flex-wrap items-center gap-4 pt-2">
+                        <div className="hidden lg:flex flex-wrap items-center gap-4 pt-2">
                           <div className="flex flex-wrap gap-1.5">
                             {project.tags.slice(0, 3).map((tag, tagIndex) => (
                               <span
@@ -262,10 +280,10 @@ const ProjectsPage = () => {
               </span>
             </motion.div>
             <h2 className="text-4xl sm:text-5xl font-medium text-gray-900 dark:text-white mb-6">
-              Explorations & UI Work
+              Product Explorations
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              A collection of interface explorations, component designs, and visual experiments
+              Explorations in interaction, systems, and visual design.
             </p>
           </motion.div>
 
