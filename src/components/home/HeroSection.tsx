@@ -35,8 +35,8 @@ export default function HeroSection({
   
   const [ritaBounds, setRitaBounds] = useState<DOMRect | null>(null)
   const [designBounds, setDesignBounds] = useState<DOMRect | null>(null)
-  const [ritaViewport, setRitaViewport] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
-  const [designViewport, setDesignViewport] = useState<{ left: number; top: number; width: number; height: number } | null>(null)
+  const [ritaViewport, setRitaViewport] = useState<{ left: number; top: number; width: number; height: number } | null>({ left: -9999, top: -9999, width: 1, height: 1 })
+  const [designViewport, setDesignViewport] = useState<{ left: number; top: number; width: number; height: number } | null>({ left: -9999, top: -9999, width: 1, height: 1 })
 
   // Animation trigger
   useEffect(() => {
@@ -88,8 +88,8 @@ export default function HeroSection({
   }
 
   useEffect(() => {
-    // Initial bounds calculation
-    const timer = setTimeout(updateBounds, 100)
+    // Calculate bounds after entry animation completes (~1.1s) so initial values are accurate
+    const timer = setTimeout(updateBounds, 1300)
     
     // Throttled resize handler
     let resizeTimeout: NodeJS.Timeout
@@ -110,23 +110,22 @@ export default function HeroSection({
 
   const handleRitaHover = (isHovering: boolean) => {
     if (!isDesktop) return
-    
-    // Clear any pending transitions
+
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current)
     }
-    
+
     if (isHovering) {
-      // Immediate transition
+      // Synchronously read current bounds so they're correct in the same render as isVisible=true,
+      // preventing the opacity transition from firing off-screen due to stale/animated bounds
+      if (ritaRef.current) {
+        const rect = ritaRef.current.getBoundingClientRect()
+        setRitaViewport({ left: rect.left, top: rect.top, width: rect.width, height: rect.height })
+      }
       setActiveWord('rita')
       onLabelChange('ABOUT ME')
       if (ritaRef.current) ritaRef.current.style.cursor = 'none'
-      // Only update bounds if switching from another word or entering fresh
-      if (activeWord !== 'rita') {
-        updateBounds()
-      }
     } else {
-      // Small delay before hiding to prevent flicker during transitions
       hoverTimeoutRef.current = setTimeout(() => {
         setActiveWord(null)
         onLabelChange(null)
@@ -137,23 +136,21 @@ export default function HeroSection({
 
   const handleDesignHover = (isHovering: boolean) => {
     if (!isDesktop) return
-    
-    // Clear any pending transitions
+
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current)
     }
-    
+
     if (isHovering) {
-      // Immediate transition
+      // Synchronously read current bounds so they're correct in the same render as isVisible=true
+      if (designRef.current) {
+        const rect = designRef.current.getBoundingClientRect()
+        setDesignViewport({ left: rect.left, top: rect.top, width: rect.width, height: rect.height })
+      }
       setActiveWord('design')
       onLabelChange('MY WORK')
       if (designRef.current) designRef.current.style.cursor = 'none'
-      // Only update bounds if switching from another word or entering fresh
-      if (activeWord !== 'design') {
-        updateBounds()
-      }
     } else {
-      // Small delay before hiding to prevent flicker during transitions
       hoverTimeoutRef.current = setTimeout(() => {
         setActiveWord(null)
         onLabelChange(null)
@@ -163,18 +160,24 @@ export default function HeroSection({
   }
 
   const handleRitaFocus = (isFocused: boolean) => {
-    if (isFocused && activeWord !== 'rita') {
+    if (isFocused) {
+      if (ritaRef.current) {
+        const rect = ritaRef.current.getBoundingClientRect()
+        setRitaViewport({ left: rect.left, top: rect.top, width: rect.width, height: rect.height })
+      }
       setActiveWord('rita')
-      updateBounds()
     } else if (!isFocused && activeWord === 'rita') {
       setActiveWord(null)
     }
   }
 
   const handleDesignFocus = (isFocused: boolean) => {
-    if (isFocused && activeWord !== 'design') {
+    if (isFocused) {
+      if (designRef.current) {
+        const rect = designRef.current.getBoundingClientRect()
+        setDesignViewport({ left: rect.left, top: rect.top, width: rect.width, height: rect.height })
+      }
       setActiveWord('design')
-      updateBounds()
     } else if (!isFocused && activeWord === 'design') {
       setActiveWord(null)
     }

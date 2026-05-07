@@ -89,10 +89,7 @@ const HomePage = () => {
     <div className="min-h-screen bg-[#171717] overflow-x-hidden">
       {/* Hero + Featured Projects share one stacking context so orbs bleed through */}
       <div className="relative overflow-visible">
-        {/* Subtle Grid Pattern — scoped to hero height only */}
-        <div className="absolute inset-x-0 top-0 h-screen bg-animated-grid pointer-events-none z-0" />
-
-        {/* Animated Orbs */}
+        {/* Animated Orbs — z-0, bleed freely */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none z-0"
           style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
@@ -114,6 +111,9 @@ const HomePage = () => {
           animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
         />
+
+        {/* Grid — above orbs so lines are visible over the glow */}
+        <div className="absolute inset-0 bg-animated-grid pointer-events-none z-[1]" />
 
         <div className="relative z-10">
           <HeroSection
