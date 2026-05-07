@@ -112,17 +112,17 @@ const HomePage = () => {
           animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
         />
-        {/* Complementary orbs — violet + amber */}
+        {/* Additional blue orbs */}
         <motion.div
           className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full blur-3xl pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.18), rgba(167,139,250,0.18))' }}
+          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.18), rgba(37,99,235,0.18))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{ x: [0, -100, 60, 0], y: [0, 80, -60, 0], scale: [1, 1.2, 0.85, 1] }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", repeatType: "loop", delay: 1.5 }}
         />
         <motion.div
           className="absolute bottom-1/4 left-1/3 w-56 h-56 rounded-full blur-3xl pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.14), rgba(245,158,11,0.14))' }}
+          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.16), rgba(59,130,246,0.16))' }}
           initial={{ x: 0, y: 0, scale: 1 }}
           animate={{ x: [0, 130, -70, 0], y: [0, -100, 50, 0], scale: [1, 0.9, 1.25, 1] }}
           transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", repeatType: "loop", delay: 3 }}
