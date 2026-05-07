@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
+const MotionLink = motion(Link)
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -17,10 +19,6 @@ const Header = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
-
-  useEffect(() => {
-    document.documentElement.classList.add('dark')
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,13 +59,16 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
+              <MotionLink
                 key={item.name}
                 href={item.href}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
+                initial={{ color: '#a3a3a3' }}
+                whileHover={{ color: '#ffffff', y: -1 }}
+                transition={{ duration: 0.15 }}
+                className="relative font-medium after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-full after:bg-white after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200 after:origin-left"
               >
                 {item.name}
-              </Link>
+              </MotionLink>
             ))}
             <Link href="/contact">
               <motion.button
@@ -84,7 +85,7 @@ const Header = () => {
           <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-2xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-2xl text-white hover:bg-white/10 transition-colors"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
