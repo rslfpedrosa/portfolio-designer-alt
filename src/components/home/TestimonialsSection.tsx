@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import GridBackground from '@/components/GridBackground'
 
 const testimonials = [
   {
@@ -179,8 +180,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
   return (
     <>
     <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#171717]">
-      {/* Subtle Grid Pattern */}
-      <div className="absolute inset-0 bg-animated-grid" />
+      <GridBackground />
       
       {/* Animated Orbs */}
       <motion.div

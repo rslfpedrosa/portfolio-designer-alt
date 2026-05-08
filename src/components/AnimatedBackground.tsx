@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import GridBackground from '@/components/GridBackground'
 
 const AnimatedBackground = () => {
   return (
@@ -51,8 +52,7 @@ const AnimatedBackground = () => {
         }}
       />
 
-      {/* Grid: 25px squares, 12% opacity (10% more visible) */}
-      <div className="absolute inset-0 bg-animated-grid" aria-hidden />
+      <GridBackground />
     </div>
   )
 }

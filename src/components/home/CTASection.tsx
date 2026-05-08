@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import GridBackground from '@/components/GridBackground'
 
 export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
   return (
@@ -60,7 +61,7 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
       />
 
       {/* Subtle Grid Pattern */}
-      <div className="absolute inset-0 bg-animated-grid" />
+      <GridBackground />
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <motion.div

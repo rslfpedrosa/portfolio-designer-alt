@@ -5,6 +5,7 @@ import { useReducedMotion, motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import FigmaCursor from '@/components/FigmaCursor'
 import { registerCursorSetter, unregisterCursorSetter } from '@/lib/cursorBridge'
+import GridBackground from '@/components/GridBackground'
 
 // Dynamically import heavy components with loading states
 const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
@@ -129,7 +130,7 @@ const HomePage = () => {
         />
 
         {/* Grid — above orbs so lines are visible over the glow */}
-        <div className="absolute inset-0 bg-animated-grid pointer-events-none z-[1]" />
+        <div className="absolute inset-0 z-[1]"><GridBackground /></div>
 
         <div className="relative z-10">
           <HeroSection

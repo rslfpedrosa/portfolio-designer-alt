@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Send, Mail, Linkedin, Dribbble, CheckCircle, X } from 'lucide-react'
 import FigmaCursor from '@/components/FigmaCursor'
+import GridBackground from '@/components/GridBackground'
 
 const ContactPage = () => {
   const shouldReduceMotion = useReducedMotion()
@@ -115,7 +116,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen pt-16 bg-[#171717] relative overflow-hidden">
       {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-animated-grid z-0 pointer-events-none" />
+      <GridBackground />
 
       {/* Animated Orbs */}
       <motion.div

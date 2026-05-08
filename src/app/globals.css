@@ -191,16 +191,16 @@ button, a, input, textarea, select {
 
 /* Grid pattern: matches hero (1.5% opacity, 30px). Use on hero, AnimatedBackground, and all sections. */
 .bg-animated-grid {
-  background-image: 
+  background-image:
     linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-size: 16px 16px;
 }
 .dark .bg-animated-grid {
   background-image:
     linear-gradient(rgba(23, 23, 23, 0.25) 1px, transparent 1px),
     linear-gradient(90deg, rgba(23, 23, 23, 0.25) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-size: 16px 16px;
 }
 
 /* Animation utilities */
