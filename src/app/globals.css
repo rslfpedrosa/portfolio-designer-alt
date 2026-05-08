@@ -194,13 +194,13 @@ button, a, input, textarea, select {
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
-  background-size: 16px 16px;
+  background-size: 20px 20px;
 }
 .dark .bg-animated-grid {
   background-image:
     linear-gradient(rgba(23, 23, 23, 0.25) 1px, transparent 1px),
     linear-gradient(90deg, rgba(23, 23, 23, 0.25) 1px, transparent 1px);
-  background-size: 16px 16px;
+  background-size: 20px 20px;
 }
 
 /* Animation utilities */
