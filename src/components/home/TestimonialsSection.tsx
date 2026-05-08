@@ -334,85 +334,6 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
             </div>
           </div>
 
-          {/* Mobile: cards + arrows in one full-width block with matching bg so the gap doesn't reveal orbs */}
-          <div className="md:hidden -mx-4 sm:-mx-6">
-            <div ref={mobileScrollRef} className="overflow-x-auto snap-x snap-mandatory scroll-pl-6 scrollbar-hide">
-              <div className="flex gap-4 pl-6 pr-4 pb-2" style={{ width: 'max-content' }}>
-                {testimonials.map((testimonial, idx) => (
-                  <div
-                    key={testimonial.id}
-                    data-idx={idx}
-                    onClick={() => setExpandedTestimonial(testimonial.id)}
-                    onMouseEnter={() => isDesktop && onLabelChange?.('READ FULL REVIEW')}
-                    onMouseLeave={() => isDesktop && onLabelChange?.(null)}
-                    className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-6 shadow-2xl shadow-black/50 flex flex-col w-[85vw] max-w-sm flex-shrink-0 snap-start justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none group"
-                    style={isDesktop ? { cursor: 'none' } : { cursor: 'pointer' }}
-                  >
-                    {/* Quote Icon */}
-                    <div className="mb-4 relative z-10">
-                      <svg width="48" height="48" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
-                        <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
-                        <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
-                      </svg>
-                    </div>
-
-                    {/* Testimonial Text */}
-                    <p className="text-white leading-relaxed mb-8 text-xl font-medium relative z-10">
-                      "{testimonial.content}"
-                    </p>
-
-                    {/* Author Info */}
-                    <div className="pt-6 mt-auto border-t border-white/10 relative z-10">
-                      <h4 className="font-semibold text-white text-lg">
-                        {testimonial.name}
-                      </h4>
-                      <p className="text-base text-gray-400">
-                        {testimonial.role}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Arrows + dots */}
-            <div className="flex items-center justify-center gap-3 pt-3 pb-6">
-              <button
-                onClick={previousTestimonial}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <div className="flex items-center gap-2">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      if (!isAnimating) {
-                        setIsAnimating(true)
-                        setCurrentIndex(index)
-                        scrollMobileToIndex(index)
-                        setTimeout(() => setIsAnimating(false), 600)
-                      }
-                    }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === currentIndex ? 'w-8 bg-white' : 'w-2 bg-gray-600 hover:bg-gray-400'
-                    }`}
-                    aria-label={`Go to testimonial ${index + 1}`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={nextTestimonial}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                aria-label="Next testimonial"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </div>
-          </div>
-
           {/* Indicator Dots - Desktop only */}
           <div className="hidden md:flex justify-center gap-2 mt-8">
             {testimonials.map((_, index) => (
@@ -434,6 +355,85 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
               />
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Mobile: full-width block outside z-10 stacking context so orbs show through */}
+      <div className="md:hidden -mx-4 sm:-mx-6 relative z-10">
+        <div ref={mobileScrollRef} className="overflow-x-auto snap-x snap-mandatory scroll-pl-6 scrollbar-hide">
+          <div className="flex gap-4 pl-6 pr-4" style={{ width: 'max-content' }}>
+            {testimonials.map((testimonial, idx) => (
+              <div
+                key={testimonial.id}
+                data-idx={idx}
+                onClick={() => setExpandedTestimonial(testimonial.id)}
+                onMouseEnter={() => isDesktop && onLabelChange?.('READ FULL REVIEW')}
+                onMouseLeave={() => isDesktop && onLabelChange?.(null)}
+                className="bg-slate-950/80 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-6 flex flex-col w-[85vw] max-w-sm flex-shrink-0 snap-start justify-center relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none group"
+                style={isDesktop ? { cursor: 'none' } : { cursor: 'pointer' }}
+              >
+                {/* Quote Icon */}
+                <div className="mb-4 relative z-10">
+                  <svg width="48" height="48" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
+                    <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
+                    <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
+                  </svg>
+                </div>
+
+                {/* Testimonial Text */}
+                <p className="text-white leading-relaxed mb-8 text-xl font-medium relative z-10">
+                  "{testimonial.content}"
+                </p>
+
+                {/* Author Info */}
+                <div className="pt-6 mt-auto border-t border-white/10 relative z-10">
+                  <h4 className="font-semibold text-white text-lg">
+                    {testimonial.name}
+                  </h4>
+                  <p className="text-base text-gray-400">
+                    {testimonial.role}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Arrows + dots */}
+        <div className="flex items-center justify-center gap-3 pt-4 pb-6">
+          <button
+            onClick={previousTestimonial}
+            className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <div className="flex items-center gap-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (!isAnimating) {
+                    setIsAnimating(true)
+                    setCurrentIndex(index)
+                    scrollMobileToIndex(index)
+                    setTimeout(() => setIsAnimating(false), 600)
+                  }
+                }}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex ? 'w-8 bg-white' : 'w-2 bg-gray-600 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={nextTestimonial}
+            className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight size={18} />
+          </button>
         </div>
       </div>
     </section>

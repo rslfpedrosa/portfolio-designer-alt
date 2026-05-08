@@ -666,7 +666,7 @@ const AboutPage = () => {
             ref={mobileJoysRef}
             className="overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-pl-6"
           >
-            <div className="flex gap-4 pl-6 pr-4 pb-4" style={{ width: 'max-content' }}>
+            <div className="flex gap-4 pl-6 pr-4" style={{ width: 'max-content' }}>
               {JOYS.map((joy, index) => (
                 <div key={joy.title} data-joy={index} className="w-[85vw] flex-shrink-0 snap-start">
                   <VideoCard joy={joy} index={index} />
