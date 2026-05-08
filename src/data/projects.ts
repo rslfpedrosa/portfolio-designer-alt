@@ -472,8 +472,8 @@ export const projectsData: { [key: number]: Project } = {
     tools: ['Figma', 'FigJam'],
     gradient: 'from-gray-400 to-pink-500',
     tags: ['GenAI', 'Automation', 'SaaS'],
-    heroImage: '/projects/Cortado/012.webp',
-    cardImage: '/projects/Cortado/012.webp',
+    heroImage: '/projects/Cortado/Welcome-Squared.webp',
+    cardImage: '/projects/Cortado/Welcome-Squared.webp',
     challenge: `Cortado is a GenAI-powered SaaS platform built to simplify the lives of independent landlords
 and small property managers. The goal: to take fragmented, manual rental operations and
 centralize them into one AI-assisted workspace, from messaging and leasing to maintenance and

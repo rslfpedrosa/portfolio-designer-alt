@@ -572,7 +572,7 @@ Key design focuses included:
       >
         {/* Radial gradient accent */}
         <div
-          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-[70vh] opacity-50 blur-3xl"
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full h-[70vh] opacity-50 blur-3xl"
           style={{ background: `radial-gradient(ellipse at top, ${themeColors.accentText} 0%, transparent 70%)` }}
         />
         <div className="max-w-7xl mx-auto px-6 lg:px-0">
@@ -594,7 +594,7 @@ Key design focuses included:
             </motion.div>
 
             {/* 2. Logo + Title (mobile/tablet only) */}
-            <div className="lg:hidden order-2 mb-6 space-y-4">
+            <div className="lg:hidden order-3 mb-2 space-y-4">
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -623,7 +623,7 @@ Key design focuses included:
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="order-3 lg:order-2 relative w-full lg:flex-1 lg:min-w-0 aspect-square rounded-2xl overflow-hidden mb-8 lg:mb-0"
+              className="order-2 lg:order-2 relative w-full lg:flex-1 lg:min-w-0 aspect-square rounded-2xl overflow-hidden mb-8 lg:mb-0"
             >
               {project.heroImage ? (
                 <Image
@@ -633,7 +633,7 @@ Key design focuses included:
                   priority
                   quality={95}
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-left"
+                  className="object-cover object-center"
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
@@ -1320,7 +1320,7 @@ Key design focuses included:
             >
               <div className="relative w-full aspect-video sm:rounded-2xl overflow-hidden">
                 <Image
-                  src="/projects/Cortado/012.webp"
+                  src="/projects/Cortado/Ai-co-pilot.webp"
                   alt="Cortado overview image"
                   fill
                   className="object-cover sm:rounded-2xl"

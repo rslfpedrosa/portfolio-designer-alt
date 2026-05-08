@@ -766,7 +766,7 @@ const AboutPage = () => {
       </section>
 
       {/* Design Conferences Section */}
-      <section className="pt-12 sm:pt-24 pb-20 sm:pb-40 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+      <section className="pt-12 sm:pt-24 pb-20 sm:pb-40 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
