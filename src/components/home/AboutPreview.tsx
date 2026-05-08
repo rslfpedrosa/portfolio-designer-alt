@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
   return (
-    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
+    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
