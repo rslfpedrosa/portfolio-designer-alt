@@ -224,6 +224,8 @@ const AboutPage = () => {
   const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.001 })
   const [containerWidth, setContainerWidth] = useState(0)
   const [activeIndex, setActiveIndex] = useState(0)
+  const mobileJoysRef = useRef<HTMLDivElement>(null)
+  const [mobileJoysIndex, setMobileJoysIndex] = useState(0)
 
   // Track viewport breakpoint for carousel layout decisions
   const [breakpoint, setBreakpoint] = useState<'mobile' | 'tablet' | 'desktop'>('mobile')
@@ -258,13 +260,35 @@ const AboutPage = () => {
   const maxCarouselIndex = Math.max(0, JOYS.length - visibleCards)
 
   const carouselGoTo = (i: number) => {
-    setActiveIndex(Math.max(0, Math.min(maxCarouselIndex, i)))
+    const total = maxCarouselIndex + 1
+    setActiveIndex(((i % total) + total) % total)
+  }
+
+  const scrollMobileJoysTo = (index: number) => {
+    const el = mobileJoysRef.current
+    if (!el) return
+    const card = el.querySelector('[data-joy="0"]') as HTMLElement
+    if (!card) return
+    el.scrollTo({ left: index * (card.offsetWidth + 16), behavior: 'smooth' })
   }
 
   // Reset position when layout changes (e.g. resize crosses a breakpoint)
   useEffect(() => {
     setActiveIndex(0)
   }, [visibleCards])
+
+  useEffect(() => {
+    const el = mobileJoysRef.current
+    if (!el) return
+    const handleScroll = () => {
+      const card = el.querySelector('[data-joy="0"]') as HTMLElement
+      if (!card) return
+      const index = Math.round(el.scrollLeft / (card.offsetWidth + 16))
+      setMobileJoysIndex(Math.max(0, Math.min(index, JOYS.length - 1)))
+    }
+    el.addEventListener('scroll', handleScroll, { passive: true })
+    return () => el.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -636,27 +660,72 @@ const AboutPage = () => {
           </motion.div>
         </div>
 
-        {/* Carousel — capped width, arrows outside the overflow container */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-14">
-          {/* Arrows — desktop only, disabled at ends */}
+        {/* Mobile: CSS horizontal scroll */}
+        <div className="sm:hidden">
+          <div
+            ref={mobileJoysRef}
+            className="overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-pl-6"
+          >
+            <div className="flex gap-4 pl-6 pr-4 pb-4" style={{ width: 'max-content' }}>
+              {JOYS.map((joy, index) => (
+                <div key={joy.title} data-joy={index} className="w-[85vw] flex-shrink-0 snap-start">
+                  <VideoCard joy={joy} index={index} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-3 mt-4">
+            <button
+              onClick={() => {
+                const prev = (mobileJoysIndex - 1 + JOYS.length) % JOYS.length
+                setMobileJoysIndex(prev)
+                scrollMobileJoysTo(prev)
+              }}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              aria-label="Previous"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <div className="flex items-center gap-2">
+              {JOYS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setMobileJoysIndex(i); scrollMobileJoysTo(i) }}
+                  aria-label={`Go to item ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${i === mobileJoysIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/30'}`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => {
+                const next = (mobileJoysIndex + 1) % JOYS.length
+                setMobileJoysIndex(next)
+                scrollMobileJoysTo(next)
+              }}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              aria-label="Next"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* Tablet/Desktop: framer-motion carousel */}
+        <div className="hidden sm:block relative max-w-7xl mx-auto px-14">
           <button
             onClick={() => carouselGoTo(activeIndex - 1)}
-            disabled={activeIndex === 0}
             aria-label="Previous"
-            className="hidden sm:flex absolute left-2 top-1/2 -translate-y-6 z-20 w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white transition-all"
+            className="absolute left-2 top-1/2 -translate-y-6 z-20 flex w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
           >
             <ChevronLeft size={20} />
           </button>
           <button
             onClick={() => carouselGoTo(activeIndex + 1)}
-            disabled={activeIndex === maxCarouselIndex}
             aria-label="Next"
-            className="hidden sm:flex absolute right-2 top-1/2 -translate-y-6 z-20 w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white transition-all"
+            className="absolute right-2 top-1/2 -translate-y-6 z-20 flex w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
           >
             <ChevronRight size={20} />
           </button>
-
-          {/* Overflow container — clips the track */}
           <div ref={containerRef} className="overflow-hidden">
             <motion.div
               className="flex pb-8"
@@ -683,8 +752,8 @@ const AboutPage = () => {
           </div>
         </div>
 
-        {/* Dots — one per valid carousel position, not per card */}
-        <div className="flex justify-center gap-2 mt-2">
+        {/* Tablet/Desktop dots */}
+        <div className="hidden sm:flex justify-center gap-2 mt-2">
           {Array.from({ length: maxCarouselIndex + 1 }).map((_, i) => (
             <button
               key={i}
