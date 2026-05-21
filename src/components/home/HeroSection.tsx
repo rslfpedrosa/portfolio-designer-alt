@@ -212,8 +212,41 @@ export default function HeroSection({
     }
   }, [])
 
+  const hDashedLine = {
+    backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.10) 50%, transparent 50%)',
+    backgroundSize: '16px 1px',
+    backgroundRepeat: 'repeat-x' as const,
+  }
+
   return (
-    <section className="relative z-20 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <section className="relative z-20 min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      {/* Horizontal rule just below the navbar */}
+      <div className="absolute top-16 left-0 w-full h-px pointer-events-none" style={hDashedLine} />
+      {/* Horizontal rule at the bottom of the hero */}
+      <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={hDashedLine} />
+
+      {/* Animated blobs */}
+      {!shouldReduceMotion && <>
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.2), rgba(96,165,250,0.2))' }}
+          animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+        />
+        <motion.div
+          className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2), rgba(59,130,246,0.2))' }}
+          animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.2), rgba(37,99,235,0.2))' }}
+          animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
+        />
+      </>}
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto text-center relative z-20">
         {/* Badge */}
@@ -323,7 +356,7 @@ export default function HeroSection({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none"
+              className="group bg-[#2563eb] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
               <span>View My Work</span>
@@ -334,7 +367,7 @@ export default function HeroSection({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-white/15 text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-white/25 transition-colors w-full sm:w-auto focus:outline-none"
+              className="group bg-white/15 text-white px-6 py-3 rounded-full font-medium text-base hover:bg-white/25 transition-colors w-full sm:w-auto focus:outline-none"
               style={isDesktop ? { cursor: 'none' } : {}}
             >
               Let's Connect
@@ -343,25 +376,6 @@ export default function HeroSection({
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.5, duration: 0.6 }}
-        className="block absolute bottom-24 left-1/2 transform -translate-x-1/2"
-      >
-        <motion.div
-          animate={shouldReduceMotion ? {} : { y: [0, 10, 0] }}
-          transition={shouldReduceMotion ? {} : { duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-gray-400 dark:border-gray-500 rounded-full flex justify-center"
-        >
-          <motion.div
-            animate={shouldReduceMotion ? {} : { y: [0, 12, 0] }}
-            transition={shouldReduceMotion ? {} : { duration: 2, repeat: Infinity }}
-            className="w-1 h-3 bg-gray-400 dark:bg-gray-500 rounded-full mt-2"
-          />
-        </motion.div>
-      </motion.div>
     </section>
   )
 }

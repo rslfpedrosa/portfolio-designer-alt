@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion'
-import { Plane, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Plane } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import FigmaCursor from '@/components/FigmaCursor'
 import CTASection from '@/components/home/CTASection'
@@ -105,8 +105,8 @@ const ConferenceCard = ({
       {/* Ticket-style design */}
       <div className="relative overflow-hidden rounded-2xl">
         {/* Perforated edge effect */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#171717] rounded-full -ml-2 z-10" />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#171717] rounded-full -mr-2 z-10" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#151414] rounded-full -ml-2 z-10" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#151414] rounded-full -mr-2 z-10" />
         
         <motion.div 
           animate={isHovered ? { scale: 1.02 } : { scale: 1 }}
@@ -145,8 +145,8 @@ const ConferenceCard = ({
   )
 }
 
-// Video Card Component with auto-play when in viewport
-const VideoCard = ({ joy, index }: { joy: { title: string; description: string; video: string }; index: number }) => {
+// Bento joy cell with auto-play video
+const BentoJoyCell = ({ joy, index }: { joy: { title: string; description: string; video: string }; index: number }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -168,15 +168,31 @@ const VideoCard = ({ joy, index }: { joy: { title: string; description: string; 
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
       viewport={{ once: true }}
-      className="relative w-full h-full group cursor-pointer"
+      className="relative overflow-visible"
     >
-      <div className="relative bg-[#1e1e1e] rounded-2xl shadow-soft hover:shadow-large transition-all overflow-hidden h-full flex flex-col">
-        {/* Video container */}
-        <div className="relative w-full h-96 bg-gray-800 overflow-hidden rounded-t-2xl flex-shrink-0">
+      {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+        <div
+          key={corner}
+          className="absolute w-3 h-3 z-20 rounded-sm"
+          style={{
+            backgroundColor: '#151414',
+            border: '1px solid #312f2e',
+            top: corner.startsWith('top') ? '-6px' : undefined,
+            bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+            left: corner.endsWith('left') ? '-6px' : undefined,
+            right: corner.endsWith('right') ? '-6px' : undefined,
+          }}
+        />
+      ))}
+      <div
+        className="relative h-full flex flex-col bg-[#151414]"
+        style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+      >
+        <div className="relative w-full overflow-hidden flex-shrink-0 bg-[#151414]" style={{ height: '320px' }}>
           <video
             ref={videoRef}
             src={joy.video}
@@ -184,21 +200,13 @@ const VideoCard = ({ joy, index }: { joy: { title: string; description: string; 
             loop
             playsInline
             preload="none"
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover"
           />
-
-          {/* Enhanced gradient overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
-
-        {/* Text below video - always readable */}
-        <div className="p-6 bg-[#1e1e1e] flex-1">
-          <h3 className="text-xl font-medium mb-2 text-white">
-            {joy.title}
-          </h3>
-          <p className="text-sm text-gray-400 leading-relaxed">
-            {joy.description}
-          </p>
+        <div className="p-5 flex-1" style={{ borderTop: '1px solid #312f2e' }}>
+          <h3 className="text-base font-medium text-white mb-1">{joy.title}</h3>
+          <p className="text-sm text-gray-400 leading-relaxed">{joy.description}</p>
         </div>
       </div>
     </motion.div>
@@ -213,82 +221,12 @@ const JOYS = [
   { title: 'Learning by Leaving', description: 'New cities. New ways of seeing.', video: '/videos/travel.mp4' },
 ]
 
-const CAROUSEL_GAP = 24
-
 const AboutPage = () => {
   const shouldReduceMotion = useReducedMotion()
   const [isDesktop, setIsDesktop] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
   const timelineRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start end', 'end end'] })
   const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.001 })
-  const [containerWidth, setContainerWidth] = useState(0)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const mobileJoysRef = useRef<HTMLDivElement>(null)
-  const [mobileJoysIndex, setMobileJoysIndex] = useState(0)
-
-  // Track viewport breakpoint for carousel layout decisions
-  const [breakpoint, setBreakpoint] = useState<'mobile' | 'tablet' | 'desktop'>('mobile')
-
-  useEffect(() => {
-    const update = () => {
-      const w = window.innerWidth
-      setBreakpoint(w >= 1024 ? 'desktop' : w >= 640 ? 'tablet' : 'mobile')
-    }
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
-
-  // Measure container for dynamic card sizing
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const ro = new ResizeObserver(() => setContainerWidth(el.offsetWidth))
-    ro.observe(el)
-    setContainerWidth(el.offsetWidth)
-    return () => ro.disconnect()
-  }, [])
-
-  const visibleCards = breakpoint === 'desktop' ? 3 : breakpoint === 'tablet' ? 2 : 1
-  const cardWidthPx = containerWidth > 0
-    ? visibleCards === 1
-      ? containerWidth * 0.88                                              // mobile: slight peek
-      : (containerWidth - CAROUSEL_GAP * (visibleCards - 1)) / visibleCards  // tablet/desktop: fill evenly
-    : 280
-  const stepPx = cardWidthPx + CAROUSEL_GAP
-  const maxCarouselIndex = Math.max(0, JOYS.length - visibleCards)
-
-  const carouselGoTo = (i: number) => {
-    const total = maxCarouselIndex + 1
-    setActiveIndex(((i % total) + total) % total)
-  }
-
-  const scrollMobileJoysTo = (index: number) => {
-    const el = mobileJoysRef.current
-    if (!el) return
-    const card = el.querySelector('[data-joy="0"]') as HTMLElement
-    if (!card) return
-    el.scrollTo({ left: index * (card.offsetWidth + 16), behavior: 'smooth' })
-  }
-
-  // Reset position when layout changes (e.g. resize crosses a breakpoint)
-  useEffect(() => {
-    setActiveIndex(0)
-  }, [visibleCards])
-
-  useEffect(() => {
-    const el = mobileJoysRef.current
-    if (!el) return
-    const handleScroll = () => {
-      const card = el.querySelector('[data-joy="0"]') as HTMLElement
-      if (!card) return
-      const index = Math.round(el.scrollLeft / (card.offsetWidth + 16))
-      setMobileJoysIndex(Math.max(0, Math.min(index, JOYS.length - 1)))
-    }
-    el.addEventListener('scroll', handleScroll, { passive: true })
-    return () => el.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -403,74 +341,149 @@ const AboutPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16 bg-[#171717]">
+    <div className="min-h-screen pt-16 bg-[#151414] relative overflow-x-hidden">
+      {/* Grid background — matches home page GridBackground */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Dot pattern — wide container, bleeds past content edges */}
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
+          <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="about-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                <circle cx="6" cy="6" r="0.75" fill="#312f2e" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#about-dots)" />
+          </svg>
+        </div>
+        {/* Center cover — hides dots behind content, leaving side strips */}
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl" style={{ backgroundColor: '#151414' }} />
+        {/* Dashed vertical lines at content container edges */}
+        <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+        </div>
+        {/* Dashed vertical lines at outer dot container edges */}
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+        </div>
+      </div>
       {/* Hero Section */}
-      <section className="pt-10 pb-8 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Profile Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch mb-4 sm:mb-24">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative order-1 lg:order-1"
-            >
-              <div className="w-full h-full min-h-[24rem] rounded-2xl overflow-hidden shadow-large">
+      <section className="relative pt-10 pb-12 sm:py-24 px-4 sm:px-6 lg:px-8">
+        {/* Horizontal rule just below the navbar */}
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        {/* Horizontal rule midway through bottom gap */}
+        <div className="absolute bottom-12 sm:bottom-24 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="max-w-7xl mx-auto">
+          <div className="relative h-px pointer-events-none mb-0">
+            <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+          </div>
+          {/* Cloudflare-style bordered card */}
+          <div className="relative bg-[#151414]" style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}>
+            {/* Outer corner squares */}
+            {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+              <div
+                key={corner}
+                className="absolute w-3 h-3 z-20 rounded-sm"
+                style={{
+                  backgroundColor: '#151414',
+                  border: '1px solid #312f2e',
+                  top: corner.startsWith('top') ? '-6px' : undefined,
+                  bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                  left: corner.endsWith('left') ? '-6px' : undefined,
+                  right: corner.endsWith('right') ? '-6px' : undefined,
+                }}
+              />
+            ))}
+
+            <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr]">
+              {/* Left: Photo — full bleed */}
+              <div
+                className="relative min-h-[280px] border-b lg:border-b-0 lg:border-r"
+                style={{ borderColor: '#312f2e' }}
+              >
                 <img
                   src="/Me/IMG_0426.webp"
                   alt="Rita Pedrosa"
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover object-top"
                 />
               </div>
-            </motion.div>
-            <div className="space-y-6 order-2 lg:order-2">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="text-5xl sm:text-6xl font-medium text-white mb-2 flex items-center gap-1"
-              >
-                Hi, I&apos;m Rita
-                <img src="/Me/Sparkle.svg" alt="" className="w-16 h-16 inline-block rotate-45" />
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-                className="text-xl sm:text-2xl text-gray-300 font-medium"
-              >
-                A Product Designer crafting clarity in complex products
-              </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                className="text-base sm:text-lg text-gray-400 leading-relaxed"
-              >
-                Over the past few years, I&apos;ve worked on end-to-end product experiences, from early discovery to final implementation, collaborating closely with cross-functional teams to turn ideas into meaningful, usable solutions.
-              </motion.p>
 
-              {/* Highlights */}
-              <ul className="text-base sm:text-lg text-white divide-y divide-white/10">
-                {['4+ years designing complex digital products', 'Led design sprints with cross-functional teams', 'Focused on healthcare and AI-driven experiences'].map((item, i) => (
-                  <motion.li
-                    key={item}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                    className="py-3"
-                  >
-                    {item}
-                  </motion.li>
+              {/* Right: Single section with internal dividers */}
+              <div className="relative flex flex-col justify-center p-8 lg:p-10">
+                {/* Corner squares at center-column junctions */}
+                {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                  <div
+                    key={corner}
+                    className="absolute w-3 h-3 z-20 rounded-sm"
+                    style={{
+                      backgroundColor: '#151414',
+                      border: '1px solid #312f2e',
+                      top: corner.startsWith('top') ? '-6px' : undefined,
+                      bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                      left: corner.endsWith('left') ? '-6px' : undefined,
+                      right: corner.endsWith('right') ? '-6px' : undefined,
+                    }}
+                  />
                 ))}
-              </ul>
+
+                {/* Group 1: Name + subtitle */}
+                <div className="pb-6">
+                  <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="text-6xl sm:text-7xl font-medium text-white mb-3 flex items-center gap-1"
+                  >
+                    Hi, I&apos;m Rita
+                    <img src="/Me/Sparkle.svg" alt="" className="w-16 h-16 inline-block rotate-45" />
+                  </motion.h1>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="text-xl sm:text-2xl text-gray-300 font-medium"
+                  >
+                    A Product Designer crafting clarity in complex products
+                  </motion.p>
+                </div>
+
+                <div className="w-full h-px" style={{ backgroundColor: '#312f2e' }} />
+
+                {/* Group 2: Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="py-6 text-base sm:text-lg text-gray-400 leading-relaxed"
+                >
+                  Over the past few years, I&apos;ve worked on end-to-end product experiences, from early discovery to final implementation, collaborating closely with cross-functional teams to turn ideas into meaningful, usable solutions.
+                </motion.p>
+
+                <div className="w-full h-px" style={{ backgroundColor: '#312f2e' }} />
+
+                {/* Group 3: Highlights */}
+                <ul className="text-base sm:text-lg text-white divide-y divide-white/10 pt-2">
+                  {['4+ years designing complex digital products', 'Led design sprints with cross-functional teams', 'Focused on healthcare and AI-driven experiences'].map((item, i) => (
+                    <motion.li
+                      key={item}
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="py-3"
+                    >
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Design Philosophy */}
-      <section className="relative py-8 lg:pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative z-[1] py-8 lg:pt-8 lg:pb-0 px-4 sm:px-6 lg:px-8">
         {/* Animated blobs */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
@@ -490,7 +503,7 @@ const AboutPage = () => {
           animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
         />
-        <div className="max-w-6xl mx-auto relative">
+        <div className="max-w-7xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -498,7 +511,7 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-left sm:text-center mb-8 sm:mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
+            <h2 className="text-[4rem] font-semibold text-white mb-6">
               My Design Philosophy
             </h2>
             <p className="text-xl text-gray-400 sm:max-w-3xl sm:mx-auto">
@@ -506,7 +519,10 @@ const AboutPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+          <div className="relative h-px pointer-events-none">
+            <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
             {values.map((value, index) => (
               <motion.div
                 key={value.title}
@@ -514,11 +530,26 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 viewport={{ once: true }}
-                className="relative"
+                className="relative overflow-visible"
               >
+                {/* Corner squares */}
+                {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                  <div
+                    key={corner}
+                    className="absolute w-3 h-3 z-20 rounded-sm"
+                    style={{
+                      backgroundColor: '#151414',
+                      border: '1px solid #312f2e',
+                      top: corner.startsWith('top') ? '-6px' : undefined,
+                      bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                      left: corner.endsWith('left') ? '-6px' : undefined,
+                      right: corner.endsWith('right') ? '-6px' : undefined,
+                    }}
+                  />
+                ))}
                 <div
-                  className="relative bg-[#1e1e1e] rounded-2xl p-8 h-full flex flex-col"
-                  style={{ outline: '1px solid rgba(255,255,255,0.08)', outlineOffset: '0px' }}
+                  className="relative bg-[#151414] p-8 h-full flex flex-col"
+                  style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
                 >
                   <div className="mb-4">
                     <img src={value.illustration} alt="" className="w-20 h-20 object-contain" />
@@ -539,7 +570,8 @@ const AboutPage = () => {
       </section>
 
       {/* Timeline Section */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -548,7 +580,7 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-left sm:text-center mb-8 sm:mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6 flex items-center justify-start sm:justify-center gap-3">
+            <h2 className="text-[4rem] font-semibold text-white mb-6 flex items-center justify-start sm:justify-center gap-3">
               My Journey
               <img src="/Me/Arrow.svg" alt="" className="w-20 h-20 inline-block" />
             </h2>
@@ -574,10 +606,10 @@ const AboutPage = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                   viewport={{ once: true }}
-                  className="relative flex items-start gap-8"
+                  className="relative flex items-center gap-8"
                 >
                   {/* Timeline Dot */}
-                  <div className="flex-shrink-0 w-5 flex justify-center items-start pt-6">
+                  <div className="flex-shrink-0 w-5 flex justify-center items-center">
                     <motion.div
                       className="w-[10px] h-[10px] rounded-full relative z-10"
                       initial={{ backgroundColor: 'rgba(255,255,255,0.15)', boxShadow: '0 0 0 3px rgba(59,130,246,0)' }}
@@ -588,9 +620,24 @@ const AboutPage = () => {
                   </div>
 
                   {/* Content */}
+                  <div className="flex-1 relative overflow-visible">
+                    {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                      <div
+                        key={corner}
+                        className="absolute w-3 h-3 z-20 rounded-sm"
+                        style={{
+                          backgroundColor: '#151414',
+                          border: '1px solid #312f2e',
+                          top: corner.startsWith('top') ? '-6px' : undefined,
+                          bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                          left: corner.endsWith('left') ? '-6px' : undefined,
+                          right: corner.endsWith('right') ? '-6px' : undefined,
+                        }}
+                      />
+                    ))}
                   <div
-                    className="flex-1 bg-[#1e1e1e] p-8 rounded-2xl"
-                    style={{ outline: '1px solid rgba(255,255,255,0.08)', outlineOffset: '0px' }}
+                    className="bg-[#151414] p-8 h-full"
+                    style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
                   >
                     <div className="mb-3">
                       <p className="text-sm text-gray-500 mb-1">
@@ -631,6 +678,7 @@ const AboutPage = () => {
                       </ul>
                     )}
                   </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -640,133 +688,57 @@ const AboutPage = () => {
 
 
       {/* Small Joys Section */}
-      <section className="py-12 sm:py-24">
-        {/* Heading — contained */}
-        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-6 sm:mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            viewport={{ once: true }}
-            className="text-left sm:text-center"
-          >
-            <img src="/Me/Vinyl.svg" alt="" className="w-16 h-16 sm:mx-auto mb-4" />
-            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
-              Small Joys, Big Inspiration
-            </h2>
-            <p className="text-xl text-gray-400">
-              These are the little things that refill my creative energy.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Mobile: CSS horizontal scroll */}
-        <div className="sm:hidden">
-          <div
-            ref={mobileJoysRef}
-            className="overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-pl-6"
-          >
-            <div className="flex gap-4 pl-6 pr-4" style={{ width: 'max-content' }}>
-              {JOYS.map((joy, index) => (
-                <div key={joy.title} data-joy={index} className="w-[85vw] flex-shrink-0 snap-start">
-                  <VideoCard joy={joy} index={index} />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <button
-              onClick={() => {
-                const prev = (mobileJoysIndex - 1 + JOYS.length) % JOYS.length
-                setMobileJoysIndex(prev)
-                scrollMobileJoysTo(prev)
-              }}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              aria-label="Previous"
+      <section className="relative z-[1] px-4 sm:px-6 lg:px-8">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Header cell */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              viewport={{ once: true }}
+              className="relative overflow-visible"
             >
-              <ChevronLeft size={18} />
-            </button>
-            <div className="flex items-center gap-2">
-              {JOYS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setMobileJoysIndex(i); scrollMobileJoysTo(i) }}
-                  aria-label={`Go to item ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${i === mobileJoysIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/30'}`}
+              {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                <div
+                  key={corner}
+                  className="absolute w-3 h-3 z-20 rounded-sm"
+                  style={{
+                    backgroundColor: '#151414',
+                    border: '1px solid #312f2e',
+                    top: corner.startsWith('top') ? '-6px' : undefined,
+                    bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                    left: corner.endsWith('left') ? '-6px' : undefined,
+                    right: corner.endsWith('right') ? '-6px' : undefined,
+                  }}
                 />
               ))}
-            </div>
-            <button
-              onClick={() => {
-                const next = (mobileJoysIndex + 1) % JOYS.length
-                setMobileJoysIndex(next)
-                scrollMobileJoysTo(next)
-              }}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              aria-label="Next"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-
-        {/* Tablet/Desktop: framer-motion carousel */}
-        <div className="hidden sm:block relative max-w-7xl mx-auto px-14">
-          <button
-            onClick={() => carouselGoTo(activeIndex - 1)}
-            aria-label="Previous"
-            className="absolute left-2 top-1/2 -translate-y-6 z-20 flex w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            onClick={() => carouselGoTo(activeIndex + 1)}
-            aria-label="Next"
-            className="absolute right-2 top-1/2 -translate-y-6 z-20 flex w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all"
-          >
-            <ChevronRight size={20} />
-          </button>
-          <div ref={containerRef} className="overflow-hidden">
-            <motion.div
-              className="flex pb-8"
-              style={{ gap: CAROUSEL_GAP }}
-              animate={{ x: -activeIndex * stepPx }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30, mass: 0.5 }}
-              drag="x"
-              dragConstraints={{ left: -(maxCarouselIndex * stepPx), right: 0 }}
-              dragElastic={0.08}
-              onDragEnd={(_, info) => {
-                if (Math.abs(info.offset.x) > 60 || Math.abs(info.velocity.x) > 400) {
-                  carouselGoTo(activeIndex + (info.offset.x < 0 ? 1 : -1))
-                } else {
-                  carouselGoTo(activeIndex)
-                }
-              }}
-            >
-              {JOYS.map((joy, index) => (
-                <div key={joy.title} style={{ width: cardWidthPx, flexShrink: 0 }}>
-                  <VideoCard joy={joy} index={index} />
-                </div>
-              ))}
+              <div
+                className="relative p-8 lg:p-10 h-full flex flex-col justify-center bg-[#151414]"
+                style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+              >
+                <img src="/Me/Vinyl.svg" alt="" className="w-14 h-14 mb-6" />
+                <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4 leading-tight">
+                  Small Joys, Big Inspiration
+                </h2>
+                <p className="text-base lg:text-lg text-gray-400 leading-relaxed">
+                  These are the little things that refill my creative energy.
+                </p>
+              </div>
             </motion.div>
-          </div>
-        </div>
 
-        {/* Tablet/Desktop dots */}
-        <div className="hidden sm:flex justify-center gap-2 mt-2">
-          {Array.from({ length: maxCarouselIndex + 1 }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => carouselGoTo(i)}
-              aria-label={`Go to page ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/30'}`}
-            />
-          ))}
+            {/* Joy cells */}
+            {JOYS.map((joy, index) => (
+              <BentoJoyCell key={joy.title} joy={joy} index={index} />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Design Conferences Section */}
-      <section className="pt-12 sm:pt-24 pb-20 sm:pb-40 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
+      <section className="relative pt-12 sm:pt-24 pb-20 sm:pb-40 px-4 sm:px-6 lg:px-8 bg-[#151414] overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -776,7 +748,7 @@ const AboutPage = () => {
             className="text-left sm:text-center mb-12 sm:mb-24"
           >
             <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 sm:mx-auto mb-4" />
-            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
+            <h2 className="text-[4rem] font-semibold text-white mb-6">
               Favourite Conferences I&apos;ve Attended
             </h2>
             <p className="text-xl text-gray-400 sm:max-w-3xl sm:mx-auto mb-2">

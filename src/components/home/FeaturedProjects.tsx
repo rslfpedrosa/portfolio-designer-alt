@@ -21,7 +21,7 @@ export default function FeaturedProjects({
     })
 
   return (
-    <section className="relative py-8 sm:py-16 px-4 sm:px-6 lg:px-8 overflow-visible">
+    <section className="relative pb-8 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-visible">
         <div className="max-w-7xl mx-auto">
           <div className="space-y-8 lg:space-y-12">
             {featuredProjects.map((project, index) => (
@@ -47,7 +47,7 @@ export default function FeaturedProjects({
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-[#2563eb] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>View All Projects</span>
