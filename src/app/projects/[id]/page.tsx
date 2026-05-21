@@ -420,7 +420,7 @@ Key design focuses included:
         { id: 'overview', label: 'Overview' },
 
         { id: 'context', label: 'My Role' },
-        { id: 'design-focus', label: 'Designing the Experience' },
+        { id: 'design-focus', label: 'Design Focus' },
         { id: 'branding', label: 'Branding & Visual Identity' },
         { id: 'packaging', label: 'Packaging Design' },
         { id: 'digital', label: 'Digital Experience' },
@@ -528,7 +528,7 @@ Key design focuses included:
         { id: 'overview', label: 'Overview' },
 
         { id: 'context', label: 'My Role' },
-        { id: 'design-focus', label: 'Designing the Experience' },
+        { id: 'design-focus', label: 'Design Focus' },
         { id: 'branding', label: 'Branding & Visual Identity' },
         { id: 'packaging', label: 'Packaging Design' },
         { id: 'digital', label: 'Digital Experience' },
@@ -883,7 +883,7 @@ Key design focuses included:
               </div>
 
               {/* Bento-style Gallery */}
-              <div className="grid grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-4" style={{ marginTop: '5rem' }}>
+              <div className="grid grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-4" style={{ marginTop: '1.5rem' }}>
                 {/* Large card - spans 2 columns */}
                 <div className="relative overflow-hidden rounded-2xl col-span-2 aspect-[16/9] lg:aspect-[2/1]">
                   <Image
@@ -1031,6 +1031,15 @@ Key design focuses included:
                             playsInline
                             className="w-full h-full object-cover"
                           />
+                        ) : i === 1 ? (
+                          <video
+                            src="/projects/Bocca/video-2.webm"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover"
+                          />
                         ) : (
                           <Image
                             src={item.image}
@@ -1092,6 +1101,30 @@ Key design focuses included:
                   sizes="(max-width: 768px) 100vw, 800px"
                 />
               </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {[
+                  '/projects/Bocca/cards/cartao.webp',
+                  '/projects/Bocca/cards/cartao_2.webp',
+                  '/projects/Bocca/cards/cartao_3.webp',
+                ].map((src, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden"
+                  >
+                    <Image
+                      src={src}
+                      alt={`Bocca card ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                    />
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           </div>
         </section>
@@ -1121,11 +1154,26 @@ Key design focuses included:
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 The design needed to feel premium, warm and personal, and visually distinctive. Natural textures, earthy colors, and simple typography were used to create a brand identity that feels authentic and timeless.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="relative w-full rounded-2xl overflow-hidden"
+                style={{ aspectRatio: '16/9' }}
+              >
+                <Image
+                  src="/projects/Bocca/2.webp"
+                  alt="Bocca packaging overview"
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              </motion.div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  '/projects/Bocca/packaging-1.webp',
-                  '/projects/Bocca/packaging-2.webp',
-                  '/projects/Bocca/packaging-3.webp',
+                  '/projects/Bocca/packaging/packaging-5.webp',
+                  '/projects/Bocca/packaging/packaging-2.webp',
                 ].map((src, i) => (
                   <motion.div
                     key={i}
@@ -1133,7 +1181,7 @@ Key design focuses included:
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     viewport={{ once: true }}
-                    className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden"
+                    className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden col-span-1"
                   >
                     <Image
                       src={src}
@@ -1176,6 +1224,18 @@ Key design focuses included:
               </p>
               <div className="relative w-full rounded-2xl overflow-hidden">
                 <Image
+                  src="/projects/Bocca/homepage.webp"
+                  alt="Bocca homepage digital experience"
+                  width={1200}
+                  height={800}
+                  unoptimized
+                  className="w-full h-auto object-cover"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  loading="lazy"
+                />
+              </div>
+              <div className="relative w-full rounded-2xl overflow-hidden">
+                <Image
                   src="/projects/Bocca/mobile.webp"
                   alt="Bocca mobile digital experience"
                   width={1200}
@@ -1196,6 +1256,16 @@ Key design focuses included:
                   className="w-full h-auto object-cover"
                   sizes="(max-width: 768px) 100vw, 800px"
                   loading="lazy"
+                />
+              </div>
+              <div className="relative w-full rounded-2xl overflow-hidden">
+                <video
+                  src="/projects/Bocca/demo-video.webm"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-auto object-cover"
                 />
               </div>
             </motion.div>
@@ -1227,6 +1297,18 @@ Key design focuses included:
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 The project explores how branding, product design, and storytelling can work together to transform a simple gift into a meaningful shared moment.
               </p>
+              <div className="relative w-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/projects/Bocca/02.webp"
+                  alt="Bocca impact"
+                  width={1200}
+                  height={800}
+                  unoptimized
+                  className="w-full h-auto object-cover"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  loading="lazy"
+                />
+              </div>
             </motion.div>
           </div>
         </section>
@@ -1340,7 +1422,7 @@ Key design focuses included:
             >
               <div className="relative w-full aspect-video sm:rounded-2xl overflow-hidden">
                 <Image
-                  src="/projects/Cortado/Ai-co-pilot.webp"
+                  src="/projects/Cortado/015.webp"
                   alt="Cortado overview image"
                   fill
                   className="object-cover sm:rounded-2xl"
@@ -1356,7 +1438,7 @@ Key design focuses included:
 
       {/* Image Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]">
+        <section className="pt-4 sm:pt-6 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1926,7 +2008,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <RefreshCw className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-medium text-white mb-2">Work is fragmented across too many tools</h3>
@@ -1939,7 +2021,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <MessageSquare className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-medium text-white mb-2">Guest communication dominates daily work</h3>
@@ -1952,7 +2034,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Eye className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-medium text-white mb-2">Automation must remain transparent</h3>
@@ -2003,7 +2085,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Accessibility className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-gray-800 dark:text-gray-200">Reducing cognitive load in message-heavy workflows</p>
@@ -2015,7 +2097,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Eye className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-gray-800 dark:text-gray-200">Making AI assistance visible without feeling intrusive</p>
@@ -2027,7 +2109,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Settings className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-gray-800 dark:text-gray-200">Supporting fast decisions while preserving user control</p>
@@ -2039,7 +2121,7 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-gray-800 dark:text-gray-200">Structuring complex information into calm, scannable layouts</p>
@@ -2145,7 +2227,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#0f8be8' }}>
+                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                       <PenLine className="w-5 h-5" strokeWidth={1.5} />
                     </div>
                     <p className="text-gray-800 dark:text-gray-200">Suggests draft replies that users can review and edit</p>
@@ -2168,7 +2250,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#0f8be8' }}>
+                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                       <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />
                     </div>
                     <p className="text-gray-800 dark:text-gray-200">Pulls context from reservations, policies, and property data</p>
@@ -2191,7 +2273,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#0f8be8' }}>
+                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                       <Rocket className="w-5 h-5" strokeWidth={1.5} />
                     </div>
                     <p className="text-gray-800 dark:text-gray-200">Learns from user feedback to improve future suggestions</p>
@@ -2209,7 +2291,7 @@ Key design focuses included:
                   <div className="relative w-full sm:rounded-2xl overflow-hidden max-w-7xl sm:mx-auto">
                     <div className="relative w-full aspect-video sm:rounded-2xl overflow-hidden">
                         <Image
-                          src="/projects/Cortado/Inbox mu.webp"
+                          src="/projects/Cortado/012.webp"
                           alt="AI-Assisted Inbox solution"
                           fill
                           className="object-cover sm:rounded-2xl"
@@ -2227,7 +2309,7 @@ Key design focuses included:
                       <div className="relative w-full sm:rounded-2xl overflow-hidden">
                         <div className="relative w-full aspect-square sm:rounded-2xl overflow-hidden">
                           <Image
-                            src="/projects/Cortado/Welcome-Squared.webp"
+                            src="/projects/Cortado/collage.webp"
                             alt="AI-Assisted Inbox solution detail 1"
                             fill
                             className="object-cover sm:rounded-2xl"
@@ -2257,7 +2339,7 @@ Key design focuses included:
                   <div className="relative w-full sm:rounded-2xl overflow-hidden max-w-7xl sm:mx-auto">
                     <div className="relative w-full aspect-video sm:rounded-2xl overflow-hidden">
                         <Image
-                          src="/projects/Cortado/012.webp"
+                          src="/projects/Cortado/Inbox mu.webp"
                           alt="AI-Assisted Inbox solution 2"
                           fill
                           className="object-cover sm:rounded-2xl"
