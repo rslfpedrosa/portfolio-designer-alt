@@ -117,7 +117,7 @@ const ProjectsPage = () => {
             transition={{ duration: 0.6 }}
             className="text-left pl-6 sm:pl-8 lg:pl-16"
           >
-            <h1 className="text-6xl sm:text-8xl font-medium text-white mb-3 sm:mb-6">
+            <h1 className="text-6xl sm:text-8xl font-medium text-white mb-3 sm:mb-6 leading-none">
               My Work
             </h1>
             <p className="text-xl text-gray-400 max-w-3xl">

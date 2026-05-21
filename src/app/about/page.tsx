@@ -428,34 +428,24 @@ const AboutPage = () => {
                 ))}
 
                 {/* Group 1: Name + subtitle */}
-                <div className="pb-6">
+                <div className="pb-2">
                   <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                    className="text-6xl sm:text-7xl font-medium text-white mb-3 flex items-center gap-1"
+                    className="text-7xl sm:text-8xl font-medium text-white mb-3 flex items-center gap-1"
                   >
                     Hi, I&apos;m Rita
-                    <img src="/Me/Sparkle.svg" alt="" className="w-16 h-16 inline-block rotate-45" />
+                    <img src="/Me/Sparkle.svg" alt="" className="w-20 h-20 inline-block rotate-45" />
                   </motion.h1>
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-                    className="text-xl sm:text-2xl text-gray-300 font-medium"
-                  >
-                    A Product Designer crafting clarity in complex products
-                  </motion.p>
                 </div>
-
-                <div className="w-full h-px" style={{ backgroundColor: '#312f2e' }} />
 
                 {/* Group 2: Description */}
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="py-6 text-base sm:text-lg text-gray-400 leading-relaxed"
+                  className="pb-6 pt-2 text-base sm:text-lg text-gray-400 leading-relaxed"
                 >
                   Over the past few years, I&apos;ve worked on end-to-end product experiences, from early discovery to final implementation, collaborating closely with cross-functional teams to turn ideas into meaningful, usable solutions.
                 </motion.p>
@@ -509,12 +499,12 @@ const AboutPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left sm:text-center mb-8 sm:mb-16"
+            className="text-left mb-8 sm:mb-16 pl-6 sm:pl-8 lg:pl-16"
           >
-            <h2 className="text-[4rem] font-semibold text-white mb-6">
+            <h2 className="text-[4rem] font-semibold text-white mb-4 leading-none">
               My Design Philosophy
             </h2>
-            <p className="text-xl text-gray-400 sm:max-w-3xl sm:mx-auto">
+            <p className="text-xl text-gray-400 sm:max-w-3xl">
               Three core principles that guide every design decision I make
             </p>
           </motion.div>
@@ -578,9 +568,9 @@ const AboutPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left sm:text-center mb-8 sm:mb-16"
+            className="text-left mb-8 sm:mb-16 pl-6 sm:pl-8 lg:pl-16"
           >
-            <h2 className="text-[4rem] font-semibold text-white mb-6 flex items-center justify-start sm:justify-center gap-3">
+            <h2 className="text-[4rem] font-semibold text-white mb-2 leading-none flex items-center justify-start gap-3">
               My Journey
               <img src="/Me/Arrow.svg" alt="" className="w-20 h-20 inline-block" />
             </h2>
@@ -653,7 +643,7 @@ const AboutPage = () => {
                                 href={item.companyUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="underline underline-offset-2 hover:text-gray-300 transition-colors"
+                                className="!text-blue-400 underline underline-offset-2 hover:!text-blue-300 transition-colors"
                               >
                                 {item.company}
                               </a>
@@ -719,7 +709,7 @@ const AboutPage = () => {
                 style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
               >
                 <img src="/Me/Vinyl.svg" alt="" className="w-14 h-14 mb-6" />
-                <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4 leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-semibold text-white mb-4 leading-none">
                   Small Joys, Big Inspiration
                 </h2>
                 <p className="text-base lg:text-lg text-gray-400 leading-relaxed">
@@ -745,13 +735,13 @@ const AboutPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left sm:text-center mb-12 sm:mb-24"
+            className="text-left mb-12 sm:mb-24 pl-6 sm:pl-8 lg:pl-16"
           >
-            <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 sm:mx-auto mb-4" />
-            <h2 className="text-[4rem] font-semibold text-white mb-6">
+            <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 mb-4" />
+            <h2 className="text-[4rem] font-semibold text-white mb-4 leading-none">
               Favourite Conferences I&apos;ve Attended
             </h2>
-            <p className="text-xl text-gray-400 sm:max-w-3xl sm:mx-auto mb-2">
+            <p className="text-xl text-gray-400 sm:max-w-3xl mb-2">
               Design Conferences are one of my favourite ways of being inspired and to learn from
               other companies and Designers. A great place for networking and become a better professional
             </p>
