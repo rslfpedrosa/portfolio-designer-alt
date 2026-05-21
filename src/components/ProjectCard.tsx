@@ -56,31 +56,38 @@ export default function ProjectCard({ project, index, isDesktop, onHoverChange }
         className="relative overflow-visible group cursor-pointer"
       >
         <div
-          className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible rounded-2xl lg:rounded-none"
+          className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible rounded-none"
           style={isHovered ? {
             outline: '2px solid #0f8be8',
             outlineOffset: '0px',
             boxShadow: `0 0 70px 0 ${cardGlows[project.id] ?? 'rgba(15,139,232,0.18)'}`,
           } : {
-            outline: '1px solid rgba(255,255,255,0.08)',
+            outline: '1px solid #312f2e',
             outlineOffset: '0px',
           }}
         >
-          {isHovered && (
-            <>
-              <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
-              <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
-              <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
-              <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20" style={{ backgroundColor: '#0f8be8' }} />
-            </>
-          )}
+          {/* Corner squares — always visible, blue on hover */}
+          {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+            <div
+              key={corner}
+              className="absolute w-3 h-3 z-20 rounded-sm transition-colors duration-300"
+              style={{
+                backgroundColor: '#1e1e1e',
+                border: isHovered ? '2px solid #0f8be8' : '1px solid #312f2e',
+                top: corner.startsWith('top') ? '-6px' : undefined,
+                bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                left: corner.endsWith('left') ? '-6px' : undefined,
+                right: corner.endsWith('right') ? '-6px' : undefined,
+              }}
+            />
+          ))}
           <div
             className="absolute inset-0 pointer-events-none z-0 rounded-2xl lg:rounded-none"
             style={{
               background: `radial-gradient(circle at 0% 50%, ${cardGradients[project.id] ?? 'transparent'} 0%, transparent 55%)`,
             }}
           />
-          <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-2xl lg:rounded-none">
+          <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-none">
             {/* Left Column - Content */}
             <div className="flex flex-col justify-center space-y-5 sm:space-y-6 z-10 p-8 sm:p-10 lg:p-14">
               <div className="mb-2">

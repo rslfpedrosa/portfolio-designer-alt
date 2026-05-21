@@ -85,7 +85,29 @@ const ProjectsPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16 bg-[#171717]">
+    <div className="min-h-screen pt-16 bg-[#151414] relative overflow-x-hidden">
+      {/* Grid background — matches about page */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
+          <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="work-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                <circle cx="6" cy="6" r="0.75" fill="#312f2e" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#work-dots)" />
+          </svg>
+        </div>
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl" style={{ backgroundColor: '#151414' }} />
+        <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+        </div>
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+        </div>
+      </div>
       {/* Hero Section */}
       <section className="pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -108,22 +130,29 @@ const ProjectsPage = () => {
       {/* Projects List */}
       <section className="pb-12 sm:pb-24 pt-4 sm:pt-8 px-4 sm:px-6 lg:px-8 overflow-visible">
         <div className="max-w-7xl mx-auto">
-          <div className="space-y-8 lg:space-y-12">
+          <div className="flex flex-col gap-8 lg:gap-12">
             {projects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-                isDesktop={isDesktop}
-                onHoverChange={(id) => setHoveredCardId(id)}
-              />
+              <div key={project.id}>
+                <div className="relative h-px pointer-events-none mb-0">
+                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+                </div>
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  isDesktop={isDesktop}
+                  onHoverChange={(id) => setHoveredCardId(id)}
+                />
+                <div className="relative h-px pointer-events-none mt-0">
+                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Design Showcase Section */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#151414]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

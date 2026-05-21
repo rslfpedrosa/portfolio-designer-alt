@@ -39,7 +39,9 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
 
   return (
     <>
-      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
+      <section className="relative py-8 sm:py-16 px-4 sm:px-6 lg:px-8 bg-[#151414] overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -92,7 +94,7 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center space-x-2 mx-auto"
+                className="group bg-[#2563eb] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center space-x-2 mx-auto"
                 style={isDesktop ? { cursor: 'none' } : {}}
               >
                 <span>See More</span>
