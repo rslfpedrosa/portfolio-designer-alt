@@ -552,7 +552,7 @@ const AboutPage = () => {
                   style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
                 >
                   <div className="mb-4">
-                    <img src={value.illustration} alt="" className="w-20 h-20 object-contain" style={{ filter: 'brightness(0) invert(50%) sepia(100%) saturate(2000%) hue-rotate(183deg) brightness(92%)' }} />
+                    <img src={value.illustration} alt="" className="w-20 h-20 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
                   </div>
                   <div>
                     <h3 className="text-xl font-medium text-white mb-2">

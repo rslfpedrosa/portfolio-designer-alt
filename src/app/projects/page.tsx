@@ -115,12 +115,12 @@ const ProjectsPage = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
+            className="text-left pl-6 sm:pl-8 lg:pl-16"
           >
-            <h1 className="text-5xl sm:text-6xl font-medium text-white mb-3 sm:mb-6">
-              My <span className="text-gradient">Work</span>
+            <h1 className="text-6xl sm:text-8xl font-medium text-white mb-3 sm:mb-6">
+              My Work
             </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-3xl">
               Selected work across healthcare, AI, and digital experiences, focused on bringing clarity to complex products.
             </p>
           </motion.div>

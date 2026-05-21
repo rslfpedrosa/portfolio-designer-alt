@@ -53,16 +53,16 @@ export default function ProjectCard({ project, index, isDesktop, onHoverChange }
         whileHover={{ scale: 1.03, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
         transition={{ duration: 0.6, delay: index * 0.1 }}
         viewport={{ once: true }}
-        className="relative overflow-visible group cursor-pointer"
+        className="relative overflow-visible group cursor-pointer z-10"
       >
         <div
-          className="relative bg-[#1e1e1e] backdrop-blur-sm transition-all duration-300 ease-out overflow-visible rounded-none"
+          className="relative bg-[#1e1e1e] transition-all duration-300 ease-out overflow-visible rounded-none"
           style={isHovered ? {
             outline: '2px solid #0f8be8',
             outlineOffset: '0px',
             boxShadow: `0 0 70px 0 ${cardGlows[project.id] ?? 'rgba(15,139,232,0.18)'}`,
           } : {
-            outline: '1px solid #312f2e',
+            outline: '1px solid #0f8be8',
             outlineOffset: '0px',
           }}
         >
@@ -72,8 +72,8 @@ export default function ProjectCard({ project, index, isDesktop, onHoverChange }
               key={corner}
               className="absolute w-3 h-3 z-20 rounded-sm transition-colors duration-300"
               style={{
-                backgroundColor: '#1e1e1e',
-                border: isHovered ? '2px solid #0f8be8' : '1px solid #312f2e',
+                backgroundColor: isHovered ? '#0f8be8' : '#1e1e1e',
+                border: isHovered ? '2px solid #0f8be8' : '1px solid #0f8be8',
                 top: corner.startsWith('top') ? '-6px' : undefined,
                 bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                 left: corner.endsWith('left') ? '-6px' : undefined,
@@ -84,7 +84,7 @@ export default function ProjectCard({ project, index, isDesktop, onHoverChange }
           <div
             className="absolute inset-0 pointer-events-none z-0 rounded-2xl lg:rounded-none"
             style={{
-              background: `radial-gradient(circle at 0% 50%, ${cardGradients[project.id] ?? 'transparent'} 0%, transparent 55%)`,
+              background: `radial-gradient(circle at 0% 50%, ${cardGradients[project.id] ?? 'transparent'} 0%, transparent 35%)`,
             }}
           />
           <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-none">
