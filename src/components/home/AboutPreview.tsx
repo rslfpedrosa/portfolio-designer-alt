@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
   return (
-    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+    <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#151414]">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -18,11 +18,14 @@ export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
         >
           {/* Three Stacked Photos */}
           <div className="flex justify-center mb-8 sm:mb-12">
-            <motion.div 
+            <Link href="/about" data-cursor-text="ABOUT ME" style={isDesktop ? { cursor: 'none' } : {}}>
+            <motion.div
+              data-cursor-text="ABOUT ME"
               className="relative w-[350px] max-w-[calc(100vw-2rem)] h-[240px] sm:w-[450px] sm:h-[300px]"
               initial="rest"
               whileHover="hover"
               animate="rest"
+              style={{ cursor: 'pointer' }}
             >
               {/* Purple gradient blob behind */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] bg-gradient-to-br from-gray-500/30 to-gray-gray-500/30 rounded-full blur-3xl -z-10" />
@@ -85,6 +88,7 @@ export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
                 />
               </motion.div>
             </motion.div>
+            </Link>
           </div>
           <h2 className="text-4xl sm:text-5xl font-medium text-white">
             Design is about <span className="text-gradient">connection</span>
@@ -94,8 +98,9 @@ export default function AboutPreview({ isDesktop }: { isDesktop: boolean }) {
             It's about creating experiences that feel intuitive, meaningful, and genuinely useful in real life.
           </p>
           <div className="pt-4">
-            <Link href="/about">
+            <Link href="/about" data-cursor-text="ABOUT ME">
               <motion.button
+                data-cursor-text="ABOUT ME"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="group text-gray-gray-600 dark:text-gray-gray-400 font-medium text-lg hover:text-gray-gray-700 dark:hover:text-gray-gray-300 transition-colors flex items-center space-x-2 mx-auto"

@@ -82,8 +82,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Instrument Sans', 'system-ui', 'sans-serif'],
-        display: ['Instrument Sans', 'system-ui', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],

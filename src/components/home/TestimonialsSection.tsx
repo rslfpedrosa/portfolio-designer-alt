@@ -205,7 +205,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
 
   return (
     <>
-    <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#171717]">
+    <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#151414]">
       <GridBackground />
       
       {/* Animated Orbs */}

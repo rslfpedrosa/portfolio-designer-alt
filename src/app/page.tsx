@@ -9,31 +9,31 @@ import GridBackground from '@/components/GridBackground'
 
 // Dynamically import heavy components with loading states
 const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
-  loading: () => <div className="min-h-screen bg-[#171717]" />,
+  loading: () => <div className="min-h-screen bg-[#151414]" />,
 })
 
 const FeaturedProjects = dynamic(() => import('@/components/home/FeaturedProjects'), {
-  loading: () => <div className="py-16 bg-[#171717]" />,
+  loading: () => <div className="py-16 bg-[#151414]" />,
   ssr: false,
 })
 
 const DesignShowcase = dynamic(() => import('@/components/home/DesignShowcase'), {
-  loading: () => <div className="py-16 bg-[#171717]" />,
+  loading: () => <div className="py-16 bg-[#151414]" />,
   ssr: false,
 })
 
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
-  loading: () => <div className="py-16 bg-[#171717]" />,
+  loading: () => <div className="py-16 bg-[#151414]" />,
   ssr: false,
 })
 
 const AboutPreview = dynamic(() => import('@/components/home/AboutPreview'), {
-  loading: () => <div className="py-16 bg-[#171717]" />,
+  loading: () => <div className="py-16 bg-[#151414]" />,
   ssr: false,
 })
 
 const CTASection = dynamic(() => import('@/components/home/CTASection'), {
-  loading: () => <div className="py-16 bg-[#171717]" />,
+  loading: () => <div className="py-16 bg-[#151414]" />,
   ssr: false,
 })
 
@@ -87,7 +87,7 @@ const HomePage = () => {
   const finalCursorLabel = cursorLabel || (hoveredCardId !== null ? 'READ CASE STUDY' : null)
 
   return (
-    <div className="min-h-screen bg-[#171717] overflow-x-hidden">
+    <div className="min-h-screen bg-[#151414] overflow-x-hidden">
       {/* Hero + Featured Projects share one stacking context so orbs bleed through */}
       <div className="relative overflow-visible">
         {/* Animated Orbs — z-0, bleed freely */}

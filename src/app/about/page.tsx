@@ -410,7 +410,7 @@ const AboutPage = () => {
               </div>
 
               {/* Right: Single section with internal dividers */}
-              <div className="relative flex flex-col justify-center p-8 lg:p-10">
+              <div className="relative flex flex-col justify-center p-8 lg:px-10 lg:pb-10 lg:pt-20">
                 {/* Corner squares at center-column junctions */}
                 {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
                   <div

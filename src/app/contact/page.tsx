@@ -114,7 +114,7 @@ const ContactPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16 bg-[#171717] relative overflow-hidden">
+    <div className="min-h-screen pt-16 bg-[#151414] relative overflow-hidden">
       {/* Grid Pattern */}
       <GridBackground />
 
@@ -236,7 +236,7 @@ const ContactPage = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-[#2563eb] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#1d4ed8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                   style={isDesktop ? { cursor: 'none' } : {}}
                 >
                   {isSubmitting ? (
@@ -317,7 +317,7 @@ const ContactPage = () => {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white/60 hover:text-white transition-all duration-200"
+                        className="flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white/60 hover:text-white transition-all duration-200"
                         aria-label={social.name}
                       >
                         <Icon size={18} />

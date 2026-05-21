@@ -41,7 +41,7 @@ const Header = () => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-[10001] transition-all duration-300 ${
         scrolled
-          ? 'bg-[#171717]/90 backdrop-blur-md border-b border-white/10'
+          ? 'bg-[#151414]/90 backdrop-blur-md border-b border-white/10'
           : 'bg-transparent'
       }`}
     >
@@ -87,7 +87,7 @@ const Header = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-[#2563eb] text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-[#1d4ed8] transition-colors"
+                className="bg-[#2563eb] text-white px-4 py-2 rounded-full font-medium text-sm hover:bg-[#1d4ed8] transition-colors"
               >
                 Get in Touch
               </motion.button>
@@ -114,7 +114,7 @@ const Header = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden bg-[#171717]/95 backdrop-blur-md border-t border-b border-white/10"
+            className="md:hidden bg-[#151414]/95 backdrop-blur-md border-t border-b border-white/10"
           >
             <motion.div
               className="px-4 py-6 space-y-6"
@@ -155,7 +155,7 @@ const Header = () => {
                 transition={{ duration: 0.2, ease: 'easeOut' }}
               >
                 <Link href="/contact" onClick={() => setIsOpen(false)} className="block">
-                  <button className="w-full bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors">
+                  <button className="w-full bg-[#2563eb] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#1d4ed8] transition-colors">
                     Get in Touch
                   </button>
                 </Link>

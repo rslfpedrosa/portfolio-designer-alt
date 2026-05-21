@@ -12,7 +12,7 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-[#171717] border-t border-white/10">
+    <footer className="bg-[#151414] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
@@ -65,7 +65,7 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 rounded-lg bg-white/10 border border-white/10 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+                    className="p-2 rounded-full bg-white/10 border border-white/10 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
                     aria-label={social.name}
                   >
                     <Icon size={18} className="text-gray-400" />

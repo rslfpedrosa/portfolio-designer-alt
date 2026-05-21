@@ -2,96 +2,104 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import GridBackground from '@/components/GridBackground'
+import { ArrowRight, PenTool, Layers, Sparkles, Target, Globe, Lightbulb, Layout, Code2 } from 'lucide-react'
+
+const FLOATING_ICONS = [
+  { Icon: PenTool,   top: '14%', left: '7%',   rotate: -14 },
+  { Icon: Layers,    top: '52%', left: '4%',   rotate:   8 },
+  { Icon: Layout,    top: '22%', left: '22%',  rotate:  -5 },
+  { Icon: Sparkles,  top: '10%', right: '20%', rotate:  12 },
+  { Icon: Globe,     top: '8%',  right: '7%',  rotate:  -8 },
+  { Icon: Target,    top: '50%', right: '5%',  rotate:   6 },
+  { Icon: Lightbulb, top: '68%', left: '11%',  rotate: -10 },
+  { Icon: Code2,     top: '65%', right: '13%', rotate:   9 },
+]
 
 export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
   return (
-    <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#171717] overflow-hidden">
-      {/* Animated Orbs */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
-        initial={{ x: 0, y: 0, scale: 1 }}
-        animate={{
-          x: [0, 150, -50, 0],
-          y: [0, -120, 80, 0],
-          scale: [1, 1.3, 0.9, 1],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatType: "loop",
-        }}
-      />
-      
-      <motion.div
-        className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.25))' }}
-        initial={{ x: 0, y: 0, scale: 1 }}
-        animate={{
-          x: [0, -180, 60, 0],
-          y: [0, 120, -40, 0],
-          scale: [1, 0.7, 1.2, 1],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatType: "loop",
-        }}
-      />
-      
-      <motion.div
-        className="absolute bottom-1/4 left-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.25), rgba(37,99,235,0.25))' }}
-        initial={{ x: 0, y: 0, scale: 1 }}
-        animate={{
-          x: [0, 220, -80, 0],
-          y: [0, -80, 100, 0],
-          scale: [1, 1.15, 0.85, 1],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatType: "loop",
-        }}
-      />
-
-      {/* Subtle Grid Pattern */}
-      <GridBackground />
-      
-      <div className="max-w-4xl mx-auto text-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="space-y-6 sm:space-y-8"
+    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#151414' }}>
+      <div className="max-w-7xl mx-auto">
+        <div
+          className="relative rounded-2xl overflow-hidden"
+          style={{ background: 'linear-gradient(140deg, #1e3a8a 0%, #2563eb 55%, #3b82f6 100%)' }}
         >
-          <h2 className="text-4xl sm:text-5xl font-medium text-white">
-            Have a product challenge?<br />
-            <span className="text-gradient">Let's solve it together.</span>
-          </h2>
-          <p className="text-xl text-gray-400 leading-relaxed max-w-xl mx-auto">
-            I'm always open to collaborating on thoughtful, impactful products, from early ideas to refined experiences.
-          </p>
-          <div className="flex justify-center">
-            <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-[#2563eb] text-white px-6 py-3 rounded-2xl font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center space-x-2"
-                style={isDesktop ? { cursor: 'none' } : {}}
-              >
-                <span>Get In Touch</span>
-                <ArrowRight size={20} />
-              </motion.button>
-            </Link>
+          {/* Dot pattern on card */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="cta-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                <circle cx="6" cy="6" r="0.75" fill="rgba(255,255,255,0.15)" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#cta-dots)" />
+          </svg>
+
+          {/* Bottom radial glow */}
+          <div
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[280px] pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at center bottom, rgba(255,255,255,0.22) 0%, transparent 70%)' }}
+          />
+
+          {/* Floating icon cards */}
+          {FLOATING_ICONS.map(({ Icon, top, left, right, rotate }, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-14 h-14 rounded-xl flex items-center justify-center pointer-events-none"
+              style={{
+                top, left, right,
+                rotate,
+                border: '1.5px dashed rgba(255,255,255,0.35)',
+                backgroundColor: 'rgba(255,255,255,0.10)',
+              }}
+              initial={{ opacity: 0, scale: 0.7 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              viewport={{ once: true }}
+            >
+              <Icon size={20} className="text-white/80" strokeWidth={1.5} />
+            </motion.div>
+          ))}
+
+          {/* Content */}
+          <div className="relative z-10 py-20 sm:py-28 px-6 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white max-w-2xl mx-auto leading-tight">
+                Have a product challenge?
+              </h2>
+              <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-lg mx-auto">
+                I'm always open to collaborating on thoughtful, impactful products — from early ideas to refined experiences.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
+                <Link href="/contact">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-white text-[#1e3a8a] px-6 py-3 rounded-full font-semibold text-base hover:bg-white/90 transition-colors flex items-center gap-2"
+                    style={isDesktop ? { cursor: 'none' } : {}}
+                  >
+                    <span>Get In Touch</span>
+                    <ArrowRight size={18} />
+                  </motion.button>
+                </Link>
+                <Link href="/projects">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="text-white/85 px-6 py-3 rounded-full font-medium text-base hover:text-white transition-colors"
+                    style={isDesktop ? { cursor: 'none' } : {}}
+                  >
+                    View My Work
+                  </motion.button>
+                </Link>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

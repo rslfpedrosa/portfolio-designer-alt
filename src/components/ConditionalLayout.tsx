@@ -17,7 +17,7 @@ export default function ConditionalLayout({
       {/* <ContentProtection /> */}
       <AnimatedBackground />
       <Header />
-      <main className="min-h-screen overflow-x-hidden">
+      <main className="min-h-screen">
         {children}
       </main>
       <Footer />

@@ -28,7 +28,7 @@ import {
 } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
-import { RefreshCw, MessageSquare, Settings, Eye, Search, MapPin, Lightbulb, Clock, BookOpen, Link2, FileText, Layers, Compass, Heart, Sparkles, Globe } from 'lucide-react'
+import { RefreshCw, MessageSquare, Settings, Eye, Search, MapPin, Lightbulb, Clock, BookOpen, Link2, FileText, Layers, Compass, Heart } from 'lucide-react'
 import {
   projectsData,
   getNextProject,
@@ -402,6 +402,10 @@ Key design focuses included:
   const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     setMounted(true)
   }, [])
 
@@ -562,13 +566,13 @@ Key design focuses included:
   const navigationSections = getNavigationSections()
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#171717] relative z-10">
+    <div className="min-h-screen bg-white dark:bg-[#151414] relative z-10">
       {/* Hero Section */}
       <section 
         ref={(el) => {
           if (el) heroRef.current = el
         }}
-        className="relative -mt-16 pt-36 sm:pt-36 pb-0 bg-white dark:bg-[#171717] overflow-hidden"
+        className="relative -mt-16 pt-36 sm:pt-36 pb-0 bg-white dark:bg-[#151414] overflow-hidden"
       >
         {/* Radial gradient accent */}
         <div
@@ -812,7 +816,7 @@ Key design focuses included:
             <section
               id="summary"
               ref={(el) => { if (el) sectionRefs.current['summary'] = el }}
-              className="py-6 sm:py-8 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
+              className="py-6 sm:py-8 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]">
               <div className="max-w-4xl mx-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -858,7 +862,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -886,6 +890,7 @@ Key design focuses included:
                     src="/projects/bocca/2.webp"
                     alt="Bocca Moments overview"
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 66vw"
                   />
@@ -897,6 +902,7 @@ Key design focuses included:
                     src="/projects/bocca/1.webp"
                     alt="Bocca Moments details"
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="(max-width: 1024px) 50vw, 33vw"
                   />
@@ -908,6 +914,7 @@ Key design focuses included:
                     src="/projects/bocca/4.webp"
                     alt="Bocca Moments experience"
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="(max-width: 1024px) 50vw, 33vw"
                   />
@@ -919,6 +926,7 @@ Key design focuses included:
                     src="/projects/bocca/3.webp"
                     alt="Bocca Moments highlights"
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="(max-width: 1024px) 50vw, 33vw"
                   />
@@ -936,7 +944,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -984,7 +992,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1010,25 +1018,36 @@ Key design focuses included:
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                     viewport={{ once: true }}
                     className="rounded-2xl border border-gray-800 overflow-hidden flex flex-col"
-                    style={{ backgroundColor: '#171717' }}
+                    style={{ backgroundColor: '#151414' }}
                   >
-                    <div className="p-6 space-y-3">
-                      <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(99, 88, 51, 0.25)' }}>
-                        <item.icon size={16} style={{ color: '#c9a84c' }} />
+                    <div className="px-4 pt-4 pb-2">
+                      <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
+                        {i === 0 ? (
+                          <video
+                            src="/projects/Bocca/video1.webm"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 800px"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="px-6 pt-3 pb-6 space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center" style={{ color: '#c9a84c' }}>
+                        <item.icon size={18} strokeWidth={1.5} />
                       </div>
                       <p className="text-base font-semibold text-white">{item.title}</p>
                       <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
-                    </div>
-                    <div className="p-4 mt-auto">
-                      <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 800px"
-                        />
-                      </div>
                     </div>
                   </motion.div>
                 ))}
@@ -1045,7 +1064,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['branding'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1057,13 +1076,10 @@ Key design focuses included:
             >
               <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Branding & Visual Identity</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                Bocca&apos;s visual identity was designed to reflect warmth, authenticity, and the joy of sharing food.
+                I wanted the identity to feel understated, warm, and tactile — balancing premium aesthetics with a sense of intimacy and authenticity.
               </p>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                The brand needed to feel premium while remaining approachable, drawing inspiration from Mediterranean culinary culture and artisanal food markets.
-              </p>
-              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                The visual language combines earthy tones, expressive typography, and organic textures to create a brand that feels both refined and personal.
+                Inspired by editorial layouts, natural textures, and slow dining experiences, I developed a visual system that combined refined typography, earthy tones, and minimal compositions to create a calm and sensorial atmosphere across both digital and physical touchpoints.
               </p>
               <div className="relative w-full rounded-2xl overflow-hidden">
                 <Image
@@ -1071,6 +1087,7 @@ Key design focuses included:
                   alt="Bocca branding and visual identity"
                   width={1200}
                   height={800}
+                  unoptimized
                   className="w-full h-auto object-cover"
                   sizes="(max-width: 768px) 100vw, 800px"
                 />
@@ -1087,7 +1104,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['packaging'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1140,7 +1157,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['digital'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1152,11 +1169,35 @@ Key design focuses included:
             >
               <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Digital Experience</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                To complement the physical product, I also designed a digital presence for Bocca.
+                Rather than designing a traditional e-commerce platform, I approached the website as an extension of the brand experience itself.
               </p>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                The website allows users to explore the different box experiences, discover the stories behind each box, and purchase curated gastronomic gifts. The design emphasizes storytelling and visual immersion to reflect the tactile nature of the product.
+                Narrative-driven layouts, soft transitions, and immersive visuals helped build anticipation before purchase. The goal was to make discovery feel intentional and atmospheric while keeping the shopping experience simple and frictionless.
               </p>
+              <div className="relative w-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/projects/Bocca/mobile.webp"
+                  alt="Bocca mobile digital experience"
+                  width={1200}
+                  height={800}
+                  unoptimized
+                  className="w-full h-auto object-cover"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  loading="lazy"
+                />
+              </div>
+              <div className="relative w-full rounded-2xl overflow-hidden">
+                <Image
+                  src="/projects/Bocca/email.webp"
+                  alt="Bocca email digital experience"
+                  width={1200}
+                  height={800}
+                  unoptimized
+                  className="w-full h-auto object-cover"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  loading="lazy"
+                />
+              </div>
             </motion.div>
           </div>
         </section>
@@ -1169,7 +1210,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['impact'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1198,7 +1239,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['reflection-bocca'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1210,32 +1251,11 @@ Key design focuses included:
             >
               <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Reflection</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                Designing Bocca highlighted the importance of thinking beyond individual touchpoints and designing complete experiences.
+                Bocca allowed me to explore how design can shape not only digital interactions, but emotional experiences. Beyond creating a brand or website, I focused on designing anticipation, atmosphere, and connection across both physical and digital touchpoints.
               </p>
-              <div className="mt-2 mb-6 divide-y divide-gray-100 dark:divide-gray-800">
-                {([
-                  { icon: <Heart className="w-5 h-5" strokeWidth={1.5} />, title: 'Emotion over function', description: 'Experiences create stronger emotional connections than products alone.' },
-                  { icon: <Sparkles className="w-5 h-5" strokeWidth={1.5} />, title: 'Storytelling as design', description: 'Storytelling can transform simple products into memorable moments.' },
-                  { icon: <Globe className="w-5 h-5" strokeWidth={1.5} />, title: 'Cohesive identity', description: 'Cohesive design across physical and digital touchpoints strengthens brand identity.' },
-                ] as { icon: React.ReactNode; title: string; description: string }[]).map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-start gap-4 py-4"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-white">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <p className="text-base font-semibold text-white">{item.title}</p>
-                      <p className="text-base text-gray-400 mt-1 leading-relaxed">{item.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
+                The project reinforced the importance of storytelling, sensory design, and intentional pacing in creating experiences people emotionally remember.
+              </p>
             </motion.div>
           </div>
         </section>
@@ -1248,7 +1268,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1280,7 +1300,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1309,7 +1329,7 @@ Key design focuses included:
 
       {/* Image Section - Cortado Only */}
       {project.id === 2 && (
-        <section className="py-4 sm:py-8 px-0 sm:px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
+        <section className="py-4 sm:py-8 px-0 sm:px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1336,7 +1356,7 @@ Key design focuses included:
 
       {/* Image Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
+        <section className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1364,7 +1384,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="pt-8 sm:pt-16 pb-2 sm:pb-4 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="pt-8 sm:pt-16 pb-2 sm:pb-4 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1409,7 +1429,7 @@ Key design focuses included:
 
       {/* Stanford Images Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]">
+        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
               <motion.div
@@ -1462,7 +1482,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-sprint'] = el
           }}
-          className="pt-8 sm:pt-16 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="pt-8 sm:pt-16 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1515,7 +1535,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['understanding'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1577,7 +1597,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['clinician'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1608,7 +1628,7 @@ Key design focuses included:
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     viewport={{ once: true }}
                     className="rounded-2xl border border-gray-800 p-6 flex flex-col items-start gap-4"
-                    style={{ backgroundColor: '#171717' }}
+                    style={{ backgroundColor: '#151414' }}
                   >
                     <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center" style={{ color: themeColors.iconText }}>
                       {item.icon}
@@ -1632,7 +1652,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1684,7 +1704,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['features'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1728,7 +1748,7 @@ Key design focuses included:
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                     viewport={{ once: true }}
                     className="rounded-2xl border border-gray-800 overflow-hidden"
-                    style={{ backgroundColor: '#171717' }}
+                    style={{ backgroundColor: '#151414' }}
                   >
                     <div className="relative w-full aspect-video">
                       <video
@@ -1773,7 +1793,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['reflection'] = el
           }}
-          className="pt-8 sm:pt-16 pb-24 sm:pb-32 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#171717]"
+          className="pt-8 sm:pt-16 pb-8 sm:pb-12 px-6 sm:px-6 lg:px-12 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1797,14 +1817,44 @@ Key design focuses included:
         </section>
       )}
 
+      {/* Further Reading Section - Onyx Only */}
+      {project.id === 3 && (
+        <section className="py-8 sm:py-12 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="border-t border-white/10 pt-10"
+            >
+              <p className="text-xs tracking-widest uppercase text-gray-500 mb-4">Further Reading</p>
+              <h2 className="text-xl sm:text-2xl font-medium text-white mb-3">Explore the full case study</h2>
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed mb-8 max-w-xl">
+                A deeper breakdown of the project, process, and collaboration is available on Loka&apos;s website.
+              </p>
+              <a
+                href="https://www.loka.com/work/onyx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 text-sm text-white border border-white/20 rounded-full px-5 py-2.5 hover:border-white/50 hover:bg-white/5 transition-all duration-300"
+              >
+                View on Loka
+                <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+              </a>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* My Role Section - Cortado Only */}
       {project.id === 2 && (
-        <section 
+        <section
           id="context"
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1852,7 +1902,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['understanding'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1876,7 +1926,9 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <RefreshCw className="w-6 h-6 text-gray-400 mb-3" />
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                    <RefreshCw className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <h3 className="font-medium text-white mb-2">Work is fragmented across too many tools</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Listings, guest communication, pricing, and operations live in separate platforms, forcing constant context switching.</p>
                 </motion.div>
@@ -1887,7 +1939,9 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <MessageSquare className="w-6 h-6 text-gray-400 mb-3" />
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                    <MessageSquare className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <h3 className="font-medium text-white mb-2">Guest communication dominates daily work</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Responding to repetitive guest messages takes up several hours a day and frequently interrupts higher-value tasks.</p>
                 </motion.div>
@@ -1898,7 +1952,9 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Eye className="w-6 h-6 text-gray-400 mb-3" />
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                    <Eye className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <h3 className="font-medium text-white mb-2">Automation must remain transparent</h3>
                   <p className="text-gray-800 dark:text-gray-200 text-sm">Operators are open to AI assistance, but only when they can understand, review, and stay in control of system actions.</p>
                 </motion.div>
@@ -1920,7 +1976,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1947,7 +2003,9 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Accessibility className="w-6 h-6 text-gray-400 mb-3" />
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                    <Accessibility className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <p className="text-gray-800 dark:text-gray-200">Reducing cognitive load in message-heavy workflows</p>
                 </motion.div>
                 <motion.div
@@ -1957,7 +2015,9 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Eye className="w-6 h-6 text-gray-400 mb-3" />
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                    <Eye className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <p className="text-gray-800 dark:text-gray-200">Making AI assistance visible without feeling intrusive</p>
                 </motion.div>
                 <motion.div
@@ -1967,7 +2027,9 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <Settings className="w-6 h-6 text-gray-400 mb-3" />
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                    <Settings className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <p className="text-gray-800 dark:text-gray-200">Supporting fast decisions while preserving user control</p>
                 </motion.div>
                 <motion.div
@@ -1977,7 +2039,9 @@ Key design focuses included:
                   viewport={{ once: true }}
                   className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
                 >
-                  <LayoutDashboard className="w-6 h-6 text-gray-400 mb-3" />
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: themeColors.iconText }}>
+                    <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <p className="text-gray-800 dark:text-gray-200">Structuring complex information into calm, scannable layouts</p>
                 </motion.div>
               </div>
@@ -1988,7 +2052,7 @@ Key design focuses included:
 
       {/* Design Focus Images Section - Cortado Only */}
       {project.id === 2 && (
-        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]">
+        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
               <motion.div
@@ -2041,7 +2105,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['solution'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2073,7 +2137,7 @@ Key design focuses included:
                 >
                   <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
                     <Image
-                      src="/projects/Cortado/012.webp"
+                      src="/projects/Cortado/feature1.jpg"
                       alt="Draft replies suggestion"
                       fill
                       className="object-cover rounded-t-2xl"
@@ -2081,7 +2145,9 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <PenLine className="w-6 h-6 text-gray-400 mb-3" />
+                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#0f8be8' }}>
+                      <PenLine className="w-5 h-5" strokeWidth={1.5} />
+                    </div>
                     <p className="text-gray-800 dark:text-gray-200">Suggests draft replies that users can review and edit</p>
                   </div>
                 </motion.div>
@@ -2094,7 +2160,7 @@ Key design focuses included:
                 >
                   <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
                     <Image
-                      src="/projects/Cortado/015.webp"
+                      src="/projects/Cortado/feature2.jpg"
                       alt="Context from reservations"
                       fill
                       className="object-cover rounded-t-2xl"
@@ -2102,7 +2168,9 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <LayoutDashboard className="w-6 h-6 text-gray-400 mb-3" />
+                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#0f8be8' }}>
+                      <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />
+                    </div>
                     <p className="text-gray-800 dark:text-gray-200">Pulls context from reservations, policies, and property data</p>
                   </div>
                 </motion.div>
@@ -2115,7 +2183,7 @@ Key design focuses included:
                 >
                   <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
                     <Image
-                      src="/projects/Cortado/012.webp"
+                      src="/projects/Cortado/feature3.jpg"
                       alt="Learning from feedback"
                       fill
                       className="object-cover rounded-t-2xl"
@@ -2123,7 +2191,9 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <Rocket className="w-6 h-6 text-gray-400 mb-3" />
+                    <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#0f8be8' }}>
+                      <Rocket className="w-5 h-5" strokeWidth={1.5} />
+                    </div>
                     <p className="text-gray-800 dark:text-gray-200">Learns from user feedback to improve future suggestions</p>
                   </div>
                 </motion.div>
@@ -2157,7 +2227,7 @@ Key design focuses included:
                       <div className="relative w-full sm:rounded-2xl overflow-hidden">
                         <div className="relative w-full aspect-square sm:rounded-2xl overflow-hidden">
                           <Image
-                            src="/projects/Cortado/Design System Cortado.webp"
+                            src="/projects/Cortado/Welcome-Squared.webp"
                             alt="AI-Assisted Inbox solution detail 1"
                             fill
                             className="object-cover sm:rounded-2xl"
@@ -2206,12 +2276,12 @@ Key design focuses included:
 
       {/* Reflection Section - Cortado Only */}
       {project.id === 2 && (
-        <section 
+        <section
           id="reflection"
           ref={(el) => {
             if (el) sectionRefs.current['reflection'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#171717]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2224,12 +2294,42 @@ Key design focuses included:
               <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Reflection</h2>
               <div className="space-y-4 text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 <p>
-                  This project highlighted the value of synthesis and execution in early-stage product work. Turning research insights into a clear, usable interface was critical in making the concept tangible and credible.
+                  Designing operational workflows meant balancing efficiency with trust. While AI helped streamline repetitive tasks, the experience still needed to feel transparent and controllable for property managers handling day-to-day operations.
                 </p>
                 <p>
-                  Cortado reinforced a core belief in my design practice: AI products work best when they respect users' need for clarity, agency, and confidence.
+                  This project reinforced the importance of reducing complexity without oversimplifying workflows. Small interaction decisions had a meaningful impact on usability, clarity, and confidence across the platform.
                 </p>
               </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Further Reading Section - Cortado Only */}
+      {project.id === 2 && (
+        <section className="py-8 sm:py-12 px-6 sm:px-6 lg:px-8 bg-white dark:bg-[#151414]">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="border-t border-white/10 pt-10"
+            >
+              <p className="text-xs tracking-widest uppercase text-gray-500 mb-4">Further Reading</p>
+              <h2 className="text-xl sm:text-2xl font-medium text-white mb-3">Explore the full case study</h2>
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed mb-8 max-w-xl">
+                A deeper breakdown of the project, process, and collaboration is available on Loka&apos;s website.
+              </p>
+              <a
+                href="https://www.loka.com/work/cortado"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 text-sm text-white border border-white/20 rounded-full px-5 py-2.5 hover:border-white/50 hover:bg-white/5 transition-all duration-300"
+              >
+                View on Loka
+                <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+              </a>
             </motion.div>
           </div>
         </section>
@@ -2244,7 +2344,7 @@ Key design focuses included:
         ref={(el) => {
           if (el) nextProjectRef.current = el
         }}
-        className="py-24 px-6 sm:px-6 lg:px-8 bg-[#171717]"
+        className="py-24 px-6 sm:px-6 lg:px-8 bg-[#151414]"
       >
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -2273,6 +2373,7 @@ Key design focuses included:
                           src={nextProject.heroImage}
                           alt={`${nextProject.title} hero image`}
                           fill
+                          unoptimized
                           className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                           sizes="(min-width: 768px) 50vw, 100vw"
                         />

@@ -188,7 +188,9 @@ export const projectsData: { [key: number]: Project } = {
     tags: ['Brand Experience', 'E-commerce', 'Digital Launch'],
     heroImage: '/projects/bocca-moments-hero.webp',
     cardImage: '/projects/bocca-moments-hero.webp',
-    challenge: `The challenge was to bring emotional depth to a market saturated with subscription boxes focused on convenience. Bocca aimed to stand apart by offering a curated, sensorial experience, not just products, designed to surprise, nurture, and connect people through moments around the table.`,
+    challenge: `Modern dining experiences often prioritize convenience over connection. With Bocca, I explored how design could transform a simple dinner into a more intentional and memorable shared experience.
+
+I combined branding, packaging, digital design, and storytelling into a cohesive ecosystem centered around ritual, intimacy, and sensory interaction. From the visual identity to the unboxing experience, every touchpoint was designed to feel warm, tactile, and emotionally engaging.`,
     projectSummary: {
       problem: 'The gifting market lacked emotional depth most boxes felt transactional rather than meaningful or memorable.',
       solution: 'A premium brand and e-commerce experience that transforms a gastronomic gift into a curated, sensorial ritual.',
@@ -713,11 +715,11 @@ marketing.`,
     tags: ['Healthcare', 'Design Sprint', 'Care Management'],
     heroImage: '/projects/Onyx/B-Mockups, PSD.webp',
     cardImage: '/projects/Onyx/B-Mockups, PSD.webp',
-    challenge: `This project originated from the Loka Innovators Award, an initiative designed to explore new opportunities in healthcare innovation.
+    challenge: `Created during the Stanford Biodesign x Loka Innovators Award sprint, Onyx explored how digital tools could improve collaboration between clinicians and patients managing CPPS.
 
-Working alongside Stanford Biodesign fellows and a cross-functional team, we conducted a design sprint to investigate how digital tools could improve the care journey for patients with Chronic Pelvic Pain Syndrome (CPPS).
+Working alongside healthcare professionals and cross-functional teams, we mapped treatment workflows, identified communication gaps, and explored opportunities to improve long-term care coordination.
 
-The sprint brought together clinicians, designers, and engineers to explore the problem space and prototype potential solutions. The result was Onyx, a platform designed to help clinicians track treatment progress and communicate with patients more effectively.`,
+The outcome was a connected prototype ecosystem designed to support both clinicians and patients through more structured communication, treatment visibility, and long-term progress tracking.`,
     projectSummary: {
       problem: 'CPPS patients face fragmented care, years of uncertainty, and little structured guidance.',
       solution: 'A health platform for symptom tracking, education, and clinician-patient communication.',
