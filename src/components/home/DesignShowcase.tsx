@@ -48,23 +48,12 @@ export default function DesignShowcase({ isDesktop, onLabelChange }: { isDesktop
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-8 sm:mb-12"
+            className="text-left mb-8 sm:mb-12 pl-6 sm:pl-8 lg:pl-16"
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              viewport={{ once: true }}
-              className="inline-block mb-3 sm:mb-4"
-            >
-              <span className="text-sm font-medium tracking-wider text-gray-gray-600 dark:text-gray-gray-400 uppercase">
-                Design Showcase
-              </span>
-            </motion.div>
             <h2 className="text-4xl sm:text-5xl font-medium text-white mb-4 sm:mb-6">
               Product Explorations
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-2xl">
               Explorations in interaction, systems, and visual design.
             </p>
           </motion.div>
