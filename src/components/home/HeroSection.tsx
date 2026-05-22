@@ -219,7 +219,7 @@ export default function HeroSection({
   }
 
   return (
-    <section className="relative z-20 min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <section className="relative z-20 min-h-[90vh] flex items-center justify-start px-4 sm:px-6 lg:px-8">
       {/* Horizontal rule just below the navbar */}
       <div className="absolute top-16 left-0 w-full h-px pointer-events-none" style={hDashedLine} />
       {/* Horizontal rule at the bottom of the hero */}
@@ -248,7 +248,7 @@ export default function HeroSection({
       </>}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto text-center relative z-20">
+      <div className="max-w-7xl mx-auto text-left relative z-20">
         {/* Badge */}
         <motion.div
           className="mb-8"
@@ -271,7 +271,7 @@ export default function HeroSection({
         <div className="relative mb-8 lg:mb-10 overflow-visible">
           <h1
             ref={headlineRef}
-            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-white leading-tight relative flex flex-wrap justify-center items-center gap-0 sm:gap-3 overflow-visible"
+            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-white leading-tight relative flex flex-wrap justify-start items-center gap-0 sm:gap-3 overflow-visible"
           >
             <Link
               ref={ritaRef}
@@ -336,7 +336,7 @@ export default function HeroSection({
             I design products that turn complexity into clarity.
           </motion.h2>
           <motion.p
-            className="text-lg sm:text-xl text-gray-400 max-w-lg mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-gray-400 max-w-lg leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.9 }}
@@ -347,7 +347,7 @@ export default function HeroSection({
 
         {/* CTAs */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8 w-full sm:w-auto"
+          className="flex flex-col sm:flex-row gap-4 justify-start items-center pt-8 w-full sm:w-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 1.1 }}

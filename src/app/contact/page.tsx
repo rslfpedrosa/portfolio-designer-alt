@@ -104,6 +104,8 @@ const ContactPage = () => {
     { name: 'LinkedIn', href: 'https://www.linkedin.com/in/rita-pedrosa-9957151aa/', icon: Linkedin, color: 'hover:text-blue-600' },
   ]
 
+  const [emailHovered, setEmailHovered] = useState(false)
+
   const contactInfo = [
     {
       icon: Mail,
@@ -143,19 +145,19 @@ const ContactPage = () => {
 
       {/* Hero Section */}
       <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
+            className="space-y-6 pl-6 sm:pl-8 lg:pl-16"
           >
             <h1 className="text-5xl sm:text-6xl font-medium text-white">
-              Let's Create Something <span className="text-gradient">Meaningful</span>
+              Let's Create<br className="hidden lg:block" /> Something <span className="text-gradient">Meaningful</span>
             </h1>
-            <p className="text-xl text-gray-400 leading-relaxed max-w-2xl mx-auto">
-              I'm always excited to collaborate on projects that make a difference. 
-              Whether you need help with product strategy, design systems, or creating 
+            <p className="text-xl text-gray-400 leading-relaxed max-w-2xl">
+              I'm always excited to collaborate on projects that make a difference.
+              Whether you need help with product strategy, design systems, or creating
               beautiful user experiences, I'd love to hear from you.
             </p>
           </motion.div>
@@ -163,16 +165,36 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Form & Info */}
-      <section className="pt-8 pb-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <section className="relative px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-8"
+              className="relative overflow-visible"
             >
+              {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                <div
+                  key={corner}
+                  className="absolute w-3 h-3 z-20 rounded-sm"
+                  style={{
+                    backgroundColor: '#151414',
+                    border: '1px solid #312f2e',
+                    top: corner.startsWith('top') ? '-6px' : undefined,
+                    bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                    left: corner.endsWith('left') ? '-6px' : undefined,
+                    right: corner.endsWith('right') ? '-6px' : undefined,
+                  }}
+                />
+              ))}
+              <div
+                className="relative bg-[#151414] px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
+                style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+              >
               <div>
                 <h2 className="text-3xl font-medium text-white mb-4">
                   Send me a message
@@ -252,6 +274,7 @@ const ContactPage = () => {
                   )}
                 </motion.button>
               </form>
+              </div>
             </motion.div>
 
             {/* Contact Info */}
@@ -259,8 +282,26 @@ const ContactPage = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-8"
+              className="relative overflow-visible"
             >
+              {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                <div
+                  key={corner}
+                  className="absolute w-3 h-3 z-20 rounded-sm"
+                  style={{
+                    backgroundColor: '#151414',
+                    border: '1px solid #312f2e',
+                    top: corner.startsWith('top') ? '-6px' : undefined,
+                    bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                    left: corner.endsWith('left') ? '-6px' : undefined,
+                    right: corner.endsWith('right') ? '-6px' : undefined,
+                  }}
+                />
+              ))}
+              <div
+                className="relative bg-[#151414] px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
+                style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+              >
               <div>
                 <h2 className="text-3xl font-medium text-white mb-4">
                   Get in touch
@@ -280,18 +321,18 @@ const ContactPage = () => {
                       href={info.href}
                       whileHover={{ x: 4 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center space-x-4 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200 group cursor-pointer"
+                      onMouseEnter={() => setEmailHovered(true)}
+                      onMouseLeave={() => setEmailHovered(false)}
+                      className="flex w-full items-center space-x-4 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer"
                     >
-                      <div className="flex-shrink-0 w-11 h-11 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-white/15 transition-colors">
-                        <Icon size={18} className="text-white/70 group-hover:text-white transition-colors" />
+                      <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-colors" style={{ backgroundColor: '#1e1e1e', border: '1px solid #312f2e' }}>
+                        <Icon size={18} strokeWidth={1.5} style={{ color: emailHovered ? '#3b82f6' : 'rgba(255,255,255,0.5)', transition: 'color 0.2s' }} />
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <p className="text-xs text-white/40 uppercase tracking-widest mb-0.5">{info.title}</p>
-                        <p className="font-medium text-white group-hover:text-white/90 truncate">
-                          {info.value}
-                        </p>
+                        <p className="font-medium text-white truncate">{info.value}</p>
                       </div>
-                      <div className="ml-auto text-white/30 group-hover:text-white/60 transition-colors">
+                      <div className="ml-auto" style={{ color: emailHovered ? '#3b82f6' : 'rgba(255,255,255,0.3)', transition: 'color 0.2s' }}>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -346,6 +387,7 @@ const ContactPage = () => {
                     Available for new projects
                   </span>
                 </div>
+              </div>
               </div>
             </motion.div>
           </div>

@@ -12,6 +12,7 @@ interface FigmaCursorProps {
 
 export default function FigmaCursor({ label, showPill, forceBlue = false, shouldReduceMotion, isDesktop }: FigmaCursorProps) {
   const [logoHovered, setLogoHovered] = useState(false)
+  const [overClickable, setOverClickable] = useState(false)
   const cursorRef = useRef<HTMLDivElement>(null)
   const pillRef = useRef<HTMLSpanElement>(null)
   const mouseXRef = useRef<number>(0)
@@ -31,6 +32,21 @@ export default function FigmaCursor({ label, showPill, forceBlue = false, should
       window.removeEventListener('cursor-logo-enter', onEnter)
       window.removeEventListener('cursor-logo-leave', onLeave)
     }
+  }, [])
+
+  useEffect(() => {
+    const isClickable = (el: Element | null): boolean => {
+      if (!el || el === document.body) return false
+      const tag = el.tagName.toLowerCase()
+      if (tag === 'a' || tag === 'button' || tag === 'input' || tag === 'select' || tag === 'textarea') return true
+      const role = el.getAttribute('role')
+      if (role === 'button' || role === 'link') return true
+      if (window.getComputedStyle(el).cursor === 'pointer') return true
+      return isClickable(el.parentElement)
+    }
+    const onOver = (e: MouseEvent) => setOverClickable(isClickable(e.target as Element))
+    document.addEventListener('mouseover', onOver, { passive: true })
+    return () => document.removeEventListener('mouseover', onOver)
   }, [])
 
   useEffect(() => {
@@ -128,7 +144,7 @@ export default function FigmaCursor({ label, showPill, forceBlue = false, should
           fill="none"
           className="absolute -top-3 -left-1.5"
           style={{
-            color: (showPill || forceBlue || logoHovered) ? '#3b82f6' : '#525252',
+            color: (showPill || forceBlue || logoHovered || overClickable) ? '#3b82f6' : '#525252',
             transition: shouldReduceMotion ? 'none' : 'color 200ms ease-out',
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
           }}
