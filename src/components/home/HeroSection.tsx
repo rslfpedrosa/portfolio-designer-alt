@@ -222,8 +222,6 @@ export default function HeroSection({
     <section className="relative z-20 min-h-[90vh] flex items-center justify-start px-4 sm:px-6 lg:px-8">
       {/* Horizontal rule just below the navbar */}
       <div className="absolute top-16 left-0 w-full h-px pointer-events-none" style={hDashedLine} />
-      {/* Horizontal rule at the bottom of the hero */}
-      <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={hDashedLine} />
 
       {/* Animated blobs */}
       {!shouldReduceMotion && <>

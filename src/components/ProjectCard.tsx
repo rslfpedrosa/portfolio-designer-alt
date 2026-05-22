@@ -56,7 +56,7 @@ export default function ProjectCard({ project, index, isDesktop, onHoverChange }
         className="relative overflow-visible group cursor-pointer z-10"
       >
         <div
-          className="relative bg-[#1e1e1e] transition-all duration-300 ease-out overflow-visible rounded-none"
+          className="relative bg-[#151414] transition-all duration-300 ease-out overflow-visible rounded-none"
           style={isHovered ? {
             outline: '2px solid #0f8be8',
             outlineOffset: '0px',
@@ -72,7 +72,7 @@ export default function ProjectCard({ project, index, isDesktop, onHoverChange }
               key={corner}
               className="absolute w-3 h-3 z-20 rounded-sm transition-colors duration-300"
               style={{
-                backgroundColor: isHovered ? '#0f8be8' : '#1e1e1e',
+                backgroundColor: isHovered ? '#0f8be8' : '#151414',
                 border: isHovered ? '2px solid #0f8be8' : '1px solid #0f8be8',
                 top: corner.startsWith('top') ? '-6px' : undefined,
                 bottom: corner.startsWith('bottom') ? '-6px' : undefined,

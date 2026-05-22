@@ -22,6 +22,7 @@ export default function FeaturedProjects({
 
   return (
     <section className="relative pb-8 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-visible">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.10) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <div className="space-y-8 lg:space-y-12">
             {featuredProjects.map((project, index) => (

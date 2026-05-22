@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 
 interface ShowcaseItem {
@@ -17,32 +18,59 @@ interface ShowcaseCardProps {
 }
 
 export default function ShowcaseCard({ item, index, isDesktop, onLabelChange, onClick }: ShowcaseCardProps) {
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    if (isDesktop) onLabelChange?.('EXPAND')
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    if (isDesktop) onLabelChange?.(null)
+  }
+
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      viewport={{ once: true }}
       className="group cursor-pointer relative overflow-visible"
       onClick={onClick}
-      onMouseEnter={e => {
-        if (isDesktop) onLabelChange?.('EXPAND')
-        e.currentTarget.style.outline = '2px solid #0f8be8'
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        ...(isDesktop ? { cursor: 'none' } : {}),
       }}
-      onMouseLeave={e => {
-        if (isDesktop) onLabelChange?.(null)
-        e.currentTarget.style.outline = ''
-      }}
-      style={isDesktop ? { cursor: 'none' } : {}}
     >
-      {/* Corner Squares */}
-      <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-      <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-      <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-      <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
-        viewport={{ once: true }}
-        className="relative bg-[#1e1e1e] backdrop-blur-sm hover:shadow-xl hover:scale-[1.05] transition-all duration-500 ease-out overflow-hidden rounded-2xl lg:rounded-none"
+      <div
+        className="relative bg-[#1e1e1e] transition-all duration-300 ease-out overflow-visible"
+        style={isHovered ? {
+          outline: '2px solid #0f8be8',
+          outlineOffset: '0px',
+          boxShadow: '0 0 70px 0 rgba(15,139,232,0.18)',
+        } : {
+          outline: '1px solid #0f8be8',
+          outlineOffset: '0px',
+        }}
       >
+        {/* Corner squares */}
+        {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+          <div
+            key={corner}
+            className="absolute w-3 h-3 z-20 rounded-sm transition-colors duration-300"
+            style={{
+              backgroundColor: isHovered ? '#0f8be8' : '#1e1e1e',
+              border: isHovered ? '2px solid #0f8be8' : '1px solid #0f8be8',
+              top: corner.startsWith('top') ? '-6px' : undefined,
+              bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+              left: corner.endsWith('left') ? '-6px' : undefined,
+              right: corner.endsWith('right') ? '-6px' : undefined,
+            }}
+          />
+        ))}
+
         <div className="aspect-video relative overflow-hidden bg-gray-800">
           {item.type === 'video' ? (
             <video
@@ -75,7 +103,7 @@ export default function ShowcaseCard({ item, index, isDesktop, onLabelChange, on
             />
           )}
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   )
 }

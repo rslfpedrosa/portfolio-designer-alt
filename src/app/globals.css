@@ -395,18 +395,16 @@ button, a, input, textarea, select {
 
 /* Status Badge - Glass Effect */
 .status-badge {
-  background: rgba(40, 40, 40, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: transparent;
   border: 1px solid rgba(115, 115, 115, 0.3);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   cursor: default;
 }
 
 .dark .status-badge {
-  background: rgba(30, 30, 30, 0.95);
+  background: transparent;
   border: 1px solid rgba(115, 115, 115, 0.4);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
 }
 
 /* Status Dot Animations */
