@@ -89,6 +89,7 @@ const renderMediaCard = (media: ProjectMediaItem, className = '') => {
   )
 }
 
+
 const ProjectDetailPage = () => {
   const params = useParams()
   const projectId = parseInt(params.id as string)
@@ -399,6 +400,7 @@ Key design focuses included:
   // Custom cursor state
   const [isDesktop, setIsDesktop] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [isNextHovered, setIsNextHovered] = useState(false)
   const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
@@ -1017,11 +1019,10 @@ Key design focuses included:
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                     viewport={{ once: true }}
-                    className="rounded-2xl border border-gray-800 overflow-hidden flex flex-col"
-                    style={{ backgroundColor: '#151414' }}
+                    className="rounded-2xl border border-white/10 overflow-hidden flex flex-col bg-[#151414]"
                   >
-                    <div className="px-4 pt-4 pb-2">
-                      <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
+                    <div>
+                      <div className="relative w-full aspect-[4/3] overflow-hidden">
                         {i === 0 ? (
                           <video
                             src="/projects/Bocca/video1.webm"
@@ -1085,7 +1086,7 @@ Key design focuses included:
             >
               <h2 className="text-2xl sm:text-3xl font-medium text-white border-b border-white/10 pb-4">Branding & Visual Identity</h2>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
-                I wanted the identity to feel understated, warm, and tactile — balancing premium aesthetics with a sense of intimacy and authenticity.
+                I wanted the identity to feel understated, warm, and tactile, balancing premium aesthetics with a sense of intimacy and authenticity.
               </p>
               <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed">
                 Inspired by editorial layouts, natural textures, and slow dining experiences, I developed a visual system that combined refined typography, earthy tones, and minimal compositions to create a calm and sensorial atmosphere across both digital and physical touchpoints.
@@ -1709,8 +1710,7 @@ Key design focuses included:
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     viewport={{ once: true }}
-                    className="rounded-2xl border border-gray-800 p-6 flex flex-col items-start gap-4"
-                    style={{ backgroundColor: '#151414' }}
+                    className="rounded-2xl border border-white/10 p-6 flex flex-col items-start gap-4 h-full bg-[#151414]"
                   >
                     <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center" style={{ color: themeColors.iconText }}>
                       {item.icon}
@@ -2006,7 +2006,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] p-6 flex flex-col items-start h-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <RefreshCw className="w-5 h-5" strokeWidth={1.5} />
@@ -2019,7 +2019,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] p-6 flex flex-col items-start h-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <MessageSquare className="w-5 h-5" strokeWidth={1.5} />
@@ -2032,7 +2032,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] p-6 flex flex-col items-start h-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Eye className="w-5 h-5" strokeWidth={1.5} />
@@ -2083,7 +2083,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] p-6 flex flex-col items-start h-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Accessibility className="w-5 h-5" strokeWidth={1.5} />
@@ -2095,7 +2095,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] p-6 flex flex-col items-start h-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Eye className="w-5 h-5" strokeWidth={1.5} />
@@ -2107,7 +2107,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] p-6 flex flex-col items-start h-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Settings className="w-5 h-5" strokeWidth={1.5} />
@@ -2119,7 +2119,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm p-6 flex flex-col items-start"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] p-6 flex flex-col items-start h-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />
@@ -2215,14 +2215,14 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm overflow-hidden flex flex-col"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] overflow-hidden flex flex-col h-full"
                 >
-                  <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
+                  <div className="relative w-full h-48 overflow-hidden">
                     <Image
                       src="/projects/Cortado/feature1.jpg"
                       alt="Draft replies suggestion"
                       fill
-                      className="object-cover rounded-t-2xl"
+                      className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
@@ -2238,14 +2238,14 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm overflow-hidden flex flex-col"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] overflow-hidden flex flex-col h-full"
                 >
-                  <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
+                  <div className="relative w-full h-48 overflow-hidden">
                     <Image
                       src="/projects/Cortado/feature2.jpg"
                       alt="Context from reservations"
                       fill
-                      className="object-cover rounded-t-2xl"
+                      className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
@@ -2261,14 +2261,14 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm overflow-hidden flex flex-col"
+                  className="rounded-2xl border border-white/10 bg-[#1e1e1e] overflow-hidden flex flex-col h-full"
                 >
-                  <div className="relative w-full h-48 rounded-t-2xl overflow-hidden">
+                  <div className="relative w-full h-48 overflow-hidden">
                     <Image
                       src="/projects/Cortado/feature3.jpg"
                       alt="Learning from feedback"
                       fill
-                      className="object-cover rounded-t-2xl"
+                      className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
@@ -2437,56 +2437,78 @@ Key design focuses included:
           >
               <h2 className="text-2xl sm:text-3xl font-semibold text-white text-center mb-12 tracking-tight">Next Project</h2>
               <Link href={`/projects/${nextProject.id}`} className="group">
-              <div
-                className="relative cursor-pointer bg-[#1e1e1e]/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 hover:shadow-xl hover:shadow-gray-500/10 hover:scale-[1.05] transition-all duration-500 ease-out overflow-visible"
-                style={{ ['--hover-border' as string]: '2px solid #0f8be8' }}
-                onMouseEnter={e => (e.currentTarget.style.outline = '2px solid #0f8be8')}
-                onMouseLeave={e => (e.currentTarget.style.outline = '')}
-              >
-                {/* Corner Squares */}
-                <div className="absolute -top-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                <div className="absolute -top-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                <div className="absolute -bottom-[5px] -left-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                <div className="absolute -bottom-[5px] -right-[5px] w-2 h-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#0f8be8' }} />
-                  <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 min-h-[300px] overflow-hidden">
-                    <div className="relative overflow-hidden min-h-[300px]">
-                      {nextProject.heroImage ? (
-                        <Image
-                          src={nextProject.heroImage}
-                          alt={`${nextProject.title} hero image`}
-                          fill
-                          unoptimized
-                          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                          sizes="(min-width: 768px) 50vw, 100vw"
-                        />
-                      ) : (
-                        <div className={`bg-gradient-to-br ${nextProject.gradient} flex items-center justify-center h-full min-h-[300px]`}>
-                          <div className="text-white text-center">
-                            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                              <span className="text-xl font-medium">
-                                {nextProject.title.charAt(0)}
-                              </span>
+                <motion.div
+                  whileHover={{ scale: 1.03, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
+                  className="relative overflow-visible cursor-pointer z-10"
+                  onMouseEnter={() => setIsNextHovered(true)}
+                  onMouseLeave={() => setIsNextHovered(false)}
+                >
+                  <div
+                    className="relative bg-[#1e1e1e] overflow-visible"
+                    style={isNextHovered ? {
+                      outline: '2px solid #0f8be8',
+                      outlineOffset: '0px',
+                      boxShadow: `0 0 70px 0 ${{ 1: 'rgba(150, 85, 52, 0.18)', 2: 'rgba(160, 116, 250, 0.18)', 3: 'rgba(67, 106, 255, 0.18)' }[nextProject.id] ?? 'rgba(15,139,232,0.18)'}`,
+                    } : {
+                      outline: '1px solid #0f8be8',
+                      outlineOffset: '0px',
+                    }}
+                  >
+                    {/* Corner squares — always visible, blue on hover */}
+                    {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                      <div
+                        key={corner}
+                        className="absolute w-3 h-3 z-20 rounded-sm transition-colors duration-300"
+                        style={{
+                          backgroundColor: isNextHovered ? '#0f8be8' : '#1e1e1e',
+                          border: isNextHovered ? '2px solid #0f8be8' : '1px solid #0f8be8',
+                          top: corner.startsWith('top') ? '-6px' : undefined,
+                          bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                          left: corner.endsWith('left') ? '-6px' : undefined,
+                          right: corner.endsWith('right') ? '-6px' : undefined,
+                        }}
+                      />
+                    ))}
+                    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 min-h-[300px] overflow-hidden">
+                      <div className="relative overflow-hidden min-h-[300px]">
+                        {nextProject.heroImage ? (
+                          <Image
+                            src={nextProject.heroImage}
+                            alt={`${nextProject.title} hero image`}
+                            fill
+                            unoptimized
+                            className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                            sizes="(min-width: 768px) 50vw, 100vw"
+                          />
+                        ) : (
+                          <div className={`bg-gradient-to-br ${nextProject.gradient} flex items-center justify-center h-full min-h-[300px]`}>
+                            <div className="text-white text-center">
+                              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span className="text-xl font-medium">
+                                  {nextProject.title.charAt(0)}
+                                </span>
+                              </div>
+                              <p className="text-sm opacity-90">Project Preview</p>
                             </div>
-                            <p className="text-sm opacity-90">Project Preview</p>
                           </div>
+                        )}
+                      </div>
+                      <div className="p-8 sm:p-10 lg:p-14 flex flex-col justify-center text-left space-y-5">
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white tracking-tight leading-tight">
+                          {nextProject.title}
+                        </h3>
+                        <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                          {nextProject.tagline ?? nextProject.description}
+                        </p>
+                        <div className="flex items-center font-medium text-blue-500 group-hover:translate-x-2 transition-transform duration-300 pt-2">
+                          <span>View case study</span>
+                          <ArrowRight size={18} className="ml-2" />
                         </div>
-                      )}
-                    </div>
-                    <div className="p-8 sm:p-10 lg:p-14 flex flex-col justify-center text-left space-y-5">
-                    <h3 className="text-xl sm:text-2xl font-semibold text-white tracking-tight leading-tight">
-                        {nextProject.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-                        {nextProject.description}
-                    </p>
-                    <div className="flex items-center font-medium text-gray-400 group-hover:translate-x-2 transition-transform duration-300 pt-2">
-                      <span>View case study</span>
-                      <ArrowRight size={18} className="ml-2" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </Link>
+                </motion.div>
+              </Link>
           </motion.div>
         </div>
       </section>

@@ -186,8 +186,8 @@ export const projectsData: { [key: number]: Project } = {
     },
     gradient: 'from-amber-200 to-stone-500',
     tags: ['Brand Experience', 'E-commerce', 'Digital Launch'],
-    heroImage: '/projects/Bocca/1.webp',
-    cardImage: '/projects/Bocca/1.webp',
+    heroImage: '/projects/Bocca/cover.webp',
+    cardImage: '/projects/Bocca/cover.webp',
     challenge: `Modern dining experiences often prioritize convenience over connection. With Bocca, I explored how design could transform a simple dinner into a more intentional and memorable shared experience.
 
 I combined branding, packaging, digital design, and storytelling into a cohesive ecosystem centered around ritual, intimacy, and sensory interaction. From the visual identity to the unboxing experience, every touchpoint was designed to feel warm, tactile, and emotionally engaging.`,

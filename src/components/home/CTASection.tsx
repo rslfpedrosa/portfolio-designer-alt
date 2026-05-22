@@ -72,7 +72,7 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
                 Have a product challenge?
               </h2>
               <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-lg mx-auto">
-                I'm always open to collaborating on thoughtful, impactful products — from early ideas to refined experiences.
+                I'm always open to collaborating on thoughtful, impactful products, from early ideas to refined experiences.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
                 <Link href="/contact">
