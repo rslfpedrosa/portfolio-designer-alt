@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, PenTool, Layers, Sparkles, Target, Globe, Lightbulb, Layout, Code2 } from 'lucide-react'
+import GridBackground from '@/components/GridBackground'
 
 const FLOATING_ICONS = [
   { Icon: PenTool,   top: '14%', left: '7%',   rotate: -14 },
@@ -17,7 +18,8 @@ const FLOATING_ICONS = [
 
 export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
   return (
-    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#151414' }}>
+    <section className="relative py-12 sm:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden" style={{ backgroundColor: '#151414' }}>
+      <GridBackground />
       <div className="max-w-7xl mx-auto">
         <div
           className="relative rounded-2xl overflow-hidden"
@@ -68,7 +70,7 @@ export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white max-w-2xl mx-auto leading-tight">
+              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold text-white max-w-2xl mx-auto leading-tight">
                 Have a product challenge?
               </h2>
               <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-lg mx-auto">

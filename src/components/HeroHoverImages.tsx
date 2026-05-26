@@ -70,7 +70,7 @@ const HoverImagesContent = memo<{
       style={{ zIndex: PORTAL_Z_INDEX }}
     >
       <div
-        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30 transition-[opacity,transform] duration-300 ease-out"
+        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30"
         style={{
           left: x1,
           top: y1,
@@ -78,7 +78,8 @@ const HoverImagesContent = memo<{
           height: IMG_H,
           transform: `rotate(${ROTATE_1}deg) scale(${isVisible ? 1 : 0.92})`,
           opacity: isVisible ? 1 : 0,
-          willChange: 'transform, opacity',
+          transition: 'opacity 300ms ease-out, transform 300ms ease-out, left 500ms cubic-bezier(0.16,1,0.3,1), top 500ms cubic-bezier(0.16,1,0.3,1)',
+          willChange: 'transform, opacity, left, top',
           backfaceVisibility: 'hidden',
           perspective: 1000,
         }}
@@ -93,7 +94,7 @@ const HoverImagesContent = memo<{
         />
       </div>
       <div
-        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30 transition-[opacity,transform] duration-300 ease-out delay-75"
+        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30"
         style={{
           left: x2,
           top: y2,
@@ -101,7 +102,8 @@ const HoverImagesContent = memo<{
           height: IMG_H,
           transform: `rotate(${ROTATE_2}deg) scale(${isVisible ? 1 : 0.92})`,
           opacity: isVisible ? 1 : 0,
-          willChange: 'transform, opacity',
+          transition: 'opacity 300ms 75ms ease-out, transform 300ms 75ms ease-out, left 500ms cubic-bezier(0.16,1,0.3,1), top 500ms cubic-bezier(0.16,1,0.3,1)',
+          willChange: 'transform, opacity, left, top',
           backfaceVisibility: 'hidden',
           perspective: 1000,
         }}
@@ -116,7 +118,7 @@ const HoverImagesContent = memo<{
         />
       </div>
       <div
-        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30 transition-[opacity,transform] duration-300 ease-out delay-150"
+        className="absolute rounded-xl shadow-2xl overflow-hidden border-2 border-white/30 dark:border-slate-700/30"
         style={{
           left: x3,
           top: y3,
@@ -124,7 +126,8 @@ const HoverImagesContent = memo<{
           height: IMG_H_SM,
           transform: `rotate(${ROTATE_3}deg) scale(${isVisible ? 1 : 0.92})`,
           opacity: isVisible ? 1 : 0,
-          willChange: 'transform, opacity',
+          transition: 'opacity 300ms 150ms ease-out, transform 300ms 150ms ease-out, left 500ms cubic-bezier(0.16,1,0.3,1), top 500ms cubic-bezier(0.16,1,0.3,1)',
+          willChange: 'transform, opacity, left, top',
           backfaceVisibility: 'hidden',
           perspective: 1000,
         }}

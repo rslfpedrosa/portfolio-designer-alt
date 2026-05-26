@@ -241,7 +241,7 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
                   }}
                 >
                   <div className="mb-6">
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
+                    <svg width="64" height="64" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
                       <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
                       <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
                     </svg>

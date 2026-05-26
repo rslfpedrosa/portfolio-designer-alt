@@ -1,15 +1,16 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import SelectionFramePortal from '@/components/SelectionFramePortal'
 import HeroHoverImages from '@/components/HeroHoverImages'
 import { projectsData } from '@/data/projects'
 
 const HERO_RITA_PHOTOS: [string, string, string] = ['/Me/IMG_0426.webp', '/Me/cefda5d2-eb6d-4e79-8fa6-b484bc03be29.webp', '/projects/Onyx/Stanford.webp']
 const HERO_DESIGN_PHOTOS: [string, string, string] = [projectsData[1].heroImage, projectsData[2].heroImage, projectsData[3].heroImage]
+
+const CYCLING_PHRASES = ['I Design.', 'I Simplify.', 'I Explore.', 'I Create.', 'I Prototype.', 'I Question.', 'I Iterate.']
 
 export default function HeroSection({ 
   isDesktop, 
@@ -25,6 +26,10 @@ export default function HeroSection({
   const shouldReduceMotion = useReducedMotion()
   const [activeWord, setActiveWord] = useState<'rita' | 'design' | null>(null)
   const [entered, setEntered] = useState(false)
+  const [phraseIndex, setPhraseIndex] = useState(0)
+  const [isCycling, setIsCycling] = useState(false)
+  const [phraseWidth, setPhraseWidth] = useState(0)
+  const measureRef = useRef<HTMLSpanElement>(null)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   const ritaRef = useRef<HTMLAnchorElement>(null)
@@ -51,6 +56,45 @@ export default function HeroSection({
       })
     })
   }, [shouldReduceMotion])
+
+  // Start phrase cycling after entry animation settles
+  useEffect(() => {
+    if (!entered) return
+    let interval: NodeJS.Timeout
+    const startDelay = setTimeout(() => {
+      setIsCycling(true)
+      interval = setInterval(() => {
+        setPhraseIndex(i => (i + 1) % CYCLING_PHRASES.length)
+      }, 2500)
+    }, 1500)
+    return () => {
+      clearTimeout(startDelay)
+      clearInterval(interval)
+    }
+  }, [entered])
+
+  // Measure the current phrase's natural width for the frame
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      if (measureRef.current) {
+        setPhraseWidth(measureRef.current.getBoundingClientRect().width)
+      }
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [phraseIndex, entered])
+
+  // Remeasure on resize (font size changes at breakpoints)
+  useEffect(() => {
+    let t: NodeJS.Timeout
+    const onResize = () => {
+      clearTimeout(t)
+      t = setTimeout(() => {
+        if (measureRef.current) setPhraseWidth(measureRef.current.getBoundingClientRect().width)
+      }, 150)
+    }
+    window.addEventListener('resize', onResize)
+    return () => { clearTimeout(t); window.removeEventListener('resize', onResize) }
+  }, [])
 
   const updateBoundsRef = useRef<number | null>(null)
   
@@ -307,39 +351,87 @@ export default function HeroSection({
               <motion.span
                 ref={rightSpanRef}
                 id="hero-right"
-                className="inline-block text-gradient overflow-visible pt-1 pb-3"
+                className="inline-block overflow-visible pt-1 pb-3"
                 initial={shouldReduceMotion ? false : { x: '100vw', opacity: 0 }}
                 animate={entered ? { x: 0, opacity: 1 } : {}}
                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               >
-                I Design.
+                <span className="relative inline-block">
+                  {/* Layout spacer: widest phrase, keeps container width fixed */}
+                  <span className="invisible text-gradient whitespace-nowrap" aria-hidden>I Prototype.</span>
+
+                  {/* Measurement span: current phrase at natural width, off-screen */}
+                  <span
+                    ref={measureRef}
+                    className="absolute top-0 left-0 invisible whitespace-nowrap text-gradient pointer-events-none"
+                    aria-hidden
+                  >
+                    {CYCLING_PHRASES[phraseIndex]}
+                  </span>
+
+                  {/* Animated phrase text */}
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={phraseIndex}
+                      className="absolute top-0 left-0 right-0 text-gradient whitespace-nowrap"
+                      style={{ bottom: '-0.25em' }}
+                      initial={isCycling ? { opacity: 0 } : false}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {CYCLING_PHRASES[phraseIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+
+                  {/* Frame with smoothly animated width */}
+                  {phraseWidth > 0 && (
+                    <motion.span
+                      className="absolute top-0 left-0 h-full pointer-events-none overflow-visible"
+                      animate={{ width: phraseWidth, opacity: 1 }}
+                      initial={{ width: phraseWidth, opacity: 0 }}
+                      transition={{ width: { duration: 0.45, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.3 } }}
+                      style={{ border: '1px solid #0f8be8' }}
+                    >
+                      {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map(corner => (
+                        <span
+                          key={corner}
+                          className="absolute w-3 h-3 rounded-sm transition-colors duration-300"
+                          style={{
+                            backgroundColor: showDesignFrame ? '#0f8be8' : '#151414',
+                            border: '1px solid #0f8be8',
+                            top: corner.startsWith('top') ? -6 : undefined,
+                            bottom: corner.startsWith('bottom') ? -6 : undefined,
+                            left: corner.endsWith('left') ? -6 : undefined,
+                            right: corner.endsWith('right') ? -6 : undefined,
+                          }}
+                        />
+                      ))}
+                    </motion.span>
+                  )}
+                </span>
               </motion.span>
             </Link>
           </h1>
 
-          <SelectionFramePortal bounds={ritaViewport} isVisible={showRitaFrame} />
-          <SelectionFramePortal bounds={designViewport} isVisible={showDesignFrame} />
           <HeroHoverImages bounds={ritaViewport} isVisible={showRitaFrame} photos={HERO_RITA_PHOTOS} variant="design" />
-          <HeroHoverImages bounds={designViewport} isVisible={showDesignFrame} photos={HERO_DESIGN_PHOTOS} variant="rita" />
+          <HeroHoverImages
+            bounds={designViewport && phraseWidth > 0 ? { ...designViewport, width: phraseWidth } : designViewport}
+            isVisible={showDesignFrame}
+            photos={HERO_DESIGN_PHOTOS}
+            variant="rita"
+          />
         </div>
 
-        {/* Subtitle and Description */}
-        <div className="mb-12 lg:mb-16 space-y-4">
-          <motion.h2 
-            className="text-2xl sm:text-3xl lg:text-4xl font-normal text-gray-600 dark:text-gray-300"
-            initial={{ opacity: 0, y: 30 }}
-            animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.7 }}
-          >
-            I design products that turn complexity into clarity.
-          </motion.h2>
+        {/* Description */}
+        <div className="mb-12 lg:mb-16">
           <motion.p
             className="text-lg sm:text-xl text-gray-400 max-w-lg leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.9 }}
           >
-            I work closely with teams to research, design, and ship thoughtful, human-centered products.
+            From AI platforms to healthcare products, I transform complexity into experiences people understand and enjoy using.
           </motion.p>
         </div>
 
