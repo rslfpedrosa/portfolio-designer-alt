@@ -24,8 +24,6 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
   const displayTextRef = useRef('')
   const animTimeoutsRef = useRef<NodeJS.Timeout[]>([])
   const headlineRef = useRef<HTMLHeadingElement>(null)
-  const sectionRef = useRef<HTMLElement>(null)
-  const [headlineDragging, setHeadlineDragging] = useState(false)
 
   useEffect(() => {
     if (shouldReduceMotion) {
@@ -110,23 +108,8 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
     }
   }, [phraseIndex, entered])
 
-  const hDashedLine = {
-    backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.10) 50%, transparent 50%)',
-    backgroundSize: '16px 1px',
-    backgroundRepeat: 'repeat-x' as const,
-  }
-
-  const dragProps = {
-    drag: true as const,
-    dragConstraints: sectionRef,
-    dragMomentum: false,
-    dragElastic: 0.12,
-    whileDrag: { scale: 1.04, zIndex: 50 },
-  }
-
   return (
     <section
-      ref={sectionRef}
       className="relative z-20 flex items-center justify-center"
       style={{
         minHeight: '100svh',
@@ -142,8 +125,6 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           initial={{ opacity: 0, y: 12 }}
           animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
           transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          {...dragProps}
-          style={{ cursor: 'grab', position: 'relative' }}
         >
           <div className="inline-flex items-center gap-2.5">
             <div className="relative flex items-center justify-center w-1.5 h-1.5">
@@ -174,7 +155,6 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
               href="/projects"
               className="inline-block overflow-visible focus:outline-none"
               aria-label="View Work"
-              onClick={(e) => { if (headlineDragging) e.preventDefault() }}
             >
               <motion.span
                 id="hero-right"
@@ -182,10 +162,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
                 initial={shouldReduceMotion ? false : { x: '100vw', opacity: 0 }}
                 animate={entered ? { x: 0, opacity: 1 } : {}}
                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                {...dragProps}
-                onDragStart={() => setHeadlineDragging(true)}
-                onDragEnd={() => setTimeout(() => setHeadlineDragging(false), 50)}
-                style={{ cursor: 'grab', display: 'inline-block' }}
+                style={{ display: 'inline-block' }}
               >
                 <span className="relative inline-block">
                   {/* Layout spacer: widest phrase, keeps container width fixed */}
@@ -265,13 +242,10 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
               color: 'rgba(36,31,33,0.5)',
               maxWidth: '44ch',
               margin: '0 auto',
-              cursor: 'grab',
-              position: 'relative',
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
-            {...dragProps}
           >
             From AI platforms to healthcare products, I transform complexity into experiences people understand and enjoy using.
           </motion.p>
@@ -283,8 +257,6 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           initial={{ opacity: 0, y: 30 }}
           animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 1.1 }}
-          {...dragProps}
-          style={{ cursor: 'grab', position: 'relative' }}
         >
           <Link href="/projects" className="group flex items-center gap-2">
             <span
@@ -339,8 +311,6 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           animate={entered ? { opacity: 1 } : { opacity: 0 }}
           transition={shouldReduceMotion ? { duration: 0 } : { delay: 2.2, duration: 1.2, ease: 'easeOut' }}
           aria-hidden
-          {...dragProps}
-          style={{ cursor: 'grab', position: 'relative' }}
         >
           <span
             style={{

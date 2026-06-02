@@ -385,6 +385,7 @@ const AboutPage = () => {
   const cardRef = useRef<HTMLDivElement>(null)
   const isDraggingRef = useRef(false)
   const [draggingPostIt, setDraggingPostIt] = useState<number | null>(null)
+  const [hoveredPostIt, setHoveredPostIt] = useState<number | null>(null)
 
   useEffect(() => {
     const measure = () => {
@@ -742,6 +743,8 @@ const AboutPage = () => {
                   dragMomentum={false}
                   onDragStart={() => setDraggingPostIt(index)}
                   onDragEnd={() => setDraggingPostIt(null)}
+                  onHoverStart={() => setHoveredPostIt(index)}
+                  onHoverEnd={() => setHoveredPostIt(null)}
                   whileDrag={{
                     scale: 1.04,
                     boxShadow: '0 28px 60px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.12)',
@@ -753,6 +756,7 @@ const AboutPage = () => {
                     borderRadius: '2px',
                     rotate: `${value.rotation}deg`,
                     boxShadow: '0 10px 36px rgba(0,0,0,0.14), 0 3px 10px rgba(0,0,0,0.08)',
+                    outline: (hoveredPostIt === index || draggingPostIt === index) ? '2px solid #0a99ff' : '2px solid transparent',
                     width: '380px',
                     minHeight: '340px',
                     cursor: draggingPostIt === index ? 'grabbing' : 'grab',
@@ -764,6 +768,10 @@ const AboutPage = () => {
                     marginLeft: index === 2 ? -overlapMargin : undefined,
                   }}
                 >
+                  {(hoveredPostIt === index || draggingPostIt === index) && cornerSquares(
+                    ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+                    true
+                  )}
                   <div className="mb-6">
                     <img src={value.illustration} alt="" className="w-20 h-20 object-contain" style={{ filter: 'brightness(0) opacity(0.5)' }} />
                   </div>

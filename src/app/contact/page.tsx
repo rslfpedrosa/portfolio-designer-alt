@@ -179,7 +179,7 @@ const ContactPage = () => {
             transition={{ duration: 0.6 }}
             className="space-y-6 pl-6 sm:pl-8 lg:pl-16"
           >
-            <h1 className="text-5xl sm:text-6xl font-medium text-[#241f21] flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-medium text-[#241f21] flex flex-wrap items-baseline gap-x-4 gap-y-2">
               <span className="relative inline-block">
                 {/* Invisible spacer: keeps container at widest-phrase width */}
                 <span className="invisible text-gradient whitespace-nowrap" aria-hidden>Let&apos;s Collaborate.</span>
@@ -209,7 +209,7 @@ const ContactPage = () => {
                 {/* Animated selection frame */}
                 {phraseWidth > 0 && (
                   <motion.span
-                    className="absolute top-0 h-full pointer-events-none overflow-visible"
+                    className="absolute top-0 bottom-[0.13em] pointer-events-none overflow-visible"
                     animate={{ width: phraseWidth, opacity: 1 }}
                     initial={{ width: phraseWidth, opacity: 0 }}
                     transition={{ width: { duration: 0.45, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.3 } }}

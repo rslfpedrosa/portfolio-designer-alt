@@ -88,7 +88,7 @@ const Header = () => {
           boxShadow: scrolled
             ? '0 4px 32px rgba(0,0,0,0.1)'
             : '0 2px 16px rgba(0,0,0,0.06)',
-          padding: '6px 6px 6px 22px',
+          padding: '6px',
           transition: 'box-shadow 0.3s ease',
           position: 'relative',
           zIndex: 1,
@@ -102,7 +102,7 @@ const Header = () => {
             className="flex items-center"
           >
             <svg
-              height="15"
+              height="20"
               viewBox="0 0 375 62"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -157,10 +157,13 @@ const Header = () => {
         <Link href="/contact" className="hidden md:block" style={{ flexShrink: 0, marginLeft: '4px' }}>
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
               fontSize: '13px',
               fontWeight: 500,
-              color: colors.ctaText,
-              background: colors.ctaBg,
+              color: '#ffffff',
+              background: '#0a99ff',
               borderRadius: '999px',
               padding: '8px 20px',
               transition: 'opacity 0.18s ease',
@@ -169,7 +172,10 @@ const Header = () => {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
-            Contact
+            Get In Touch
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.75 10.75V0.75H0.75M10.75 0.75L0.75 10.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </div>
         </Link>
 
@@ -225,7 +231,7 @@ const Header = () => {
               className="flex flex-col"
               style={{ padding: 'clamp(28px, 5vw, 48px) clamp(24px, 5vw, 80px)' }}
             >
-              {[...navItems, { name: 'Contact', href: '/contact' }].map((item, i) => {
+              {[...navItems, { name: 'Get In Touch', href: '/contact' }].map((item, i) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
                 return (
                   <motion.div

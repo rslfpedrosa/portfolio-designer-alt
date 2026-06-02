@@ -84,7 +84,7 @@ const HomePage = () => {
       <div className="relative overflow-visible">
         <div className="absolute inset-0 z-[1]"><GridBackground /></div>
         <div className="relative z-10">
-          <HeroSection isDesktop={isDesktop} />
+          <HeroSection />
         </div>
         <div className="absolute inset-0 overflow-visible pointer-events-none z-[30]">
           {FIGMA_USERS.map((user) => <HeroCursor key={user.name} {...user} />)}
@@ -95,16 +95,16 @@ const HomePage = () => {
       <CaseStudiesSection isDesktop={isDesktop} />
 
       {/* Design Showcase Section */}
-      <DesignShowcase isDesktop={isDesktop} />
+      <DesignShowcase />
 
       {/* Testimonials Section */}
-      <TestimonialsSection isDesktop={isDesktop} />
+      <TestimonialsSection />
 
       {/* About Preview Section */}
-      <AboutPreview isDesktop={isDesktop} />
+      <AboutPreview />
 
       {/* Let's Work Together Section */}
-      <CTASection isDesktop={isDesktop} />
+      <CTASection />
     </div>
   )
 }
