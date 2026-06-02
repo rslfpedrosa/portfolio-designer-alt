@@ -161,7 +161,7 @@ const ConferenceCard = ({
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative shadow-soft hover:shadow-large transition-all overflow-visible"
+      className="relative transition-all overflow-visible"
     >
       {/* Floating photos on hover */}
       <div className="absolute inset-0 pointer-events-none z-30">
@@ -691,7 +691,7 @@ const AboutPage = () => {
                 }}
               >
                 <span
-                  className="text-xs text-white px-1.5 py-0.5 rounded-sm whitespace-nowrap"
+                  className="inline-flex items-center text-xs text-white px-1.5 py-1 rounded whitespace-nowrap leading-none"
                   style={{ backgroundColor: '#0a99ff' }}
                 >
                   Radius {Math.round(cardRadius)}
@@ -706,7 +706,7 @@ const AboutPage = () => {
                 style={{ bottom: -28, transform: 'translateX(-50%)' }}
               >
                 <span
-                  className="text-xs text-white px-2 py-1 rounded-sm whitespace-nowrap"
+                  className="inline-flex items-center text-xs text-white px-2 py-1 rounded whitespace-nowrap leading-none"
                   style={{ backgroundColor: '#0a99ff' }}
                 >
                   {cardDimensions.width} × {cardDimensions.height}
@@ -800,7 +800,7 @@ const AboutPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left mb-4 sm:mb-8 px-6 sm:pl-8 sm:pr-0 lg:pl-16"
+            className="text-left mb-4 sm:mb-8"
           >
             <h2 className="text-3xl sm:text-[4rem] font-semibold mb-2 leading-none flex items-center justify-start gap-3" style={{ color: textDark }}>
               My Journey
