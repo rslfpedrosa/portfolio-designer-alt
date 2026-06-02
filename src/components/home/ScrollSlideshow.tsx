@@ -154,7 +154,7 @@ export default function ScrollSlideshow() {
                 <Link href={`/projects/${slide.id}`} >
                   <span style={{
                     display: 'inline-flex', alignItems: 'center', gap: 10,
-                    background: '#d9ee72', color: '#042d2b',
+                    background: '#d9ee72', color: '#241f21',
                     padding: '11px 20px', borderRadius: 999,
                     fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
                   }}>
@@ -269,7 +269,7 @@ export default function ScrollSlideshow() {
               <Link href={`/projects/${slide.id}`} >
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', gap: 10,
-                  background: '#d9ee72', color: '#042d2b',
+                  background: '#d9ee72', color: '#241f21',
                   padding: '12px 22px', borderRadius: 999,
                   fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
                 }}>

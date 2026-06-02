@@ -364,8 +364,8 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
                         display: 'flex', alignItems: 'center',
                         padding: '0 22px 0 24px',
                         fontSize: 14, fontWeight: 500,
-                        textTransform: 'uppercase', color: '#042d2b',
-                        WebkitTextStroke: '0.2px #042d2b',
+                        textTransform: 'uppercase', color: '#241f21',
+                        WebkitTextStroke: '0.2px #241f21',
                         whiteSpace: 'nowrap',
                       }}>
                         See Case Study

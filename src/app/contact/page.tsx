@@ -407,13 +407,13 @@ const ContactPage = () => {
                       style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(36,31,33,0.04)' }}
                     >
                       <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-colors" style={{ backgroundColor: 'rgba(36,31,33,0.07)', border: `1px solid ${borderColor}` }}>
-                        <Icon size={18} strokeWidth={1.5} style={{ color: emailHovered ? '#042d2b' : 'rgba(36,31,33,0.45)', transition: 'color 0.2s' }} />
+                        <Icon size={18} strokeWidth={1.5} style={{ color: emailHovered ? '#241f21' : 'rgba(36,31,33,0.45)', transition: 'color 0.2s' }} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs uppercase tracking-widest mb-0.5" style={{ color: 'rgba(36,31,33,0.40)' }}>{info.title}</p>
                         <p className="font-medium text-[#241f21] truncate">{info.value}</p>
                       </div>
-                      <div className="ml-auto" style={{ color: emailHovered ? '#042d2b' : 'rgba(36,31,33,0.30)', transition: 'color 0.2s' }}>
+                      <div className="ml-auto" style={{ color: emailHovered ? '#241f21' : 'rgba(36,31,33,0.30)', transition: 'color 0.2s' }}>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>

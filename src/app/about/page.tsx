@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useSpring, AnimatePresence } from 'framer-motion'
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { Plane } from 'lucide-react'
 import React, { useState, useRef, useEffect } from 'react'
 import CTASection from '@/components/home/CTASection'
@@ -100,7 +100,7 @@ const FigmaCommentPin = ({
           transition={{ duration: 0.24, ease }}
           style={{
             borderRadius: '50%',
-            background: '#E91E8C',
+            background: '#ff00c3',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -116,10 +116,10 @@ const FigmaCommentPin = ({
           style={{ marginLeft: 10, paddingTop: 1, flex: 1, minWidth: 0 }}
         >
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>Rita Pedrosa</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: '#241f21' }}>Rita Pedrosa</span>
             <span style={{ fontSize: 12, color: '#999' }}>{timeAgo}</span>
           </div>
-          <p style={{ fontSize: 14, lineHeight: 1.4, marginTop: 4, color: '#222' }}>{message}</p>
+          <p style={{ fontSize: 14, lineHeight: 1.4, marginTop: 4, color: '#241f21' }}>{message}</p>
         </motion.div>
       </motion.div>
     </div>
@@ -161,8 +161,7 @@ const ConferenceCard = ({
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative rounded-2xl shadow-soft hover:shadow-large transition-all overflow-visible"
-      style={{ background: conference.cardBg }}
+      className="relative shadow-soft hover:shadow-large transition-all overflow-visible"
     >
       {/* Floating photos on hover */}
       <div className="absolute inset-0 pointer-events-none z-30">
@@ -228,12 +227,19 @@ const ConferenceCard = ({
         </motion.div>
       </div>
 
+      {/* Masked card body (photos sit outside this) */}
+      <div
+        className="relative overflow-hidden rounded-2xl"
+        style={{
+          background: conference.cardBg,
+          WebkitMaskImage: 'radial-gradient(circle 12px at 0px 41%, transparent 12px, black 12px), radial-gradient(circle 12px at 100% 41%, transparent 12px, black 12px)',
+          maskImage: 'radial-gradient(circle 12px at 0px 41%, transparent 12px, black 12px), radial-gradient(circle 12px at 100% 41%, transparent 12px, black 12px)',
+          WebkitMaskComposite: 'destination-in',
+          maskComposite: 'intersect',
+        }}
+      >
       {/* Ticket-style design */}
       <div className="relative overflow-hidden rounded-2xl">
-        {/* Perforated edge effect */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full -ml-2 z-10" style={{ backgroundColor: bg }} />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full -mr-2 z-10" style={{ backgroundColor: bg }} />
-
         <motion.div
           animate={isHovered ? { scale: 1.02 } : { scale: 1 }}
           transition={{ duration: 0.3 }}
@@ -256,17 +262,18 @@ const ConferenceCard = ({
             </div>
           </div>
 
-          <div className="border-t border-white/30 pt-4">
+          <div className="border-t border-dashed border-white/30 pt-4">
             <h3 className="text-2xl font-medium mb-2">{conference.name} '{conference.year}</h3>
           </div>
         </motion.div>
       </div>
 
       <div className="p-6 relative z-0">
-        <p className="leading-relaxed" style={{ color: textMuted }}>
+        <p className="leading-relaxed text-white/80">
           {conference.description}
         </p>
       </div>
+      </div>{/* end masked card body */}
     </motion.div>
   )
 }
@@ -316,9 +323,9 @@ const BentoJoyCell = ({ joy, index }: { joy: { title: string; description: strin
       ))}
       <div
         className="relative h-full flex flex-col"
-        style={{ backgroundColor: bg, outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
+        style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
       >
-        <div className="relative w-full overflow-hidden flex-shrink-0" style={{ height: '320px', backgroundColor: bg }}>
+        <div className="relative w-full overflow-hidden flex-shrink-0" style={{ height: '320px', backgroundColor: '#ffffff' }}>
           <video
             ref={videoRef}
             src={joy.video}
@@ -375,9 +382,6 @@ const CORNER_HANDLES = [
 
 const AboutPage = () => {
   const shouldReduceMotion = useReducedMotion()
-  const timelineRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start end', 'end end'] })
-  const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.001 })
 
   const [cardRadius, setCardRadius] = useState(0)
   const [isCardHovered, setIsCardHovered] = useState(false)
@@ -773,9 +777,9 @@ const AboutPage = () => {
                     true
                   )}
                   <div className="mb-6">
-                    <img src={value.illustration} alt="" className="w-20 h-20 object-contain" style={{ filter: 'brightness(0) opacity(0.5)' }} />
+                    <img src={value.illustration} alt="" className="w-20 h-20 object-contain" style={{ filter: 'brightness(0) invert(1) brightness(0.14)' }} />
                   </div>
-                  <h3 className="text-2xl font-medium mb-3" style={{ color: 'rgba(36,31,33,0.85)' }}>
+                  <h3 className="text-2xl font-medium mb-3" style={{ color: '#241f21' }}>
                     {value.title}
                   </h3>
                   <p className="text-base leading-relaxed" style={{ color: 'rgba(36,31,33,0.6)' }}>
@@ -796,96 +800,119 @@ const AboutPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left mb-8 sm:mb-16 px-6 sm:pl-8 sm:pr-0 lg:pl-16"
+            className="text-left mb-4 sm:mb-8 px-6 sm:pl-8 sm:pr-0 lg:pl-16"
           >
             <h2 className="text-3xl sm:text-[4rem] font-semibold mb-2 leading-none flex items-center justify-start gap-3" style={{ color: textDark }}>
               My Journey
               <img src="/Me/Arrow.svg" alt="" className="w-14 h-14 sm:w-20 sm:h-20 inline-block flex-shrink-0" style={{ filter: 'brightness(0)' }} />
             </h2>
-            <p className="text-xl" style={{ color: textMuted }}>
-              A path shaped by curiosity, ownership, and continuous learning
-            </p>
           </motion.div>
 
-          <div className="relative" ref={timelineRef}>
-            {/* Timeline Line background */}
-            <div className="absolute left-[9px] top-0 bottom-0 w-0.5" style={{ backgroundColor: 'rgba(36,31,33,0.10)' }} />
-            {/* Timeline Line fill */}
-            <motion.div
-              className="absolute left-[9px] top-0 bottom-0 w-0.5 bg-[#0a99ff] origin-top"
-              style={{ scaleY: lineProgress }}
-            />
-
-            <div className="space-y-8">
+          <div className="relative">
+            <div className="flex flex-col">
               {timeline.map((item, index) => (
-                <motion.div
-                  key={item.year + item.title}
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                  viewport={{ once: true }}
-                  className="relative flex items-center gap-8"
-                >
-                  {/* Timeline Dot */}
-                  <div className="flex-shrink-0 w-5 flex justify-center items-center">
-                    <motion.div
-                      className="w-[10px] h-[10px] rounded-full relative z-10"
-                      initial={{ backgroundColor: 'rgba(36,31,33,0.15)', boxShadow: '0 0 0 3px rgba(10,153,255,0)' }}
-                      whileInView={{ backgroundColor: '#0a99ff', boxShadow: '0 0 0 3px rgba(10,153,255,0.25)' }}
-                      transition={{ duration: 0.5, delay: index * 0.08 }}
-                      viewport={{ once: true }}
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 relative overflow-visible">
-                    {cornerSquares(['top-left', 'top-right', 'bottom-left', 'bottom-right'])}
-                    <div
-                      className="p-8 h-full"
-                      style={{ backgroundColor: bg, outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
-                    >
-                      <div className="mb-3">
-                        <p className="text-sm mb-1" style={{ color: textFaint }}>
-                          {item.period}{item.location && <span className="ml-3">·<span className="ml-3">{item.location}</span></span>}
-                        </p>
-                        <h3 className="text-xl font-medium mb-1" style={{ color: textDark }}>
-                          {item.title}
-                          {item.company && (
-                            <>
-                              {' at '}
-                              {item.companyUrl ? (
-                                <a
-                                  href={item.companyUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="underline underline-offset-2 transition-colors"
-                                  style={{ color: '#042d2b' }}
-                                >
-                                  {item.company}
-                                </a>
-                              ) : (
-                                item.company
-                              )}
-                            </>
-                          )}
-                        </h3>
+                <React.Fragment key={item.year + item.title}>
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                    viewport={{ once: true }}
+                    className="relative"
+                  >
+                    {/* "Current" Figma frame label on the first card */}
+                    {index === 0 && (
+                      <div
+                        className="hidden sm:flex"
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          transform: 'translateX(-100%)',
+                          alignItems: 'center',
+                          gap: 6,
+                          backgroundColor: '#0a99ff',
+                          color: 'white',
+                          fontSize: 15,
+                          fontWeight: 500,
+                          lineHeight: 1,
+                          padding: '6px 10px',
+                          borderRadius: '4px 0 0 4px',
+                          zIndex: 10,
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        <span style={{ display: 'flex', alignItems: 'center' }}>Current</span>
+                        <img src="/icons/square-play.svg" alt="" style={{ width: 18, height: 18, display: 'block' }} />
                       </div>
-                      <p className="text-[1rem] leading-relaxed mb-4" style={{ color: textMuted }}>
-                        {item.description}
-                      </p>
-                      {'bullets' in item && item.bullets && item.bullets.length > 0 && (
-                        <ul className="mb-4 space-y-1">
-                          {item.bullets.map((bullet: string) => (
-                            <li key={bullet} className="text-[1rem] flex items-start gap-2" style={{ color: textMuted }}>
-                              <span className="mt-2 w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: textFaint }} />
-                              {bullet}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                    )}
+
+                    {/* Content */}
+                    <div className="relative overflow-visible">
+                      {cornerSquares(['top-left', 'top-right', 'bottom-left', 'bottom-right'])}
+                      <div
+                        className="p-8 h-full"
+                        style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
+                      >
+                        <div className="mb-3">
+                          <p className="text-sm mb-1" style={{ color: textFaint }}>
+                            {item.period}{item.location && <span className="ml-3">·<span className="ml-3">{item.location}</span></span>}
+                          </p>
+                          <h3 className="text-xl font-medium mb-1" style={{ color: textDark }}>
+                            {item.title}
+                            {item.company && (
+                              <>
+                                {' at '}
+                                {item.companyUrl ? (
+                                  <a
+                                    href={item.companyUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="underline underline-offset-2 transition-colors"
+                                    style={{ color: '#241f21' }}
+                                  >
+                                    {item.company}
+                                  </a>
+                                ) : (
+                                  item.company
+                                )}
+                              </>
+                            )}
+                          </h3>
+                        </div>
+                        <p className="text-[1rem] leading-relaxed mb-4" style={{ color: textDark }}>
+                          {item.description}
+                        </p>
+                        {'bullets' in item && item.bullets && item.bullets.length > 0 && (
+                          <ul className="mb-4 space-y-1">
+                            {item.bullets.map((bullet: string) => (
+                              <li key={bullet} className="text-[1rem] flex items-start gap-2" style={{ color: textMuted }}>
+                                <span className="mt-2 w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: textFaint }} />
+                                {bullet}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+
+                  {/* Figma prototype connector between cards */}
+                  {index < timeline.length - 1 && (
+                    <div style={{ position: 'relative', height: '52px', zIndex: 1 }}>
+                      <img
+                        src={index % 2 === 0 ? '/icons/arrow-left.svg' : '/icons/arrow-right.svg'}
+                        alt=""
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          width: 90,
+                          height: 56,
+                          left: 'calc(50% - 45px)',
+                        }}
+                      />
+                    </div>
+                  )}
+                </React.Fragment>
               ))}
             </div>
           </div>
@@ -908,7 +935,7 @@ const AboutPage = () => {
               {cornerSquares(['top-left', 'top-right', 'bottom-left', 'bottom-right'])}
               <div
                 className="relative p-8 lg:p-10 h-full flex flex-col justify-center"
-                style={{ backgroundColor: bg, outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
+                style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
               >
                 <img src="/Me/Vinyl.svg" alt="" className="w-14 h-14 mb-6" style={{ filter: 'brightness(0)' }} />
                 <h2 className="text-4xl lg:text-5xl font-semibold mb-4 leading-none" style={{ color: textDark }}>
@@ -929,7 +956,7 @@ const AboutPage = () => {
       </section>
 
       {/* Design Conferences Section */}
-      <section className="relative z-10 pt-12 sm:pt-24 px-4 sm:px-6 lg:px-8 overflow-hidden" style={{ backgroundColor: bg }}>
+      <section className="relative z-10 pt-12 sm:pt-24 pb-16 sm:pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

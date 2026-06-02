@@ -175,7 +175,7 @@ button, a, input, textarea, select {
 
 /* Typography utilities */
 .text-gradient {
-  background: linear-gradient(135deg, #042d2b, #042d2b);
+  background: linear-gradient(135deg, #241f21, #241f21);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -291,7 +291,7 @@ button, a, input, textarea, select {
 
 /* Custom button styles */
 .btn-primary {
-  background-color: #ffffff; color: #111111;
+  background-color: #ffffff; color: #241f21;
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
@@ -300,7 +300,7 @@ button, a, input, textarea, select {
 }
 
 .btn-primary:hover {
-  background-color: #e5e5e5; color: #111111;
+  background-color: #e5e5e5; color: #241f21;
 }
 
 .btn-primary:focus {
@@ -310,7 +310,7 @@ button, a, input, textarea, select {
 
 .btn-secondary {
   background-color: white;
-  color: #111827;
+  color: #241f21;
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   font-weight: 500;
