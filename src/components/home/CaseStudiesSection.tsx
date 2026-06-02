@@ -269,7 +269,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
             pointerEvents: i === textIndex ? 'auto' : 'none',
           }}
         >
-          {/* Slide number — sits just above the center line */}
+          {/* ── Left column: slide number — above the line ── */}
           <div style={{
             position: 'absolute',
             left: 'clamp(24px, 5vw, 80px)',
@@ -283,12 +283,26 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
             </span>
           </div>
 
-          {/* Coloured category tag — vertically centered on the progress line */}
+          {/* ── Left column: "Case Study" label — below the line ── */}
           <div style={{
             position: 'absolute',
             left: 'clamp(24px, 5vw, 80px)',
-            top: '50%',
-            transform: 'translateY(-50%)',
+            top: 'calc(50% + 12px)',
+          }}>
+            <p style={{
+              fontSize: 11, fontWeight: 500, letterSpacing: '0.13em',
+              textTransform: 'uppercase', color: 'rgba(255,255,255,0.38)',
+              margin: 0,
+            }}>
+              Case Study
+            </p>
+          </div>
+
+          {/* ── Right column: category tag — above the line ── */}
+          <div style={{
+            position: 'absolute',
+            left: 'clamp(140px, 18vw, 260px)',
+            bottom: 'calc(50% + 8px)',
           }}>
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 7,
@@ -302,20 +316,13 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
             </span>
           </div>
 
-          {/* Content block — starts just below the center line */}
+          {/* ── Right column: title + button — below the line ── */}
           <div style={{
             position: 'absolute',
             top: 'calc(50% + clamp(22px, 3vh, 38px))',
-            left: 'clamp(24px, 5vw, 80px)',
+            left: 'clamp(140px, 18vw, 260px)',
             right: 'clamp(24px, 5vw, 80px)',
           }}>
-            <p style={{
-              fontSize: 11, fontWeight: 500, letterSpacing: '0.13em',
-              textTransform: 'uppercase', color: 'rgba(255,255,255,0.38)',
-              marginBottom: 'clamp(14px, 1.8vw, 22px)',
-            }}>
-              Case Study
-            </p>
             <h2 style={{
               color: '#ffffff',
               fontSize: 'clamp(30px, 3.8vw, 58px)',
