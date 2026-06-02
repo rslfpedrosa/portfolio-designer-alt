@@ -175,10 +175,19 @@ button, a, input, textarea, select {
 
 /* Typography utilities */
 .text-gradient {
-  background: linear-gradient(135deg, #d9ee72, #d9ee72);
+  background: linear-gradient(135deg, #042d2b, #042d2b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.typewriter-cursor {
+  animation: cursor-blink 0.9s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* Background utilities */

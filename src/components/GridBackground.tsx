@@ -16,11 +16,6 @@ export default function GridBackground() {
         </svg>
       </div>
 
-      {/* Center cover — same width as content, hides dots behind content leaving side strips */}
-      <div
-        className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl"
-        style={{ backgroundColor: '#f2efea' }}
-      />
 
     </div>
   )

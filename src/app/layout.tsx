@@ -3,6 +3,9 @@ import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
 
 export const metadata: Metadata = {
+  icons: {
+    icon: '/icons/favicon.svg',
+  },
   title: 'Rita Pedrosa - Product Designer & Creative Thinker',
   description: 'Crafting meaningful digital experiences through thoughtful design, empathy, and systems thinking.',
   keywords: ['product design', 'UX design', 'UI design', 'design systems', 'user experience'],

@@ -168,7 +168,7 @@ export const projectsData: { [key: number]: Project } = {
   1: {
     id: 1,
     title: 'Bocca Moments',
-    subtitle: 'Crafting a sensorial digital commerce experience',
+    subtitle: 'Crafting a Sensorial Digital Commerce Experience',
     tagline: 'A premium brand and e-commerce experience built around the ritual of gifting.',
     description:
       'Crafting a premium digital experience around the ritual of gifting.',
@@ -461,7 +461,7 @@ I combined branding, packaging, digital design, and storytelling into a cohesive
   2: {
     id: 2,
     title: 'Cortado',
-    subtitle: 'Simplifying rental workflows through AI',
+    subtitle: 'Simplifying Rental Workflows Through AI',
     tagline: 'Reducing operational complexity for landlords through AI-powered workflows.',
     description: 'Reducing operational complexity for landlords through AI-powered workflows',
     category: 'Real Estate',
@@ -700,7 +700,7 @@ marketing.`,
   3: {
     id: 3,
     title: 'Onyx',
-    subtitle: 'Rethinking care management for CPPS treatment',
+    subtitle: 'Rethinking Care Management for CPPS Treatment',
     tagline: 'Making it easier for physical therapists to track progress, make decisions, and adapt care with confidence.',
     description: 'Making it easier for physical therapists to track progress, make decisions, and adapt care with confidence.',
     category: 'Healthcare',

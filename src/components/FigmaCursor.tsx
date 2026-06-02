@@ -135,14 +135,14 @@ export default function FigmaCursor({ label, showPill, forceBlue = false, should
         transform: `translate3d(${cursorXRef.current}px, ${cursorYRef.current}px, 0)`,
       }}
     >
-      <div className="relative" style={{ transform: 'translate(2px, 2px)' }}>
+      <div className="relative">
         {/* Figma cursor arrow */}
         <svg
-          width="20"
-          height="22"
+          width="28"
+          height="31"
           viewBox="0 0 144 159"
           fill="none"
-          className="absolute -top-3 -left-1.5"
+          className="absolute top-0 left-0"
           style={{
             color: (showPill || forceBlue || logoHovered || overClickable) ? '#d9ee72' : '#525252',
             transition: shouldReduceMotion ? 'none' : 'color 200ms ease-out',
