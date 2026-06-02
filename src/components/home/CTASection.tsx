@@ -2,106 +2,129 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, PenTool, Layers, Sparkles, Target, Globe, Lightbulb, Layout, Code2 } from 'lucide-react'
-import GridBackground from '@/components/GridBackground'
+import { ArrowUpRight } from 'lucide-react'
 
-const FLOATING_ICONS = [
-  { Icon: PenTool,   top: '14%', left: '7%',   rotate: -14 },
-  { Icon: Layers,    top: '52%', left: '4%',   rotate:   8 },
-  { Icon: Layout,    top: '22%', left: '22%',  rotate:  -5 },
-  { Icon: Sparkles,  top: '10%', right: '20%', rotate:  12 },
-  { Icon: Globe,     top: '8%',  right: '7%',  rotate:  -8 },
-  { Icon: Target,    top: '50%', right: '5%',  rotate:   6 },
-  { Icon: Lightbulb, top: '68%', left: '11%',  rotate: -10 },
-  { Icon: Code2,     top: '65%', right: '13%', rotate:   9 },
-]
-
-export default function CTASection({ isDesktop }: { isDesktop: boolean }) {
+export default function CTASection() {
   return (
-    <section className="relative py-12 sm:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden" style={{ backgroundColor: '#151414' }}>
-      <GridBackground />
-      <div className="max-w-7xl mx-auto">
-        <div
-          className="relative rounded-2xl overflow-hidden"
-          style={{ background: 'linear-gradient(140deg, #1e3a8a 0%, #2563eb 55%, #3b82f6 100%)' }}
+    <section
+      className="relative overflow-hidden bg-[#f2efea]"
+      style={{
+        padding: 'clamp(80px, 12vw, 160px) clamp(24px, 5vw, 80px)',
+        borderTop: '1px solid rgba(36,31,33,0.08)',
+      }}
+    >
+      {/* Radial glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 50% 120%, rgba(217,238,114,0.07) 0%, transparent 70%)',
+        }}
+      />
+
+      <div className="relative z-10 max-w-none">
+        <motion.div
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: '-60px' }}
         >
-          {/* Dot pattern on card */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="cta-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-                <circle cx="6" cy="6" r="0.75" fill="rgba(255,255,255,0.15)" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#cta-dots)" />
-          </svg>
+          {/* Label */}
+          <p className="section-label" style={{ marginBottom: 'clamp(20px, 2.5vw, 32px)' }}>
+            Let&apos;s work together
+          </p>
 
-          {/* Bottom radial glow */}
-          <div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[280px] pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at center bottom, rgba(255,255,255,0.22) 0%, transparent 70%)' }}
-          />
+          {/* Large headline */}
+          <h2
+            style={{
+              fontSize: 'clamp(2.5rem, 7vw, 8.5rem)',
+              fontWeight: 500,
+              letterSpacing: '-0.04em',
+              lineHeight: 0.95,
+              color: '#241f21',
+              maxWidth: '14ch',
+              marginBottom: 'clamp(32px, 4vw, 56px)',
+            }}
+          >
+            Have a product challenge?
+          </h2>
 
-          {/* Floating icon cards */}
-          {FLOATING_ICONS.map(({ Icon, top, left, right, rotate }, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-14 h-14 rounded-xl flex items-center justify-center pointer-events-none"
-              style={{
-                top, left, right,
-                rotate,
-                border: '1.5px dashed rgba(255,255,255,0.35)',
-                backgroundColor: 'rgba(255,255,255,0.10)',
-              }}
-              initial={{ opacity: 0, scale: 0.7 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-              viewport={{ once: true }}
-            >
-              <Icon size={20} className="text-white/80" strokeWidth={1.5} />
-            </motion.div>
-          ))}
+          {/* Body */}
+          <p
+            style={{
+              fontSize: 'clamp(14px, 1.2vw, 16px)',
+              lineHeight: 1.75,
+              color: 'rgba(36,31,33,0.5)',
+              maxWidth: '48ch',
+              marginBottom: 'clamp(36px, 5vw, 64px)',
+            }}
+          >
+            I&apos;m always open to collaborating on thoughtful, impactful products, from early ideas to refined experiences.
+          </p>
 
-          {/* Content */}
-          <div className="relative z-10 py-20 sm:py-28 px-6 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold text-white max-w-2xl mx-auto leading-tight">
-                Have a product challenge?
-              </h2>
-              <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-lg mx-auto">
-                I'm always open to collaborating on thoughtful, impactful products, from early ideas to refined experiences.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
-                <Link href="/contact">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-white text-[#1e3a8a] px-6 py-3 rounded-full font-semibold text-base hover:bg-white/90 transition-colors flex items-center gap-2"
-                    style={isDesktop ? { cursor: 'none' } : {}}
-                  >
-                    <span>Get In Touch</span>
-                    <ArrowRight size={18} />
-                  </motion.button>
-                </Link>
-                <Link href="/projects">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="text-white/85 px-6 py-3 rounded-full font-medium text-base hover:text-white transition-colors"
-                    style={isDesktop ? { cursor: 'none' } : {}}
-                  >
-                    View My Work
-                  </motion.button>
-                </Link>
-              </div>
-            </motion.div>
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-start gap-8">
+            <Link href="/contact" className="group flex items-center gap-2">
+              <motion.span
+                whileHover={{ letterSpacing: '0.18em' }}
+                transition={{ duration: 0.3 }}
+                className="font-medium"
+                style={{
+                  fontSize: '12px',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: '#d9ee72',
+                  borderBottom: '1px solid rgba(217,238,114,0.4)',
+                  paddingBottom: '2px',
+                }}
+              >
+                Get In Touch
+              </motion.span>
+              <ArrowUpRight
+                size={13}
+                className="transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                style={{ color: 'rgba(217,238,114,0.6)' }}
+              />
+            </Link>
+
+            <Link href="/projects" className="group flex items-center gap-2">
+              <span
+                className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
+                style={{
+                  fontSize: '12px',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(36,31,33,0.4)',
+                  borderBottom: '1px solid rgba(36,31,33,0.12)',
+                  paddingBottom: '2px',
+                }}
+              >
+                View My Work
+              </span>
+              <ArrowUpRight
+                size={13}
+                className="transition-all duration-300 group-hover:text-[#241f21]/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                style={{ color: 'rgba(36,31,33,0.2)' }}
+              />
+            </Link>
           </div>
-        </div>
+        </motion.div>
+      </div>
+
+      {/* Decorative large background number */}
+      <div
+        className="absolute right-0 bottom-0 pointer-events-none select-none hidden lg:block"
+        aria-hidden
+        style={{
+          fontSize: 'clamp(160px, 20vw, 280px)',
+          fontWeight: 300,
+          letterSpacing: '-0.06em',
+          lineHeight: 0.85,
+          color: 'rgba(36, 31, 33, 0.05)',
+          userSelect: 'none',
+          paddingRight: 'clamp(24px, 5vw, 80px)',
+        }}
+      >
+        RP
       </div>
     </section>
   )

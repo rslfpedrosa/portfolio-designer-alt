@@ -38,7 +38,6 @@ export default function FeaturedProjects({
                 <ProjectCard
                   project={project}
                   index={index}
-                  isDesktop={isDesktop}
                   onHoverChange={onCardHover}
                 />
                 <div className="w-full h-px pointer-events-none" style={dashedLine} />

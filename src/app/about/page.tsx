@@ -3,7 +3,6 @@
 import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion'
 import { Plane } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
-import FigmaCursor from '@/components/FigmaCursor'
 import CTASection from '@/components/home/CTASection'
 
 // Conference Card Component with floating photos on hover
@@ -105,8 +104,8 @@ const ConferenceCard = ({
       {/* Ticket-style design */}
       <div className="relative overflow-hidden rounded-2xl">
         {/* Perforated edge effect */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#151414] rounded-full -ml-2 z-10" />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#151414] rounded-full -mr-2 z-10" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#042d2b] rounded-full -ml-2 z-10" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#042d2b] rounded-full -mr-2 z-10" />
         
         <motion.div 
           animate={isHovered ? { scale: 1.02 } : { scale: 1 }}
@@ -179,8 +178,8 @@ const BentoJoyCell = ({ joy, index }: { joy: { title: string; description: strin
           key={corner}
           className="absolute w-3 h-3 z-20 rounded-sm"
           style={{
-            backgroundColor: '#151414',
-            border: '1px solid #312f2e',
+            backgroundColor: '#042d2b',
+            border: '1px solid #22372e',
             top: corner.startsWith('top') ? '-6px' : undefined,
             bottom: corner.startsWith('bottom') ? '-6px' : undefined,
             left: corner.endsWith('left') ? '-6px' : undefined,
@@ -189,10 +188,10 @@ const BentoJoyCell = ({ joy, index }: { joy: { title: string; description: strin
         />
       ))}
       <div
-        className="relative h-full flex flex-col bg-[#151414]"
-        style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+        className="relative h-full flex flex-col bg-[#042d2b]"
+        style={{ outline: '1px solid #22372e', outlineOffset: '0px' }}
       >
-        <div className="relative w-full overflow-hidden flex-shrink-0 bg-[#151414]" style={{ height: '320px' }}>
+        <div className="relative w-full overflow-hidden flex-shrink-0 bg-[#042d2b]" style={{ height: '320px' }}>
           <video
             ref={videoRef}
             src={joy.video}
@@ -204,7 +203,7 @@ const BentoJoyCell = ({ joy, index }: { joy: { title: string; description: strin
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
-        <div className="p-5 flex-1" style={{ borderTop: '1px solid #312f2e' }}>
+        <div className="p-5 flex-1" style={{ borderTop: '1px solid #22372e' }}>
           <h3 className="text-base font-medium text-white mb-1">{joy.title}</h3>
           <p className="text-sm text-gray-400 leading-relaxed">{joy.description}</p>
         </div>
@@ -223,32 +222,9 @@ const JOYS = [
 
 const AboutPage = () => {
   const shouldReduceMotion = useReducedMotion()
-  const [isDesktop, setIsDesktop] = useState(false)
   const timelineRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start end', 'end end'] })
   const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.001 })
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
-    setIsDesktop(mediaQuery.matches)
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsDesktop(e.matches)
-    }
-
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
-
-  // Hide default cursor globally on desktop
-  useEffect(() => {
-    if (isDesktop) {
-      document.body.style.cursor = 'none'
-      return () => {
-        document.body.style.cursor = ''
-      }
-    }
-  }, [isDesktop])
 
   const timeline = [
     {
@@ -341,7 +317,7 @@ const AboutPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16 bg-[#151414] relative overflow-x-hidden">
+    <div className="min-h-screen pt-16 bg-[#042d2b] relative overflow-x-hidden">
       {/* Grid background — matches home page GridBackground */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Dot pattern — wide container, bleeds past content edges */}
@@ -349,45 +325,45 @@ const AboutPage = () => {
           <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="about-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-                <circle cx="6" cy="6" r="0.75" fill="#312f2e" />
+                <circle cx="6" cy="6" r="0.75" fill="#22372e" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#about-dots)" />
           </svg>
         </div>
         {/* Center cover — hides dots behind content, leaving side strips */}
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl" style={{ backgroundColor: '#151414' }} />
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl" style={{ backgroundColor: '#042d2b' }} />
         {/* Dashed vertical lines at content container edges */}
         <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
         </div>
         {/* Dashed vertical lines at outer dot container edges */}
         <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
         </div>
       </div>
       {/* Hero Section */}
       <section className="relative pt-10 pb-12 sm:py-24 px-4 sm:px-6 lg:px-8">
         {/* Horizontal rule just below the navbar */}
-        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         {/* Horizontal rule midway through bottom gap */}
-        <div className="absolute bottom-12 sm:bottom-24 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute bottom-12 sm:bottom-24 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <div className="relative h-px pointer-events-none mb-0">
-            <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+            <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
           </div>
           {/* Cloudflare-style bordered card */}
-          <div className="relative bg-[#151414]" style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}>
+          <div className="relative bg-[#042d2b]" style={{ outline: '1px solid #22372e', outlineOffset: '0px' }}>
             {/* Outer corner squares */}
             {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
               <div
                 key={corner}
                 className="absolute w-3 h-3 z-20 rounded-sm"
                 style={{
-                  backgroundColor: '#151414',
-                  border: '1px solid #312f2e',
+                  backgroundColor: '#042d2b',
+                  border: '1px solid #22372e',
                   top: corner.startsWith('top') ? '-6px' : undefined,
                   bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                   left: corner.endsWith('left') ? '-6px' : undefined,
@@ -400,7 +376,7 @@ const AboutPage = () => {
               {/* Left: Photo — full bleed */}
               <div
                 className="relative min-h-[280px] border-b lg:border-b-0 lg:border-r"
-                style={{ borderColor: '#312f2e' }}
+                style={{ borderColor: '#22372e' }}
               >
                 <img
                   src="/Me/IMG_0426.webp"
@@ -417,8 +393,8 @@ const AboutPage = () => {
                     key={corner}
                     className="absolute w-3 h-3 z-20 rounded-sm"
                     style={{
-                      backgroundColor: '#151414',
-                      border: '1px solid #312f2e',
+                      backgroundColor: '#042d2b',
+                      border: '1px solid #22372e',
                       top: corner.startsWith('top') ? '-6px' : undefined,
                       bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                       left: corner.endsWith('left') ? '-6px' : undefined,
@@ -433,10 +409,10 @@ const AboutPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                    className="text-7xl sm:text-8xl font-medium text-white mb-3 flex items-center gap-1"
+                    className="text-5xl sm:text-8xl font-medium text-white mb-3 flex items-center gap-1 whitespace-nowrap"
                   >
                     Hi, I&apos;m Rita
-                    <img src="/Me/Sparkle.svg" alt="" className="w-20 h-20 inline-block rotate-45" />
+                    <img src="/Me/Sparkle.svg" alt="" className="w-14 h-14 sm:w-20 sm:h-20 inline-block rotate-45 flex-shrink-0" />
                   </motion.h1>
                 </div>
 
@@ -450,7 +426,7 @@ const AboutPage = () => {
                   Over the past few years, I&apos;ve worked on end-to-end product experiences, from early discovery to final implementation, collaborating closely with cross-functional teams to turn ideas into meaningful, usable solutions.
                 </motion.p>
 
-                <div className="w-full h-px" style={{ backgroundColor: '#312f2e' }} />
+                <div className="w-full h-px" style={{ backgroundColor: '#22372e' }} />
 
                 {/* Group 3: Highlights */}
                 <ul className="text-base sm:text-lg text-white divide-y divide-white/10 pt-2">
@@ -474,34 +450,15 @@ const AboutPage = () => {
 
       {/* Design Philosophy */}
       <section className="relative z-[1] py-8 lg:pt-8 lg:pb-0 px-4 sm:px-6 lg:px-8">
-        {/* Animated blobs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.2), rgba(96,165,250,0.2))' }}
-          animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-        />
-        <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2), rgba(59,130,246,0.2))' }}
-          animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.2), rgba(37,99,235,0.2))' }}
-          animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-        />
         <div className="max-w-7xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left mb-8 sm:mb-16 pl-6 sm:pl-8 lg:pl-16"
+            className="text-left mb-8 sm:mb-16 px-6 sm:pl-8 sm:pr-0 lg:pl-16"
           >
-            <h2 className="text-[4rem] font-semibold text-white mb-4 leading-none">
+            <h2 className="text-3xl sm:text-[4rem] font-semibold text-white mb-4 leading-none">
               My Design Philosophy
             </h2>
             <p className="text-xl text-gray-400 sm:max-w-3xl">
@@ -510,7 +467,7 @@ const AboutPage = () => {
           </motion.div>
 
           <div className="relative h-px pointer-events-none">
-            <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+            <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
             {values.map((value, index) => (
@@ -528,8 +485,8 @@ const AboutPage = () => {
                     key={corner}
                     className="absolute w-3 h-3 z-20 rounded-sm"
                     style={{
-                      backgroundColor: '#151414',
-                      border: '1px solid #312f2e',
+                      backgroundColor: '#042d2b',
+                      border: '1px solid #22372e',
                       top: corner.startsWith('top') ? '-6px' : undefined,
                       bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                       left: corner.endsWith('left') ? '-6px' : undefined,
@@ -538,8 +495,8 @@ const AboutPage = () => {
                   />
                 ))}
                 <div
-                  className="relative bg-[#151414] p-8 h-full flex flex-col"
-                  style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+                  className="relative bg-[#042d2b] p-8 h-full flex flex-col"
+                  style={{ outline: '1px solid #22372e', outlineOffset: '0px' }}
                 >
                   <div className="mb-4">
                     <img src={value.illustration} alt="" className="w-20 h-20 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
@@ -561,18 +518,18 @@ const AboutPage = () => {
 
       {/* Timeline Section */}
       <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left mb-8 sm:mb-16 pl-6 sm:pl-8 lg:pl-16"
+            className="text-left mb-8 sm:mb-16 px-6 sm:pl-8 sm:pr-0 lg:pl-16"
           >
-            <h2 className="text-[4rem] font-semibold text-white mb-2 leading-none flex items-center justify-start gap-3">
+            <h2 className="text-3xl sm:text-[4rem] font-semibold text-white mb-2 leading-none flex items-center justify-start gap-3">
               My Journey
-              <img src="/Me/Arrow.svg" alt="" className="w-20 h-20 inline-block" />
+              <img src="/Me/Arrow.svg" alt="" className="w-14 h-14 sm:w-20 sm:h-20 inline-block flex-shrink-0" />
             </h2>
             <p className="text-xl text-gray-400">
               A path shaped by curiosity, ownership, and continuous learning
@@ -584,7 +541,7 @@ const AboutPage = () => {
             <div className="absolute left-[9px] top-0 bottom-0 w-0.5 bg-white/10" />
             {/* Timeline Line fill */}
             <motion.div
-              className="absolute left-[9px] top-0 bottom-0 w-0.5 bg-blue-500 origin-top"
+              className="absolute left-[9px] top-0 bottom-0 w-0.5 bg-[#d9ee72] origin-top"
               style={{ scaleY: lineProgress }}
             />
 
@@ -602,8 +559,8 @@ const AboutPage = () => {
                   <div className="flex-shrink-0 w-5 flex justify-center items-center">
                     <motion.div
                       className="w-[10px] h-[10px] rounded-full relative z-10"
-                      initial={{ backgroundColor: 'rgba(255,255,255,0.15)', boxShadow: '0 0 0 3px rgba(59,130,246,0)' }}
-                      whileInView={{ backgroundColor: 'rgb(59, 130, 246)', boxShadow: '0 0 0 3px rgba(59,130,246,0.25)' }}
+                      initial={{ backgroundColor: 'rgba(255,255,255,0.15)', boxShadow: '0 0 0 3px rgba(217,238,114,0)' }}
+                      whileInView={{ backgroundColor: '#d9ee72', boxShadow: '0 0 0 3px rgba(217,238,114,0.25)' }}
                       transition={{ duration: 0.5, delay: index * 0.08 }}
                       viewport={{ once: true }}
                     />
@@ -616,8 +573,8 @@ const AboutPage = () => {
                         key={corner}
                         className="absolute w-3 h-3 z-20 rounded-sm"
                         style={{
-                          backgroundColor: '#151414',
-                          border: '1px solid #312f2e',
+                          backgroundColor: '#042d2b',
+                          border: '1px solid #22372e',
                           top: corner.startsWith('top') ? '-6px' : undefined,
                           bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                           left: corner.endsWith('left') ? '-6px' : undefined,
@@ -626,8 +583,8 @@ const AboutPage = () => {
                       />
                     ))}
                   <div
-                    className="bg-[#151414] p-8 h-full"
-                    style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+                    className="bg-[#042d2b] p-8 h-full"
+                    style={{ outline: '1px solid #22372e', outlineOffset: '0px' }}
                   >
                     <div className="mb-3">
                       <p className="text-sm text-gray-500 mb-1">
@@ -643,7 +600,7 @@ const AboutPage = () => {
                                 href={item.companyUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="!text-blue-400 underline underline-offset-2 hover:!text-blue-300 transition-colors"
+                                className="!text-[#d9ee72] underline underline-offset-2 hover:!text-[#c5d860] transition-colors"
                               >
                                 {item.company}
                               </a>
@@ -679,7 +636,7 @@ const AboutPage = () => {
 
       {/* Small Joys Section */}
       <section className="relative z-[1] px-4 sm:px-6 lg:px-8">
-        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {/* Header cell */}
@@ -695,8 +652,8 @@ const AboutPage = () => {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: '#151414',
-                    border: '1px solid #312f2e',
+                    backgroundColor: '#042d2b',
+                    border: '1px solid #22372e',
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                     left: corner.endsWith('left') ? '-6px' : undefined,
@@ -705,8 +662,8 @@ const AboutPage = () => {
                 />
               ))}
               <div
-                className="relative p-8 lg:p-10 h-full flex flex-col justify-center bg-[#151414]"
-                style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+                className="relative p-8 lg:p-10 h-full flex flex-col justify-center bg-[#042d2b]"
+                style={{ outline: '1px solid #22372e', outlineOffset: '0px' }}
               >
                 <img src="/Me/Vinyl.svg" alt="" className="w-14 h-14 mb-6" />
                 <h2 className="text-4xl lg:text-5xl font-semibold text-white mb-4 leading-none">
@@ -727,18 +684,18 @@ const AboutPage = () => {
       </section>
 
       {/* Design Conferences Section */}
-      <section className="relative pt-12 sm:pt-24 pb-20 sm:pb-40 px-4 sm:px-6 lg:px-8 bg-[#151414] overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+      <section className="relative pt-12 sm:pt-24 px-4 sm:px-6 lg:px-8 bg-[#042d2b] overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true }}
-            className="text-left mb-12 sm:mb-24 pl-6 sm:pl-8 lg:pl-16"
+            className="text-left mb-8 sm:mb-12 px-6 sm:pl-8 sm:pr-0 md:max-w-5xl md:mx-auto md:px-0"
           >
             <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 mb-4" />
-            <h2 className="text-[4rem] font-semibold text-white mb-4 leading-none">
+            <h2 className="text-3xl sm:text-[4rem] font-semibold text-white mb-4 leading-none">
               Favourite Conferences I&apos;ve Attended
             </h2>
             <p className="text-xl text-gray-400 sm:max-w-3xl mb-2">
@@ -786,17 +743,19 @@ const AboutPage = () => {
             ))}
           </div>
         </div>
+        <div
+          className="h-px pointer-events-none mt-16 sm:mt-24"
+          style={{
+            width: '100vw',
+            marginLeft: 'calc(-50vw + 50%)',
+            backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.10) 50%, transparent 50%)',
+            backgroundSize: '16px 1px',
+            backgroundRepeat: 'repeat-x',
+          }}
+        />
       </section>
 
-      <CTASection isDesktop={isDesktop} />
-
-      {/* Unified Figma Cursor */}
-      <FigmaCursor
-        label={null}
-        showPill={false}
-        shouldReduceMotion={shouldReduceMotion || false}
-        isDesktop={isDesktop}
-      />
+      <CTASection />
     </div>
   )
 }

@@ -1,9 +1,8 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { getAllProjects } from '@/data/projects'
-import FigmaCursor from '@/components/FigmaCursor'
 import CTASection from '@/components/home/CTASection'
 import ProjectCard from '@/components/ProjectCard'
 import ShowcaseCard from '@/components/ShowcaseCard'
@@ -17,33 +16,6 @@ const ProjectsPage = () => {
     return (order[a.id as keyof typeof order] ?? 999) - (order[b.id as keyof typeof order] ?? 999)
   })
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-  const [hoveredCardId, setHoveredCardId] = useState<number | null>(null)
-  const [isDesktop, setIsDesktop] = useState(false)
-  const shouldReduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.matchMedia('(hover: hover) and (pointer: fine)').matches)
-    }
-    checkDesktop()
-    window.addEventListener('resize', checkDesktop)
-    return () => window.removeEventListener('resize', checkDesktop)
-  }, [])
-
-  // Global cursor hiding
-  useEffect(() => {
-    if (isDesktop && hoveredCardId !== null) {
-      document.body.style.cursor = 'none'
-    } else {
-      document.body.style.cursor = 'default'
-    }
-    return () => {
-      document.body.style.cursor = 'default'
-    }
-  }, [isDesktop, hoveredCardId])
-
-  const cursorLabel = hoveredCardId !== null ? 'READ CASE STUDY' : null
-  const showCursorPill = cursorLabel !== null
 
   const designShowcase = [
     {
@@ -85,27 +57,27 @@ const ProjectsPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16 bg-[#151414] relative overflow-x-hidden">
+    <div className="min-h-screen pt-16 bg-[#042d2b] relative overflow-x-hidden">
       {/* Grid background — matches about page */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
           <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="work-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-                <circle cx="6" cy="6" r="0.75" fill="#312f2e" />
+                <circle cx="6" cy="6" r="0.75" fill="#22372e" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#work-dots)" />
           </svg>
         </div>
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl" style={{ backgroundColor: '#151414' }} />
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl" style={{ backgroundColor: '#042d2b' }} />
         <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
         </div>
         <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #312f2e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
         </div>
       </div>
       {/* Hero Section */}
@@ -134,16 +106,15 @@ const ProjectsPage = () => {
             {projects.map((project, index) => (
               <div key={project.id}>
                 <div className="relative h-px pointer-events-none mb-0">
-                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
                 </div>
                 <ProjectCard
                   project={project}
                   index={index}
-                  isDesktop={isDesktop}
-                  onHoverChange={(id) => setHoveredCardId(id)}
+                  onHoverChange={() => {}}
                 />
                 <div className="relative h-px pointer-events-none mt-0">
-                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
                 </div>
               </div>
             ))}
@@ -152,7 +123,7 @@ const ProjectsPage = () => {
       </section>
 
       {/* Design Showcase Section */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#151414]">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#042d2b]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -186,7 +157,6 @@ const ProjectsPage = () => {
                 key={item.id}
                 item={item}
                 index={index}
-                isDesktop={isDesktop}
                 onClick={() => setSelectedIndex(index)}
               />
             ))}
@@ -201,15 +171,7 @@ const ProjectsPage = () => {
         onNavigate={setSelectedIndex}
       />
 
-      <CTASection isDesktop={isDesktop} />
-
-      {/* Unified Figma Cursor */}
-      <FigmaCursor
-        label={cursorLabel}
-        showPill={showCursorPill}
-        shouldReduceMotion={shouldReduceMotion || false}
-        isDesktop={isDesktop}
-      />
+      <CTASection />
     </div>
   )
 }

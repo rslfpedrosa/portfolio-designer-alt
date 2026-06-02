@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
-import GridBackground from '@/components/GridBackground'
 
 const testimonials = [
   {
@@ -36,8 +35,8 @@ const testimonials = [
 const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const
 
 const cornerStyle = (corner: typeof CORNERS[number]) => ({
-  backgroundColor: '#151414',
-  border: '1px solid #312f2e',
+  backgroundColor: '#f2efea',
+  border: '1px solid rgba(36,31,33,0.15)',
   top: corner.startsWith('top') ? '-6px' : undefined,
   bottom: corner.startsWith('bottom') ? '-6px' : undefined,
   left: corner.endsWith('left') ? '-6px' : undefined,
@@ -50,7 +49,7 @@ function ModalCard({ expandedTestimonial, slideDirection }: {
 }) {
   const t = testimonials.find(t => t.id === expandedTestimonial)
   return (
-    <div className="bg-[#151414] p-8 md:p-12 relative overflow-visible" style={{ outline: '2px solid #0f8be8', boxShadow: '0 0 70px 0 rgba(15,139,232,0.18)' }}>
+    <div className="bg-[#042d2b] p-8 md:p-12 relative overflow-visible" style={{ outline: '2px solid #d9ee72', boxShadow: '0 0 70px 0 rgba(217,238,114,0.18)' }}>
       <AnimatePresence mode="wait" initial={false} custom={slideDirection}>
         <motion.div
           key={expandedTestimonial}
@@ -66,7 +65,7 @@ function ModalCard({ expandedTestimonial, slideDirection }: {
           transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
           <div className="mb-6">
-            <svg width="48" height="48" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
+            <svg width="48" height="48" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(217,238,114,0.7)' }}>
               <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
               <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
             </svg>
@@ -74,7 +73,7 @@ function ModalCard({ expandedTestimonial, slideDirection }: {
           <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl font-medium">
             "{t?.fullContent}"
           </p>
-          <div className="pt-6 border-t border-[#312f2e]">
+          <div className="pt-6 border-t border-[#22372e]">
             <h4 className="font-semibold text-white text-lg">{t?.name}</h4>
             <p className="text-base text-gray-400">{t?.role}</p>
           </div>
@@ -84,25 +83,17 @@ function ModalCard({ expandedTestimonial, slideDirection }: {
   )
 }
 
-export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDesktop?: boolean, onLabelChange?: (label: string | null) => void } = {}) {
+export default function TestimonialsSection() {
   const [expandedTestimonial, setExpandedTestimonial] = useState<number | null>(null)
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
   const [isMounted, setIsMounted] = useState(false)
   const [isPortrait, setIsPortrait] = useState(false)
   const [hoveredId, setHoveredId] = useState<number | null>(null)
 
-  // Mobile scroll
+  // Mobile carousel
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
-  const mobileScrollRef = useRef<HTMLDivElement>(null)
-
-  const scrollMobileToIndex = (index: number) => {
-    const el = mobileScrollRef.current
-    if (!el) return
-    const card = el.querySelector('[data-idx="0"]') as HTMLElement
-    if (!card) return
-    el.scrollTo({ left: index * (card.offsetWidth + 16), behavior: 'smooth' })
-  }
+  const [mobileDirection, setMobileDirection] = useState<'left' | 'right'>('right')
 
   useEffect(() => {
     setIsMounted(true)
@@ -111,19 +102,6 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
     const handler = (e: MediaQueryListEvent) => setIsPortrait(e.matches)
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
-  }, [])
-
-  useEffect(() => {
-    const el = mobileScrollRef.current
-    if (!el) return
-    const handleScroll = () => {
-      const card = el.querySelector('[data-idx="0"]') as HTMLElement
-      if (!card) return
-      const index = Math.round(el.scrollLeft / (card.offsetWidth + 16))
-      setCurrentIndex(Math.max(0, Math.min(index, testimonials.length - 1)))
-    }
-    el.addEventListener('scroll', handleScroll, { passive: true })
-    return () => el.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
@@ -164,153 +142,192 @@ export default function TestimonialsSection({ isDesktop, onLabelChange }: { isDe
   const prevMobile = () => {
     if (isAnimating) return
     setIsAnimating(true)
-    const prev = (currentIndex - 1 + testimonials.length) % testimonials.length
-    setCurrentIndex(prev)
-    scrollMobileToIndex(prev)
-    setTimeout(() => setIsAnimating(false), 600)
+    setMobileDirection('left')
+    setCurrentIndex(i => (i - 1 + testimonials.length) % testimonials.length)
+    setTimeout(() => setIsAnimating(false), 350)
   }
 
   const nextMobile = () => {
     if (isAnimating) return
     setIsAnimating(true)
-    const next = (currentIndex + 1) % testimonials.length
-    setCurrentIndex(next)
-    scrollMobileToIndex(next)
-    setTimeout(() => setIsAnimating(false), 600)
+    setMobileDirection('right')
+    setCurrentIndex(i => (i + 1) % testimonials.length)
+    setTimeout(() => setIsAnimating(false), 350)
   }
 
   return (
     <>
-      <section id="testimonials-section" className="relative py-16 px-4 sm:px-6 lg:px-8 bg-[#151414]">
-        <GridBackground />
-        {/* Dashed rules */}
-        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
-        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-left mb-12 pl-6 sm:pl-8 lg:pl-16"
+      <section
+        id="testimonials-section"
+        className="relative bg-[#f2efea]"
+        style={{
+          padding: 'clamp(64px, 8vw, 120px) 0',
+          borderTop: '1px solid rgba(36,31,33,0.08)',
+        }}
+      >
+        <div
+          className="relative z-10"
+          style={{ padding: '0 clamp(24px, 5vw, 80px)' }}
+        >
+          {/* Section header */}
+          <div
+            className="flex items-end justify-between"
+            style={{ marginBottom: 'clamp(40px, 5vw, 72px)' }}
           >
-            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-4">
-              What my peers say
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl">
-              Feedback from colleagues and collaborators I've worked closely with.
-            </p>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+            >
+              <p className="section-label" style={{ marginBottom: '12px' }}>Peer Feedback</p>
+              <h2
+                style={{
+                  fontSize: 'clamp(2rem, 4vw, 4.5rem)',
+                  fontWeight: 500,
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1.05,
+                  color: '#241f21',
+                }}
+              >
+                What my peers say
+              </h2>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              viewport={{ once: true }}
+              style={{
+                fontSize: 'clamp(13px, 1.1vw, 15px)',
+                lineHeight: 1.7,
+                color: 'rgba(36,31,33,0.45)',
+                maxWidth: '32ch',
+                textAlign: 'right',
+              }}
+              className="hidden md:block"
+            >
+              Feedback from colleagues and collaborators I&apos;ve worked closely with.
+            </motion.p>
+          </div>
 
           {/* Desktop: 3-column grid */}
-          <div className="hidden md:grid grid-cols-3 gap-0">
+          <div className="hidden md:grid grid-cols-3" style={{ borderTop: '1px solid rgba(36,31,33,0.08)' }}>
             {testimonials.map((t, i) => (
               <motion.div
                 key={t.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 viewport={{ once: true }}
-                className="relative overflow-visible"
                 onClick={() => setExpandedTestimonial(t.id)}
-                onMouseEnter={() => { setHoveredId(t.id); isDesktop && onLabelChange?.('READ FULL REVIEW') }}
-                onMouseLeave={() => { setHoveredId(null); isDesktop && onLabelChange?.(null) }}
-                style={{ ...(isDesktop ? { cursor: 'none' } : { cursor: 'pointer' }), zIndex: hoveredId === t.id ? 10 : 1 }}
+                onMouseEnter={() => setHoveredId(t.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                style={{
+                  cursor: 'pointer',
+                  borderRight: i < 2 ? '1px solid rgba(36,31,33,0.08)' : 'none',
+                  borderBottom: '1px solid rgba(36,31,33,0.08)',
+                  transition: 'background-color 0.35s ease',
+                  backgroundColor: hoveredId === t.id ? 'rgba(36,31,33,0.03)' : 'transparent',
+                }}
               >
-                {CORNERS.map(corner => (
-                  <div
-                    key={corner}
-                    className="absolute w-3 h-3 z-20 rounded-sm pointer-events-none"
-                    style={{
-                      ...cornerStyle(corner),
-                      backgroundColor: hoveredId === t.id ? '#0f8be8' : '#151414',
-                      border: hoveredId === t.id ? '2px solid #0f8be8' : '1px solid #312f2e',
-                      transition: 'background-color 200ms, border-color 200ms',
-                    }}
-                  />
-                ))}
                 <div
-                  className="relative bg-[#151414] p-8 lg:p-10 h-full flex flex-col"
-                  style={{
-                    outline: hoveredId === t.id ? '2px solid #0f8be8' : '1px solid #312f2e',
-                    outlineOffset: '0px',
-                    boxShadow: hoveredId === t.id ? '0 0 40px 0 rgba(15,139,232,0.15)' : 'none',
-                    transition: 'outline 200ms, box-shadow 200ms',
-                  }}
+                  className="flex flex-col h-full"
+                  style={{ padding: 'clamp(28px, 3vw, 48px)' }}
                 >
-                  <div className="mb-6">
-                    <svg width="64" height="64" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
-                      <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
-                      <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
+                  {/* Quote mark */}
+                  <div style={{ marginBottom: '24px' }}>
+                    <svg
+                      width="28" height="20" viewBox="0 0 28 20" fill="none"
+                      style={{ color: hoveredId === t.id ? 'rgba(217,238,114,0.8)' : 'rgba(36,31,33,0.18)', transition: 'color 0.35s ease' }}
+                    >
+                      <path d="M0 20V12C0 5.373 4.477 1 11 1V5C7.686 5 5 7.686 5 11H9V20H0ZM16 20V12C16 5.373 20.477 1 27 1V5C23.686 5 21 7.686 21 11H25V20H16Z" fill="currentColor"/>
                     </svg>
                   </div>
-                  <p className="text-white leading-relaxed text-lg font-medium flex-1 mb-8">
-                    "{t.content}"
+
+                  <p
+                    className="flex-1"
+                    style={{
+                      fontSize: 'clamp(14px, 1.15vw, 17px)',
+                      lineHeight: 1.75,
+                      color: hoveredId === t.id ? 'rgba(36,31,33,0.9)' : 'rgba(36,31,33,0.65)',
+                      marginBottom: '32px',
+                      transition: 'color 0.35s ease',
+                    }}
+                  >
+                    &ldquo;{t.content}&rdquo;
                   </p>
-                  <div className="pt-6 border-t border-[#312f2e]">
-                    <h4 className="font-semibold text-white">{t.name}</h4>
-                    <p className="text-sm text-gray-400 mt-0.5">{t.role}</p>
+
+                  <div style={{ paddingTop: '20px', borderTop: '1px solid rgba(36,31,33,0.08)' }}>
+                    <p style={{ fontSize: '13px', fontWeight: 600, color: '#241f21', marginBottom: '3px' }}>{t.name}</p>
+                    <p style={{ fontSize: '11px', color: 'rgba(36,31,33,0.4)', letterSpacing: '0.04em' }}>{t.role}</p>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Mobile: horizontal scroll */}
-          <div className="md:hidden -mx-4 sm:-mx-6">
-            <div ref={mobileScrollRef} className="overflow-x-auto snap-x snap-mandatory scroll-pl-6 scrollbar-hide">
-              <div className="flex gap-4 pl-6 pr-4" style={{ width: 'max-content' }}>
-                {testimonials.map((t, idx) => (
-                  <div
-                    key={t.id}
-                    data-idx={idx}
-                    onClick={() => setExpandedTestimonial(t.id)}
-                    className="relative overflow-visible w-[85vw] max-w-sm flex-shrink-0 snap-start"
-                    style={{ cursor: 'pointer' }}
+          {/* Mobile: single card, text crossfades */}
+          <div className="md:hidden" style={{ borderTop: '1px solid rgba(36,31,33,0.08)' }}>
+            <motion.div
+              layout
+              transition={{ layout: { type: 'spring', stiffness: 260, damping: 28, mass: 0.8 } }}
+              className="flex flex-col overflow-hidden"
+              style={{ padding: '28px 0 24px' }}
+            >
+              <div style={{ marginBottom: '18px' }}>
+                <svg width="24" height="18" viewBox="0 0 28 20" fill="none" style={{ color: 'rgba(217,238,114,0.5)' }}>
+                  <path d="M0 20V12C0 5.373 4.477 1 11 1V5C7.686 5 5 7.686 5 11H9V20H0ZM16 20V12C16 5.373 20.477 1 27 1V5C23.686 5 21 7.686 21 11H25V20H16Z" fill="currentColor"/>
+                </svg>
+              </div>
+                <AnimatePresence mode="popLayout" initial={false} custom={mobileDirection}>
+                  <motion.div
+                    key={currentIndex}
+                    layout
+                    custom={mobileDirection}
+                    variants={{
+                      enter: (d: string) => ({ x: d === 'right' ? 40 : -40, opacity: 0 }),
+                      center: { x: 0, opacity: 1 },
+                      exit: (d: string) => ({ x: d === 'right' ? -40 : 40, opacity: 0 }),
+                    }}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.8 }}
                   >
-                    {CORNERS.map(corner => (
-                      <div key={corner} className="absolute w-3 h-3 z-20 rounded-sm pointer-events-none" style={cornerStyle(corner)} />
-                    ))}
-                    <div className="bg-[#151414] px-8 py-6 flex flex-col h-full" style={{ outline: '1px solid #312f2e' }}>
-                      <div className="mb-4">
-                        <svg width="36" height="36" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(59,130,246,0.7)' }}>
-                          <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
-                          <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
-                        </svg>
-                      </div>
-                      <p className="text-white leading-relaxed mb-8 text-lg font-medium flex-1">"{t.content}"</p>
-                      <div className="pt-5 border-t border-[#312f2e]">
-                        <h4 className="font-semibold text-white">{t.name}</h4>
-                        <p className="text-sm text-gray-400 mt-0.5">{t.role}</p>
-                      </div>
+                    <p style={{ fontSize: '16px', lineHeight: 1.75, color: 'rgba(36,31,33,0.75)', marginBottom: '24px', fontWeight: 500 }}>
+                      &ldquo;{testimonials[currentIndex].content}&rdquo;
+                    </p>
+                    <div style={{ paddingTop: '18px', borderTop: '1px solid rgba(36,31,33,0.08)' }}>
+                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#241f21', marginBottom: '3px' }}>{testimonials[currentIndex].name}</p>
+                      <p style={{ fontSize: '11px', color: 'rgba(36,31,33,0.4)' }}>{testimonials[currentIndex].role}</p>
                     </div>
-                  </div>
-                ))}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+              <div className="flex items-center justify-center gap-3 pt-4 pb-2">
+                <button onClick={prevMobile} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Previous">
+                  <ChevronLeft size={16} />
+                </button>
+                <div className="flex items-center gap-1.5">
+                  {testimonials.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => { if (!isAnimating) { setIsAnimating(true); setMobileDirection(index > currentIndex ? 'right' : 'left'); setCurrentIndex(index); setTimeout(() => setIsAnimating(false), 350) } }}
+                      className="rounded-full transition-all duration-300"
+                      style={{ height: '6px', width: index === currentIndex ? '24px' : '6px', backgroundColor: index === currentIndex ? '#241f21' : 'rgba(36,31,33,0.2)' }}
+                      aria-label={`Go to testimonial ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                <button onClick={nextMobile} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Next">
+                  <ChevronRight size={16} />
+                </button>
               </div>
-            </div>
-            <div className="flex items-center justify-center gap-3 pt-4 pb-2">
-              <button onClick={prevMobile} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors" aria-label="Previous">
-                <ChevronLeft size={18} />
-              </button>
-              <div className="flex items-center gap-2">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => { if (!isAnimating) { setIsAnimating(true); setCurrentIndex(index); scrollMobileToIndex(index); setTimeout(() => setIsAnimating(false), 600) } }}
-                    className={`h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-8 bg-white' : 'w-2 bg-gray-600 hover:bg-gray-400'}`}
-                    aria-label={`Go to testimonial ${index + 1}`}
-                  />
-                ))}
-              </div>
-              <button onClick={nextMobile} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors" aria-label="Next">
-                <ChevronRight size={18} />
-              </button>
-            </div>
           </div>
         </div>
       </section>
+
 
       {/* Expanded modal */}
       {isMounted && createPortal(

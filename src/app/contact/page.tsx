@@ -1,14 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Send, Mail, Linkedin, Dribbble, CheckCircle, X } from 'lucide-react'
-import FigmaCursor from '@/components/FigmaCursor'
 import GridBackground from '@/components/GridBackground'
 
 const ContactPage = () => {
-  const shouldReduceMotion = useReducedMotion()
-  const [isDesktop, setIsDesktop] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,28 +13,6 @@ const ContactPage = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
-    setIsDesktop(mediaQuery.matches)
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsDesktop(e.matches)
-    }
-
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
-
-  // Hide default cursor globally on desktop
-  useEffect(() => {
-    if (isDesktop) {
-      document.body.style.cursor = 'none'
-      return () => {
-        document.body.style.cursor = ''
-      }
-    }
-  }, [isDesktop])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -101,7 +76,7 @@ const ContactPage = () => {
 
   const socialLinks = [
     { name: 'Dribbble', href: 'https://dribbble.com/ritaslfpedrosa', icon: Dribbble, color: 'hover:text-pink-500' },
-    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/rita-pedrosa-9957151aa/', icon: Linkedin, color: 'hover:text-blue-600' },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/rita-pedrosa-9957151aa/', icon: Linkedin, color: 'hover:text-[#d9ee72]' },
   ]
 
   const [emailHovered, setEmailHovered] = useState(false)
@@ -116,29 +91,9 @@ const ContactPage = () => {
   ]
 
   return (
-    <div className="min-h-screen pt-16 bg-[#151414] relative overflow-hidden">
+    <div className="min-h-screen pt-16 bg-[#042d2b] relative overflow-hidden">
       {/* Grid Pattern */}
       <GridBackground />
-
-      {/* Animated Orbs */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none z-0"
-        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
-        animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-      />
-      <motion.div
-        className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none z-0"
-        style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.25))' }}
-        animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-      />
-      <motion.div
-        className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none z-0"
-        style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.25), rgba(37,99,235,0.25))' }}
-        animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-      />
 
       {/* Page content above background layers */}
       <div className="relative z-10">
@@ -166,8 +121,8 @@ const ContactPage = () => {
 
       {/* Contact Form & Info */}
       <section className="relative px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
-        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
-        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #312f2e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Contact Form */}
@@ -182,8 +137,8 @@ const ContactPage = () => {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: '#151414',
-                    border: '1px solid #312f2e',
+                    backgroundColor: '#042d2b',
+                    border: '1px solid #22372e',
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                     left: corner.endsWith('left') ? '-6px' : undefined,
@@ -192,8 +147,8 @@ const ContactPage = () => {
                 />
               ))}
               <div
-                className="relative bg-[#151414] px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
-                style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+                className="relative bg-[#042d2b] px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
+                style={{ outline: '1px solid #22372e', outlineOffset: '0px' }}
               >
               <div>
                 <h2 className="text-3xl font-medium text-white mb-4">
@@ -216,7 +171,7 @@ const ContactPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors"
                     placeholder="Your name"
                   />
                 </div>
@@ -232,7 +187,7 @@ const ContactPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -248,7 +203,7 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent bg-white/10 text-white placeholder-white/40 transition-colors resize-none"
                     placeholder="Tell me about your project..."
                   />
                 </div>
@@ -258,8 +213,7 @@ const ContactPage = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[#2563eb] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#1d4ed8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
-                  style={isDesktop ? { cursor: 'none' } : {}}
+                  className="w-full bg-[#d9ee72] text-[#151414] px-6 py-3 rounded-full font-medium text-base hover:bg-[#c5d860] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -289,8 +243,8 @@ const ContactPage = () => {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: '#151414',
-                    border: '1px solid #312f2e',
+                    backgroundColor: '#042d2b',
+                    border: '1px solid #22372e',
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                     left: corner.endsWith('left') ? '-6px' : undefined,
@@ -299,8 +253,8 @@ const ContactPage = () => {
                 />
               ))}
               <div
-                className="relative bg-[#151414] px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
-                style={{ outline: '1px solid #312f2e', outlineOffset: '0px' }}
+                className="relative bg-[#042d2b] px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
+                style={{ outline: '1px solid #22372e', outlineOffset: '0px' }}
               >
               <div>
                 <h2 className="text-3xl font-medium text-white mb-4">
@@ -325,14 +279,14 @@ const ContactPage = () => {
                       onMouseLeave={() => setEmailHovered(false)}
                       className="flex w-full items-center space-x-4 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer"
                     >
-                      <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-colors" style={{ backgroundColor: '#1e1e1e', border: '1px solid #312f2e' }}>
-                        <Icon size={18} strokeWidth={1.5} style={{ color: emailHovered ? '#3b82f6' : 'rgba(255,255,255,0.5)', transition: 'color 0.2s' }} />
+                      <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-colors" style={{ backgroundColor: '#1e1e1e', border: '1px solid #22372e' }}>
+                        <Icon size={18} strokeWidth={1.5} style={{ color: emailHovered ? '#d9ee72' : 'rgba(255,255,255,0.5)', transition: 'color 0.2s' }} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs text-white/40 uppercase tracking-widest mb-0.5">{info.title}</p>
                         <p className="font-medium text-white truncate">{info.value}</p>
                       </div>
-                      <div className="ml-auto" style={{ color: emailHovered ? '#3b82f6' : 'rgba(255,255,255,0.3)', transition: 'color 0.2s' }}>
+                      <div className="ml-auto" style={{ color: emailHovered ? '#d9ee72' : 'rgba(255,255,255,0.3)', transition: 'color 0.2s' }}>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -421,13 +375,6 @@ const ContactPage = () => {
         )}
       </AnimatePresence>
 
-      {/* Unified Figma Cursor */}
-      <FigmaCursor
-        label={null}
-        showPill={false}
-        shouldReduceMotion={shouldReduceMotion || false}
-        isDesktop={isDesktop}
-      />
     </div>
   )
 }

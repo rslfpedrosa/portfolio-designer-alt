@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useReducedMotion, motion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import FigmaCursor from '@/components/FigmaCursor'
 import { registerCursorSetter, unregisterCursorSetter } from '@/lib/cursorBridge'
@@ -9,31 +9,31 @@ import GridBackground from '@/components/GridBackground'
 
 // Dynamically import heavy components with loading states
 const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
-  loading: () => <div className="min-h-screen bg-[#151414]" />,
+  loading: () => <div className="min-h-screen bg-[#f2efea]" />,
 })
 
-const FeaturedProjects = dynamic(() => import('@/components/home/FeaturedProjects'), {
-  loading: () => <div className="py-16 bg-[#151414]" />,
+const CaseStudiesSection = dynamic(() => import('@/components/home/CaseStudiesSection'), {
+  loading: () => <div style={{ height: '100svh', background: '#f2efea' }} />,
   ssr: false,
 })
 
 const DesignShowcase = dynamic(() => import('@/components/home/DesignShowcase'), {
-  loading: () => <div className="py-16 bg-[#151414]" />,
+  loading: () => <div className="py-16 bg-[#f2efea]" />,
   ssr: false,
 })
 
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
-  loading: () => <div className="py-16 bg-[#151414]" />,
+  loading: () => <div className="py-16 bg-[#f2efea]" />,
   ssr: false,
 })
 
 const AboutPreview = dynamic(() => import('@/components/home/AboutPreview'), {
-  loading: () => <div className="py-16 bg-[#151414]" />,
+  loading: () => <div className="py-16 bg-[#f2efea]" />,
   ssr: false,
 })
 
 const CTASection = dynamic(() => import('@/components/home/CTASection'), {
-  loading: () => <div className="py-16 bg-[#151414]" />,
+  loading: () => <div className="py-16 bg-[#f2efea]" />,
   ssr: false,
 })
 
@@ -41,7 +41,6 @@ const HomePage = () => {
   const shouldReduceMotion = useReducedMotion()
   const [isDesktop, setIsDesktop] = useState(false)
   const [cursorLabel, setCursorLabel] = useState<string | null>(null)
-  const [hoveredCardId, setHoveredCardId] = useState<number | null>(null)
   const [cursorBlue, setCursorBlue] = useState(false)
 
   useEffect(() => {
@@ -82,69 +81,25 @@ const HomePage = () => {
     return () => document.removeEventListener('mouseover', handleOver)
   }, [isDesktop])
 
-  // Determine cursor label
-  const showCursorPill = cursorLabel !== null || hoveredCardId !== null
-  const finalCursorLabel = cursorLabel || (hoveredCardId !== null ? 'READ CASE STUDY' : null)
+  const showCursorPill = cursorLabel !== null
 
   return (
-    <div className="min-h-screen bg-[#151414] overflow-x-hidden">
-      {/* Hero + Featured Projects share one stacking context so orbs bleed through */}
+    <div className="min-h-screen bg-[#f2efea] overflow-x-hidden">
+      {/* Hero with grid background */}
       <div className="relative overflow-visible">
-        {/* Animated Orbs — z-0, bleed freely */}
-        {/* Blue orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25), rgba(96,165,250,0.25))' }}
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
-        />
-        <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25), rgba(59,130,246,0.25))' }}
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.25), rgba(37,99,235,0.25))' }}
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", repeatType: "loop" }}
-        />
-        {/* Additional blue orbs */}
-        <motion.div
-          className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full blur-3xl pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.18), rgba(37,99,235,0.18))' }}
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{ x: [0, -100, 60, 0], y: [0, 80, -60, 0], scale: [1, 1.2, 0.85, 1] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", repeatType: "loop", delay: 1.5 }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 left-1/3 w-56 h-56 rounded-full blur-3xl pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.16), rgba(59,130,246,0.16))' }}
-          initial={{ x: 0, y: 0, scale: 1 }}
-          animate={{ x: [0, 130, -70, 0], y: [0, -100, 50, 0], scale: [1, 0.9, 1.25, 1] }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", repeatType: "loop", delay: 3 }}
-        />
-
-        {/* Grid — above orbs so lines are visible over the glow */}
         <div className="absolute inset-0 z-[1]"><GridBackground /></div>
-
         <div className="relative z-10">
           <HeroSection
             isDesktop={isDesktop}
-            cursorLabel={finalCursorLabel}
+            cursorLabel={cursorLabel}
             showCursorPill={showCursorPill}
             onLabelChange={setCursorLabel}
           />
-          <FeaturedProjects
-            isDesktop={isDesktop}
-            onCardHover={setHoveredCardId}
-          />
         </div>
       </div>
+
+      {/* Scroll-driven case studies — GSAP ScrollTrigger pinned section */}
+      <CaseStudiesSection isDesktop={isDesktop} />
 
       {/* Design Showcase Section */}
       <DesignShowcase isDesktop={isDesktop} onLabelChange={setCursorLabel} />
@@ -160,7 +115,7 @@ const HomePage = () => {
 
       {/* Unified Figma Cursor */}
       <FigmaCursor
-        label={finalCursorLabel}
+        label={cursorLabel}
         showPill={showCursorPill}
         forceBlue={cursorBlue}
         shouldReduceMotion={shouldReduceMotion || false}

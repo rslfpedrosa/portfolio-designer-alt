@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Expand } from 'lucide-react'
 
 interface ShowcaseItem {
   id: number
@@ -12,98 +13,104 @@ interface ShowcaseItem {
 interface ShowcaseCardProps {
   item: ShowcaseItem
   index: number
-  isDesktop?: boolean
-  onLabelChange?: (label: string | null) => void
   onClick: () => void
 }
 
-export default function ShowcaseCard({ item, index, isDesktop, onLabelChange, onClick }: ShowcaseCardProps) {
+export default function ShowcaseCard({ item, index, onClick }: ShowcaseCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseEnter = () => {
-    setIsHovered(true)
-    if (isDesktop) onLabelChange?.('EXPAND')
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-    if (isDesktop) onLabelChange?.(null)
-  }
+  const handleMouseEnter = () => setIsHovered(true)
+  const handleMouseLeave = () => setIsHovered(false)
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="group cursor-pointer relative overflow-visible"
+      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '-40px' }}
+      className="group relative overflow-hidden"
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
-        ...(isDesktop ? { cursor: 'none' } : {}),
+        cursor: 'pointer',
+        borderRadius: 0,
       }}
     >
-      <div
-        className="relative bg-[#1e1e1e] transition-all duration-300 ease-out overflow-visible"
-        style={isHovered ? {
-          outline: '2px solid #0f8be8',
-          outlineOffset: '0px',
-          boxShadow: '0 0 70px 0 rgba(15,139,232,0.18)',
-        } : {
-          outline: '1px solid #0f8be8',
-          outlineOffset: '0px',
-        }}
-      >
-        {/* Corner squares */}
-        {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
-          <div
-            key={corner}
-            className="absolute w-3 h-3 z-20 rounded-sm transition-colors duration-300"
-            style={{
-              backgroundColor: isHovered ? '#0f8be8' : '#1e1e1e',
-              border: isHovered ? '2px solid #0f8be8' : '1px solid #0f8be8',
-              top: corner.startsWith('top') ? '-6px' : undefined,
-              bottom: corner.startsWith('bottom') ? '-6px' : undefined,
-              left: corner.endsWith('left') ? '-6px' : undefined,
-              right: corner.endsWith('right') ? '-6px' : undefined,
+      {/* Media */}
+      <div className="aspect-video relative overflow-hidden bg-[#e8e4de]">
+        {item.type === 'video' ? (
+          <video
+            src={item.media}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onLoadedData={(e) => {
+              const video = e.currentTarget
+              const p = video.play()
+              if (p !== undefined) p.catch(() => { video.muted = true })
             }}
+            onEnded={(e) => {
+              e.currentTarget.currentTime = 0
+              e.currentTarget.play().catch(() => {})
+            }}
+            onError={() => console.warn('Video failed to load:', item.media)}
+            className="w-full h-full object-cover transition-transform duration-700 ease-out"
+            style={{ transform: isHovered ? 'scale(1.04)' : 'scale(1)' }}
           />
-        ))}
+        ) : (
+          <img
+            src={item.media}
+            alt={`Exploration ${item.id}`}
+            className="w-full h-full object-cover transition-transform duration-700 ease-out"
+            style={{ transform: isHovered ? 'scale(1.04)' : 'scale(1)' }}
+            loading="lazy"
+          />
+        )}
 
-        <div className="aspect-video relative overflow-hidden bg-gray-800">
-          {item.type === 'video' ? (
-            <video
-              src={item.media}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              onLoadedData={(e) => {
-                const video = e.currentTarget
-                const playPromise = video.play()
-                if (playPromise !== undefined) {
-                  playPromise.catch(() => { video.muted = true })
-                }
+        {/* Hover overlay */}
+        <div
+          className="absolute inset-0 flex items-center justify-center transition-opacity duration-400"
+          style={{
+            backgroundColor: 'rgba(4, 45, 43, 0.5)',
+            opacity: isHovered ? 1 : 0,
+          }}
+        >
+          <div
+            className="flex items-center gap-2 transition-transform duration-400"
+            style={{
+              transform: isHovered ? 'scale(1)' : 'scale(0.8)',
+              border: '1px solid rgba(255,255,255,0.3)',
+              padding: '8px 14px',
+              borderRadius: 2,
+            }}
+          >
+            <Expand size={13} style={{ color: 'rgba(255,255,255,0.7)' }} />
+            <span
+              style={{
+                fontSize: '10px',
+                fontWeight: 500,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.7)',
               }}
-              onEnded={(e) => {
-                e.currentTarget.currentTime = 0
-                e.currentTarget.play().catch(() => {})
-              }}
-              onError={() => console.warn('Video failed to load:', item.media)}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-            />
-          ) : (
-            <img
-              src={item.media}
-              alt={`Exploration ${item.id}`}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-              loading="lazy"
-            />
-          )}
+            >
+              View
+            </span>
+          </div>
         </div>
       </div>
+
+      {/* Bottom border */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+        style={{
+          backgroundColor: isHovered ? 'rgba(217, 238, 114, 0.5)' : 'rgba(36,31,33,0.08)',
+          transition: 'background-color 0.35s ease',
+        }}
+      />
     </motion.div>
   )
 }

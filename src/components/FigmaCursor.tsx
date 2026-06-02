@@ -144,7 +144,7 @@ export default function FigmaCursor({ label, showPill, forceBlue = false, should
           fill="none"
           className="absolute -top-3 -left-1.5"
           style={{
-            color: (showPill || forceBlue || logoHovered || overClickable) ? '#3b82f6' : '#525252',
+            color: (showPill || forceBlue || logoHovered || overClickable) ? '#d9ee72' : '#525252',
             transition: shouldReduceMotion ? 'none' : 'color 200ms ease-out',
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
           }}
@@ -158,9 +158,9 @@ export default function FigmaCursor({ label, showPill, forceBlue = false, should
         {label && (
           <span
             ref={pillRef}
-            className="text-white text-sm font-semibold px-4 py-2 rounded-full whitespace-nowrap inline-block mt-1 ml-2"
+            className="text-[#151414] text-sm font-semibold px-4 py-2 rounded-full whitespace-nowrap inline-block mt-1 ml-2"
             style={{
-              backgroundColor: showPill ? '#3b82f6' : '#525252',
+              backgroundColor: showPill ? '#d9ee72' : '#525252',
               boxShadow: '0 4px 12px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)',
               opacity: 0,
               transform: 'scale(0.8) translateY(-4px)',

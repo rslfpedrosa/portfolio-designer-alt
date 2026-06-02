@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import HeroHoverImages from '@/components/HeroHoverImages'
 import { projectsData } from '@/data/projects'
 
@@ -12,17 +12,8 @@ const HERO_DESIGN_PHOTOS: [string, string, string] = [projectsData[1].heroImage,
 
 const CYCLING_PHRASES = ['I Design.', 'I Simplify.', 'I Explore.', 'I Create.', 'I Prototype.', 'I Question.', 'I Iterate.']
 
-export default function HeroSection({ 
-  isDesktop, 
-  cursorLabel, 
-  showCursorPill,
-  onLabelChange 
-}: { 
-  isDesktop: boolean
-  cursorLabel: string | null
-  showCursorPill: boolean
-  onLabelChange: (label: string | null) => void
-}) {
+export default function HeroSection() {
+  const [isDesktop, setIsDesktop] = useState(false)
   const shouldReduceMotion = useReducedMotion()
   const [activeWord, setActiveWord] = useState<'rita' | 'design' | null>(null)
   const [entered, setEntered] = useState(false)
@@ -42,6 +33,14 @@ export default function HeroSection({
   const [designBounds, setDesignBounds] = useState<DOMRect | null>(null)
   const [ritaViewport, setRitaViewport] = useState<{ left: number; top: number; width: number; height: number } | null>({ left: -9999, top: -9999, width: 1, height: 1 })
   const [designViewport, setDesignViewport] = useState<{ left: number; top: number; width: number; height: number } | null>({ left: -9999, top: -9999, width: 1, height: 1 })
+
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   // Animation trigger
   useEffect(() => {
@@ -167,13 +166,9 @@ export default function HeroSection({
         setRitaViewport({ left: rect.left, top: rect.top, width: rect.width, height: rect.height })
       }
       setActiveWord('rita')
-      onLabelChange('ABOUT ME')
-      if (ritaRef.current) ritaRef.current.style.cursor = 'none'
     } else {
       hoverTimeoutRef.current = setTimeout(() => {
         setActiveWord(null)
-        onLabelChange(null)
-        if (ritaRef.current) ritaRef.current.style.cursor = ''
       }, 50)
     }
   }
@@ -192,13 +187,9 @@ export default function HeroSection({
         setDesignViewport({ left: rect.left, top: rect.top, width: rect.width, height: rect.height })
       }
       setActiveWord('design')
-      onLabelChange('MY WORK')
-      if (designRef.current) designRef.current.style.cursor = 'none'
     } else {
       hoverTimeoutRef.current = setTimeout(() => {
         setActiveWord(null)
-        onLabelChange(null)
-        if (designRef.current) designRef.current.style.cursor = ''
       }, 50)
     }
   }
@@ -238,13 +229,7 @@ export default function HeroSection({
         hoverTimeoutRef.current = null
       }
       
-      // Hide the hover effect immediately on scroll
       setActiveWord(null)
-      onLabelChange(null)
-      
-      // Reset cursor styles for both elements
-      if (ritaRef.current) ritaRef.current.style.cursor = ''
-      if (designRef.current) designRef.current.style.cursor = ''
     }
     
     window.addEventListener('scroll', hideOnScroll, { passive: true })
@@ -263,47 +248,37 @@ export default function HeroSection({
   }
 
   return (
-    <section className="relative z-20 min-h-[90vh] flex items-center justify-start px-4 sm:px-6 lg:px-8">
-      {/* Horizontal rule just below the navbar */}
-      <div className="absolute top-16 left-0 w-full h-px pointer-events-none" style={hDashedLine} />
-
-      {/* Animated blobs */}
-      {!shouldReduceMotion && <>
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.2), rgba(96,165,250,0.2))' }}
-          animate={{ x: [0, 150, -50, 0], y: [0, -120, 80, 0], scale: [1, 1.3, 0.9, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-        />
-        <motion.div
-          className="absolute top-3/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2), rgba(59,130,246,0.2))' }}
-          animate={{ x: [0, -180, 60, 0], y: [0, 120, -40, 0], scale: [1, 0.7, 1.2, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.2), rgba(37,99,235,0.2))' }}
-          animate={{ x: [0, 220, -80, 0], y: [0, -80, 100, 0], scale: [1, 1.15, 0.85, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatType: 'loop' }}
-        />
-      </>}
+    <section
+      className="relative z-20 flex items-center justify-start"
+      style={{
+        minHeight: '100svh',
+        padding: '0 clamp(24px, 5vw, 80px)',
+      }}
+    >
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto text-left relative z-20">
-        {/* Badge */}
+      <div className="w-full max-w-none text-left relative z-20" style={{ paddingTop: 'clamp(100px, 12vw, 160px)', paddingBottom: 'clamp(80px, 10vw, 120px)' }}>
+        {/* Availability badge */}
         <motion.div
-          className="mb-8"
-          initial={{ scale: 0 }}
-          animate={entered ? { scale: 1 } : { scale: 0 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.5, type: 'spring', stiffness: 200 }}
+          className="mb-10"
+          initial={{ opacity: 0, y: 12 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+          transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="status-badge inline-flex items-center space-x-2 rounded-full px-4 py-2">
-            <div className="relative flex items-center justify-center w-2 h-2">
+          <div className="inline-flex items-center gap-2.5">
+            <div className="relative flex items-center justify-center w-1.5 h-1.5">
               <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
               <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
             </div>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'rgba(36,31,33,0.45)',
+              }}
+            >
               Available for new projects
             </span>
           </div>
@@ -313,7 +288,7 @@ export default function HeroSection({
         <div className="relative mb-8 lg:mb-10 overflow-visible">
           <h1
             ref={headlineRef}
-            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-white leading-tight relative flex flex-wrap justify-start items-center gap-0 sm:gap-3 overflow-visible"
+            className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-[#241f21] leading-tight relative flex flex-wrap justify-start items-center gap-0 sm:gap-3 overflow-visible"
           >
             <Link
               ref={ritaRef}
@@ -324,7 +299,6 @@ export default function HeroSection({
               onBlur={() => handleRitaFocus(false)}
               className="inline-block overflow-visible focus:outline-none"
               aria-label="About Me"
-              style={isDesktop ? { cursor: 'none' } : {}}
             >
               <motion.span
                 ref={leftSpanRef}
@@ -346,7 +320,6 @@ export default function HeroSection({
               onBlur={() => handleDesignFocus(false)}
               className="inline-block overflow-visible focus:outline-none"
               aria-label="View Work"
-              style={isDesktop ? { cursor: 'none' } : {}}
             >
               <motion.span
                 ref={rightSpanRef}
@@ -391,15 +364,15 @@ export default function HeroSection({
                       animate={{ width: phraseWidth, opacity: 1 }}
                       initial={{ width: phraseWidth, opacity: 0 }}
                       transition={{ width: { duration: 0.45, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.3 } }}
-                      style={{ border: '1px solid #0f8be8' }}
+                      style={{ border: '1px solid #d9ee72' }}
                     >
                       {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map(corner => (
                         <span
                           key={corner}
                           className="absolute w-3 h-3 rounded-sm transition-colors duration-300"
                           style={{
-                            backgroundColor: showDesignFrame ? '#0f8be8' : '#151414',
-                            border: '1px solid #0f8be8',
+                            backgroundColor: showDesignFrame ? '#d9ee72' : '#f2efea',
+                            border: '1px solid #d9ee72',
                             top: corner.startsWith('top') ? -6 : undefined,
                             bottom: corner.startsWith('bottom') ? -6 : undefined,
                             left: corner.endsWith('left') ? -6 : undefined,
@@ -424,47 +397,98 @@ export default function HeroSection({
         </div>
 
         {/* Description */}
-        <div className="mb-12 lg:mb-16">
+        <div style={{ marginBottom: 'clamp(36px, 5vw, 64px)' }}>
           <motion.p
-            className="text-lg sm:text-xl text-gray-400 max-w-lg leading-relaxed"
+            style={{
+              fontSize: 'clamp(15px, 1.3vw, 18px)',
+              lineHeight: 1.7,
+              color: 'rgba(36,31,33,0.5)',
+              maxWidth: '44ch',
+            }}
             initial={{ opacity: 0, y: 30 }}
             animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.9 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
           >
             From AI platforms to healthcare products, I transform complexity into experiences people understand and enjoy using.
           </motion.p>
         </div>
 
-        {/* CTAs */}
+        {/* CTAs — editorial text links */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-start items-center pt-8 w-full sm:w-auto"
+          className="flex flex-col sm:flex-row gap-6 justify-start items-start"
           initial={{ opacity: 0, y: 30 }}
           animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 1.1 }}
+          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 1.1 }}
         >
-          <Link href="/projects" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group bg-[#2563eb] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#1d4ed8] transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto focus:outline-none"
-              style={isDesktop ? { cursor: 'none' } : {}}
+          <Link href="/projects" className="group flex items-center gap-2">
+            <span
+              className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
+              style={{
+                fontSize: '12px',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: '#241f21',
+                borderBottom: '1px solid rgba(36,31,33,0.3)',
+                paddingBottom: '2px',
+              }}
             >
-              <span>View My Work</span>
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </motion.button>
+              View My Work
+            </span>
+            <ArrowUpRight
+              size={13}
+              className="transition-all duration-300 group-hover:text-[#241f21] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              style={{ color: 'rgba(36,31,33,0.5)' }}
+              aria-hidden="true"
+            />
           </Link>
-          <Link href="/contact" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group bg-white/15 text-white px-6 py-3 rounded-full font-medium text-base hover:bg-white/25 transition-colors w-full sm:w-auto focus:outline-none"
-              style={isDesktop ? { cursor: 'none' } : {}}
+
+          <Link href="/contact" className="group flex items-center gap-2">
+            <span
+              className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
+              style={{
+                fontSize: '12px',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'rgba(36,31,33,0.45)',
+                borderBottom: '1px solid rgba(36,31,33,0.15)',
+                paddingBottom: '2px',
+              }}
             >
-              Let's Connect
-            </motion.button>
+              Let&apos;s Connect
+            </span>
+            <ArrowUpRight
+              size={13}
+              className="transition-all duration-300 group-hover:text-[#241f21]/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              style={{ color: 'rgba(36,31,33,0.2)' }}
+            />
           </Link>
         </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={entered ? { opacity: 1 } : { opacity: 0 }}
+        transition={shouldReduceMotion ? { duration: 0 } : { delay: 2.2, duration: 1.2, ease: 'easeOut' }}
+        aria-hidden
+      >
+        <span
+          style={{
+            fontSize: '9px',
+            fontWeight: 500,
+            letterSpacing: '0.25em',
+            textTransform: 'uppercase',
+            color: 'rgba(36,31,33,0.3)',
+          }}
+        >
+          Scroll
+        </span>
+        <div
+          className="scroll-bob"
+          style={{ width: '1px', height: '28px', backgroundColor: 'rgba(36,31,33,0.2)' }}
+        />
+      </motion.div>
 
     </section>
   )

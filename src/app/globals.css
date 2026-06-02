@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@font-face {
+  font-family: 'DiamondGrotesk';
+  src: url('/DiamondGrotesk-VF.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,8 +23,8 @@
 :root {
   color-scheme: dark;
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 21, 20, 20;
-  --background-end-rgb: 21, 20, 20;
+  --background-start-rgb: 4, 45, 43;
+  --background-end-rgb: 4, 45, 43;
   --accent-rgb: 163, 163, 163;
   --muted-rgb: 163, 163, 163;
   --border-rgb: 56, 56, 56;
@@ -26,8 +33,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 23, 23, 23;
-    --background-end-rgb: 23, 23, 23;
+    --background-start-rgb: 4, 45, 43;
+    --background-end-rgb: 4, 45, 43;
     --accent-rgb: 163, 163, 163;
     --muted-rgb: 163, 163, 163;
     --border-rgb: 40, 40, 40;
@@ -46,12 +53,10 @@ h1, h2, h3, h4, h5, h6 {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  cursor: none !important;
 }
 
-/* Re-enable cursor for inputs and textareas */
-input, textarea, select {
-  cursor: text !important;
+html, body {
+  cursor: auto;
 }
 
 /* Content Protection */
@@ -111,8 +116,8 @@ html {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #151414;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f2efea;
+  font-family: 'DiamondGrotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -170,7 +175,7 @@ button, a, input, textarea, select {
 
 /* Typography utilities */
 .text-gradient {
-  background: linear-gradient(135deg, #60a5fa, #2563eb);
+  background: linear-gradient(135deg, #d9ee72, #d9ee72);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -316,7 +321,7 @@ button, a, input, textarea, select {
 .dark .btn-secondary {
   background-color: #282828;
   color: white;
-  border-color: #383838;
+  border-color: #22372e;
 }
 
 .dark .btn-secondary:hover {
@@ -398,7 +403,7 @@ button, a, input, textarea, select {
   background: transparent;
   border: 1px solid rgba(115, 115, 115, 0.3);
   box-shadow: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .dark .status-badge {
@@ -489,12 +494,12 @@ button, a, input, textarea, select {
 /* Force neutral gray values — override Tailwind's default blue-gray scale */
 .dark .border-gray-800,
 .dark\:border-gray-800:is(.dark *) {
-  border-color: #333333 !important;
+  border-color: #22372e !important;
 }
 
 .dark .divide-gray-800 > :not([hidden]) ~ :not([hidden]),
 .dark .dark\:divide-gray-800 > :not([hidden]) ~ :not([hidden]) {
-  border-color: #333333 !important;
+  border-color: #22372e !important;
 }
 
 .dark .bg-gray-800,
@@ -515,4 +520,151 @@ button, a, input, textarea, select {
 .dark .text-gray-500,
 .dark\:text-gray-500:is(.dark *) {
   color: #737373 !important;
+}
+
+/* ============================================================
+   FLOEMA-INSPIRED EDITORIAL DESIGN SYSTEM
+   ============================================================ */
+
+:root {
+  --site-margin: clamp(24px, 5vw, 80px);
+  --section-gap: clamp(80px, 10vw, 160px);
+  --border-faint: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --text-dim: rgba(255, 255, 255, 0.25);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --accent-lime: #d9ee72;
+  --surface-dark: #042d2b;
+  --transition-smooth: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-medium: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Fluid display type */
+.fluid-display {
+  font-size: clamp(2.75rem, 7vw, 8rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.fluid-heading {
+  font-size: clamp(2rem, 4vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.fluid-subheading {
+  font-size: clamp(1.25rem, 2.5vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+/* Section label — small uppercase tracked */
+.section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(36, 31, 33, 0.4);
+  line-height: 1;
+}
+
+/* Editorial large number (ghost) */
+.editorial-num {
+  font-size: clamp(72px, 12vw, 160px);
+  font-weight: 300;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: rgba(217, 238, 114, 0.05);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Thin border utilities */
+.border-faint { border-color: rgba(255, 255, 255, 0.06); }
+.border-subtle { border-color: rgba(255, 255, 255, 0.1); }
+
+/* Clip reveal animation for images */
+@keyframes clipFromBottom {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0% 0); }
+}
+
+.image-reveal {
+  animation: clipFromBottom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Editorial text link */
+.link-editorial {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(36, 31, 33, 0.45);
+  border-bottom: 1px solid rgba(36, 31, 33, 0.18);
+  padding-bottom: 2px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.link-editorial:hover {
+  color: rgba(36, 31, 33, 0.9);
+  border-color: rgba(36, 31, 33, 0.45);
+}
+
+/* Scroll-driven reveal base state */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(48px);
+}
+
+.reveal-enter {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Staggered children delay helpers */
+.stagger-1 { transition-delay: 0.07s !important; }
+.stagger-2 { transition-delay: 0.14s !important; }
+.stagger-3 { transition-delay: 0.21s !important; }
+.stagger-4 { transition-delay: 0.28s !important; }
+
+/* Marquee scroll for testimonials strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Smooth bob — scroll indicator */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+.scroll-bob {
+  animation: bob 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init { opacity: 1 !important; transform: translateY(0) !important; }
+  .reveal-enter { transition: none !important; }
+  .marquee-track { animation: none !important; }
+  .scroll-bob { animation: none !important; }
 }
