@@ -754,15 +754,13 @@ const AboutPage = () => {
                     boxShadow: '0 28px 60px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.12)',
                     rotate: value.rotation * 0.5,
                   }}
-                  className="flex flex-col p-10 flex-shrink-0"
+                  className="flex flex-col p-5 sm:p-10 flex-shrink-0 w-[260px] sm:w-[380px] min-h-[240px] sm:min-h-[340px]"
                   style={{
                     backgroundColor: value.color,
                     borderRadius: '2px',
                     rotate: `${value.rotation}deg`,
                     boxShadow: '0 10px 36px rgba(0,0,0,0.14), 0 3px 10px rgba(0,0,0,0.08)',
                     outline: (hoveredPostIt === index || draggingPostIt === index) ? '2px solid #0a99ff' : '2px solid transparent',
-                    width: '380px',
-                    minHeight: '340px',
                     cursor: draggingPostIt === index ? 'grabbing' : 'grab',
                     zIndex: draggingPostIt === index ? 50 : stackZ,
                     position: 'relative',
@@ -776,13 +774,13 @@ const AboutPage = () => {
                     ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
                     true
                   )}
-                  <div className="mb-6">
-                    <img src={value.illustration} alt="" className="w-20 h-20 object-contain" style={{ filter: 'brightness(0) invert(1) brightness(0.14)' }} />
+                  <div className="mb-4 sm:mb-6">
+                    <img src={value.illustration} alt="" className="w-14 h-14 sm:w-20 sm:h-20 object-contain" style={{ filter: 'brightness(0) invert(1) brightness(0.14)' }} />
                   </div>
-                  <h3 className="text-2xl font-medium mb-3" style={{ color: '#241f21' }}>
+                  <h3 className="text-xl sm:text-2xl font-medium mb-2 sm:mb-3" style={{ color: '#241f21' }}>
                     {value.title}
                   </h3>
-                  <p className="text-base leading-relaxed" style={{ color: 'rgba(36,31,33,0.6)' }}>
+                  <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'rgba(36,31,33,0.6)' }}>
                     {value.description}
                   </p>
                 </motion.div>

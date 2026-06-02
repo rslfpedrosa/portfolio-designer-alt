@@ -171,15 +171,15 @@ const ContactPage = () => {
       <div className="relative z-10">
 
       {/* Hero Section */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-24 px-6 sm:px-10 lg:px-16">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 pl-6 sm:pl-8 lg:pl-16"
+            className="space-y-6 sm:pl-8 lg:pl-16"
           >
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-medium text-[#241f21] flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <h1 className="text-3xl sm:text-6xl lg:text-8xl font-medium text-[#241f21] flex flex-wrap items-baseline gap-x-4 gap-y-2">
               <span className="relative inline-block">
                 {/* Invisible spacer: keeps container at widest-phrase width */}
                 <span className="invisible text-gradient whitespace-nowrap" aria-hidden>Let&apos;s Collaborate.</span>
@@ -339,11 +339,11 @@ const ContactPage = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[#d9ee72] text-[#151414] px-6 py-3 rounded-full font-medium text-base hover:bg-[#c5d860] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-[#0f0f0f] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-[#151414] border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       <span>Sending...</span>
                     </>
                   ) : (
@@ -382,7 +382,7 @@ const ContactPage = () => {
                 className="relative px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
                 style={{ backgroundColor: '#f2efea', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
               >
-              <div>
+              <div className="-mb-4">
                 <h2 className="text-3xl font-medium text-[#241f21] mb-4">
                   Get in touch
                 </h2>
@@ -425,7 +425,7 @@ const ContactPage = () => {
 
               {/* Social Links */}
               <div className="space-y-4">
-                <h3 className="text-sm font-medium uppercase tracking-widest" style={{ color: 'rgba(36,31,33,0.40)' }}>
+                <h3 className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(36,31,33,0.40)' }}>
                   Follow me
                 </h3>
                 <div className="flex gap-3">
@@ -452,7 +452,7 @@ const ContactPage = () => {
               </div>
 
               {/* Availability */}
-              <div className="p-6 rounded-2xl" style={{ backgroundColor: 'rgba(36,31,33,0.05)', border: `1px solid ${borderColor}` }}>
+              <div className="p-6 rounded-2xl" style={{ border: `1px solid ${borderColor}` }}>
                 <h3 className="text-lg font-medium text-[#241f21] mb-2">
                   Current Availability
                 </h3>

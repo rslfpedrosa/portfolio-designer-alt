@@ -72,13 +72,13 @@ const Header = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 left-0 right-0 z-[10001] flex justify-center"
+      className="fixed top-0 left-0 right-0 z-[10001] flex flex-col md:flex-row md:justify-center"
       style={{ padding: '24px clamp(20px, 4vw, 56px)' }}
     >
 
       {/* Pill navbar */}
       <div
-        className="inline-flex items-center"
+        className="flex w-full md:w-auto md:inline-flex items-center justify-between md:justify-start"
         style={{
           background: colors.pillBg,
           border: `1px solid ${colors.pillBorder}`,
@@ -115,6 +115,7 @@ const Header = () => {
           </Link>
 
           <div
+            className="hidden md:block"
             style={{
               width: 1,
               height: 18,
@@ -182,30 +183,39 @@ const Header = () => {
         {/* Mobile burger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 mr-1"
-          style={{ gap: '5px' }}
+          className="md:hidden flex items-center justify-center w-9 h-9 mr-0.5"
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
-          <span
-            style={{
-              display: 'block',
-              height: '1px',
-              width: '20px',
-              background: colors.burgerColor,
-              transform: isOpen ? 'rotate(45deg) translate(3.5px, 3.5px)' : 'none',
-              transition: 'transform 0.35s cubic-bezier(0.16,1,0.3,1)',
-            }}
-          />
-          <span
-            style={{
-              display: 'block',
-              height: '1px',
-              width: '20px',
-              background: colors.burgerColor,
-              transform: isOpen ? 'rotate(-45deg) translate(3.5px, -3.5px)' : 'none',
-              transition: 'transform 0.35s cubic-bezier(0.16,1,0.3,1)',
-            }}
-          />
+          <div style={{ width: 22, height: 15, position: 'relative', flexShrink: 0 }}>
+            <motion.span
+              style={{
+                position: 'absolute', left: 0, right: 0, top: 0,
+                height: '1.5px', background: colors.burgerColor,
+                borderRadius: 2, transformOrigin: 'center', display: 'block',
+              }}
+              animate={isOpen ? { y: 6.75, rotate: 45 } : { y: 0, rotate: 0 }}
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            />
+            <motion.span
+              style={{
+                position: 'absolute', left: 0, right: 0, top: '50%',
+                height: '1.5px', background: colors.burgerColor,
+                borderRadius: 2, transformOrigin: 'center', display: 'block',
+                marginTop: '-0.75px',
+              }}
+              animate={isOpen ? { opacity: 0, scaleX: 0.2 } : { opacity: 1, scaleX: 1 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            />
+            <motion.span
+              style={{
+                position: 'absolute', left: 0, right: 0, bottom: 0,
+                height: '1.5px', background: colors.burgerColor,
+                borderRadius: 2, transformOrigin: 'center', display: 'block',
+              }}
+              animate={isOpen ? { y: -6.75, rotate: -45 } : { y: 0, rotate: 0 }}
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            />
+          </div>
         </button>
       </div>
 
@@ -213,52 +223,85 @@ const Header = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden overflow-hidden mx-auto"
+            variants={{
+              open: {
+                opacity: 1, scaleY: 1, y: 0,
+                transition: { duration: 0.28, ease: [0, 0, 0.6, 1] },
+              },
+              closed: {
+                opacity: 0, scaleY: 0.88, y: -8,
+                transition: { duration: 0.28, ease: [0.4, 0, 1, 1] },
+              },
+            }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="md:hidden w-full"
             style={{
-              backgroundColor: colors.mobileBg,
-              border: `1px solid ${colors.mobileDivider}`,
-              borderRadius: '24px',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
+              borderRadius: '32px',
               marginTop: '8px',
+              overflow: 'hidden',
+              boxShadow: '0 8px 40px rgba(0,0,0,0.13)',
+              transformOrigin: 'top',
             }}
           >
-            <div
-              className="flex flex-col"
-              style={{ padding: 'clamp(28px, 5vw, 48px) clamp(24px, 5vw, 80px)' }}
-            >
-              {[...navItems, { name: 'Get In Touch', href: '/contact' }].map((item, i) => {
-                const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+            {(() => {
+              const allItems = [
+                { name: 'Home', href: '/' },
+                { name: 'About', href: '/about' },
+                { name: 'Get in Touch', href: '/contact' },
+              ]
+              const activeIndex = allItems.findIndex(
+                (item) => pathname === item.href || pathname.startsWith(item.href + '/')
+              )
+              const highlightIndex = activeIndex >= 0 ? activeIndex : 0
+              return allItems.map((item, i) => {
+                const isHighlighted = i === highlightIndex
+                const isCta = item.href === '/contact'
                 return (
                   <motion.div
                     key={item.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -12 }}
-                    transition={{ delay: i * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ borderBottom: `1px solid ${colors.mobileDivider}` }}
-                    className="py-5"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0, transition: { delay: i * 0.04, duration: 0.28, ease: [0, 0, 0.6, 1] } }}
+                    style={isCta ? { background: '#ffffff', padding: '12px 16px' } : undefined}
                   >
                     <Link
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      style={{
-                        fontSize: 'clamp(1.5rem, 5vw, 2.25rem)',
+                      style={isCta ? {
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        padding: '14px 20px',
+                        fontSize: '16px',
                         fontWeight: 500,
-                        letterSpacing: '-0.03em',
-                        color: isActive ? '#d9ee72' : colors.mobileLinkColor,
+                        letterSpacing: '-0.01em',
+                        color: '#ffffff',
+                        background: '#0a99ff',
+                        borderRadius: '999px',
+                      } : {
+                        display: 'block',
+                        padding: '20px 28px',
+                        fontSize: '16px',
+                        fontWeight: isHighlighted ? 600 : 400,
+                        letterSpacing: '-0.01em',
+                        color: 'rgba(15,15,25,0.82)',
+                        background: isHighlighted ? '#f0f0f0' : '#ffffff',
+                        borderBottom: '1px solid rgba(0,0,0,0.07)',
                       }}
                     >
                       {item.name}
+                      {isCta && (
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M10.75 10.75V0.75H0.75M10.75 0.75L0.75 10.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
                     </Link>
                   </motion.div>
                 )
-              })}
-            </div>
+              })
+            })()}
           </motion.div>
         )}
       </AnimatePresence>

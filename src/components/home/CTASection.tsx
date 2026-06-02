@@ -7,10 +7,10 @@ import { ArrowUpRight } from 'lucide-react'
 export default function CTASection() {
   return (
     <section
-      className="relative overflow-hidden bg-[#f2efea]"
+      className="relative overflow-hidden bg-black"
       style={{
         padding: 'clamp(80px, 12vw, 160px) clamp(24px, 5vw, 80px)',
-        borderTop: '1px solid rgba(36,31,33,0.08)',
+        borderTop: '1px solid rgba(255,255,255,0.08)',
       }}
     >
       {/* Radial glow */}
@@ -29,7 +29,7 @@ export default function CTASection() {
           viewport={{ once: true, margin: '-60px' }}
         >
           {/* Label */}
-          <p className="section-label" style={{ marginBottom: 'clamp(20px, 2.5vw, 32px)' }}>
+          <p className="section-label" style={{ marginBottom: 'clamp(20px, 2.5vw, 32px)', color: 'rgba(255,255,255,0.4)' }}>
             Let&apos;s work together
           </p>
 
@@ -40,7 +40,7 @@ export default function CTASection() {
               fontWeight: 500,
               letterSpacing: '-0.04em',
               lineHeight: 0.95,
-              color: '#241f21',
+              color: '#ffffff',
               maxWidth: '14ch',
               marginBottom: 'clamp(32px, 4vw, 56px)',
             }}
@@ -53,7 +53,7 @@ export default function CTASection() {
             style={{
               fontSize: 'clamp(14px, 1.2vw, 16px)',
               lineHeight: 1.75,
-              color: 'rgba(36,31,33,0.5)',
+              color: 'rgba(255,255,255,0.5)',
               maxWidth: '48ch',
               marginBottom: 'clamp(36px, 5vw, 64px)',
             }}
@@ -88,13 +88,13 @@ export default function CTASection() {
 
             <Link href="/projects" className="group flex items-center gap-2">
               <span
-                className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
+                className="font-medium transition-colors duration-300 group-hover:text-white"
                 style={{
                   fontSize: '12px',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
-                  color: 'rgba(36,31,33,0.4)',
-                  borderBottom: '1px solid rgba(36,31,33,0.12)',
+                  color: 'rgba(255,255,255,0.4)',
+                  borderBottom: '1px solid rgba(255,255,255,0.15)',
                   paddingBottom: '2px',
                 }}
               >
@@ -102,8 +102,8 @@ export default function CTASection() {
               </span>
               <ArrowUpRight
                 size={13}
-                className="transition-all duration-300 group-hover:text-[#241f21]/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                style={{ color: 'rgba(36,31,33,0.2)' }}
+                className="transition-all duration-300 group-hover:text-white/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                style={{ color: 'rgba(255,255,255,0.2)' }}
               />
             </Link>
           </div>
@@ -119,7 +119,7 @@ export default function CTASection() {
           fontWeight: 300,
           letterSpacing: '-0.06em',
           lineHeight: 0.85,
-          color: 'rgba(36, 31, 33, 0.05)',
+          color: 'rgba(255, 255, 255, 0.05)',
           userSelect: 'none',
           paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
