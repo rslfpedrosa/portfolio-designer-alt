@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useEffect, useLayoutEffect } from 'react'
+import { useRef, useState, useLayoutEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -58,29 +58,17 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
 
   const [textIndex, setTextIndex] = useState(0)
   const textIndexRef = useRef(0)
-  const [isMobile, setIsMobile] = useState(false)
-
-  // ── Mobile detection ─────────────────────────────────────────────────────────
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)')
-    setIsMobile(mq.matches)
-    const handle = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener('change', handle)
-    return () => mq.removeEventListener('change', handle)
-  }, [])
 
   // ── Set initial clip-paths before first paint ────────────────────────────────
   useLayoutEffect(() => {
-    if (isMobile) return
     imageRefs.current.forEach((el, i) => {
       if (!el) return
       gsap.set(el, { clipPath: i === 0 ? 'inset(0% 0 0 0)' : 'inset(100% 0 0 0)' })
     })
-  }, [isMobile])
+  }, [])
 
   // ── GSAP ScrollTrigger ───────────────────────────────────────────────────────
-  useEffect(() => {
-    if (isMobile) return
+  useLayoutEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
@@ -135,89 +123,8 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
     }, section)
 
     return () => ctx.revert()
-  }, [isMobile])
+  }, [])
 
-  // ── Mobile: stacked full-height slides ──────────────────────────────────────
-  if (isMobile) {
-    return (
-      <div>
-        {slides.map((slide, i) => (
-          <div
-            key={slide.id}
-            style={{ position: 'relative', height: '100svh', overflow: 'hidden' }}
-          >
-            <Image
-              src={slide.heroImage}
-              fill
-              alt=""
-              style={{ objectFit: 'cover' }}
-              priority={i === 0}
-              sizes="100vw"
-            />
-            <div style={{ position: 'absolute', inset: 0, background: GRADIENTS[slide.id] }} />
-
-            <div
-              style={{
-                position: 'absolute', inset: 0, zIndex: 10,
-                display: 'flex', flexDirection: 'column',
-                padding: '0 clamp(24px, 5vw, 48px)',
-              }}
-            >
-              {/* Top meta */}
-              <div style={{ paddingTop: 'clamp(80px, 10vw, 120px)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <span style={{
-                    fontSize: 12, fontWeight: 500, letterSpacing: '0.10em',
-                    color: 'rgba(255,255,255,0.38)',
-                  }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 6,
-                    padding: '5px 12px', borderRadius: 999,
-                    background: 'rgba(255,255,255,0.08)',
-                    backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    color: 'rgba(255,255,255,0.72)',
-                    fontSize: 10, fontWeight: 500, letterSpacing: '0.06em',
-                  }}>
-                    <slide.Icon size={10} />
-                    {slide.category}
-                  </span>
-                </div>
-              </div>
-
-              <div style={{ flex: 1 }} />
-
-              {/* Bottom content */}
-              <div style={{ paddingBottom: 'clamp(64px, 9vw, 100px)' }}>
-                <h2 style={{
-                  color: '#ffffff', fontSize: 'clamp(26px, 6vw, 42px)',
-                  fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
-                  maxWidth: '15ch', marginBottom: 'clamp(24px, 3vw, 36px)',
-                }}>
-                  {slide.subtitle}
-                </h2>
-                <Link href={`/projects/${slide.id}`}>
-                  <span style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 10,
-                    background: '#d9ee72', color: '#042d2b',
-                    padding: '11px 20px', borderRadius: 999,
-                    fontSize: 11, fontWeight: 700, letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                  }}>
-                    See Case Study <ArrowUpRight size={12} />
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  // ── Desktop: GSAP-pinned scroll-driven storytelling ──────────────────────────
   return (
     <section
       ref={sectionRef}
@@ -283,11 +190,12 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
             </span>
           </div>
 
-          {/* ── Left column: "Case Study" label — below the line ── */}
+          {/* ── Left column: "Case Study" label — below the line (desktop only) ── */}
           <div style={{
             position: 'absolute',
             left: 'clamp(24px, 5vw, 80px)',
             top: 'calc(50% + 12px)',
+            display: isDesktop ? undefined : 'none',
           }}>
             <p style={{
               fontSize: 11, fontWeight: 500, letterSpacing: '0.13em',
@@ -301,8 +209,8 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
           {/* ── Right column: category tag — above the line ── */}
           <div style={{
             position: 'absolute',
-            left: 'clamp(140px, 18vw, 260px)',
-            bottom: 'calc(50% + 8px)',
+            left: 'clamp(90px, 18vw, 260px)',
+            bottom: 'calc(50% + 18px)',
           }}>
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 7,
@@ -320,12 +228,12 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
           <div style={{
             position: 'absolute',
             top: 'calc(50% + clamp(22px, 3vh, 38px))',
-            left: 'clamp(140px, 18vw, 260px)',
+            left: 'clamp(90px, 18vw, 260px)',
             right: 'clamp(24px, 5vw, 80px)',
           }}>
             <h2 style={{
               color: '#ffffff',
-              fontSize: 'clamp(30px, 3.8vw, 58px)',
+              fontSize: isDesktop ? 'clamp(30px, 3.8vw, 58px)' : 'clamp(28px, 7.5vw, 48px)',
               fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
               maxWidth: '15ch',
               marginBottom: 'clamp(28px, 3vw, 44px)',
