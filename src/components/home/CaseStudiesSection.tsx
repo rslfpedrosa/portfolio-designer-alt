@@ -4,7 +4,7 @@ import { useRef, useState, useLayoutEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowUpRight, Monitor, Globe, Users } from 'lucide-react'
+import { ArrowUpRight, Heart, ShoppingBag, Home } from 'lucide-react'
 import { projectsData } from '@/data/projects'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -14,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger)
 // ── Slide configuration ──────────────────────────────────────────────────────
 const SLIDE_IDS = [3, 1, 2]
 type LucideIcon = React.ComponentType<{ size?: number }>
-const ICONS: Record<number, LucideIcon> = { 1: Globe, 2: Users, 3: Monitor }
+const ICONS: Record<number, LucideIcon> = { 1: ShoppingBag, 2: Home, 3: Heart }
 const slides = SLIDE_IDS.map(id => ({ ...projectsData[id], Icon: ICONS[id] }))
 const TOTAL = slides.length
 
@@ -209,7 +209,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
           {/* ── Right column: category tag — above the line ── */}
           <div style={{
             position: 'absolute',
-            left: 'clamp(90px, 18vw, 260px)',
+            left: isDesktop ? 'clamp(90px, 28vw, 380px)' : 'clamp(60px, 18vw, 380px)',
             bottom: 'calc(50% + 18px)',
           }}>
             <span style={{
@@ -217,9 +217,9 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
               padding: '6px 16px', borderRadius: 999,
               background: TAG_COLORS[slide.id],
               color: '#ffffff',
-              fontSize: 11, fontWeight: 600, letterSpacing: '0.07em',
+              fontSize: 13, fontWeight: 600, letterSpacing: '0.07em',
             }}>
-              <slide.Icon size={11} />
+              <slide.Icon size={13} />
               {slide.category}
             </span>
           </div>
@@ -228,14 +228,14 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
           <div style={{
             position: 'absolute',
             top: 'calc(50% + clamp(22px, 3vh, 38px))',
-            left: 'clamp(90px, 18vw, 260px)',
+            left: isDesktop ? 'clamp(90px, 28vw, 380px)' : 'clamp(60px, 18vw, 380px)',
             right: 'clamp(24px, 5vw, 80px)',
           }}>
             <h2 style={{
               color: '#ffffff',
               fontSize: isDesktop ? 'clamp(30px, 3.8vw, 58px)' : 'clamp(28px, 7.5vw, 48px)',
               fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
-              maxWidth: '15ch',
+              maxWidth: '22ch',
               marginBottom: 'clamp(28px, 3vw, 44px)',
             }}>
               {slide.subtitle}
@@ -261,7 +261,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
         aria-hidden
         style={{
           position: 'absolute', zIndex: 40, pointerEvents: 'none',
-          left: 'clamp(24px, 5vw, 80px)', right: 'clamp(24px, 5vw, 80px)',
+          left: 0, right: 0,
           top: '50%', transform: 'translateY(-50%)',
           height: 1,
           background: 'rgba(255,255,255,0.10)',
