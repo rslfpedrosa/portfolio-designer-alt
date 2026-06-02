@@ -96,7 +96,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
           imageRefs.current[1],
           { clipPath: 'inset(100% 0 0 0)' },
           { clipPath: 'inset(0% 0 0 0)', ease: 'none', duration: 1 },
-          1 // ← absolute position in the timeline (after 1 unit of dwell)
+          0 // ← starts immediately, no initial dwell
         )
       }
 
@@ -105,31 +105,27 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
           imageRefs.current[2],
           { clipPath: 'inset(100% 0 0 0)' },
           { clipPath: 'inset(0% 0 0 0)', ease: 'none', duration: 1 },
-          2 // ← starts after slide 1 finishes
+          1 // ← starts after slide 1 finishes
         )
       }
 
       ScrollTrigger.create({
         trigger: section,
         start: 'top top',
-        end: `+=${TOTAL * 280}vh`,
+        end: `+=${(TOTAL - 1) * 1000}vh`,
         pin: true,
         scrub: 3,
         animation: tl,
         onUpdate(self) {
-          // self.progress: 0→1 maps to t: 0→3 in the timeline
+          // self.progress: 0→1 maps to t: 0→2 in the timeline
           //
           // Text swap at the midpoint of each image transition:
-          //   Transition 1 midpoint: t=1.5 → progress = 1.5/3 = 0.5
-          //   Transition 2 midpoint: t=2.5 → progress = 2.5/3 ≈ 0.833
-          //
-          // The image starts revealing first; only at the halfway point does
-          // the narrative cut over — so the reader sees the new image growing
-          // upward while the old text still anchors their attention.
+          //   Transition 1 midpoint: t=0.5 → progress = 0.5/2 = 0.25
+          //   Transition 2 midpoint: t=1.5 → progress = 1.5/2 = 0.75
           const p = self.progress
           let next = 0
-          if (p >= 0.5) next = 1
-          if (p >= 5 / 6) next = 2
+          if (p >= 0.25) next = 1
+          if (p >= 0.75) next = 2
           if (next !== textIndexRef.current) {
             textIndexRef.current = next
             setTextIndex(next)
