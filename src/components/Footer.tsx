@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Linkedin, Mail, Dribbble, ArrowUpRight } from 'lucide-react'
 
@@ -13,8 +14,8 @@ const Footer = () => {
 
   const navLinks = [
     { name: 'Work', href: '/projects' },
+    { name: 'Sandbox', href: '/lab' },
     { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
   ]
 
   return (
@@ -29,25 +30,15 @@ const Footer = () => {
       >
         {/* Brand */}
         <div className="flex flex-col gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div style={{ width: 11, height: 11, backgroundColor: '#d9ee72', borderRadius: 2, flexShrink: 0 }} />
-            <span
-              className="font-medium text-white"
-              style={{ fontSize: '13px', letterSpacing: '-0.01em' }}
-            >
-              Rita Pedrosa
-            </span>
+          <Link href="/" className="flex items-center group">
+            <Image
+              src="/Me/logo-white.svg"
+              alt="Rita Pedrosa"
+              width={100}
+              height={32}
+              style={{ height: '32px', width: 'auto' }}
+            />
           </Link>
-          <p
-            style={{
-              fontSize: '12px',
-              lineHeight: 1.6,
-              color: 'rgba(255,255,255,0.25)',
-              maxWidth: '28ch',
-            }}
-          >
-            Product Designer crafting meaningful digital experiences.
-          </p>
         </div>
 
         {/* Nav */}
@@ -65,7 +56,7 @@ const Footer = () => {
         </nav>
 
         {/* Social */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {socialLinks.map(social => {
             const Icon = social.icon
             return (
@@ -76,13 +67,22 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.25 }}
-                className="transition-colors duration-300"
-                style={{ color: 'rgba(255,255,255,0.25)' }}
                 aria-label={social.name}
-                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.8)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.25)')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  color: '#ffffff',
+                  transition: 'border-color 0.25s ease',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,1)')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)')}
               >
-                <Icon size={16} strokeWidth={1.5} />
+                <Icon size={15} strokeWidth={1.5} />
               </motion.a>
             )
           })}

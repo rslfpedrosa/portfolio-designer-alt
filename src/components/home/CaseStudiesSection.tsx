@@ -35,11 +35,11 @@ const GRADIENTS: Record<number, string> = {
   ].join(', '),
 }
 
-// ── Per-project tag colors — vivid pull from each gradient base ───────────────
-const TAG_COLORS: Record<number, string> = {
-  3: '#3D55D8', // Onyx — bright indigo blue
-  1: '#C85518', // Bocca — burnt orange
-  2: '#8B28C2', // Cortado — violet purple
+// ── Per-project tag glass tints — rgba pulled from each gradient base ────────
+const TAG_GLASS: Record<number, { bg: string; border: string }> = {
+  3: { bg: 'rgba(61, 85, 216, 0.28)',  border: 'rgba(100, 130, 255, 0.35)' }, // Onyx — indigo blue
+  1: { bg: 'rgba(200, 85, 24, 0.28)',  border: 'rgba(240, 120, 60, 0.35)' },  // Bocca — burnt orange
+  2: { bg: 'rgba(139, 40, 194, 0.28)', border: 'rgba(185, 90, 240, 0.35)' },  // Cortado — violet purple
 }
 
 // ── Text animation variants ───────────────────────────────────────────────────
@@ -302,7 +302,10 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 7,
                     padding: '6px 16px', borderRadius: 999,
-                    background: TAG_COLORS[slide.id],
+                    background: TAG_GLASS[slide.id].bg,
+                    border: `1px solid ${TAG_GLASS[slide.id].border}`,
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
                     color: '#ffffff',
                     fontSize: 13, fontWeight: 600, letterSpacing: '0.07em',
                   }}

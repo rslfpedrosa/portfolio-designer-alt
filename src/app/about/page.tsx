@@ -601,7 +601,7 @@ const AboutPage = () => {
                 </div>
 
                 {/* Right: Single section with internal dividers */}
-                <div className="relative flex flex-col justify-center p-8 lg:px-10 lg:pb-10 lg:pt-20">
+                <div className="relative flex flex-col justify-center p-8 lg:px-12 lg:pb-10 lg:pt-20">
 
                 {/* Group 1: Name + subtitle */}
                 <div className="pb-2">

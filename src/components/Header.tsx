@@ -13,7 +13,7 @@ const Header = () => {
   const pathname = usePathname()
 
   const isCaseStudy = /^\/projects\/\d+/.test(pathname)
-  const isLightPage = isCaseStudy || pathname === '/' || pathname === '/contact' || pathname === '/about'
+  const isLightPage = isCaseStudy || pathname === '/' || pathname === '/contact' || pathname === '/about' || pathname === '/lab'
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
@@ -30,6 +30,7 @@ const Header = () => {
 
   const navItems = [
     { name: 'Work', href: '/projects' },
+    { name: 'Sandbox', href: '/lab' },
     { name: 'About', href: '/about' },
   ]
 
@@ -248,6 +249,8 @@ const Header = () => {
             {(() => {
               const allItems = [
                 { name: 'Home', href: '/' },
+                { name: 'Work', href: '/projects' },
+                { name: 'Sandbox', href: '/lab' },
                 { name: 'About', href: '/about' },
                 { name: 'Get in Touch', href: '/contact' },
               ]

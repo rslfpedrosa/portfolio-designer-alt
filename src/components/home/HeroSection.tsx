@@ -3,7 +3,6 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
 
 const CYCLING_PHRASES = ["Hi, I'm Rita.", 'I Design.', 'I Simplify.', 'I Explore.', 'I Create.', 'I Prototype.', 'I Question.', 'I Iterate.']
 
@@ -251,54 +250,60 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           </motion.p>
         </div>
 
-        {/* CTAs — editorial text links */}
+        {/* CTAs */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          className="flex items-center gap-4 justify-center"
           initial={{ opacity: 0, y: 30 }}
           animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 1.1 }}
         >
-          <Link href="/projects" className="group flex items-center gap-2">
-            <span
-              className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
+          <Link href="/projects">
+            <div
               style={{
-                fontSize: '12px',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '17px',
+                fontWeight: 500,
                 color: '#241f21',
-                borderBottom: '1px solid rgba(36,31,33,0.3)',
-                paddingBottom: '2px',
+                background: 'transparent',
+                border: '1px solid rgba(36,31,33,0.35)',
+                borderRadius: '999px',
+                padding: '12px 28px',
+                transition: 'border-color 0.18s ease',
+                whiteSpace: 'nowrap',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#241f21')}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(36,31,33,0.35)')}
             >
               View My Work
-            </span>
-            <ArrowUpRight
-              size={13}
-              className="transition-all duration-300 group-hover:text-[#241f21] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              style={{ color: 'rgba(36,31,33,0.5)' }}
-              aria-hidden="true"
-            />
+            </div>
           </Link>
 
-          <Link href="/contact" className="group flex items-center gap-2">
-            <span
-              className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
+          <Link href="/contact">
+            <div
               style={{
-                fontSize: '12px',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: 'rgba(36,31,33,0.45)',
-                borderBottom: '1px solid rgba(36,31,33,0.15)',
-                paddingBottom: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '17px',
+                fontWeight: 500,
+                color: '#ffffff',
+                background: '#0a99ff',
+                border: '1px solid #0a99ff',
+                borderRadius: '999px',
+                padding: '12px 28px',
+                transition: 'opacity 0.18s ease',
+                whiteSpace: 'nowrap',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
-              Let&apos;s Connect
-            </span>
-            <ArrowUpRight
-              size={13}
-              className="transition-all duration-300 group-hover:text-[#241f21]/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              style={{ color: 'rgba(36,31,33,0.2)' }}
-            />
+              Get In Touch
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.75 10.75V0.75H0.75M10.75 0.75L0.75 10.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </Link>
         </motion.div>
       </div>
