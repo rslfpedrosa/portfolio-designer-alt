@@ -43,16 +43,47 @@ const cornerStyle = (corner: typeof CORNERS[number]) => ({
   right: corner.endsWith('right') ? '-6px' : undefined,
 })
 
-function ModalCard({ expandedTestimonial, slideDirection }: {
+function ModalCard({ expandedTestimonial, slideDirection, onPrev, onNext, onGoTo, onClose }: {
   expandedTestimonial: number
   slideDirection: 'left' | 'right'
+  onPrev: () => void
+  onNext: () => void
+  onGoTo: (id: number) => void
+  onClose: () => void
 }) {
   const t = testimonials.find(t => t.id === expandedTestimonial)
   return (
-    <div className="bg-[#042d2b] p-8 md:p-12 relative overflow-visible" style={{ outline: '2px solid #d9ee72', boxShadow: '0 0 70px 0 rgba(217,238,114,0.18)' }}>
+    <div className="bg-white p-8 md:p-12 relative overflow-hidden md:h-[600px]" style={{ boxShadow: '0 0 0 1px rgba(36,31,33,0.13)', display: 'flex', flexDirection: 'column' }}>
+      <div className="flex items-center justify-between flex-shrink-0" style={{ marginBottom: '24px' }}>
+        <img src="/icons/aspas.svg" alt="" width={48} height={46} />
+        <button onClick={onClose} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Close">
+          <X size={16} />
+        </button>
+      </div>
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        <AnimatePresence mode="wait" initial={false} custom={slideDirection}>
+          <motion.div
+            key={expandedTestimonial}
+            custom={slideDirection}
+            variants={{
+              enter: (d: string) => ({ x: d === 'right' ? 100 : -100, opacity: 0 }),
+              center: { x: 0, opacity: 1 },
+              exit: (d: string) => ({ x: d === 'right' ? -100 : 100, opacity: 0 }),
+            }}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+          >
+            <p className="leading-relaxed text-xl md:text-3xl font-medium" style={{ color: '#241f21' }}>
+              {t?.fullContent}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
       <AnimatePresence mode="wait" initial={false} custom={slideDirection}>
         <motion.div
-          key={expandedTestimonial}
+          key={`attr-${expandedTestimonial}`}
           custom={slideDirection}
           variants={{
             enter: (d: string) => ({ x: d === 'right' ? 100 : -100, opacity: 0 }),
@@ -63,19 +94,32 @@ function ModalCard({ expandedTestimonial, slideDirection }: {
           animate="center"
           exit="exit"
           transition={{ duration: 0.4, ease: 'easeInOut' }}
+          className="pt-4 md:pt-2 pb-4"
+          style={{ flexShrink: 0 }}
         >
-          <div className="mb-6">
-            <img src="/icons/aspas.svg" alt="" width={48} height={46} style={{ opacity: 0.7 }} />
-          </div>
-          <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl font-medium">
-            "{t?.fullContent}"
-          </p>
-          <div className="pt-6 border-t border-[#22372e]">
-            <h4 className="font-semibold text-white text-lg">{t?.name}</h4>
-            <p className="text-base text-gray-400">{t?.role}</p>
-          </div>
+          <h4 style={{ fontSize: '18px', fontWeight: 600, color: '#241f21', marginBottom: '1px' }}>{t?.name}</h4>
+          <p style={{ fontSize: '15px', color: 'rgba(36,31,33,0.45)', letterSpacing: '0.02em' }}>{t?.role}</p>
         </motion.div>
       </AnimatePresence>
+      <div className="flex items-center gap-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(36,31,33,0.08)', paddingTop: '20px' }}>
+        <button onClick={onPrev} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Previous">
+          <ChevronLeft size={16} />
+        </button>
+        <div className="flex items-center gap-1.5">
+          {testimonials.map(dot => (
+            <button
+              key={dot.id}
+              onClick={() => onGoTo(dot.id)}
+              className="rounded-full transition-all duration-300"
+              style={{ height: '6px', width: dot.id === expandedTestimonial ? '24px' : '6px', backgroundColor: dot.id === expandedTestimonial ? '#241f21' : 'rgba(36,31,33,0.2)' }}
+              aria-label={`Go to testimonial ${dot.id}`}
+            />
+          ))}
+        </div>
+        <button onClick={onNext} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Next">
+          <ChevronRight size={16} />
+        </button>
+      </div>
     </div>
   )
 }
@@ -155,9 +199,8 @@ export default function TestimonialsSection() {
     <>
       <section
         id="testimonials-section"
-        className="relative bg-[#f2efea]"
+        className="relative bg-[#f2efea] pt-[80px] md:pt-[clamp(80px,10vw,140px)]"
         style={{
-          paddingTop: 'clamp(140px, 16vw, 220px)',
           paddingBottom: 'clamp(64px, 8vw, 120px)',
         }}
       >
@@ -240,39 +283,71 @@ export default function TestimonialsSection() {
                   padding: 'clamp(28px, 4vw, 56px)',
                   cursor: 'pointer',
                   transition: 'box-shadow 0.15s',
+                  minHeight: 'clamp(320px, 40vw, 540px)',
+                  height: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
                 }}
               >
                 {/* Quote icon */}
-                <img src="/icons/aspas.svg" alt="" width={60} height={57} style={{ marginBottom: 'clamp(24px, 3vw, 40px)' }} />
+                <img src="/icons/aspas.svg" alt="" width={60} height={57} style={{ marginBottom: 'clamp(24px, 3vw, 40px)', flexShrink: 0 }} />
 
-                <AnimatePresence mode="popLayout" initial={false} custom={mobileDirection}>
-                  <motion.div
-                    key={currentIndex}
-                    custom={mobileDirection}
-                    variants={{
-                      enter: (d: string) => ({ x: d === 'right' ? 60 : -60, opacity: 0 }),
-                      center: { x: 0, opacity: 1 },
-                      exit: (d: string) => ({ x: d === 'right' ? -60 : 60, opacity: 0 }),
-                    }}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.8 }}
-                  >
-                    <div className="flex flex-col md:flex-row md:items-end" style={{ gap: 'clamp(24px, 4vw, 64px)', marginBottom: '32px' }}>
-                      <p style={{ flex: 1, fontSize: 'clamp(1.6rem, 3vw, 3rem)', lineHeight: 1.2, color: '#241f21', fontWeight: 500 }}>
-                        {testimonials[currentIndex].content}
-                      </p>
-                      <div style={{ flexShrink: 0, minWidth: '160px' }}>
-                        <p style={{ fontSize: '15px', fontWeight: 600, color: '#241f21', marginBottom: '4px' }}>{testimonials[currentIndex].name}</p>
-                        <p style={{ fontSize: '13px', color: 'rgba(36,31,33,0.45)', letterSpacing: '0.02em' }}>{testimonials[currentIndex].role}</p>
-                      </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  {/* Quote area — height locked by the longest quote rendered as invisible ghost */}
+                  <div style={{ position: 'relative', flex: 1 }}>
+                    <p
+                      aria-hidden="true"
+                      style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)', lineHeight: 1.2, fontWeight: 500, visibility: 'hidden', pointerEvents: 'none', userSelect: 'none' }}
+                    >
+                      {testimonials.reduce((a, b) => a.content.length >= b.content.length ? a : b).content}
+                    </p>
+                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                      <AnimatePresence mode="popLayout" initial={false} custom={mobileDirection}>
+                        <motion.p
+                          key={currentIndex}
+                          custom={mobileDirection}
+                          variants={{
+                            enter: (d: string) => ({ x: d === 'right' ? 60 : -60, opacity: 0 }),
+                            center: { x: 0, opacity: 1 },
+                            exit: (d: string) => ({ x: d === 'right' ? -60 : 60, opacity: 0 }),
+                          }}
+                          initial="enter"
+                          animate="center"
+                          exit="exit"
+                          transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.8 }}
+                          style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)', lineHeight: 1.2, color: '#241f21', fontWeight: 500 }}
+                        >
+                          {testimonials[currentIndex].content}
+                        </motion.p>
+                      </AnimatePresence>
                     </div>
-                  </motion.div>
-                </AnimatePresence>
+                  </div>
+                  {/* Name/role — outside quote animation so it stays at fixed position */}
+                  <div style={{ flexShrink: 0, paddingTop: '12px', marginBottom: '20px', overflow: 'hidden' }}>
+                    <AnimatePresence mode="popLayout" initial={false} custom={mobileDirection}>
+                      <motion.div
+                        key={`attr-${currentIndex}`}
+                        custom={mobileDirection}
+                        variants={{
+                          enter: (d: string) => ({ x: d === 'right' ? 60 : -60, opacity: 0 }),
+                          center: { x: 0, opacity: 1 },
+                          exit: (d: string) => ({ x: d === 'right' ? -60 : 60, opacity: 0 }),
+                        }}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.8 }}
+                      >
+                        <p style={{ fontSize: '18px', fontWeight: 600, color: '#241f21', marginBottom: '2px' }}>{testimonials[currentIndex].name}</p>
+                        <p style={{ fontSize: '15px', color: 'rgba(36,31,33,0.45)', letterSpacing: '0.02em' }}>{testimonials[currentIndex].role}</p>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </div>
 
                 {/* Navigation */}
-                <div className="flex items-center gap-3" style={{ borderTop: '1px solid rgba(36,31,33,0.08)', paddingTop: '20px' }} onClick={e => e.stopPropagation()}>
+                <div className="flex items-center gap-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(36,31,33,0.08)', paddingTop: '20px' }} onClick={e => e.stopPropagation()}>
                   <button onClick={e => { e.stopPropagation(); prevMobile() }} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Previous">
                     <ChevronLeft size={16} />
                   </button>
@@ -306,7 +381,7 @@ export default function TestimonialsSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 lg:p-8"
+              className="fixed inset-0 z-[99999] bg-black/50 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-8"
               onClick={() => setExpandedTestimonial(null)}
             >
               <motion.div
@@ -317,47 +392,21 @@ export default function TestimonialsSection() {
                 className="w-full max-w-4xl max-h-[90vh] flex flex-col"
                 onClick={e => e.stopPropagation()}
               >
-                <div className="flex justify-end pb-3 flex-shrink-0">
-                  <button onClick={() => setExpandedTestimonial(null)} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors" aria-label="Close">
-                    <X size={24} />
-                  </button>
+                <div className="flex-1 overflow-y-auto min-h-0">
+                  <ModalCard
+                    expandedTestimonial={expandedTestimonial}
+                    slideDirection={slideDirection}
+                    onPrev={prevModal}
+                    onNext={nextModal}
+                    onClose={() => setExpandedTestimonial(null)}
+                    onGoTo={(id) => {
+                      const ci = testimonials.findIndex(x => x.id === expandedTestimonial)
+                      const ti = testimonials.findIndex(x => x.id === id)
+                      setSlideDirection(ti > ci ? 'right' : 'left')
+                      setExpandedTestimonial(id)
+                    }}
+                  />
                 </div>
-
-                {isPortrait ? (
-                  <>
-                    <div className="flex-1 overflow-y-auto min-h-0">
-                      <ModalCard expandedTestimonial={expandedTestimonial} slideDirection={slideDirection} />
-                    </div>
-                    <div className="flex items-center gap-2 pt-3 flex-shrink-0">
-                      <button onClick={prevModal} className="flex-shrink-0 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"><ChevronLeft size={22} /></button>
-                      <div className="flex flex-1 items-center justify-center gap-2">
-                        {testimonials.map(t => (
-                          <button key={t.id} onClick={() => { const ci = testimonials.findIndex(x => x.id === expandedTestimonial); const ti = testimonials.findIndex(x => x.id === t.id); setSlideDirection(ti > ci ? 'right' : 'left'); setExpandedTestimonial(t.id) }} className={`h-2 rounded-full transition-all duration-300 ${t.id === expandedTestimonial ? 'w-8 bg-white' : 'w-2 bg-gray-600 hover:bg-gray-400'}`} aria-label={`Go to testimonial ${t.id}`} />
-                        ))}
-                      </div>
-                      <button onClick={nextModal} className="flex-shrink-0 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"><ChevronRight size={22} /></button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-3 flex-1 min-h-0">
-                      <div className="flex-shrink-0 w-12 flex justify-center">
-                        <button onClick={prevModal} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"><ChevronLeft size={22} /></button>
-                      </div>
-                      <div className="flex-1 min-w-0 overflow-y-auto">
-                        <ModalCard expandedTestimonial={expandedTestimonial} slideDirection={slideDirection} />
-                      </div>
-                      <div className="flex-shrink-0 w-12 flex justify-center">
-                        <button onClick={nextModal} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"><ChevronRight size={22} /></button>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center gap-2 pt-3 flex-shrink-0">
-                      {testimonials.map(t => (
-                        <button key={t.id} onClick={() => { const ci = testimonials.findIndex(x => x.id === expandedTestimonial); const ti = testimonials.findIndex(x => x.id === t.id); setSlideDirection(ti > ci ? 'right' : 'left'); setExpandedTestimonial(t.id) }} className={`h-2 rounded-full transition-all duration-300 ${t.id === expandedTestimonial ? 'w-8 bg-white' : 'w-2 bg-gray-600 hover:bg-gray-400'}`} aria-label={`Go to testimonial ${t.id}`} />
-                      ))}
-                    </div>
-                  </>
-                )}
               </motion.div>
             </motion.div>
           )}

@@ -242,7 +242,7 @@ export default function DesignShowcase() {
               letterSpacing: '-0.04em',
               color: '#241f21',
               lineHeight: 1,
-              marginBottom: '0.35em',
+              marginBottom: '0.1em',
             }}
           >
             Sandbox

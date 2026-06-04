@@ -168,6 +168,7 @@ const ConferenceCard = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
@@ -176,8 +177,24 @@ const ConferenceCard = ({
     return () => window.removeEventListener('resize', check)
   }, [])
 
+  useEffect(() => {
+    if (!isMobile || !isHovered) return
+    const handleOutsideTap = (e: TouchEvent | MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(e.target as Node)) {
+        setIsHovered(false)
+      }
+    }
+    document.addEventListener('touchstart', handleOutsideTap)
+    document.addEventListener('mousedown', handleOutsideTap)
+    return () => {
+      document.removeEventListener('touchstart', handleOutsideTap)
+      document.removeEventListener('mousedown', handleOutsideTap)
+    }
+  }, [isMobile, isHovered])
+
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}

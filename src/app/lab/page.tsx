@@ -103,16 +103,11 @@ const LabPage = () => {
       <section className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col gap-8 sm:gap-12">
           {labItems.map((item, index) => (
-            <div key={item.id}>
-              <div className="relative h-px pointer-events-none">
-                <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={dashedLine} />
-              </div>
-              <ShowcaseCard
-                item={item}
-                index={index}
-              />
-              <div className="relative h-px pointer-events-none">
-                <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={dashedLine} />
+            <div key={item.id} className="relative">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={dashedLine} />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={dashedLine} />
+              <div className="relative z-10">
+                <ShowcaseCard item={item} index={index} />
               </div>
             </div>
           ))}

@@ -40,10 +40,10 @@ const Header = () => {
         pillBorder: 'rgba(36,31,33,0.1)',
         separator: 'rgba(36,31,33,0.15)',
         logoText: '#241f21',
-        navMuted: 'rgba(36,31,33,0.5)',
-        navHoverBg: 'rgba(36,31,33,0.06)',
-        activePill: '#241f21',
-        activePillText: '#ffffff',
+        navMuted: '#241f21',
+        navHoverBg: '#f6f6f6',
+        activePill: '#f0f0f0',
+        activePillText: '#241f21',
         ctaBg: '#241f21',
         ctaText: '#ffffff',
         mobileBg: 'rgba(250,248,244,0.97)',
@@ -139,7 +139,7 @@ const Header = () => {
                 onMouseEnter={() => setHoveredNav(item.name)}
                 onMouseLeave={() => setHoveredNav(null)}
                 style={{
-                  fontSize: '13.5px',
+                  fontSize: '15px',
                   fontWeight: isActive ? 500 : 400,
                   color: isActive ? colors.activePillText : (isHovered ? colors.logoText : colors.navMuted),
                   background: isActive ? colors.activePill : (isHovered ? colors.navHoverBg : 'transparent'),
