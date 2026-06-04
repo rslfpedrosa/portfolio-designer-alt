@@ -441,7 +441,9 @@ const PolaroidCard = ({
   )
 }
 
-const MobilePolaroidCard = ({ joy }: { joy: typeof JOYS[0] }) => {
+const MOBILE_ROTATIONS = [-6, 5, -4, 7, -3]
+
+const MobilePolaroidCard = ({ joy, rotation }: { joy: typeof JOYS[0]; rotation: number }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -461,9 +463,14 @@ const MobilePolaroidCard = ({ joy }: { joy: typeof JOYS[0] }) => {
   return (
     <div
       style={{
+        flexShrink: 0,
+        width: '72vw',
+        maxWidth: '300px',
+        scrollSnapAlign: 'center',
+        transform: `rotate(${rotation}deg)`,
         backgroundColor: '#ffffff',
-        padding: '8px 8px 0 8px',
-        boxShadow: '0 4px 16px rgba(36,31,33,0.12)',
+        padding: '10px 10px 0 10px',
+        boxShadow: '0 8px 32px rgba(36,31,33,0.16)',
       }}
     >
       <div style={{ aspectRatio: '1/1', overflow: 'hidden' }}>
@@ -477,11 +484,11 @@ const MobilePolaroidCard = ({ joy }: { joy: typeof JOYS[0] }) => {
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
       </div>
-      <div style={{ padding: '8px 4px 16px 4px' }}>
-        <p style={{ fontSize: '12px', fontWeight: 600, color: textDark, lineHeight: 1.3, marginBottom: '2px' }}>
+      <div style={{ padding: '10px 4px 20px 4px' }}>
+        <p style={{ fontSize: '13px', fontWeight: 600, color: textDark, lineHeight: 1.3, marginBottom: '2px' }}>
           {joy.title}
         </p>
-        <p style={{ fontSize: '11px', color: textMuted, lineHeight: 1.4 }}>
+        <p style={{ fontSize: '12px', color: textMuted, lineHeight: 1.4 }}>
           {joy.description}
         </p>
       </div>
@@ -1038,7 +1045,7 @@ const AboutPage = () => {
                         alt=""
                         style={{
                           position: 'absolute',
-                          top: 0,
+                          bottom: 0,
                           width: 90,
                           height: 56,
                           left: 'calc(50% - 45px)',
@@ -1098,7 +1105,7 @@ const AboutPage = () => {
               letterSpacing: '-0.04em',
               color: '#241f21',
               lineHeight: 1,
-              marginBottom: '0.55em',
+              marginBottom: '0.2em',
             }}
           >
             Big Inspiration
@@ -1132,7 +1139,7 @@ const AboutPage = () => {
           paddingTop: 'clamp(80px, 16vw, 120px)',
         }}
       >
-        <div style={{ textAlign: 'center', marginBottom: 'clamp(28px, 7vw, 48px)', position: 'relative', zIndex: 1 }}>
+        <div style={{ textAlign: 'center', marginBottom: 'clamp(8px, 2vw, 16px)', position: 'relative', zIndex: 1 }}>
           <h2
             style={{
               fontSize: 'clamp(1.5rem, 8vw, 3rem)',
@@ -1160,21 +1167,29 @@ const AboutPage = () => {
             Big Inspiration
           </p>
           <p style={{ fontSize: '16px', color: 'rgba(36,31,33,0.5)', lineHeight: 1.55 }}>
-            These are the little things that refill my creative energy.
+            These are the little things<br />that refill my creative energy.
           </p>
         </div>
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '16px',
+            display: 'flex',
+            overflowX: 'scroll',
+            scrollSnapType: 'x mandatory',
+            gap: '28px',
+            marginLeft: 'calc(-1 * clamp(20px, 5vw, 32px))',
+            marginRight: 'calc(-1 * clamp(20px, 5vw, 32px))',
+            paddingLeft: '14vw',
+            paddingRight: '14vw',
+            paddingTop: '32px',
+            paddingBottom: '40px',
             position: 'relative',
             zIndex: 1,
           }}
+          className="scrollbar-hide"
         >
-          {JOYS.map((joy) => (
-            <MobilePolaroidCard key={joy.title} joy={joy} />
+          {JOYS.map((joy, index) => (
+            <MobilePolaroidCard key={joy.title} joy={joy} rotation={MOBILE_ROTATIONS[index]} />
           ))}
         </div>
       </section>

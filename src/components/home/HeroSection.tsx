@@ -109,6 +109,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
 
   return (
     <section
+      data-cursor="hi-there"
       className="relative z-20 flex items-center justify-center"
       style={{
         minHeight: '100svh',

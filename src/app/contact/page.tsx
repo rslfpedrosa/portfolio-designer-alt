@@ -179,7 +179,7 @@ const ContactPage = () => {
             transition={{ duration: 0.6 }}
             className="space-y-6 sm:pl-8 lg:pl-16"
           >
-            <h1 className="text-3xl sm:text-6xl lg:text-8xl font-medium text-[#241f21] flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-medium text-[#241f21] flex flex-wrap items-baseline gap-x-4 gap-y-2">
               <span className="relative inline-block">
                 {/* Invisible spacer: keeps container at widest-phrase width */}
                 <span className="invisible text-gradient whitespace-nowrap" aria-hidden>Let&apos;s Collaborate.</span>
@@ -260,7 +260,7 @@ const ContactPage = () => {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: '#f2efea',
+                    backgroundColor: '#ffffff',
                     border: `1px solid ${borderColor}`,
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
@@ -271,7 +271,7 @@ const ContactPage = () => {
               ))}
               <div
                 className="relative px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
-                style={{ backgroundColor: '#f2efea', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
+                style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
               >
               <div>
                 <h2 className="text-3xl font-medium text-[#241f21] mb-4">
@@ -369,7 +369,7 @@ const ContactPage = () => {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: '#f2efea',
+                    backgroundColor: '#ffffff',
                     border: `1px solid ${borderColor}`,
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
@@ -380,7 +380,7 @@ const ContactPage = () => {
               ))}
               <div
                 className="relative px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
-                style={{ backgroundColor: '#f2efea', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
+                style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
               >
               <div className="-mb-4">
                 <h2 className="text-3xl font-medium text-[#241f21] mb-4">

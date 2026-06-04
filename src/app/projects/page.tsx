@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -69,6 +69,14 @@ const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as cons
 
 const ProjectsPage = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null)
+  const [isDesktop, setIsDesktop] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   return (
     <div className="min-h-screen pt-16 relative overflow-x-hidden" style={{ backgroundColor: '#f2efea' }}>
@@ -147,7 +155,7 @@ const ProjectsPage = () => {
                   transition: 'box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
                 }}
               >
-                {/* Corner squares — always visible, fill purple on hover */}
+                {/* Corner squares — hidden by default, white on hover */}
                 {CORNERS.map(corner => (
                   <div
                     key={corner}
@@ -157,9 +165,10 @@ const ProjectsPage = () => {
                       borderRadius: 2,
                       zIndex: 20,
                       pointerEvents: 'none',
-                      backgroundColor: hoveredId === slide.id ? '#9747FF' : '#ffffff',
-                      border: `1px solid ${hoveredId === slide.id ? '#9747FF' : '#b95af0'}`,
-                      transition: 'background-color 0.3s ease, border-color 0.3s ease',
+                      backgroundColor: '#ffffff',
+                      border: '1px solid #9747FF',
+                      opacity: hoveredId === slide.id ? 1 : 0,
+                      transition: 'opacity 0.3s ease',
                       top: corner.startsWith('top') ? -6 : undefined,
                       bottom: corner.startsWith('bottom') ? -6 : undefined,
                       left: corner.endsWith('left') ? -6 : undefined,
@@ -242,11 +251,13 @@ const ProjectsPage = () => {
                           color: '#ffffff',
                           fontSize: 'clamp(30px, 3vw, 46px)',
                           fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
-                          maxWidth: '22ch',
+                          maxWidth: i === 0 && isDesktop ? 'none' : '22ch',
                           margin: 0,
                         }}
                       >
-                        {slide.subtitle}
+                        {i === 0 && isDesktop
+                          ? <>Rethinking Care Management<br />for CPPS Treatment</>
+                          : slide.subtitle}
                       </motion.h2>
                     </div>
 
@@ -256,11 +267,13 @@ const ProjectsPage = () => {
                       style={{
                         color: 'rgba(255,255,255,0.5)',
                         fontSize: '18px',
-                        fontWeight: 400, lineHeight: 1.7, maxWidth: '44ch',
+                        fontWeight: 400, lineHeight: 1.7, maxWidth: i === 0 && isDesktop ? 'none' : '44ch',
                         margin: 0,
                       }}
                     >
-                      {slide.tagline ?? slide.description}
+                      {i === 0 && isDesktop
+                        ? <>Making it easier for physical therapists to track progress,<br />make decisions, and adapt care with confidence.</>
+                        : slide.tagline ?? slide.description}
                     </motion.p>
                   </motion.div>
                 </div>

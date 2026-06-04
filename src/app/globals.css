@@ -56,7 +56,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 html, body {
-  cursor: auto;
+  cursor: none;
+}
+
+/* Restore cursor on touch/mobile where custom cursor is hidden */
+@media (hover: none), (pointer: coarse) {
+  html, body {
+    cursor: auto;
+  }
+}
+
+/* Hide system cursor on all elements on desktop — prevents grab/pointer overrides */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
 }
 
 /* Content Protection */
@@ -683,20 +697,6 @@ button, a, input, textarea, select {
   .scroll-bob { animation: none !important; }
 }
 
-/* Cursor blob */
-@keyframes blob-morph {
-  0%   { border-radius: 60% 40% 55% 45% / 48% 62% 38% 52%; }
-  20%  { border-radius: 40% 60% 70% 30% / 56% 44% 66% 34%; }
-  40%  { border-radius: 52% 48% 38% 62% / 70% 30% 60% 40%; }
-  60%  { border-radius: 68% 32% 48% 52% / 40% 64% 36% 60%; }
-  80%  { border-radius: 35% 65% 60% 40% / 52% 38% 62% 48%; }
-  100% { border-radius: 58% 42% 44% 56% / 36% 58% 42% 64%; }
-}
-
-/* Hide cursor blob on touch/mobile */
-@media (hover: none), (pointer: coarse) {
-  .cursor-blob { display: none !important; }
-}
 
 /* CTA section — mobile headline sizing */
 @media (max-width: 640px) {

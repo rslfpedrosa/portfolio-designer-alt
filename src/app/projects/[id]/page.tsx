@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   ArrowLeft,
   ArrowRight,
+  ArrowUpRight,
   ExternalLink,
   Calendar,
   Users,
@@ -2326,93 +2327,122 @@ Key design focuses included:
 
       {/* Next Project */}
       {nextProject && (
-      <section 
-        ref={(el) => {
-          if (el) nextProjectRef.current = el
-        }}
-        className="py-24 px-6 sm:px-6 lg:px-8 bg-[#f2efea]"
+      <section
+        ref={(el) => { if (el) nextProjectRef.current = el }}
+        className="pt-8 pb-16 px-4 sm:px-6 lg:px-8 bg-[#f2efea]"
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-              <h2 className="text-2xl sm:text-3xl font-semibold text-[#241f21] text-center mb-12 tracking-tight">Next Project</h2>
-              <Link href={`/projects/${nextProject.id}`} className="group">
-                <motion.div
-                  whileHover={{ scale: 1.03, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
-                  className="relative overflow-visible cursor-pointer z-10"
+            {/* Figma-style label — aligned with card */}
+            <div className="max-w-2xl mx-auto">
+              <div
+                aria-hidden
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  color: '#9747FF', pointerEvents: 'none',
+                  paddingTop: 'clamp(12px, 1.5vw, 20px)',
+                  paddingBottom: 8,
+                  paddingLeft: 'clamp(6px, 0.75vw, 12px)',
+                }}
+              >
+                <img src="/icons/component-2.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
+                <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}>Next Case Study</span>
+              </div>
+            </div>
+
+            {/* Card — constrained width */}
+            <div className="max-w-2xl mx-auto">
+              <motion.div
+                style={{
+                  position: 'relative',
+                  boxShadow: isNextHovered ? '0 24px 60px rgba(36,31,33,0.18)' : '0 0px 0px rgba(36,31,33,0)',
+                  transition: 'box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
+                }}
+              >
+                {/* Corner squares */}
+                {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
+                  <div
+                    key={corner}
+                    style={{
+                      position: 'absolute', width: 12, height: 12, borderRadius: 2,
+                      zIndex: 20, pointerEvents: 'none',
+                      backgroundColor: '#ffffff', border: '1px solid #9747FF',
+                      opacity: isNextHovered ? 1 : 0, transition: 'opacity 0.3s ease',
+                      top: corner.startsWith('top') ? -6 : undefined,
+                      bottom: corner.startsWith('bottom') ? -6 : undefined,
+                      left: corner.endsWith('left') ? -6 : undefined,
+                      right: corner.endsWith('right') ? -6 : undefined,
+                    }}
+                  />
+                ))}
+
+                <Link
+                  href={`/projects/${nextProject.id}`}
+                  style={{ display: 'block' }}
                   onMouseEnter={() => setIsNextHovered(true)}
                   onMouseLeave={() => setIsNextHovered(false)}
                 >
                   <div
-                    className="relative bg-[#e8e4de] overflow-visible"
-                    style={isNextHovered ? {
-                      outline: '2px solid #d9ee72',
-                      outlineOffset: '0px',
-                      boxShadow: `0 0 70px 0 ${{ 1: 'rgba(150, 85, 52, 0.18)', 2: 'rgba(160, 116, 250, 0.18)', 3: 'rgba(67, 106, 255, 0.18)' }[nextProject.id] ?? 'rgba(217,238,114,0.18)'}`,
-                    } : {
-                      outline: '1px solid #d9ee72',
-                      outlineOffset: '0px',
+                    style={{
+                      position: 'relative', width: '100%',
+                      height: 'clamp(220px, 28vw, 320px)',
+                      border: '1.5px solid #9747FF',
+                      overflow: 'hidden', background: '#042d2b', cursor: 'pointer',
                     }}
                   >
-                    {/* Corner squares — always visible, blue on hover */}
-                    {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
-                      <div
-                        key={corner}
-                        className="absolute w-3 h-3 z-20 rounded-sm transition-colors duration-300"
-                        style={{
-                          backgroundColor: isNextHovered ? '#d9ee72' : '#e8e4de',
-                          border: isNextHovered ? '2px solid #d9ee72' : '1px solid #d9ee72',
-                          top: corner.startsWith('top') ? '-6px' : undefined,
-                          bottom: corner.startsWith('bottom') ? '-6px' : undefined,
-                          left: corner.endsWith('left') ? '-6px' : undefined,
-                          right: corner.endsWith('right') ? '-6px' : undefined,
-                        }}
-                      />
-                    ))}
-                    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 min-h-[300px] overflow-hidden">
-                      <div className="relative overflow-hidden min-h-[300px]">
-                        {nextProject.heroImage ? (
-                          <Image
-                            src={nextProject.heroImage}
-                            alt={`${nextProject.title} hero image`}
-                            fill
-                            unoptimized
-                            className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                            sizes="(min-width: 768px) 50vw, 100vw"
-                          />
-                        ) : (
-                          <div className={`bg-gradient-to-br ${nextProject.gradient} flex items-center justify-center h-full min-h-[300px]`}>
-                            <div className="text-[#241f21] text-center">
-                              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                                <span className="text-xl font-medium">
-                                  {nextProject.title.charAt(0)}
-                                </span>
-                              </div>
-                              <p className="text-sm opacity-90">Project Preview</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-8 sm:p-10 lg:p-14 flex flex-col justify-center text-left space-y-5">
-                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#241f21] tracking-tight leading-tight">
-                          {nextProject.title}
-                        </h3>
-                        <p className="text-sm sm:text-base text-[#241f21]/60 leading-relaxed">
-                          {nextProject.tagline ?? nextProject.description}
-                        </p>
-                        <div className="flex items-center font-medium text-[#d9ee72] group-hover:translate-x-2 transition-transform duration-300 pt-2">
-                          <span>View case study</span>
-                          <ArrowRight size={18} className="ml-2" />
-                        </div>
-                      </div>
+                    <Image
+                      src={nextProject.heroImage}
+                      fill
+                      alt={nextProject.title}
+                      style={{
+                        objectFit: 'cover',
+                        transform: isNextHovered ? 'scale(1.08)' : 'scale(1)',
+                        transition: 'transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                      }}
+                      sizes="672px"
+                    />
+                    {/* Project-specific gradient */}
+                    <div style={{ position: 'absolute', inset: 0, background: ({
+                      1: 'linear-gradient(to right, rgba(55,22,4,0.96) 0%, rgba(55,22,4,0.72) 45%, rgba(55,22,4,0.2) 100%), linear-gradient(to top, rgba(55,22,4,0.92) 0%, transparent 50%)',
+                      2: 'linear-gradient(to right, rgba(38,10,62,0.96) 0%, rgba(38,10,62,0.72) 45%, rgba(38,10,62,0.2) 100%), linear-gradient(to top, rgba(38,10,62,0.92) 0%, transparent 50%)',
+                      3: 'linear-gradient(to right, rgba(8,14,60,0.96) 0%, rgba(8,14,60,0.72) 45%, rgba(8,14,60,0.2) 100%), linear-gradient(to top, rgba(8,14,60,0.92) 0%, transparent 50%)',
+                    } as Record<number, string>)[nextProject.id] ?? 'linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 50%, transparent 100%)'}} />
+
+                    {/* Content */}
+                    <div style={{ position: 'absolute', left: 24, right: 24, bottom: 24, zIndex: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      <h3 style={{ fontSize: 'clamp(22px, 2.8vw, 30px)', fontWeight: 500, letterSpacing: '-0.02em', lineHeight: 1.2, color: '#ffffff', margin: 0, maxWidth: '22ch' }}>
+                        {nextProject.subtitle}
+                      </h3>
+                      <p style={{ fontSize: 'clamp(14px, 1.2vw, 16px)', fontWeight: 400, lineHeight: 1.6, color: 'rgba(255,255,255,0.55)', margin: 0, maxWidth: '36ch' }}>
+                        {nextProject.tagline ?? nextProject.description}
+                      </p>
                     </div>
+
+                    {/* Bottom-right: CTA */}
+                    <motion.div
+                      animate={{ x: isNextHovered ? 3 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        position: 'absolute', right: 24, bottom: 24,
+                        zIndex: 10, display: 'flex', alignItems: 'center', gap: 4,
+                        color: isNextHovered ? '#d9ee72' : 'rgba(255,255,255,0.45)',
+                        transition: 'color 0.3s ease',
+                        fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
+                      }}
+                    >
+                      <span>Case Study</span>
+                      <ArrowUpRight size={13} />
+                    </motion.div>
                   </div>
-                </motion.div>
-              </Link>
+                </Link>
+              </motion.div>
+            </div>
+
           </motion.div>
         </div>
       </section>

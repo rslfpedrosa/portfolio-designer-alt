@@ -29,9 +29,9 @@ const Header = () => {
   }, [])
 
   const navItems = [
-    { name: 'Work', href: '/projects' },
-    { name: 'Sandbox', href: '/lab' },
-    { name: 'About', href: '/about' },
+    { name: 'Work', href: '/projects', cursor: 'explore' },
+    { name: 'Sandbox', href: '/lab', cursor: 'take-a-peek' },
+    { name: 'About', href: '/about', cursor: 'meet-rita' },
   ]
 
   const colors = isLightPage
@@ -99,6 +99,7 @@ const Header = () => {
         <div className="flex items-center" style={{ flexShrink: 0 }}>
           <Link
             href="/"
+            data-cursor="back-to-beginning"
             onClick={handleLogoClick}
             className="flex items-center"
           >
@@ -136,6 +137,7 @@ const Header = () => {
               <Link
                 key={item.name}
                 href={item.href}
+                data-cursor={item.cursor}
                 onMouseEnter={() => setHoveredNav(item.name)}
                 onMouseLeave={() => setHoveredNav(null)}
                 style={{
@@ -156,7 +158,7 @@ const Header = () => {
         </nav>
 
         {/* Contact CTA */}
-        <Link href="/contact" className="hidden md:block" style={{ flexShrink: 0, marginLeft: '4px' }}>
+        <Link href="/contact" data-cursor="say-hello" className="hidden md:block" style={{ flexShrink: 0, marginLeft: '4px' }}>
           <div
             style={{
               display: 'flex',

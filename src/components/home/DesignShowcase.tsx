@@ -3,7 +3,6 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import ShowcaseModal from '@/components/ShowcaseModal'
 
 const designShowcase = [
   { id: 1, type: 'video', media: '/explorations/exploration-1.mp4', gradient: 'from-cyan-400 to-blue-500' },
@@ -74,7 +73,7 @@ function CentreText() {
       >
         UI explorations, interaction studies, motion experiments, and visual concepts.
       </p>
-      <Link href="/lab" style={{ pointerEvents: 'auto', marginTop: '1.5em' }}>
+      <Link href="/lab" data-cursor="take-a-peek" style={{ pointerEvents: 'auto', marginTop: '1.5em' }}>
         <div
           style={{
             display: 'inline-flex',
@@ -104,7 +103,6 @@ function CentreText() {
 }
 
 export default function DesignShowcase() {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
   const didDrag = useRef(false)
@@ -113,7 +111,7 @@ export default function DesignShowcase() {
     <>
       {/* ── Desktop: scattered layout ── */}
       <section
-        className="relative hidden md:block"
+        className="relative hidden lg:block"
         style={{
           minHeight: 'max(780px, 90svh)',
           marginTop: '6rem',
@@ -145,6 +143,7 @@ export default function DesignShowcase() {
               drag
               dragMomentum={false}
               dragElastic={0.05}
+              data-cursor="drag"
               initial={{ opacity: 0, y: 24, rotate: card.rotation }}
               whileInView={{ opacity: 1, y: 0 }}
               animate={{ rotate: card.rotation }}
@@ -160,13 +159,12 @@ export default function DesignShowcase() {
               onDragStart={() => {
                 didDrag.current = true
                 setDraggingIndex(index)
+                window.dispatchEvent(new CustomEvent('cursor:drag:start'))
               }}
               onDragEnd={() => {
                 setDraggingIndex(null)
                 setTimeout(() => { didDrag.current = false }, 100)
-              }}
-              onClick={() => {
-                if (!didDrag.current) setSelectedIndex(index)
+                window.dispatchEvent(new CustomEvent('cursor:drag:end'))
               }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -214,12 +212,13 @@ export default function DesignShowcase() {
         })}
       </section>
 
-      {/* ── Mobile: stacked layout ── */}
+      {/* ── Mobile + Tablet: horizontal scroll layout ── */}
       <section
-        className="relative md:hidden"
+        className="relative lg:hidden"
         style={{
           padding: 'clamp(48px, 10vw, 80px) clamp(20px, 5vw, 32px)',
           paddingTop: 'clamp(80px, 16vw, 120px)',
+          overflow: 'hidden',
         }}
       >
         {/* Dot pattern */}
@@ -268,7 +267,7 @@ export default function DesignShowcase() {
           >
             UI explorations, interaction studies, motion experiments, and visual concepts.
           </p>
-          <Link href="/lab">
+          <Link href="/lab" data-cursor="take-a-peek">
             <div
               style={{
                 display: 'inline-flex',
@@ -285,28 +284,42 @@ export default function DesignShowcase() {
               }}
             >
               Explore the sandbox
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.75 10.75V0.75H0.75M10.75 0.75L0.75 10.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
           </Link>
         </div>
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '10px',
+            display: 'flex',
+            overflowX: 'scroll',
+            scrollSnapType: 'x mandatory',
+            gap: '28px',
+            marginLeft: 'calc(-1 * clamp(20px, 5vw, 32px))',
+            marginRight: 'calc(-1 * clamp(20px, 5vw, 32px))',
+            paddingLeft: '14vw',
+            paddingRight: '14vw',
+            paddingTop: '32px',
+            paddingBottom: '40px',
             position: 'relative',
             zIndex: 1,
           }}
+          className="scrollbar-hide"
         >
           {designShowcase.map((item, index) => (
             <div
               key={item.id}
-              onClick={() => setSelectedIndex(index)}
-              style={{
-                cursor: 'pointer',
-                borderRadius: '4px',
+                style={{
+                flexShrink: 0,
+                width: '85vw',
+                maxWidth: '520px',
+                scrollSnapAlign: 'center',
+                transform: `rotate(${CARDS[index].rotation}deg)`,
+                borderRadius: '5px',
                 overflow: 'hidden',
-                boxShadow: '0 3px 12px rgba(36,31,33,0.1)',
+                boxShadow: '0 6px 28px rgba(36,31,33,0.13)',
               }}
             >
               <div style={{ aspectRatio: '16/10', overflow: 'hidden' }}>
@@ -325,12 +338,6 @@ export default function DesignShowcase() {
         </div>
       </section>
 
-      <ShowcaseModal
-        items={designShowcase}
-        currentIndex={selectedIndex}
-        onClose={() => setSelectedIndex(null)}
-        onNavigate={setSelectedIndex}
-      />
     </>
   )
 }

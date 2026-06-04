@@ -46,6 +46,7 @@ export default function ProjectCard({ project, index, onHoverChange, theme = 'da
     <Link
       href={`/projects/${project.id}`}
       className="block group"
+      data-cursor="view-project"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -62,16 +63,15 @@ export default function ProjectCard({ project, index, onHoverChange, theme = 'da
         className="relative grid grid-cols-1 lg:grid-cols-2"
         style={{ minHeight: 'clamp(320px, 42vw, 520px)' }}
       >
-        {/* Corner squares — purple on hover */}
+        {/* Corner squares — white on hover */}
         {corners.map((corner) => (
           <div
             key={corner}
-            className="absolute w-3 h-3 z-20 rounded-sm pointer-events-none"
+            className="absolute w-3 h-3 z-20 pointer-events-none"
             style={{
-              backgroundColor: isHovered ? '#ffffff' : 'transparent',
-              border: `1px solid ${isHovered ? '#b95af0' : 'transparent'}`,
+              backgroundColor: '#ffffff',
               opacity: isHovered ? 1 : 0,
-              transition: 'opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
+              transition: 'opacity 0.3s ease',
               top: corner.startsWith('top') ? '-6px' : undefined,
               bottom: corner.startsWith('bottom') ? '-6px' : undefined,
               left: corner.endsWith('left') ? '-6px' : undefined,

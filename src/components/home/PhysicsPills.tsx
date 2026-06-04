@@ -151,8 +151,14 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
       window.addEventListener('mousemove', onWindowMove)
       window.addEventListener('mouseup',   onWindowUp)
 
-      Events.on(mc, 'startdrag', () => { container.style.cursor = 'grabbing' })
-      Events.on(mc, 'enddrag',   () => { container.style.cursor = '' })
+      Events.on(mc, 'startdrag', () => {
+        container.style.cursor = 'grabbing'
+        window.dispatchEvent(new CustomEvent('cursor:drag:start'))
+      })
+      Events.on(mc, 'enddrag', () => {
+        container.style.cursor = ''
+        window.dispatchEvent(new CustomEvent('cursor:drag:end'))
+      })
 
       Events.on(engine, 'afterUpdate', () => {
         bodies.forEach((body, i) => {
@@ -186,6 +192,7 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
   return (
     <div
       ref={containerRef}
+      data-cursor="drag"
       style={{
         position: 'absolute',
         top: 0,

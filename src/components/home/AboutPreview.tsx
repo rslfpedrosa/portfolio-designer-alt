@@ -32,6 +32,7 @@ export default function AboutPreview() {
             href="/about"
             className="block absolute inset-0 group"
             aria-label="About Me"
+            data-cursor="meet-rita"
           >
             <Image
               src="/Me/IMG_0426.webp"
@@ -152,6 +153,7 @@ export default function AboutPreview() {
           <Link
             href="/about"
             className="group inline-flex items-center gap-2"
+            data-cursor="meet-rita"
           >
             <span
               className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
