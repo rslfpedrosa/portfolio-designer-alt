@@ -162,11 +162,6 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
             ref={headlineRef}
             className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-[#241f21] leading-tight relative flex flex-wrap justify-center items-center gap-0 sm:gap-3 overflow-visible"
           >
-            <Link
-              href="/projects"
-              className="inline-block overflow-visible focus:outline-none"
-              aria-label="View Work"
-            >
               <motion.span
                 id="hero-right"
                 className="inline-block overflow-visible pt-1 pb-3"
@@ -240,7 +235,6 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
                   )}
                 </span>
               </motion.span>
-            </Link>
           </h1>
         </div>
 
@@ -271,6 +265,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
         >
           <Link href="/projects">
             <div
+              data-cursor="explore"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -294,6 +289,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
 
           <Link href="/contact">
             <div
+              data-cursor="say-hello"
               style={{
                 display: 'flex',
                 alignItems: 'center',

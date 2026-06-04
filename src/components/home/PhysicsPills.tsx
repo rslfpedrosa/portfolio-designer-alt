@@ -152,11 +152,11 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
       window.addEventListener('mouseup',   onWindowUp)
 
       Events.on(mc, 'startdrag', () => {
-        container.style.cursor = 'grabbing'
+        document.body.style.cursor = 'grabbing'
         window.dispatchEvent(new CustomEvent('cursor:drag:start'))
       })
       Events.on(mc, 'enddrag', () => {
-        container.style.cursor = ''
+        document.body.style.cursor = ''
         window.dispatchEvent(new CustomEvent('cursor:drag:end'))
       })
 
@@ -192,14 +192,12 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
   return (
     <div
       ref={containerRef}
-      data-cursor="drag"
       style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        cursor: 'grab',
         overflow: 'hidden',
       }}
       aria-hidden
@@ -219,6 +217,7 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
         <div
           key={pill.label}
           ref={el => { pillRefs.current[i] = el }}
+          data-cursor="drag"
           style={{
             ...PILL_STYLE,
             position: 'absolute',
@@ -228,6 +227,7 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
             color: pill.textColor,
             backgroundColor: pill.color,
             userSelect: 'none',
+            cursor: 'grab',
           }}
         >
           {pill.label}

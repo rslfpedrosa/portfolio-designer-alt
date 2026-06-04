@@ -198,6 +198,7 @@ export default function CTASection() {
           <div className="flex items-center gap-4" style={{ pointerEvents: 'auto' }}>
             <Link href="/projects">
               <div
+                data-cursor="explore"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -221,6 +222,7 @@ export default function CTASection() {
 
             <Link href="/contact">
               <div
+                data-cursor="say-hello"
                 style={{
                   display: 'flex',
                   alignItems: 'center',

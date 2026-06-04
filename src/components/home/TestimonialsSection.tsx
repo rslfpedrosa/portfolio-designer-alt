@@ -274,6 +274,7 @@ export default function TestimonialsSection() {
               <div
                 role="button"
                 tabIndex={0}
+                data-cursor="read-full-review"
                 onClick={() => setExpandedTestimonial(testimonials[currentIndex].id)}
                 onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setExpandedTestimonial(testimonials[currentIndex].id) }}
                 style={{

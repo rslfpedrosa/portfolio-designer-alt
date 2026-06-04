@@ -388,10 +388,11 @@ const PolaroidCard = ({
         scale:   { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
       }}
       viewport={{ once: true }}
-      onDragStart={() => { didDrag.current = true; setIsDragging(true) }}
-      onDragEnd={() => { setIsDragging(false); setTimeout(() => { didDrag.current = false }, 100) }}
+      onDragStart={() => { didDrag.current = true; setIsDragging(true); window.dispatchEvent(new CustomEvent('cursor:drag:start')) }}
+      onDragEnd={() => { setIsDragging(false); setTimeout(() => { didDrag.current = false }, 100); window.dispatchEvent(new CustomEvent('cursor:drag:end')) }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      data-cursor="drag"
       style={{
         position: 'absolute',
         width: 'clamp(200px, 27%, 280px)',
@@ -890,8 +891,8 @@ const AboutPage = () => {
                   viewport={{ once: true }}
                   drag
                   dragMomentum={false}
-                  onDragStart={() => setDraggingPostIt(index)}
-                  onDragEnd={() => setDraggingPostIt(null)}
+                  onDragStart={() => { setDraggingPostIt(index); window.dispatchEvent(new CustomEvent('cursor:drag:start')) }}
+                  onDragEnd={() => { setDraggingPostIt(null); window.dispatchEvent(new CustomEvent('cursor:drag:end')) }}
                   onHoverStart={() => setHoveredPostIt(index)}
                   onHoverEnd={() => setHoveredPostIt(null)}
                   whileDrag={{
@@ -899,6 +900,7 @@ const AboutPage = () => {
                     boxShadow: '0 28px 60px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.12)',
                     rotate: value.rotation * 0.5,
                   }}
+                  data-cursor="drag"
                   className={`flex flex-col p-5 sm:p-10 flex-shrink-0 w-[260px] sm:w-[380px] min-h-[240px] sm:min-h-[340px] ${index === 0 ? 'md:-mr-[30px]' : ''} ${index === 2 ? 'md:-ml-[30px]' : ''}`}
                   style={{
                     backgroundColor: value.color,
