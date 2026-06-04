@@ -43,20 +43,27 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
   const cleanupRef  = useRef<(() => void) | null>(null)
   const [ready, setReady] = useState(false)
   const didInit = useRef(false)
+  const [activePills, setActivePills] = useState<typeof PILLS | null>(null)
+
+  // Phase 0 — pick pill count based on viewport (sync before paint)
+  useLayoutEffect(() => {
+    const isMobile = window.innerWidth < 768
+    setActivePills(isMobile ? PILLS.slice(0, Math.ceil(PILLS.length / 2)) : PILLS)
+  }, [])
 
   // Phase 1 — measure real pill DOM sizes before touching physics
   useLayoutEffect(() => {
-    if (!measureRef.current) return
+    if (!activePills || !measureRef.current) return
     sizesRef.current = Array.from(measureRef.current.children).map(el => ({
       w: (el as HTMLElement).offsetWidth,
       h: (el as HTMLElement).offsetHeight,
     }))
     setReady(true)
-  }, [])
+  }, [activePills])
 
   // Phase 2 — init physics once measured + section is visible
   useEffect(() => {
-    if (!ready || !isInView || !containerRef.current || didInit.current) return
+    if (!ready || !isInView || !containerRef.current || didInit.current || !activePills) return
     didInit.current = true
 
     const container = containerRef.current
@@ -81,7 +88,7 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
 
       // Create pill bodies — drop from random x positions above the container
       const bodies: any[] = []
-      PILLS.forEach((_, i) => {
+      activePills.forEach((_, i) => {
         const { w, h } = sizesRef.current[i] ?? { w: 140, h: 31 }
         const x = w / 2 + 8 + Math.random() * Math.max(0, W - w - 16)
         const body = Bodies.rectangle(x, -h - i * 80, w, h, {
@@ -169,7 +176,7 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
       timeouts.forEach(clearTimeout)
       cleanupRef.current?.()
     }
-  }, [ready, isInView])
+  }, [ready, isInView, activePills])
 
   return (
     <div
@@ -181,6 +188,7 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
         right: 0,
         bottom: 0,
         cursor: 'grab',
+        overflow: 'hidden',
       }}
       aria-hidden
     >
@@ -189,13 +197,13 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
         ref={measureRef}
         style={{ position: 'absolute', visibility: 'hidden', pointerEvents: 'none', top: 0, left: 0 }}
       >
-        {PILLS.map(pill => (
+        {(activePills ?? []).map(pill => (
           <div key={pill.label} style={PILL_STYLE}>{pill.label}</div>
         ))}
       </div>
 
       {/* Physics-driven pill divs — positions updated imperatively via afterUpdate */}
-      {PILLS.map((pill, i) => (
+      {(activePills ?? []).map((pill, i) => (
         <div
           key={pill.label}
           ref={el => { pillRefs.current[i] = el }}

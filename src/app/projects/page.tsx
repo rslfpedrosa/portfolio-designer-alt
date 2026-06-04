@@ -1,87 +1,90 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { getAllProjects } from '@/data/projects'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Heart, ShoppingBag, Home } from 'lucide-react'
+import { projectsData } from '@/data/projects'
 import CTASection from '@/components/home/CTASection'
-import ProjectCard from '@/components/ProjectCard'
-import ShowcaseCard from '@/components/ShowcaseCard'
-import ShowcaseModal from '@/components/ShowcaseModal'
+import GridBackground from '@/components/GridBackground'
+
+// ── Slide config (mirrors CaseStudiesSection) ─────────────────────────────────
+const SLIDE_IDS = [3, 1, 2]
+type LucideIcon = React.ComponentType<{ size?: number }>
+const ICONS: Record<number, LucideIcon> = { 1: ShoppingBag, 2: Home, 3: Heart }
+const slides = SLIDE_IDS.map(id => ({ ...projectsData[id], Icon: ICONS[id] }))
+
+const GRADIENTS: Record<number, string> = {
+  3: [
+    'linear-gradient(to right, rgba(8,14,60,0.94) 0%, rgba(8,14,60,0.68) 38%, rgba(8,14,60,0.18) 100%)',
+    'linear-gradient(to top, rgba(8,14,60,0.90) 0%, transparent 42%)',
+  ].join(', '),
+  1: [
+    'linear-gradient(to right, rgba(55,22,4,0.94) 0%, rgba(55,22,4,0.68) 38%, rgba(55,22,4,0.18) 100%)',
+    'linear-gradient(to top, rgba(55,22,4,0.90) 0%, transparent 42%)',
+  ].join(', '),
+  2: [
+    'linear-gradient(to right, rgba(38,10,62,0.94) 0%, rgba(38,10,62,0.68) 38%, rgba(38,10,62,0.18) 100%)',
+    'linear-gradient(to top, rgba(38,10,62,0.90) 0%, transparent 42%)',
+  ].join(', '),
+}
+
+const TAG_GLASS: Record<number, { bg: string; border: string }> = {
+  3: { bg: 'rgba(61,85,216,0.28)',  border: 'rgba(100,130,255,0.35)' },
+  1: { bg: 'rgba(200,85,24,0.28)',  border: 'rgba(240,120,60,0.35)'  },
+  2: { bg: 'rgba(139,40,194,0.28)', border: 'rgba(185,90,240,0.35)'  },
+}
+
+const EASE_REVEAL = [0.55, 0, 0.1, 1] as [number, number, number, number]
+const EASE_FADE   = [0.22, 1, 0.36, 1] as [number, number, number, number]
+
+// ── Card content animation variants ───────────────────────────────────────────
+const cardContentVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.13, delayChildren: 0.05 } },
+}
+const tagVariant = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE_FADE } },
+}
+const titleVariant = {
+  hidden: { y: '108%' },
+  visible: { y: '0%', transition: { duration: 1.05, ease: EASE_REVEAL } },
+}
+const descVariant = {
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE_FADE } },
+}
+
+const dashedH = {
+  backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)',
+  backgroundSize: '16px 1px',
+  backgroundRepeat: 'repeat-x',
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const
 
 const ProjectsPage = () => {
-  const allProjects = getAllProjects()
-  const projects = allProjects.sort((a, b) => {
-    // Order: Onyx (3) > Bocca (1) > Cortado (2) > others
-    const order = { 3: 0, 1: 1, 2: 2 }
-    return (order[a.id as keyof typeof order] ?? 999) - (order[b.id as keyof typeof order] ?? 999)
-  })
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-
-  const designShowcase = [
-    {
-      id: 1,
-      type: 'video',
-      media: '/explorations/exploration-1.mp4',
-      gradient: 'from-cyan-400 to-blue-500',
-    },
-    {
-      id: 2,
-      type: 'image',
-      media: '/explorations/23126508_195.webp',
-      gradient: 'from-pink-400 to-gray-500',
-    },
-    {
-      id: 3,
-      type: 'image',
-      media: '/explorations/012-2.webp',
-      gradient: 'from-orange-400 to-red-500',
-    },
-    {
-      id: 4,
-      type: 'video',
-      media: '/explorations/exploration-2.mp4',
-      gradient: 'from-green-400 to-teal-500',
-    },
-    {
-      id: 5,
-      type: 'video',
-      media: '/explorations/exploration-3.mp4',
-      gradient: 'from-cyan-400 to-blue-500',
-    },
-    {
-      id: 6,
-      type: 'video',
-      media: '/explorations/exploration-4.mp4',
-      gradient: 'from-green-400 to-teal-500',
-    },
-  ]
+  const [hoveredId, setHoveredId] = useState<number | null>(null)
 
   return (
-    <div className="min-h-screen pt-16 bg-[#042d2b] relative overflow-x-hidden">
-      {/* Grid background — matches about page */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
-          <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="work-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-                <circle cx="6" cy="6" r="0.75" fill="#22372e" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#work-dots)" />
-          </svg>
-        </div>
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-7xl" style={{ backgroundColor: '#042d2b' }} />
+    <div className="min-h-screen pt-16 relative overflow-x-hidden" style={{ backgroundColor: '#f2efea' }}>
+
+      <GridBackground />
+
+      {/* Vertical dashed column lines */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-        </div>
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1600px]">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, #22372e 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
         </div>
       </div>
-      {/* Hero Section */}
-      <section className="pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
+
+      {/* ── Hero heading ─────────────────────────────────────────────────────── */}
+      <section className="pt-14 sm:pt-24 pb-2 sm:pb-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -89,87 +92,189 @@ const ProjectsPage = () => {
             transition={{ duration: 0.6 }}
             className="text-left pl-6 sm:pl-8 lg:pl-16"
           >
-            <h1 className="text-6xl sm:text-8xl font-medium text-white mb-3 sm:mb-6 leading-none">
+            <h1
+              className="font-medium leading-none mb-4"
+              style={{ fontSize: 'clamp(56px, 10vw, 120px)', color: 'rgba(36,31,33,0.9)' }}
+            >
               My Work
             </h1>
-            <p className="text-xl text-gray-400 max-w-3xl">
-              Selected work across healthcare, AI, and digital experiences, focused on bringing clarity to complex products.
+            <p className="text-xl max-w-2xl" style={{ color: 'rgba(36,31,33,0.5)' }}>
+              Selected work, not all the work. Feel free to get in touch if you'd like to see more.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Projects List */}
-      <section className="pb-12 sm:pb-24 pt-4 sm:pt-8 px-4 sm:px-6 lg:px-8 overflow-visible">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col gap-8 lg:gap-12">
-            {projects.map((project, index) => (
-              <div key={project.id}>
-                <div className="relative h-px pointer-events-none mb-0">
-                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
-                </div>
-                <ProjectCard
-                  project={project}
-                  index={index}
-                  onHoverChange={() => {}}
-                />
-                <div className="relative h-px pointer-events-none mt-0">
-                  <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={{ backgroundImage: 'linear-gradient(to right, #22372e 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
-                </div>
+      {/* ── Case study slides ─────────────────────────────────────────────────── */}
+      <section className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col">
+          {slides.map((slide, i) => (
+            <div key={slide.id}>
+              {/* Figma component label — above the top line */}
+              <div
+                aria-hidden
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  color: '#9747FF',
+                  pointerEvents: 'none',
+                  paddingTop: 'clamp(12px, 1.5vw, 20px)',
+                  paddingBottom: 8,
+                  paddingLeft: 'clamp(6px, 0.75vw, 12px)',
+                }}
+              >
+                <img src="/icons/component-2.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
+                <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}>
+                  Case Study {String(i + 1).padStart(2, '0')}
+                </span>
               </div>
-            ))}
-          </div>
+
+              {/* Horizontal dashed line above frame */}
+              <div className="relative h-px pointer-events-none">
+                <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={dashedH} />
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  opacity: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 },
+                  y: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 },
+                }}
+                viewport={{ once: true, margin: '-80px' }}
+                style={{
+                  position: 'relative', width: '100%',
+                  boxShadow: hoveredId === slide.id ? '0 24px 60px rgba(36,31,33,0.18)' : '0 0px 0px rgba(36,31,33,0)',
+                  transition: 'box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
+                }}
+              >
+                {/* Corner squares — always visible, fill purple on hover */}
+                {CORNERS.map(corner => (
+                  <div
+                    key={corner}
+                    style={{
+                      position: 'absolute',
+                      width: 12, height: 12,
+                      borderRadius: 2,
+                      zIndex: 20,
+                      pointerEvents: 'none',
+                      backgroundColor: hoveredId === slide.id ? '#9747FF' : '#ffffff',
+                      border: `1px solid ${hoveredId === slide.id ? '#9747FF' : '#b95af0'}`,
+                      transition: 'background-color 0.3s ease, border-color 0.3s ease',
+                      top: corner.startsWith('top') ? -6 : undefined,
+                      bottom: corner.startsWith('bottom') ? -6 : undefined,
+                      left: corner.endsWith('left') ? -6 : undefined,
+                      right: corner.endsWith('right') ? -6 : undefined,
+                    }}
+                  />
+                ))}
+
+                {/* Bordered frame */}
+                <Link
+                  href={`/projects/${slide.id}`}
+                  style={{ display: 'block' }}
+                  onMouseEnter={() => setHoveredId(slide.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                >
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    minHeight: 'clamp(320px, 52svh, 580px)',
+                    border: '1.5px solid #9747FF',
+                    overflow: 'hidden',
+                    background: '#042d2b',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Image
+                    src={slide.heroImage}
+                    fill
+                    alt={slide.title}
+                    style={{
+                      objectFit: 'cover',
+                      transform: hoveredId === slide.id ? 'scale(1.08)' : 'scale(1)',
+                      transition: 'transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    }}
+                    priority={i === 0}
+                    sizes="(min-width: 1280px) 1280px, 100vw"
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: GRADIENTS[slide.id] }} />
+
+                  {/* Card content — stagger-orchestrated by parent */}
+                  <motion.div
+                    variants={cardContentVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-60px' }}
+                    style={{
+                      position: 'absolute',
+                      left: 'clamp(32px, 5vh, 64px)',
+                      right: 'clamp(24px, 5vw, 80px)',
+                      bottom: 'clamp(32px, 5vh, 64px)',
+                      zIndex: 10,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 'clamp(16px, 2vw, 28px)',
+                    }}
+                  >
+                    {/* 1. Category tag */}
+                    <motion.div variants={tagVariant}>
+                      <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 7,
+                        padding: '6px 16px', borderRadius: 999,
+                        background: TAG_GLASS[slide.id].bg,
+                        border: `1px solid ${TAG_GLASS[slide.id].border}`,
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
+                        color: '#ffffff',
+                        fontSize: 13, fontWeight: 600, letterSpacing: '0.07em',
+                      }}>
+                        <slide.Icon size={13} />
+                        {slide.category}
+                      </span>
+                    </motion.div>
+
+                    {/* 2. Title — curtain reveal */}
+                    <div style={{ overflow: 'hidden' }}>
+                      <motion.h2
+                        variants={titleVariant}
+                        style={{
+                          color: '#ffffff',
+                          fontSize: 'clamp(30px, 3vw, 46px)',
+                          fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
+                          maxWidth: '22ch',
+                          margin: 0,
+                        }}
+                      >
+                        {slide.subtitle}
+                      </motion.h2>
+                    </div>
+
+                    {/* 3. Description */}
+                    <motion.p
+                      variants={descVariant}
+                      style={{
+                        color: 'rgba(255,255,255,0.5)',
+                        fontSize: '18px',
+                        fontWeight: 400, lineHeight: 1.7, maxWidth: '44ch',
+                        margin: 0,
+                      }}
+                    >
+                      {slide.tagline ?? slide.description}
+                    </motion.p>
+                  </motion.div>
+                </div>
+                </Link>
+              </motion.div>
+
+              {/* Horizontal dashed line below frame */}
+              <div className="relative h-px pointer-events-none" style={{ marginBottom: 8 }}>
+                <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={dashedH} />
+              </div>
+            </div>
+          ))}
         </div>
       </section>
-
-      {/* Design Showcase Section */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#042d2b]">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-8 sm:mb-16"
-          >
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              viewport={{ once: true }}
-              className="inline-block mb-4"
-            >
-              <span className="text-sm font-medium tracking-wider text-gray-400 uppercase">
-                Design Showcase
-              </span>
-            </motion.div>
-            <h2 className="text-4xl sm:text-5xl font-medium text-white mb-6">
-              Product Explorations
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Explorations in interaction, systems, and visual design.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            {designShowcase.map((item, index) => (
-              <ShowcaseCard
-                key={item.id}
-                item={item}
-                index={index}
-                onClick={() => setSelectedIndex(index)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <ShowcaseModal
-        items={designShowcase}
-        currentIndex={selectedIndex}
-        onClose={() => setSelectedIndex(null)}
-        onNavigate={setSelectedIndex}
-      />
 
       <CTASection />
     </div>

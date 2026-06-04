@@ -13,7 +13,7 @@ const Header = () => {
   const pathname = usePathname()
 
   const isCaseStudy = /^\/projects\/\d+/.test(pathname)
-  const isLightPage = isCaseStudy || pathname === '/' || pathname === '/contact' || pathname === '/about' || pathname === '/lab'
+  const isLightPage = isCaseStudy || pathname === '/' || pathname === '/contact' || pathname === '/about' || pathname === '/lab' || pathname === '/projects'
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (pathname === '/') {

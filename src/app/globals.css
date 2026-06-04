@@ -152,11 +152,6 @@ body {
   isolation: isolate;
 }
 
-/* Better scroll performance */
-section {
-  will-change: auto;
-  transform: translateZ(0);
-}
 
 /* Hide scrollbar for carousel */
 .scrollbar-hide {
@@ -470,7 +465,7 @@ button, a, input, textarea, select {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition: none !important;
   }
   
   /* Disable will-change on mobile to save memory */
@@ -593,6 +588,16 @@ button, a, input, textarea, select {
   pointer-events: none;
 }
 
+.editorial-num-light {
+  font-size: clamp(72px, 12vw, 160px);
+  font-weight: 300;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: rgba(36, 31, 33, 0.06);
+  user-select: none;
+  pointer-events: none;
+}
+
 /* Thin border utilities */
 .border-faint { border-color: rgba(255, 255, 255, 0.06); }
 .border-subtle { border-color: rgba(255, 255, 255, 0.1); }
@@ -676,4 +681,18 @@ button, a, input, textarea, select {
   .reveal-enter { transition: none !important; }
   .marquee-track { animation: none !important; }
   .scroll-bob { animation: none !important; }
+}
+
+/* CTA section — mobile headline sizing */
+@media (max-width: 640px) {
+  .cta-headline {
+    font-size: clamp(2rem, 15vw, 3.5rem) !important;
+    line-height: 1.05 !important;
+  }
+  .cta-headline span {
+    white-space: normal !important;
+  }
+  .cta-figma-frame {
+    display: none !important;
+  }
 }

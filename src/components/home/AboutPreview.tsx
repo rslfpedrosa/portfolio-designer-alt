@@ -10,10 +10,20 @@ export default function AboutPreview() {
     <section
       className="relative bg-[#f2efea]"
       style={{
-        borderTop: '1px solid rgba(36,31,33,0.08)',
-        borderBottom: '1px solid rgba(36,31,33,0.08)',
       }}
     >
+      {/* Dot pattern */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="about-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+              <circle cx="6" cy="6" r="0.75" fill="rgba(36,31,33,0.14)" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#about-dots)" />
+        </svg>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2" style={{ minHeight: 'clamp(480px, 55vw, 700px)' }}>
 
         {/* Left — large portrait */}
@@ -85,7 +95,7 @@ export default function AboutPreview() {
 
           <p
             style={{
-              fontSize: 'clamp(14px, 1.2vw, 16px)',
+              fontSize: '18px',
               lineHeight: 1.8,
               color: 'rgba(36,31,33,0.5)',
               maxWidth: '44ch',

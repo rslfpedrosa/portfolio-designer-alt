@@ -1,13 +1,18 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import ShowcaseCard from '@/components/ShowcaseCard'
-import ShowcaseModal from '@/components/ShowcaseModal'
 import CTASection from '@/components/home/CTASection'
 import GridBackground from '@/components/GridBackground'
 
 const labItems = [
+  {
+    id: 7,
+    type: 'video',
+    media: '/explorations/hello-Post.webm',
+    description: 'Post interaction motion study — exploring micro-animation and feedback timing.',
+    tags: ['Figma'],
+  },
   {
     id: 1,
     type: 'video',
@@ -59,8 +64,6 @@ const dashedLine = {
 }
 
 const LabPage = () => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-
   return (
     <div className="min-h-screen pt-16 relative overflow-x-hidden" style={{ backgroundColor: '#f2efea' }}>
 
@@ -107,33 +110,7 @@ const LabPage = () => {
               <ShowcaseCard
                 item={item}
                 index={index}
-                onClick={() => setSelectedIndex(index)}
               />
-              {/* Description + tags */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-4 sm:py-5 px-4 sm:px-6">
-                <p className="text-sm" style={{ color: 'rgba(36,31,33,0.55)' }}>
-                  {item.description}
-                </p>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {item.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      style={{
-                        fontSize: '11px',
-                        fontWeight: 500,
-                        letterSpacing: '0.04em',
-                        color: 'rgba(36,31,33,0.45)',
-                        border: '1px solid rgba(36,31,33,0.15)',
-                        borderRadius: '999px',
-                        padding: '3px 10px',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
               <div className="relative h-px pointer-events-none">
                 <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={dashedLine} />
               </div>
@@ -141,13 +118,6 @@ const LabPage = () => {
           ))}
         </div>
       </section>
-
-      <ShowcaseModal
-        items={labItems}
-        currentIndex={selectedIndex}
-        onClose={() => setSelectedIndex(null)}
-        onNavigate={setSelectedIndex}
-      />
 
       <CTASection />
     </div>

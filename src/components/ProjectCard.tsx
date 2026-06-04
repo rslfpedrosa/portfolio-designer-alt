@@ -11,9 +11,10 @@ interface ProjectCardProps {
   project: Project
   index: number
   onHoverChange: (id: number | null) => void
+  theme?: 'dark' | 'light'
 }
 
-export default function ProjectCard({ project, index, onHoverChange }: ProjectCardProps) {
+export default function ProjectCard({ project, index, onHoverChange, theme = 'dark' }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const isFlipped = index % 2 === 1
 
@@ -28,6 +29,18 @@ export default function ProjectCard({ project, index, onHoverChange }: ProjectCa
   }
 
   const num = String(index + 1).padStart(2, '0')
+  const isLight = theme === 'light'
+
+  const contentBorder = isLight
+    ? '1px solid rgba(36,31,33,0.1)'
+    : '1px solid rgba(255,255,255,0.06)'
+  const titleColor = isLight ? 'rgba(36,31,33,0.9)' : '#ffffff'
+  const descColor = isLight ? 'rgba(36,31,33,0.5)' : 'rgba(255,255,255,0.42)'
+  const ctaDefault = isLight ? 'rgba(36,31,33,0.4)' : 'rgba(255,255,255,0.35)'
+  const ctaHover = isLight ? '#042d2b' : '#d9ee72'
+  const vignetteBase = isLight ? '242,239,234' : '4,45,43'
+
+  const corners = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const
 
   return (
     <Link
@@ -39,35 +52,57 @@ export default function ProjectCard({ project, index, onHoverChange }: ProjectCa
       <motion.article
         initial={{ opacity: 0, y: 64 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 }}
+        animate={{ scale: isHovered ? 1.018 : 1 }}
+        transition={{
+          opacity: { duration: 1, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 },
+          y: { duration: 1, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 },
+          scale: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+        }}
         viewport={{ once: true, margin: '-60px' }}
-        className="grid grid-cols-1 lg:grid-cols-2"
+        className="relative grid grid-cols-1 lg:grid-cols-2"
         style={{ minHeight: 'clamp(320px, 42vw, 520px)' }}
       >
+        {/* Corner squares — purple on hover */}
+        {corners.map((corner) => (
+          <div
+            key={corner}
+            className="absolute w-3 h-3 z-20 rounded-sm pointer-events-none"
+            style={{
+              backgroundColor: isHovered ? '#ffffff' : 'transparent',
+              border: `1px solid ${isHovered ? '#b95af0' : 'transparent'}`,
+              opacity: isHovered ? 1 : 0,
+              transition: 'opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
+              top: corner.startsWith('top') ? '-6px' : undefined,
+              bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+              left: corner.endsWith('left') ? '-6px' : undefined,
+              right: corner.endsWith('right') ? '-6px' : undefined,
+            }}
+          />
+        ))}
         {/* ── Content column ── */}
         <div
           className={`flex flex-col justify-between relative ${isFlipped ? 'order-2 lg:order-2' : 'order-2 lg:order-1'}`}
           style={{
             padding: 'clamp(32px, 4vw, 64px)',
-            borderRight: !isFlipped ? '1px solid rgba(255,255,255,0.06)' : 'none',
-            borderLeft: isFlipped ? '1px solid rgba(255,255,255,0.06)' : 'none',
+            borderRight: !isFlipped ? contentBorder : 'none',
+            borderLeft: isFlipped ? contentBorder : 'none',
           }}
         >
           {/* Centre — number + logo + title + desc */}
           <div className="flex-1 flex flex-col justify-center" style={{ paddingTop: 'clamp(24px, 3vw, 48px)', paddingBottom: 'clamp(24px, 3vw, 48px)' }}>
             {/* Ghost number */}
-            <div aria-hidden className="editorial-num leading-none select-none mb-2">
+            <div aria-hidden className={`${isLight ? 'editorial-num-light' : 'editorial-num'} leading-none select-none mb-2`}>
               {num}
             </div>
 
             {/* Logo */}
             <div className="mb-5 h-6">
               {project.id === 1 ? (
-                <Image src="/Logos/Logo.svg" alt="Bocca Moments Logo" width={200} height={45} className="h-6 w-auto brightness-0 invert opacity-60" />
+                <Image src="/Logos/Logo.svg" alt="Bocca Moments Logo" width={200} height={45} className={`h-6 w-auto brightness-0 opacity-60 ${isLight ? '' : 'invert'}`} />
               ) : project.id === 3 ? (
-                <Image src="/Logos/Onyx.svg" alt="Onyx Logo" width={473} height={169} className="h-6 w-auto brightness-0 invert opacity-60" />
+                <Image src="/Logos/Onyx.svg" alt="Onyx Logo" width={473} height={169} className={`h-6 w-auto brightness-0 opacity-60 ${isLight ? '' : 'invert'}`} />
               ) : project.id === 2 ? (
-                <Image src="/Logos/Cortado.svg" alt="Cortado Logo" width={132} height={44} className="h-6 w-auto brightness-0 invert opacity-60" />
+                <Image src="/Logos/Cortado.svg" alt="Cortado Logo" width={132} height={44} className={`h-6 w-auto brightness-0 opacity-60 ${isLight ? '' : 'invert'}`} />
               ) : null}
             </div>
 
@@ -77,7 +112,7 @@ export default function ProjectCard({ project, index, onHoverChange }: ProjectCa
                 fontWeight: 500,
                 letterSpacing: '-0.03em',
                 lineHeight: 1.1,
-                color: '#ffffff',
+                color: titleColor,
                 marginBottom: '1rem',
               }}
             >
@@ -88,7 +123,7 @@ export default function ProjectCard({ project, index, onHoverChange }: ProjectCa
               style={{
                 fontSize: 'clamp(14px, 1.1vw, 15px)',
                 lineHeight: 1.75,
-                color: 'rgba(255,255,255,0.42)',
+                color: descColor,
                 maxWidth: '38ch',
               }}
             >
@@ -99,7 +134,7 @@ export default function ProjectCard({ project, index, onHoverChange }: ProjectCa
           {/* Bottom — cta */}
           <div className="flex items-end justify-end gap-4">
             <motion.div
-              animate={{ x: isHovered ? 3 : 0, color: isHovered ? '#d9ee72' : 'rgba(255,255,255,0.35)' }}
+              animate={{ x: isHovered ? 3 : 0, color: isHovered ? ctaHover : ctaDefault }}
               transition={{ duration: 0.3 }}
               className="flex items-center gap-1 flex-shrink-0"
               style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase' }}
@@ -132,8 +167,8 @@ export default function ProjectCard({ project, index, onHoverChange }: ProjectCa
             className="absolute inset-0 pointer-events-none"
             style={{
               background: isFlipped
-                ? 'linear-gradient(to right, rgba(4,45,43,0.25) 0%, transparent 40%)'
-                : 'linear-gradient(to left, rgba(4,45,43,0.25) 0%, transparent 40%)',
+                ? `linear-gradient(to right, rgba(${vignetteBase},0.25) 0%, transparent 40%)`
+                : `linear-gradient(to left, rgba(${vignetteBase},0.25) 0%, transparent 40%)`,
               opacity: isHovered ? 1 : 0.4,
               transition: 'opacity 0.5s ease',
             }}

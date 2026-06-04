@@ -82,7 +82,6 @@ const HomePage = () => {
     <div className="min-h-screen bg-[#f2efea] overflow-x-hidden">
       {/* Hero with grid background */}
       <div className="relative overflow-visible">
-        <div className="absolute inset-0 z-[1]"><GridBackground /></div>
         <div className="relative z-10">
           <HeroSection />
         </div>

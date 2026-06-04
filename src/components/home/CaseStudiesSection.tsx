@@ -87,8 +87,6 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
   const [textIndex, setTextIndex] = useState(-1)
   const textIndexRef = useRef(-1)
   const progressBarRef = useRef<HTMLDivElement>(null)
-  const [hoveredButton, setHoveredButton] = useState<number | null>(null)
-
   // ── Set initial clip-paths before first paint ────────────────────────────────
   useLayoutEffect(() => {
     imageRefs.current.forEach((el, i) => {
@@ -178,251 +176,262 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
     return () => ctx.revert()
   }, [])
 
+  const displayIndex = textIndex >= 0 ? textIndex : 0
+
   return (
     <section
       ref={sectionRef}
-      style={{ position: 'relative', height: '100svh', overflow: 'hidden', background: '#042d2b' }}
+      style={{
+        position: 'relative',
+        height: '100svh',
+        background: '#f2efea',
+        padding: `${isDesktop ? 'clamp(80px,9vh,96px)' : 'clamp(96px,12vh,120px)'} clamp(16px,1.8vw,24px) clamp(16px,2vh,24px)`,
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+      }}
     >
-      {/* SVG goo filter — makes the icon box and pill merge like cells on hover */}
-      <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden>
-        <defs>
-          <filter id="cs-cell-merge" x="-30%" y="-50%" width="160%" height="200%" colorInterpolationFilters="sRGB">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 38 -17" result="goo" />
-            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-          </filter>
-        </defs>
-      </svg>
-      {/* ── Image layers ──────────────────────────────────────────────────────
-          clipPath is NOT in the style prop — GSAP owns that property entirely.
-          Each image sits above the previous one in z-order; the clip-path mask
-          grows from the bottom, physically revealing the next project image.   */}
-      {slides.map((slide, i) => (
-        <div
-          key={`img-${slide.id}`}
-          ref={el => { imageRefs.current[i] = el }}
-          aria-hidden
-          style={{
-            position: 'absolute', inset: 0,
-            zIndex: i + 1,       // slide 0=z1, slide 1=z2, slide 2=z3
-            willChange: 'clip-path',
-            overflow: 'hidden',
-          }}
-        >
+      {/* Dot pattern */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="cs-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+              <circle cx="6" cy="6" r="0.75" fill="rgba(36,31,33,0.14)" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#cs-dots)" />
+        </svg>
+      </div>
+
+      {/* ── Figma component label ────────────────────────────────────────────── */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: isDesktop ? 'calc(clamp(80px,9vh,96px) - 22px)' : 'calc(clamp(96px,12vh,120px) - 22px)',
+          left: 'clamp(16px,1.8vw,24px)',
+          display: 'flex', alignItems: 'center', gap: 6,
+          color: '#9747FF',
+          zIndex: 50, pointerEvents: 'none',
+        }}
+      >
+        <img src="/icons/component.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={displayIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}
+          >
+            Case Study {String(displayIndex + 1).padStart(2, '0')}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+
+      {/* ── Bordered slideshow frame ─────────────────────────────────────────── */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        border: '1.5px solid #9747FF',
+        overflow: 'hidden',
+        background: '#042d2b',
+      }}>
+        {/* ── Image layers ────────────────────────────────────────────────────
+            clipPath is NOT in the style prop — GSAP owns that property entirely.
+            Each image sits above the previous one in z-order; the clip-path mask
+            grows from the bottom, physically revealing the next project image.  */}
+        {slides.map((slide, i) => (
           <div
-            ref={el => { innerImageRefs.current[i] = el }}
+            key={`img-${slide.id}`}
+            ref={el => { imageRefs.current[i] = el }}
+            aria-hidden
             style={{
-              position: 'absolute',
-              inset: '-8% 0',   // extra headroom for parallax travel
-              willChange: 'transform',
+              position: 'absolute', inset: 0,
+              zIndex: i + 1,
+              willChange: 'clip-path',
+              overflow: 'hidden',
             }}
           >
-            <Image
-              src={slide.heroImage}
-              fill
-              alt=""
-              style={{ objectFit: 'cover' }}
-              priority={i === 0}
-              sizes="100vw"
-            />
-            <div style={{ position: 'absolute', inset: 0, background: GRADIENTS[slide.id] }} />
-          </div>
-        </div>
-      ))}
-
-      {/* ── Text layers ───────────────────────────────────────────────────────
-          Stagger order (DOM = visual stagger sequence):
-            1. number  2. "Case Study" label  3. tag  4. title  5. button
-          Text elements use a line-mask reveal (overflow:hidden + translateY).
-          display:flex on the clipping div removes the CSS baseline gap that
-          would otherwise push the number away from its bottom anchor.
-          Pill/button use opacity+lift — clip looks wrong on rounded shapes.  */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 30 }}>
-        <AnimatePresence mode="wait">
-          {slides.map((slide, i) => i !== textIndex ? null : (
-            <motion.div
-              key={`content-${slide.id}`}
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
-              style={{ position: 'absolute', inset: 0 }}
-            >
-              {/* 1. Slide number — above line, left column */}
-              <div style={{
+            <div
+              ref={el => { innerImageRefs.current[i] = el }}
+              style={{
                 position: 'absolute',
-                left: 'clamp(24px, 5vw, 80px)',
-                bottom: 'calc(50% + 18px)',
-                overflow: 'hidden',
-                display: 'flex',  // eliminates inline baseline gap
-              }}>
-                <motion.span
-                  variants={lineRevealSm}
-                  style={{
-                    fontSize: 36, fontWeight: 500, letterSpacing: '0.12em',
-                    lineHeight: 1,
-                    color: 'rgba(255,255,255,0.35)',
-                  }}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </motion.span>
-              </div>
+                inset: '-8% 0',
+                willChange: 'transform',
+              }}
+            >
+              <Image
+                src={slide.heroImage}
+                fill
+                alt=""
+                style={{ objectFit: 'cover' }}
+                priority={i === 0}
+                sizes="100vw"
+              />
+              <div style={{ position: 'absolute', inset: 0, background: GRADIENTS[slide.id] }} />
+            </div>
+          </div>
+        ))}
 
-              {/* 2. "Case Study" label — below line, left column (desktop) */}
-              {isDesktop && (
+        {/* ── Text layers ─────────────────────────────────────────────────────
+            Stagger order (DOM = visual stagger sequence):
+              1. number  2. "Case Study" label  3. tag  4. title  5. button
+            Text elements use a line-mask reveal (overflow:hidden + translateY).
+            display:flex on the clipping div removes the CSS baseline gap that
+            would otherwise push the number away from its bottom anchor.
+            Pill/button use opacity+lift — clip looks wrong on rounded shapes. */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 30 }}>
+          <AnimatePresence mode="wait">
+            {slides.map((slide, i) => i !== textIndex ? null : (
+              <motion.div
+                key={`content-${slide.id}`}
+                variants={contentVariants}
+                initial="hidden"
+                animate="visible"
+                exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                style={{ position: 'absolute', inset: 0 }}
+              >
+                {/* 3. Category tag — above line */}
                 <div style={{
                   position: 'absolute',
                   left: 'clamp(24px, 5vw, 80px)',
-                  top: 'calc(50% + 12px)',
-                  overflow: 'hidden',
+                  bottom: 'calc(50% + 18px)',
                   display: 'flex',
                 }}>
-                  <motion.p
-                    variants={lineRevealSm}
+                  <motion.span
+                    variants={fadeUp}
                     style={{
-                      fontSize: 11, fontWeight: 500, letterSpacing: '0.13em',
-                      textTransform: 'uppercase', color: '#ffffff',
-                      margin: 0, lineHeight: 1,
-                    }}
-                  >
-                    Case Study
-                  </motion.p>
-                </div>
-              )}
-
-              {/* 3. Category tag — above line, right column */}
-              <div style={{
-                position: 'absolute',
-                left: isDesktop ? 'clamp(90px, 28vw, 380px)' : 'clamp(60px, 18vw, 380px)',
-                bottom: 'calc(50% + 18px)',
-                display: 'flex',
-              }}>
-                <motion.span
-                  variants={fadeUp}
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 7,
-                    padding: '6px 16px', borderRadius: 999,
-                    background: TAG_GLASS[slide.id].bg,
-                    border: `1px solid ${TAG_GLASS[slide.id].border}`,
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    color: '#ffffff',
-                    fontSize: 13, fontWeight: 600, letterSpacing: '0.07em',
-                  }}
-                >
-                  <slide.Icon size={13} />
-                  {slide.category}
-                </motion.span>
-              </div>
-
-              {/* 4 + 5. Title then button — below line, right column */}
-              <div style={{
-                position: 'absolute',
-                top: 'calc(50% + clamp(22px, 3vh, 38px))',
-                left: isDesktop ? 'clamp(90px, 28vw, 380px)' : 'clamp(60px, 18vw, 380px)',
-                right: 'clamp(24px, 5vw, 80px)',
-              }}>
-                {/* 4. Title */}
-                <div style={{ overflow: 'hidden', marginBottom: 'clamp(28px, 3vw, 44px)' }}>
-                  <motion.h2
-                    variants={lineRevealLg}
-                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 7,
+                      padding: '6px 16px', borderRadius: 999,
+                      background: TAG_GLASS[slide.id].bg,
+                      border: `1px solid ${TAG_GLASS[slide.id].border}`,
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
                       color: '#ffffff',
-                      fontSize: isDesktop ? 'clamp(30px, 3.8vw, 58px)' : 'clamp(28px, 7.5vw, 48px)',
-                      fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
-                      maxWidth: '22ch',
-                      margin: 0,
+                      fontSize: 13, fontWeight: 600, letterSpacing: '0.07em',
                     }}
                   >
-                    {slide.subtitle}
-                  </motion.h2>
+                    <slide.Icon size={13} />
+                    {slide.category}
+                  </motion.span>
                 </div>
 
-                {/* 5. Button */}
-                <motion.div variants={fadeUp}>
-                  <Link href={`/projects/${slide.id}`} style={isDesktop ? { cursor: 'none' } : {}}>
-                    <div
-                      onMouseEnter={() => setHoveredButton(i)}
-                      onMouseLeave={() => setHoveredButton(null)}
+                {/* 4 + 5. Title then button — below line */}
+                <div style={{
+                  position: 'absolute',
+                  top: 'calc(50% + clamp(22px, 3vh, 38px))',
+                  left: 'clamp(24px, 5vw, 80px)',
+                  right: 'clamp(24px, 5vw, 80px)',
+                }}>
+                  {/* 4. Title */}
+                  <div style={{ overflow: 'hidden', marginBottom: 'clamp(12px, 1.5vw, 20px)' }}>
+                    <motion.h2
+                      variants={lineRevealLg}
                       style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        filter: 'url(#cs-cell-merge)',
-                        padding: '8px 12px 8px 2px',
+                        color: '#ffffff',
+                        fontSize: isDesktop ? 'clamp(30px, 3.8vw, 58px)' : 'clamp(28px, 7.5vw, 48px)',
+                        fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
+                        maxWidth: '22ch',
+                        margin: 0,
                       }}
                     >
-                      <div style={{
-                        width: 46, height: 46,
-                        background: 'white', borderRadius: 14,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        flexShrink: 0,
-                        marginRight: hoveredButton === i ? 4 : -10,
-                        transition: 'margin-right 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
-                        position: 'relative', zIndex: 1,
-                      }}>
-                        <img src="/icons/arrow.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
-                      </div>
-                      <div style={{
-                        height: 46, background: 'white', borderRadius: 16,
-                        display: 'flex', alignItems: 'center',
-                        padding: '0 22px 0 24px',
-                        fontSize: 14, fontWeight: 500,
-                        textTransform: 'uppercase', color: '#241f21',
-                        WebkitTextStroke: '0.2px #241f21',
-                        whiteSpace: 'nowrap',
-                      }}>
+                      {slide.subtitle}
+                    </motion.h2>
+                  </div>
+
+                  {/* 4.5 Description */}
+                  <motion.p
+                    variants={fadeUp}
+                    style={{
+                      color: 'rgba(255,255,255,0.60)',
+                      fontSize: isDesktop ? 'clamp(15px, 1.3vw, 18px)' : 'clamp(15px, 4vw, 18px)',
+                      lineHeight: 1.65,
+                      maxWidth: '38ch',
+                      margin: 0,
+                      marginBottom: 'clamp(20px, 2.5vw, 36px)',
+                    }}
+                  >
+                    {slide.tagline ?? slide.description}
+                  </motion.p>
+
+                  {/* 5. Button */}
+                  <motion.div variants={fadeUp}>
+                    <Link href={`/projects/${slide.id}`} style={isDesktop ? { cursor: 'none' } : {}}>
+                      <div
+                        onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
+                        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          fontSize: 17,
+                          fontWeight: 500,
+                          color: '#241f21',
+                          background: '#ffffff',
+                          border: '1px solid #ffffff',
+                          borderRadius: 999,
+                          padding: '10px 24px',
+                          transition: 'opacity 0.18s ease',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
                         See Case Study
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M10.75 10.75V0.75H0.75M10.75 0.75L0.75 10.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+                    </Link>
+                  </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
 
-      {/* ── Progress track ─────────────────────────────────────────────────── */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute', zIndex: 40, pointerEvents: 'none',
-          left: 0, right: 0,
-          top: '50%', transform: 'translateY(-50%)',
-          height: 1,
-          background: 'rgba(255,255,255,0.10)',
-        }}
-      >
-        <div ref={progressBarRef} style={{
-          position: 'absolute', left: 0, top: 0, bottom: 0,
-          width: `${(1 / TOTAL) * 100}%`,
-          background: 'rgba(255,255,255,0.55)',
-        }} />
-      </div>
+        {/* ── Progress track ───────────────────────────────────────────────── */}
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute', zIndex: 40, pointerEvents: 'none',
+            left: 0, right: 0,
+            top: '50%', transform: 'translateY(-50%)',
+            height: 1,
+            background: 'rgba(255,255,255,0.10)',
+          }}
+        >
+          <div ref={progressBarRef} style={{
+            position: 'absolute', left: 0, top: 0, bottom: 0,
+            width: `${(1 / TOTAL) * 100}%`,
+            background: 'rgba(255,255,255,0.55)',
+          }} />
+        </div>
 
-      {/* ── Slide counter ──────────────────────────────────────────────────── */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute', bottom: 'clamp(24px, 3vw, 40px)', left: '50%',
-          transform: 'translateX(-50%)', zIndex: 40, pointerEvents: 'none',
-          fontSize: 9, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.22)', whiteSpace: 'nowrap',
-        }}
-      >
-        <AnimatePresence mode="wait">
-          {textIndex >= 0 && (
-            <motion.span
-              key={textIndex}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.35 }}
-            >
-              {String(textIndex + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
-            </motion.span>
-          )}
-        </AnimatePresence>
+        {/* ── Slide counter ─────────────────────────────────────────────────── */}
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute', bottom: 'clamp(24px, 3vw, 40px)', left: '50%',
+            transform: 'translateX(-50%)', zIndex: 40, pointerEvents: 'none',
+            fontSize: 9, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.22)', whiteSpace: 'nowrap',
+          }}
+        >
+          <AnimatePresence mode="wait">
+            {textIndex >= 0 && (
+              <motion.span
+                key={textIndex}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.35 }}
+              >
+                {String(textIndex + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   )

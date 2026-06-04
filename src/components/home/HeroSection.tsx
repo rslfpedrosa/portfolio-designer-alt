@@ -115,6 +115,17 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
         padding: '0 clamp(24px, 5vw, 80px)',
       }}
     >
+      {/* Dot pattern */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="hero-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+              <circle cx="6" cy="6" r="0.75" fill="rgba(36,31,33,0.14)" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-dots)" />
+        </svg>
+      </div>
 
       {/* Main Content */}
       <div className="w-full max-w-none text-center relative z-20" style={{ paddingTop: 'clamp(100px, 12vw, 160px)', paddingBottom: 'clamp(80px, 10vw, 120px)' }}>
@@ -236,7 +247,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
         <div style={{ marginBottom: 'clamp(36px, 5vw, 64px)' }}>
           <motion.p
             style={{
-              fontSize: 'clamp(15px, 1.3vw, 18px)',
+              fontSize: '18px',
               lineHeight: 1.7,
               color: 'rgba(36,31,33,0.5)',
               maxWidth: '44ch',
@@ -269,7 +280,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
                 background: 'transparent',
                 border: '1px solid rgba(36,31,33,0.35)',
                 borderRadius: '999px',
-                padding: '12px 28px',
+                padding: '10px 24px',
                 transition: 'border-color 0.18s ease',
                 whiteSpace: 'nowrap',
               }}
@@ -292,7 +303,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
                 background: '#0a99ff',
                 border: '1px solid #0a99ff',
                 borderRadius: '999px',
-                padding: '12px 28px',
+                padding: '10px 24px',
                 transition: 'opacity 0.18s ease',
                 whiteSpace: 'nowrap',
               }}

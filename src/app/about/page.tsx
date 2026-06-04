@@ -278,20 +278,46 @@ const ConferenceCard = ({
   )
 }
 
-// Bento joy cell with auto-play video
-const BentoJoyCell = ({ joy, index }: { joy: { title: string; description: string; video: string }; index: number }) => {
+const JOYS = [
+  { title: 'Beautiful, Overpriced Coffees', description: '€5 for vibes and foam art? Worth it.', video: '/videos/coffee.mp4' },
+  { title: 'Falling in Love with Every Dog I Meet', description: 'Dogs are my weakness.', video: '/videos/dogs.mp4' },
+  { title: 'Design Shop Wandering', description: 'My favorite kind of field trip.', video: '/videos/design-shop.mp4' },
+  { title: "Nature's Biggest Fan", description: 'Trees, fresh air, no emails. Perfect.', video: '/videos/nature.mp4' },
+  { title: 'Learning by Leaving', description: 'New cities. New ways of seeing.', video: '/videos/travel.mp4' },
+]
+
+// [top-left, top-right, mid-left, mid-right, bottom-center]
+const POLAROID_POSITIONS = [
+  { rotation: -9, pos: { top: '5%',  left:  '2%'  } },
+  { rotation: 6,  pos: { top: '5%',  right: '2%'  } },
+  { rotation: -6, pos: { top: '42%', left:  '2%'  } },
+  { rotation: 8,  pos: { top: '50%', right: '2%'  } },
+  { rotation: -3, pos: { top: '68%', left: 'calc(50% - 140px)' } },
+]
+
+const PolaroidCard = ({
+  joy,
+  rotation,
+  pos,
+  index,
+}: {
+  joy: typeof JOYS[0]
+  rotation: number
+  pos: React.CSSProperties
+  index: number
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const didDrag = useRef(false)
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {})
-        } else {
-          video.pause()
-        }
+        if (entry.isIntersecting) video.play().catch(() => {})
+        else video.pause()
       },
       { threshold: 0.3 }
     )
@@ -301,58 +327,121 @@ const BentoJoyCell = ({ joy, index }: { joy: { title: string; description: strin
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      drag
+      dragMomentum={false}
+      dragElastic={0.05}
+      initial={{ opacity: 0, y: 24, rotate: rotation }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+      animate={{ rotate: rotation }}
+      whileHover={{ rotate: rotation * 0.35 }}
+      whileDrag={{ scale: 1.04 }}
+      transition={{
+        opacity: { duration: 0.9, delay: 0.1 + index * 0.1, ease: [0.16, 1, 0.3, 1] },
+        y:       { duration: 0.9, delay: 0.1 + index * 0.1, ease: [0.16, 1, 0.3, 1] },
+        rotate:  { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+        scale:   { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
+      }}
       viewport={{ once: true }}
-      className="relative overflow-visible"
+      onDragStart={() => { didDrag.current = true; setIsDragging(true) }}
+      onDragEnd={() => { setIsDragging(false); setTimeout(() => { didDrag.current = false }, 100) }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        position: 'absolute',
+        width: 'clamp(200px, 27%, 280px)',
+        ...pos,
+        cursor: isDragging ? 'grabbing' : 'grab',
+        zIndex: isDragging ? 30 : isHovered ? 25 : 10,
+        backgroundColor: '#ffffff',
+        padding: '10px 10px 0 10px',
+        boxShadow: isDragging
+          ? '0 30px 80px rgba(36,31,33,0.28)'
+          : isHovered
+            ? '0 20px 60px rgba(36,31,33,0.20)'
+            : '0 6px 24px rgba(36,31,33,0.14)',
+        transition: 'box-shadow 0.45s cubic-bezier(0.16,1,0.3,1)',
+      }}
     >
-      {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((corner) => (
-        <div
-          key={corner}
-          className="absolute w-3 h-3 z-20 rounded-sm"
+      {/* Photo area */}
+      <div style={{ aspectRatio: '1/1', overflow: 'hidden' }}>
+        <video
+          ref={videoRef}
+          src={joy.video}
+          muted
+          loop
+          playsInline
+          preload="metadata"
           style={{
-            backgroundColor: bg,
-            border: `1px solid ${borderColor}`,
-            top: corner.startsWith('top') ? '-6px' : undefined,
-            bottom: corner.startsWith('bottom') ? '-6px' : undefined,
-            left: corner.endsWith('left') ? '-6px' : undefined,
-            right: corner.endsWith('right') ? '-6px' : undefined,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            transform: isHovered ? 'scale(1.04)' : 'scale(1)',
+            transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+            pointerEvents: 'none',
           }}
         />
-      ))}
-      <div
-        className="relative h-full flex flex-col"
-        style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
-      >
-        <div className="relative w-full overflow-hidden flex-shrink-0" style={{ height: '320px', backgroundColor: '#ffffff' }}>
-          <video
-            ref={videoRef}
-            src={joy.video}
-            muted
-            loop
-            playsInline
-            preload="none"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-        </div>
-        <div className="p-5 flex-1" style={{ borderTop: `1px solid ${borderColor}` }}>
-          <h3 className="text-base font-medium mb-1" style={{ color: textDark }}>{joy.title}</h3>
-          <p className="text-sm leading-relaxed" style={{ color: textMuted }}>{joy.description}</p>
-        </div>
+      </div>
+      {/* Polaroid label strip */}
+      <div style={{ padding: '10px 4px 20px 4px' }}>
+        <p style={{ fontSize: '13px', fontWeight: 600, color: textDark, lineHeight: 1.3, marginBottom: '2px' }}>
+          {joy.title}
+        </p>
+        <p style={{ fontSize: '12px', color: textMuted, lineHeight: 1.4 }}>
+          {joy.description}
+        </p>
       </div>
     </motion.div>
   )
 }
 
-const JOYS = [
-  { title: 'Beautiful, Overpriced Coffees', description: '€5 for vibes and foam art? Worth it.', video: '/videos/coffee.mp4' },
-  { title: 'Falling in Love with Every Dog I Meet', description: 'Dogs are my weakness.', video: '/videos/dogs.mp4' },
-  { title: 'Design Shop Wandering', description: 'My favorite kind of field trip.', video: '/videos/design-shop.mp4' },
-  { title: "Nature's Biggest Fan", description: 'Trees, fresh air, no emails. Perfect.', video: '/videos/nature.mp4' },
-  { title: 'Learning by Leaving', description: 'New cities. New ways of seeing.', video: '/videos/travel.mp4' },
-]
+const MobilePolaroidCard = ({ joy }: { joy: typeof JOYS[0] }) => {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) video.play().catch(() => {})
+        else video.pause()
+      },
+      { threshold: 0.3 }
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#ffffff',
+        padding: '8px 8px 0 8px',
+        boxShadow: '0 4px 16px rgba(36,31,33,0.12)',
+      }}
+    >
+      <div style={{ aspectRatio: '1/1', overflow: 'hidden' }}>
+        <video
+          ref={videoRef}
+          src={joy.video}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+      </div>
+      <div style={{ padding: '8px 4px 16px 4px' }}>
+        <p style={{ fontSize: '12px', fontWeight: 600, color: textDark, lineHeight: 1.3, marginBottom: '2px' }}>
+          {joy.title}
+        </p>
+        <p style={{ fontSize: '11px', color: textMuted, lineHeight: 1.4 }}>
+          {joy.description}
+        </p>
+      </div>
+    </div>
+  )
+}
 
 const cornerSquares = (
   corners: readonly ('top-left' | 'top-right' | 'bottom-left' | 'bottom-right')[],
@@ -918,38 +1007,128 @@ const AboutPage = () => {
       </section>
 
 
-      {/* Small Joys Section */}
-      <section className="relative z-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Header cell */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              viewport={{ once: true }}
-              className="relative overflow-visible"
-            >
-              {cornerSquares(['top-left', 'top-right', 'bottom-left', 'bottom-right'])}
-              <div
-                className="relative p-8 lg:p-10 h-full flex flex-col justify-center"
-                style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
-              >
-                <img src="/Me/Vinyl.svg" alt="" className="w-14 h-14 mb-6" style={{ filter: 'brightness(0)' }} />
-                <h2 className="text-4xl lg:text-5xl font-semibold mb-4 leading-none" style={{ color: textDark }}>
-                  Small Joys, Big Inspiration
-                </h2>
-                <p className="text-base lg:text-lg leading-relaxed" style={{ color: textMuted }}>
-                  These are the little things that refill my creative energy.
-                </p>
-              </div>
-            </motion.div>
+      {/* Small Joys Section — Desktop */}
+      <section
+        className="relative hidden md:block z-10"
+        style={{ minHeight: 'max(780px, 90svh)', marginTop: '0' }}
+      >
+        {/* Center text */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true }}
+          style={{
+            position: 'absolute',
+            top: '44%',
+            left: 0,
+            right: 0,
+            transform: 'translateY(-50%)',
+            textAlign: 'center',
+            zIndex: 20,
+            pointerEvents: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 4.5vw, 5.5rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.04em',
+              color: '#241f21',
+              lineHeight: 1,
+              marginBottom: '0.15em',
+            }}
+          >
+            Small Joys
+          </h2>
+          <p
+            style={{
+              fontSize: 'clamp(3.5rem, 7vw, 8rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.04em',
+              color: '#241f21',
+              lineHeight: 1,
+              marginBottom: '0.55em',
+            }}
+          >
+            Big Inspiration
+          </p>
+          <p
+            style={{
+              fontSize: '17px',
+              color: 'rgba(36,31,33,0.5)',
+              lineHeight: 1.55,
+              maxWidth: '38ch',
+            }}
+          >
+            These are the little things that refill my creative energy.
+          </p>
+        </motion.div>
 
-            {/* Joy cells */}
-            {JOYS.map((joy, index) => (
-              <BentoJoyCell key={joy.title} joy={joy} index={index} />
-            ))}
-          </div>
+        {/* Polaroid cards */}
+        {JOYS.map((joy, index) => {
+          const { rotation, pos } = POLAROID_POSITIONS[index]
+          return (
+            <PolaroidCard key={joy.title} joy={joy} rotation={rotation} pos={pos} index={index} />
+          )
+        })}
+      </section>
+
+      {/* Small Joys Section — Mobile */}
+      <section
+        className="relative md:hidden z-10"
+        style={{
+          padding: 'clamp(48px, 10vw, 80px) clamp(20px, 5vw, 32px)',
+          paddingTop: 'clamp(80px, 16vw, 120px)',
+        }}
+      >
+        <div style={{ textAlign: 'center', marginBottom: 'clamp(28px, 7vw, 48px)', position: 'relative', zIndex: 1 }}>
+          <h2
+            style={{
+              fontSize: 'clamp(1.5rem, 8vw, 3rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.04em',
+              color: '#241f21',
+              lineHeight: 1,
+              marginBottom: '0.15em',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Small Joys
+          </h2>
+          <p
+            style={{
+              fontSize: 'clamp(2rem, 12vw, 5rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.04em',
+              color: '#241f21',
+              lineHeight: 1,
+              marginBottom: '0.5em',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Big Inspiration
+          </p>
+          <p style={{ fontSize: '16px', color: 'rgba(36,31,33,0.5)', lineHeight: 1.55 }}>
+            These are the little things that refill my creative energy.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '16px',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          {JOYS.map((joy) => (
+            <MobilePolaroidCard key={joy.title} joy={joy} />
+          ))}
         </div>
       </section>
 

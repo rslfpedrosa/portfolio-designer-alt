@@ -65,10 +65,7 @@ function ModalCard({ expandedTestimonial, slideDirection }: {
           transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
           <div className="mb-6">
-            <svg width="48" height="48" viewBox="0 0 40 40" fill="none" style={{ color: 'rgba(217,238,114,0.7)' }}>
-              <path d="M10 20C10 14.477 14.477 10 20 10V14C16.686 14 14 16.686 14 20H18V28H10V20Z" fill="currentColor"/>
-              <path d="M24 20C24 14.477 28.477 10 34 10V14C30.686 14 28 16.686 28 20H32V28H24V20Z" fill="currentColor"/>
-            </svg>
+            <img src="/icons/aspas.svg" alt="" width={48} height={46} style={{ opacity: 0.7 }} />
           </div>
           <p className="text-white leading-relaxed mb-8 text-xl md:text-2xl font-medium">
             "{t?.fullContent}"
@@ -88,12 +85,11 @@ export default function TestimonialsSection() {
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
   const [isMounted, setIsMounted] = useState(false)
   const [isPortrait, setIsPortrait] = useState(false)
-  const [hoveredId, setHoveredId] = useState<number | null>(null)
-
-  // Mobile carousel
+  // Slideshow carousel
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [mobileDirection, setMobileDirection] = useState<'left' | 'right'>('right')
+  const [isCardHovered, setIsCardHovered] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -161,10 +157,22 @@ export default function TestimonialsSection() {
         id="testimonials-section"
         className="relative bg-[#f2efea]"
         style={{
-          padding: 'clamp(64px, 8vw, 120px) 0',
-          borderTop: '1px solid rgba(36,31,33,0.08)',
+          paddingTop: 'clamp(140px, 16vw, 220px)',
+          paddingBottom: 'clamp(64px, 8vw, 120px)',
         }}
       >
+        {/* Dot pattern */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
+          <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="testimonials-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                <circle cx="6" cy="6" r="0.75" fill="rgba(36,31,33,0.14)" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#testimonials-dots)" />
+          </svg>
+        </div>
+
         <div
           className="relative z-10"
           style={{ padding: '0 clamp(24px, 5vw, 80px)' }}
@@ -172,7 +180,7 @@ export default function TestimonialsSection() {
           {/* Section header */}
           <div
             className="flex items-end justify-between"
-            style={{ marginBottom: 'clamp(40px, 5vw, 72px)' }}
+            style={{ marginBottom: 'clamp(16px, 2vw, 32px)' }}
           >
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -180,7 +188,6 @@ export default function TestimonialsSection() {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true }}
             >
-              <p className="section-label" style={{ marginBottom: '12px' }}>Peer Feedback</p>
               <h2
                 style={{
                   fontSize: 'clamp(2rem, 4vw, 4.5rem)',
@@ -193,137 +200,99 @@ export default function TestimonialsSection() {
                 What my peers say
               </h2>
             </motion.div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              viewport={{ once: true }}
-              style={{
-                fontSize: 'clamp(13px, 1.1vw, 15px)',
-                lineHeight: 1.7,
-                color: 'rgba(36,31,33,0.45)',
-                maxWidth: '32ch',
-                textAlign: 'right',
-              }}
-              className="hidden md:block"
-            >
-              Feedback from colleagues and collaborators I&apos;ve worked closely with.
-            </motion.p>
           </div>
 
-          {/* Desktop: 3-column grid */}
-          <div className="hidden md:grid grid-cols-3" style={{ borderTop: '1px solid rgba(36,31,33,0.08)' }}>
-            {testimonials.map((t, i) => (
-              <motion.div
-                key={t.id}
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                viewport={{ once: true }}
-                onClick={() => setExpandedTestimonial(t.id)}
-                onMouseEnter={() => setHoveredId(t.id)}
-                onMouseLeave={() => setHoveredId(null)}
+          {/* Slideshow */}
+          <div style={{ paddingTop: 0 }}>
+            {/* Outer hover wrapper — corners sit here so they're never clipped */}
+            <div
+              className="relative"
+              style={{ isolation: 'isolate' }}
+              onMouseEnter={() => setIsCardHovered(true)}
+              onMouseLeave={() => setIsCardHovered(false)}
+            >
+              {CORNERS.map(corner => (
+                <div
+                  key={corner}
+                  className="absolute w-3 h-3 z-20 rounded-sm"
+                  style={{
+                    backgroundColor: isCardHovered ? '#ffffff' : '#f2efea',
+                    border: `1px solid ${isCardHovered ? '#0a99ff' : 'rgba(36,31,33,0.13)'}`,
+                    transition: 'background-color 0.15s, border-color 0.15s',
+                    top: corner.startsWith('top') ? '-6px' : undefined,
+                    bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+                    left: corner.endsWith('left') ? '-6px' : undefined,
+                    right: corner.endsWith('right') ? '-6px' : undefined,
+                  }}
+                />
+              ))}
+
+              {/* Inner card */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => setExpandedTestimonial(testimonials[currentIndex].id)}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setExpandedTestimonial(testimonials[currentIndex].id) }}
                 style={{
+                  position: 'relative',
+                  background: 'white',
+                  boxShadow: `0 0 0 1px ${isCardHovered ? '#0a99ff' : 'rgba(36,31,33,0.13)'}`,
+                  padding: 'clamp(28px, 4vw, 56px)',
                   cursor: 'pointer',
-                  borderRight: i < 2 ? '1px solid rgba(36,31,33,0.08)' : 'none',
-                  borderBottom: '1px solid rgba(36,31,33,0.08)',
-                  transition: 'background-color 0.35s ease',
-                  backgroundColor: hoveredId === t.id ? 'rgba(36,31,33,0.03)' : 'transparent',
+                  transition: 'box-shadow 0.15s',
                 }}
               >
-                <div
-                  className="flex flex-col h-full"
-                  style={{ padding: 'clamp(28px, 3vw, 48px)' }}
-                >
-                  {/* Quote mark */}
-                  <div style={{ marginBottom: '24px' }}>
-                    <svg
-                      width="28" height="20" viewBox="0 0 28 20" fill="none"
-                      style={{ color: hoveredId === t.id ? 'rgba(217,238,114,0.8)' : 'rgba(36,31,33,0.18)', transition: 'color 0.35s ease' }}
-                    >
-                      <path d="M0 20V12C0 5.373 4.477 1 11 1V5C7.686 5 5 7.686 5 11H9V20H0ZM16 20V12C16 5.373 20.477 1 27 1V5C23.686 5 21 7.686 21 11H25V20H16Z" fill="currentColor"/>
-                    </svg>
-                  </div>
+                {/* Quote icon */}
+                <img src="/icons/aspas.svg" alt="" width={60} height={57} style={{ marginBottom: 'clamp(24px, 3vw, 40px)' }} />
 
-                  <p
-                    className="flex-1"
-                    style={{
-                      fontSize: 'clamp(14px, 1.15vw, 17px)',
-                      lineHeight: 1.75,
-                      color: hoveredId === t.id ? 'rgba(36,31,33,0.9)' : 'rgba(36,31,33,0.65)',
-                      marginBottom: '32px',
-                      transition: 'color 0.35s ease',
-                    }}
-                  >
-                    &ldquo;{t.content}&rdquo;
-                  </p>
-
-                  <div style={{ paddingTop: '20px', borderTop: '1px solid rgba(36,31,33,0.08)' }}>
-                    <p style={{ fontSize: '13px', fontWeight: 600, color: '#241f21', marginBottom: '3px' }}>{t.name}</p>
-                    <p style={{ fontSize: '11px', color: 'rgba(36,31,33,0.4)', letterSpacing: '0.04em' }}>{t.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mobile: single card, text crossfades */}
-          <div className="md:hidden" style={{ borderTop: '1px solid rgba(36,31,33,0.08)' }}>
-            <motion.div
-              layout
-              transition={{ layout: { type: 'spring', stiffness: 260, damping: 28, mass: 0.8 } }}
-              className="flex flex-col overflow-hidden"
-              style={{ padding: '28px 0 24px' }}
-            >
-              <div style={{ marginBottom: '18px' }}>
-                <svg width="24" height="18" viewBox="0 0 28 20" fill="none" style={{ color: 'rgba(217,238,114,0.5)' }}>
-                  <path d="M0 20V12C0 5.373 4.477 1 11 1V5C7.686 5 5 7.686 5 11H9V20H0ZM16 20V12C16 5.373 20.477 1 27 1V5C23.686 5 21 7.686 21 11H25V20H16Z" fill="currentColor"/>
-                </svg>
-              </div>
                 <AnimatePresence mode="popLayout" initial={false} custom={mobileDirection}>
                   <motion.div
                     key={currentIndex}
-                    layout
                     custom={mobileDirection}
                     variants={{
-                      enter: (d: string) => ({ x: d === 'right' ? 40 : -40, opacity: 0 }),
+                      enter: (d: string) => ({ x: d === 'right' ? 60 : -60, opacity: 0 }),
                       center: { x: 0, opacity: 1 },
-                      exit: (d: string) => ({ x: d === 'right' ? -40 : 40, opacity: 0 }),
+                      exit: (d: string) => ({ x: d === 'right' ? -60 : 60, opacity: 0 }),
                     }}
                     initial="enter"
                     animate="center"
                     exit="exit"
                     transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.8 }}
                   >
-                    <p style={{ fontSize: '16px', lineHeight: 1.75, color: 'rgba(36,31,33,0.75)', marginBottom: '24px', fontWeight: 500 }}>
-                      &ldquo;{testimonials[currentIndex].content}&rdquo;
-                    </p>
-                    <div style={{ paddingTop: '18px', borderTop: '1px solid rgba(36,31,33,0.08)' }}>
-                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#241f21', marginBottom: '3px' }}>{testimonials[currentIndex].name}</p>
-                      <p style={{ fontSize: '11px', color: 'rgba(36,31,33,0.4)' }}>{testimonials[currentIndex].role}</p>
+                    <div className="flex flex-col md:flex-row md:items-end" style={{ gap: 'clamp(24px, 4vw, 64px)', marginBottom: '32px' }}>
+                      <p style={{ flex: 1, fontSize: 'clamp(1.6rem, 3vw, 3rem)', lineHeight: 1.2, color: '#241f21', fontWeight: 500 }}>
+                        {testimonials[currentIndex].content}
+                      </p>
+                      <div style={{ flexShrink: 0, minWidth: '160px' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 600, color: '#241f21', marginBottom: '4px' }}>{testimonials[currentIndex].name}</p>
+                        <p style={{ fontSize: '13px', color: 'rgba(36,31,33,0.45)', letterSpacing: '0.02em' }}>{testimonials[currentIndex].role}</p>
+                      </div>
                     </div>
                   </motion.div>
                 </AnimatePresence>
-              </motion.div>
-              <div className="flex items-center justify-center gap-3 pt-4 pb-2">
-                <button onClick={prevMobile} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Previous">
-                  <ChevronLeft size={16} />
-                </button>
-                <div className="flex items-center gap-1.5">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => { if (!isAnimating) { setIsAnimating(true); setMobileDirection(index > currentIndex ? 'right' : 'left'); setCurrentIndex(index); setTimeout(() => setIsAnimating(false), 350) } }}
-                      className="rounded-full transition-all duration-300"
-                      style={{ height: '6px', width: index === currentIndex ? '24px' : '6px', backgroundColor: index === currentIndex ? '#241f21' : 'rgba(36,31,33,0.2)' }}
-                      aria-label={`Go to testimonial ${index + 1}`}
-                    />
-                  ))}
+
+                {/* Navigation */}
+                <div className="flex items-center gap-3" style={{ borderTop: '1px solid rgba(36,31,33,0.08)', paddingTop: '20px' }} onClick={e => e.stopPropagation()}>
+                  <button onClick={e => { e.stopPropagation(); prevMobile() }} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Previous">
+                    <ChevronLeft size={16} />
+                  </button>
+                  <div className="flex items-center gap-1.5">
+                    {testimonials.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={e => { e.stopPropagation(); if (!isAnimating) { setIsAnimating(true); setMobileDirection(index > currentIndex ? 'right' : 'left'); setCurrentIndex(index); setTimeout(() => setIsAnimating(false), 350) } }}
+                        className="rounded-full transition-all duration-300"
+                        style={{ height: '6px', width: index === currentIndex ? '24px' : '6px', backgroundColor: index === currentIndex ? '#241f21' : 'rgba(36,31,33,0.2)' }}
+                        aria-label={`Go to testimonial ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <button onClick={e => { e.stopPropagation(); nextMobile() }} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Next">
+                    <ChevronRight size={16} />
+                  </button>
                 </div>
-                <button onClick={nextMobile} className="p-2 text-[#241f21] transition-colors hover:text-[#241f21]/60" style={{ border: '1px solid rgba(36,31,33,0.15)', borderRadius: '4px' }} aria-label="Next">
-                  <ChevronRight size={16} />
-                </button>
               </div>
+            </div>
           </div>
         </div>
       </section>

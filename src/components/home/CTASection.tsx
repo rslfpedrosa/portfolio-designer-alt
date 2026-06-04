@@ -83,12 +83,11 @@ export default function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-black flex flex-col"
+      className="relative overflow-hidden bg-black pb-[220px] md:pb-[240px]"
       style={{
         paddingTop: 'clamp(64px, 8vw, 120px)',
         paddingLeft: 'clamp(24px, 5vw, 80px)',
         paddingRight: 'clamp(24px, 5vw, 80px)',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
       }}
     >
       {/* Dot pattern */}
@@ -96,7 +95,7 @@ export default function CTASection() {
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="cta-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-              <circle cx="6" cy="6" r="0.75" fill="rgba(255,255,255,0.12)" />
+              <circle cx="6" cy="6" r="0.75" fill="rgba(36,31,33,0.14)" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#cta-dots)" />
@@ -121,6 +120,7 @@ export default function CTASection() {
         >
           {/* Large headline with typewriter + Figma selection frame */}
           <h2
+            className="cta-headline"
             style={{
               fontSize: 'clamp(2.5rem, 7vw, 8.5rem)',
               fontWeight: 500,
@@ -155,7 +155,7 @@ export default function CTASection() {
 
               {phraseWidth > 0 && (
                 <motion.span
-                  className="absolute top-0 bottom-[0.13em] pointer-events-none overflow-visible"
+                  className="cta-figma-frame absolute top-0 bottom-[0.13em] pointer-events-none overflow-visible"
                   animate={{ width: phraseWidth, opacity: 1 }}
                   initial={{ width: phraseWidth, opacity: 0 }}
                   transition={{ width: { duration: 0.45, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.3 } }}
@@ -183,7 +183,7 @@ export default function CTASection() {
           {/* Body */}
           <p
             style={{
-              fontSize: 'clamp(14px, 1.2vw, 16px)',
+              fontSize: '18px',
               lineHeight: 1.75,
               color: 'rgba(255,255,255,0.5)',
               maxWidth: '48ch',
@@ -208,7 +208,7 @@ export default function CTASection() {
                   background: 'transparent',
                   border: '1px solid rgba(255,255,255,0.5)',
                   borderRadius: '999px',
-                  padding: '12px 28px',
+                  padding: '10px 24px',
                   transition: 'border-color 0.18s ease',
                   whiteSpace: 'nowrap',
                 }}
@@ -231,7 +231,7 @@ export default function CTASection() {
                   background: '#0a99ff',
                   border: '1px solid #0a99ff',
                   borderRadius: '999px',
-                  padding: '12px 28px',
+                  padding: '10px 24px',
                   transition: 'opacity 0.18s ease',
                   whiteSpace: 'nowrap',
                 }}
@@ -249,11 +249,8 @@ export default function CTASection() {
         </motion.div>
       </div>
 
-      {/* Row 2: Physics pills */}
-      <div
-        className="block relative z-10 flex-1"
-        style={{ minHeight: '280px', marginTop: 'clamp(12px, 1.5vw, 20px)' }}
-      >
+      {/* Physics pills — fills the entire section so pills appear to fall from the top */}
+      <div className="absolute inset-0 z-0">
         <PhysicsPills isInView={isInView} />
       </div>
 
