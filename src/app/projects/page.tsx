@@ -94,7 +94,7 @@ const ProjectsPage = () => {
           >
             <h1
               className="font-medium leading-none mb-4"
-              style={{ fontSize: 'clamp(56px, 10vw, 120px)', color: 'rgba(36,31,33,0.9)' }}
+              style={{ fontSize: 'clamp(56px, 10vw, 120px)', color: '#241f21' }}
             >
               My Work
             </h1>
@@ -109,7 +109,7 @@ const ProjectsPage = () => {
       <section className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col">
           {slides.map((slide, i) => (
-            <div key={slide.id}>
+            <div key={slide.id} className={i > 0 ? 'mt-6 sm:mt-0' : ''}>
               {/* Figma component label — above the top line */}
               <div
                 aria-hidden
@@ -208,9 +208,9 @@ const ProjectsPage = () => {
                     viewport={{ once: true, margin: '-60px' }}
                     style={{
                       position: 'absolute',
-                      left: 'clamp(32px, 5vh, 64px)',
-                      right: 'clamp(24px, 5vw, 80px)',
-                      bottom: 'clamp(32px, 5vh, 64px)',
+                      left: 'clamp(26px, 5vw, 64px)',
+                      right: 'clamp(22px, 5vw, 80px)',
+                      bottom: 'clamp(26px, 5vw, 64px)',
                       zIndex: 10,
                       display: 'flex',
                       flexDirection: 'column',

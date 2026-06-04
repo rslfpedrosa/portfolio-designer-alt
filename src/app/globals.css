@@ -686,13 +686,7 @@ button, a, input, textarea, select {
 /* CTA section — mobile headline sizing */
 @media (max-width: 640px) {
   .cta-headline {
-    font-size: clamp(2rem, 15vw, 3.5rem) !important;
+    font-size: clamp(1.75rem, 9vw, 3rem) !important;
     line-height: 1.05 !important;
-  }
-  .cta-headline span {
-    white-space: normal !important;
-  }
-  .cta-figma-frame {
-    display: none !important;
   }
 }

@@ -83,9 +83,9 @@ export default function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-black pb-[220px] md:pb-[240px]"
+      className="relative overflow-hidden bg-black pb-[300px] md:pb-[240px]"
       style={{
-        paddingTop: 'clamp(64px, 8vw, 120px)',
+        paddingTop: 'clamp(96px, 8vw, 120px)',
         paddingLeft: 'clamp(24px, 5vw, 80px)',
         paddingRight: 'clamp(24px, 5vw, 80px)',
       }}

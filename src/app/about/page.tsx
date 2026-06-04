@@ -15,27 +15,42 @@ const FigmaCommentPin = ({
   timeAgo,
   top,
   left,
+  mobileTop,
+  mobileLeft,
 }: {
   message: string
   timeAgo: string
   top: string
   left: string
+  mobileTop?: string
+  mobileLeft?: string
 }) => {
   const [hovered, setHovered] = useState(false)
   const [expandedHeight, setExpandedHeight] = useState(80)
+  const [isMobile, setIsMobile] = useState(false)
   const measureRef = useRef<HTMLDivElement>(null)
   const ease = [0.25, 0.1, 0.25, 1] as const
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   // Pre-measure real content height at full expanded width — avoids the framer-motion
   // "height: auto" glitch where it measures at the collapsed narrow width first
   useEffect(() => {
     if (measureRef.current) setExpandedHeight(measureRef.current.offsetHeight)
-  }, [message])
+  }, [message, isMobile])
+
+  const resolvedTop = isMobile && mobileTop ? mobileTop : top
+  const resolvedLeft = isMobile && mobileLeft ? mobileLeft : left
 
   return (
     <div
       className="absolute z-20 cursor-default select-none"
-      style={{ top, left, width: 0, height: 0 }}
+      style={{ top: resolvedTop, left: resolvedLeft, width: 0, height: 0 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -46,7 +61,7 @@ const FigmaCommentPin = ({
           position: 'absolute',
           visibility: 'hidden',
           pointerEvents: 'none',
-          width: CARD_W,
+          width: isMobile ? 180 : CARD_W,
           padding: `${CARD_PAD_Y}px ${CARD_PAD_X}px`,
           display: 'flex',
           flexDirection: 'row',
@@ -74,7 +89,7 @@ const FigmaCommentPin = ({
         }}
         animate={{
           opacity: 1,
-          width: hovered ? CARD_W : 42,
+          width: hovered ? (isMobile ? 180 : CARD_W) : 42,
           height: hovered ? expandedHeight : 42,
           borderRadius: hovered ? '14px 14px 14px 0' : '50% 50% 50% 0',
           paddingTop: hovered ? CARD_PAD_Y : 5,
@@ -152,6 +167,14 @@ const ConferenceCard = ({
   index: number
 }) => {
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   return (
     <motion.div
@@ -159,69 +182,75 @@ const ConferenceCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
       viewport={{ once: true }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => { if (!isMobile) setIsHovered(true) }}
+      onMouseLeave={() => { if (!isMobile) setIsHovered(false) }}
+      onClick={() => { if (isMobile) setIsHovered(h => !h) }}
       className="relative transition-all overflow-visible"
     >
-      {/* Floating photos on hover */}
+      {/* Floating photos on hover/tap */}
       <div className="absolute inset-0 pointer-events-none z-30">
+        {/* Photo 1 — desktop: floats left/up; mobile: spreads within card */}
         <motion.div
           initial={{ x: -50, y: -25, rotate: -15, scale: 0, opacity: 0 }}
           animate={isHovered ? {
-            x: -150,
-            y: -80,
+            x: isMobile ? 20 : -150,
+            y: isMobile ? -70 : -80,
             rotate: -12,
             scale: 1,
-            opacity: 1
+            opacity: 1,
           } : {
-            x: -50,
-            y: -25,
+            x: isMobile ? 10 : -50,
+            y: isMobile ? -10 : -25,
             rotate: -15,
             scale: 0,
-            opacity: 0
+            opacity: 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute top-1/4 left-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10"
+          className={`absolute top-1/4 left-0 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10 ${isMobile ? 'w-40 h-40' : 'w-48 h-48'}`}
         >
           <img src={conference.photos[0]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
 
+        {/* Photo 2 — desktop: floats right/down; mobile: stays within card */}
         <motion.div
           initial={{ x: 50, y: 50, rotate: 15, scale: 0, opacity: 0 }}
           animate={isHovered ? {
-            x: 150,
-            y: 150,
+            x: isMobile ? -30 : 150,
+            y: isMobile ? 70 : 150,
             rotate: 12,
             scale: 1,
-            opacity: 1
+            opacity: 1,
           } : {
-            x: 50,
-            y: 50,
+            x: isMobile ? -10 : 50,
+            y: isMobile ? 10 : 50,
             rotate: 15,
             scale: 0,
-            opacity: 0
+            opacity: 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-          className="absolute bottom-1/4 right-0 w-48 h-48 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10"
+          className={`absolute bottom-1/4 right-0 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10 ${isMobile ? 'w-40 h-40' : 'w-48 h-48'}`}
         >
           <img src={conference.photos[1]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
 
+        {/* Photo 3 — desktop: floats above; mobile: spreads within card */}
         <motion.div
           initial={{ y: -40, rotate: 8, scale: 0, opacity: 0 }}
           animate={isHovered ? {
-            y: -120,
+            x: isMobile ? -40 : 0,
+            y: isMobile ? 130 : -120,
             rotate: 5,
             scale: 1,
-            opacity: 1
+            opacity: 1,
           } : {
-            y: -40,
+            x: isMobile ? -20 : 0,
+            y: isMobile ? 40 : -40,
             rotate: 8,
             scale: 0,
-            opacity: 0
+            opacity: 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="absolute top-0 right-1/4 w-44 h-44 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10"
+          className={`absolute top-0 right-1/4 rounded-xl shadow-2xl overflow-hidden border-2 border-white/10 ${isMobile ? 'w-36 h-36' : 'w-44 h-44'}`}
         >
           <img src={conference.photos[2]} alt="Conference photo" className="w-full h-full object-cover" />
         </motion.div>
@@ -243,7 +272,7 @@ const ConferenceCard = ({
         <motion.div
           animate={isHovered ? { scale: 1.02 } : { scale: 1 }}
           transition={{ duration: 0.3 }}
-          className={`bg-gradient-to-br ${conference.gradient} p-8 text-white relative z-0`}
+          className={`${conference.gradient} p-8 text-white relative z-0`}
         >
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -667,7 +696,7 @@ const AboutPage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr]">
                 {/* Left: Photo — full bleed */}
                 <div
-                  className="relative min-h-[280px] border-b lg:border-b-0 lg:border-r overflow-visible"
+                  className="relative min-h-[320px] border-b lg:border-b-0 lg:border-r overflow-visible"
                   style={{ borderColor }}
                 >
                   <img
@@ -678,14 +707,17 @@ const AboutPage = () => {
                   <FigmaCommentPin
                     message="This is Chico 🐶 Head of morale and snack supervision 🍗"
                     timeAgo="3 min. ago"
-                    top="32%"
+                    top="88%"
                     left="calc(52% + 30px)"
+                    mobileTop="88%"
+                    mobileLeft="52%"
                   />
                   <FigmaCommentPin
                     message="This is me 👋 Nice to meet you!"
                     timeAgo="5 min. ago"
                     top="72%"
                     left="8%"
+                    mobileLeft="8%"
                   />
                 </div>
 
@@ -780,7 +812,7 @@ const AboutPage = () => {
                 }}
               >
                 <span
-                  className="inline-flex items-center text-xs text-white px-1.5 py-1 rounded whitespace-nowrap leading-none"
+                  className="hidden sm:inline-flex items-center text-xs text-white px-1.5 py-1 rounded whitespace-nowrap leading-none"
                   style={{ backgroundColor: '#0a99ff' }}
                 >
                   Radius {Math.round(cardRadius)}
@@ -843,7 +875,7 @@ const AboutPage = () => {
                     boxShadow: '0 28px 60px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.12)',
                     rotate: value.rotation * 0.5,
                   }}
-                  className="flex flex-col p-5 sm:p-10 flex-shrink-0 w-[260px] sm:w-[380px] min-h-[240px] sm:min-h-[340px]"
+                  className={`flex flex-col p-5 sm:p-10 flex-shrink-0 w-[260px] sm:w-[380px] min-h-[240px] sm:min-h-[340px] ${index === 0 ? 'md:-mr-[30px]' : ''} ${index === 2 ? 'md:-ml-[30px]' : ''}`}
                   style={{
                     backgroundColor: value.color,
                     borderRadius: '2px',
@@ -855,8 +887,6 @@ const AboutPage = () => {
                     position: 'relative',
                     userSelect: 'none',
                     touchAction: 'none',
-                    marginRight: index === 0 ? -overlapMargin : undefined,
-                    marginLeft: index === 2 ? -overlapMargin : undefined,
                   }}
                 >
                   {(hoveredPostIt === index || draggingPostIt === index) && cornerSquares(
@@ -1142,7 +1172,7 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-left mb-8 sm:mb-12 px-6 sm:pl-8 sm:pr-0 md:max-w-5xl md:mx-auto md:px-0"
           >
-            <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 mb-4" style={{ filter: 'brightness(0)' }} />
+            <img src="/Me/Airplane.svg" alt="" className="w-28 h-28 mb-1 sm:mb-4" style={{ filter: 'brightness(0)' }} />
             <h2 className="text-3xl sm:text-[4rem] font-semibold mb-4 leading-none" style={{ color: textDark }}>
               Favourite Conferences I&apos;ve Attended
             </h2>
@@ -1162,8 +1192,8 @@ const AboutPage = () => {
                 code: 'LIS',
                 destCode: 'BCN',
                 description: 'Drew inspiration from top creatives across motion, branding, and interactive design.',
-                gradient: 'from-[#3372D6] to-[#1a3a8a]',
-                cardBg: 'linear-gradient(to bottom right, #3372D6, #1a3a8a)',
+                gradient: 'bg-[#3372D6]',
+                cardBg: '#3372D6',
                 photos: [
                     '/conferences/offf-group.jpg',
                     '/conferences/offf-stage.jpg',
@@ -1178,8 +1208,8 @@ const AboutPage = () => {
                 code: 'LIS',
                 destCode: 'CPH',
                 description: 'Gained new perspectives on AI in product design, and learned from real-world case studies.',
-                gradient: 'from-[#FE7747] to-[#c2410c]',
-                cardBg: 'linear-gradient(to bottom right, #FE7747, #c2410c)',
+                gradient: 'bg-[#FE7747]',
+                cardBg: '#FE7747',
                 photos: [
                     '/conferences/dm-coffee.jpg',
                     '/conferences/dm-group.jpg',

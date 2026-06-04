@@ -121,6 +121,11 @@ export default function PhysicsPills({ isInView }: { isInView: boolean }) {
         container.removeEventListener(ev, (mouse as any).mousewheel)
       })
 
+      // Remove Matter's touch capture so mobile touch-scroll still works
+      container.removeEventListener('touchstart', (mouse as any).mousedown)
+      container.removeEventListener('touchmove',  (mouse as any).mousemove)
+      container.removeEventListener('touchend',   (mouse as any).mouseup)
+
       const mc = MouseConstraint.create(engine, {
         mouse,
         constraint: { stiffness: 0.15, render: { visible: false } },
