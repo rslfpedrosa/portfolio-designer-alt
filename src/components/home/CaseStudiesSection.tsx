@@ -108,18 +108,23 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
         el ? gsap.quickSetter(el, 'y', 'px') : null
       )
 
-      // Timeline: 3 equal units of duration (ratios are all that matter with scrub)
-      //   t 0–1: nothing (dwell on slide 0)
-      //   t 1–2: slide 1 clip-path reveals bottom-up
-      //   t 2–3: slide 2 clip-path reveals bottom-up
+      // Timeline: dwell(0.5) + transition(1) + transition(1) = 2.5 units total
+      //   t 0–0.5:   dwell on slide 0 (nothing moves)
+      //   t 0.5–1.5: slide 1 clip-path reveals bottom-up
+      //   t 1.5–2.5: slide 2 clip-path reveals bottom-up
+      const DWELL = 0.5
+      const TRANS = 1
+      const TOTAL_TL = DWELL + TRANS * (TOTAL - 1) // 2.5
+      const dwellP = DWELL / TOTAL_TL              // 0.2
+      const transP = TRANS / TOTAL_TL              // 0.4
       const tl = gsap.timeline()
 
       if (imageRefs.current[1]) {
         tl.fromTo(
           imageRefs.current[1],
           { clipPath: 'inset(100% 0 0 0)' },
-          { clipPath: 'inset(0% 0 0 0)', ease: 'none', duration: 1 },
-          0 // ← starts immediately, no initial dwell
+          { clipPath: 'inset(0% 0 0 0)', ease: 'none', duration: TRANS },
+          DWELL
         )
       }
 
@@ -127,10 +132,22 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
         tl.fromTo(
           imageRefs.current[2],
           { clipPath: 'inset(100% 0 0 0)' },
-          { clipPath: 'inset(0% 0 0 0)', ease: 'none', duration: 1 },
-          1 // ← starts after slide 1 finishes
+          { clipPath: 'inset(0% 0 0 0)', ease: 'none', duration: TRANS },
+          DWELL + TRANS
         )
       }
+
+      // Fire first-slide text reveal early — before the section pins
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 70%',
+        onEnter() {
+          if (textIndexRef.current === -1) {
+            textIndexRef.current = 0
+            setTextIndex(0)
+          }
+        },
+      })
 
       ScrollTrigger.create({
         trigger: section,
@@ -139,28 +156,30 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
         pin: true,
         scrub: 3,
         animation: tl,
-        onEnter() {
-          // Trigger the enter animation for the first slide
-          if (textIndexRef.current === -1) {
-            textIndexRef.current = 0
-            setTextIndex(0)
-          }
-        },
         onUpdate(self) {
           const p = self.progress
 
           // Drive progress bar width directly — no React state, no CSS transition
+          // 0→1/3 during dwell, 1/3→2/3 during transition 1, 2/3→1 during transition 2
           if (progressBarRef.current) {
-            const w = ((1 + (TOTAL - 1) * p) / TOTAL) * 100
-            progressBarRef.current.style.width = `${w}%`
+            let segIdx: number, segStart: number, segLen: number
+            if (p < dwellP) {
+              segIdx = 0; segStart = 0; segLen = dwellP
+            } else if (p < dwellP + transP) {
+              segIdx = 1; segStart = dwellP; segLen = transP
+            } else {
+              segIdx = 2; segStart = dwellP + transP; segLen = transP
+            }
+            const barW = (segIdx + (p - segStart) / segLen) / TOTAL
+            progressBarRef.current.style.width = `${barW * 100}%`
           }
 
           // Text swap at the midpoint of each image transition:
-          //   Transition 1 midpoint: t=0.5 → progress = 0.5/2 = 0.25
-          //   Transition 2 midpoint: t=1.5 → progress = 1.5/2 = 0.75
+          //   Transition 1 midpoint: t=1.0 → progress = 1.0/2.5 = 0.40
+          //   Transition 2 midpoint: t=2.0 → progress = 2.0/2.5 = 0.80
           let next = 0
-          if (p >= 0.25) next = 1
-          if (p >= 0.75) next = 2
+          if (p >= 0.40) next = 1
+          if (p >= 0.80) next = 2
           if (next !== textIndexRef.current) {
             textIndexRef.current = next
             setTextIndex(next)
@@ -331,13 +350,15 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
                       variants={lineRevealLg}
                       style={{
                         color: '#ffffff',
-                        fontSize: isDesktop ? 'clamp(30px, 3.8vw, 58px)' : 'clamp(28px, 7.5vw, 48px)',
+                        fontSize: isDesktop ? 'clamp(36px, 4.8vw, 58px)' : 'clamp(28px, 7.5vw, 48px)',
                         fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
-                        maxWidth: '22ch',
+                        maxWidth: i === 0 && isDesktop ? 'none' : '22ch',
                         margin: 0,
                       }}
                     >
-                      {slide.subtitle}
+                      {i === 0 && isDesktop
+                        ? <>Rethinking Care Management<br />for CPPS Treatment</>
+                        : slide.subtitle}
                     </motion.h2>
                   </div>
 
@@ -346,14 +367,16 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
                     variants={fadeUp}
                     style={{
                       color: 'rgba(255,255,255,0.60)',
-                      fontSize: isDesktop ? 'clamp(15px, 1.3vw, 18px)' : 'clamp(15px, 4vw, 18px)',
+                      fontSize: isDesktop ? 'clamp(16px, 1.8vw, 20px)' : 'clamp(15px, 4vw, 18px)',
                       lineHeight: 1.65,
-                      maxWidth: '38ch',
+                      maxWidth: i === 0 && isDesktop ? 'none' : '38ch',
                       margin: 0,
                       marginBottom: 'clamp(20px, 2.5vw, 36px)',
                     }}
                   >
-                    {slide.tagline ?? slide.description}
+                    {i === 0 && isDesktop
+                      ? <>Making it easier for physical therapists to track progress,<br />make decisions, and adapt care with confidence.</>
+                      : slide.tagline ?? slide.description}
                   </motion.p>
 
                   {/* 5. Button */}
@@ -403,7 +426,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
         >
           <div ref={progressBarRef} style={{
             position: 'absolute', left: 0, top: 0, bottom: 0,
-            width: `${(1 / TOTAL) * 100}%`,
+            width: '0%',
             background: 'rgba(255,255,255,0.55)',
           }} />
         </div>

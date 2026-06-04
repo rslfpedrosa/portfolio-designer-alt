@@ -5,6 +5,7 @@ import Footer from '@/components/Footer'
 import AnimatedBackground from '@/components/AnimatedBackground'
 // import ContentProtection from '@/components/ContentProtection'
 import SmoothScroll from '@/components/SmoothScroll'
+import CursorBlob from '@/components/CursorBlob'
 
 export default function ConditionalLayout({
   children,
@@ -15,6 +16,7 @@ export default function ConditionalLayout({
     <>
       <SmoothScroll />
       {/* <ContentProtection /> */}
+      <CursorBlob />
       <AnimatedBackground />
       <Header />
       <main className="min-h-screen">
