@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 
 const CYCLING_PHRASES = ["Hi, I'm Rita.", 'I Design.', 'I Simplify.', 'I Explore.', 'I Create.', 'I Prototype.', 'I Question.', 'I Iterate.']
@@ -139,8 +140,8 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
         >
           <div className="inline-flex items-center gap-2.5">
             <div className="relative flex items-center justify-center w-1.5 h-1.5">
-              <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#D4F05C' }} />
-              <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#D4F05C' }} />
+              <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#3caa54' }} />
+              <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#3caa54' }} />
             </div>
             <span
               style={{
@@ -315,6 +316,49 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           </Link>
         </motion.div>
       </div>
+
+      {/* Floating illustrations */}
+      <motion.div
+        className="absolute pointer-events-none hidden md:block"
+        style={{ top: '18%', right: '24%' }}
+        aria-hidden
+        initial={{ opacity: 0, y: 16 }}
+        animate={entered ? { opacity: 1, y: [0, -10, 0] } : { opacity: 0, y: 16 }}
+        transition={shouldReduceMotion ? { duration: 0 } : {
+          opacity: { delay: 1.4, duration: 0.8 },
+          y: { delay: 1.4, duration: 4.5, repeat: Infinity, ease: 'easeInOut' },
+        }}
+      >
+        <Image src="/hero/wave.svg" alt="" width={96} height={96} />
+      </motion.div>
+
+      <motion.div
+        className="absolute pointer-events-none hidden md:block"
+        style={{ bottom: '18%', right: '24%' }}
+        aria-hidden
+        initial={{ opacity: 0, y: 16 }}
+        animate={entered ? { opacity: 1, y: [0, 8, 0] } : { opacity: 0, y: 16 }}
+        transition={shouldReduceMotion ? { duration: 0 } : {
+          opacity: { delay: 1.7, duration: 0.8 },
+          y: { delay: 1.7, duration: 5.2, repeat: Infinity, ease: 'easeInOut' },
+        }}
+      >
+        <Image src="/hero/scribble.svg" alt="" width={100} height={100} />
+      </motion.div>
+
+      <motion.div
+        className="absolute pointer-events-none hidden md:block"
+        style={{ bottom: '22%', left: '24%' }}
+        aria-hidden
+        initial={{ opacity: 0, y: 16 }}
+        animate={entered ? { opacity: 1, y: [0, -8, 0] } : { opacity: 0, y: 16 }}
+        transition={shouldReduceMotion ? { duration: 0 } : {
+          opacity: { delay: 2.0, duration: 0.8 },
+          y: { delay: 2.0, duration: 4.8, repeat: Infinity, ease: 'easeInOut' },
+        }}
+      >
+        <Image src="/hero/sticky.svg" alt="" width={84} height={84} />
+      </motion.div>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2">

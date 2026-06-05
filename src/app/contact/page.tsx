@@ -462,8 +462,8 @@ const ContactPage = () => {
                 </p>
                 <div className="status-badge inline-flex items-center space-x-2 rounded-full px-4 py-2">
                   <div className="relative flex items-center justify-center w-2 h-2">
-                    <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
-                    <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#22c55e' }} />
+                    <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#3caa54' }} />
+                    <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#3caa54' }} />
                   </div>
                   <span className="text-sm font-medium" style={{ color: 'rgba(36,31,33,0.70)' }}>
                     Available for new projects

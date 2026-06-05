@@ -203,8 +203,8 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
       style={{
         position: 'relative',
         height: '100svh',
-        background: '#f2efea',
-        padding: `${isDesktop ? 'clamp(80px,9vh,96px)' : 'clamp(96px,12vh,120px)'} clamp(16px,1.8vw,24px) clamp(16px,2vh,24px)`,
+        background: '#ffffff',
+        padding: `${isDesktop ? 'clamp(80px,9vh,96px)' : 'clamp(96px,12vh,120px)'} clamp(40px,5vw,80px) clamp(40px,5vh,80px)`,
         boxSizing: 'border-box',
         overflow: 'hidden',
       }}
@@ -227,7 +227,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
         style={{
           position: 'absolute',
           top: isDesktop ? 'calc(clamp(80px,9vh,96px) - 22px)' : 'calc(clamp(96px,12vh,120px) - 22px)',
-          left: 'clamp(16px,1.8vw,24px)',
+          left: 'clamp(40px,5vw,80px)',
           display: 'flex', alignItems: 'center', gap: 6,
           color: '#9747FF',
           zIndex: 50, pointerEvents: 'none',

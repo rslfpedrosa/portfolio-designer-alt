@@ -8,7 +8,7 @@ import Image from 'next/image'
 export default function AboutPreview() {
   return (
     <section
-      className="relative bg-[#f2efea]"
+      className="relative bg-white"
       style={{
       }}
     >

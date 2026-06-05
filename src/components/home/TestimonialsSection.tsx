@@ -199,7 +199,7 @@ export default function TestimonialsSection() {
     <>
       <section
         id="testimonials-section"
-        className="relative bg-[#f2efea] pt-[80px] md:pt-[clamp(80px,10vw,140px)]"
+        className="relative bg-white pt-[80px] md:pt-[clamp(80px,10vw,140px)]"
         style={{
           paddingBottom: 'clamp(64px, 8vw, 120px)',
         }}

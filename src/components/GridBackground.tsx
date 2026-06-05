@@ -12,6 +12,7 @@ export default function GridBackground() {
               <circle cx="6" cy="6" r="0.75" fill="rgba(36,31,33,0.14)" />
             </pattern>
           </defs>
+          <rect width="100%" height="100%" fill="white" />
           <rect width="100%" height="100%" fill="url(#cf-dots)" />
         </svg>
       </div>
