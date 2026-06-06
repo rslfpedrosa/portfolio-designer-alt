@@ -78,12 +78,12 @@ const LabPage = () => {
       </div>
 
       {/* Hero */}
-      <section className="pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
+      <section className="relative z-10 pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="text-left pl-6 sm:pl-8 lg:pl-16"
           >
             <h1
@@ -100,7 +100,7 @@ const LabPage = () => {
       </section>
 
       {/* Explorations */}
-      <section className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
+      <section className="relative z-10 py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col gap-8 sm:gap-12">
           {labItems.map((item, index) => (
             <div key={item.id} className="relative">

@@ -92,7 +92,7 @@ const ProjectsPage = () => {
       </div>
 
       {/* ── Hero heading ─────────────────────────────────────────────────────── */}
-      <section className="pt-14 sm:pt-24 pb-2 sm:pb-4 px-4 sm:px-6 lg:px-8">
+      <section className="relative z-10 pt-14 sm:pt-24 pb-2 sm:pb-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -114,7 +114,7 @@ const ProjectsPage = () => {
       </section>
 
       {/* ── Case study slides ─────────────────────────────────────────────────── */}
-      <section className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
+      <section className="relative z-10 py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col">
           {slides.map((slide, i) => (
             <div key={slide.id} className={i > 0 ? 'mt-6 sm:mt-0' : ''}>

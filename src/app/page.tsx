@@ -1,18 +1,20 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import GridBackground from '@/components/GridBackground'
 
 type FolderStat = { label: string; value: string }
+type FunFact = { text: string; image: string }
 
 const HERO_FOLDERS: Array<{
-  src: string; alt: string; left: string; top: number; delay: number; rotate: number; width: number;
+  src: string; alt: string; left: string; top: string; delay: number; rotate: number; width: number;
   stats?: FolderStat[]
+  facts?: FunFact[]
 }> = [
   {
-    src: '/hero/Folder-final.svg', alt: 'final_FINAL_v3 folder', left: '23%', top: 210, delay: 0.5, rotate: -8, width: 90,
+    src: '/hero/Folder-final.svg', alt: 'final_FINAL_v3 folder', left: '19%', top: '28vh', delay: 0.5, rotate: -8, width: 90,
     stats: [
       { label: 'Versions before this one', value: '27' },
       { label: 'Coffee consumed', value: '342 cups' },
@@ -20,7 +22,16 @@ const HERO_FOLDERS: Array<{
       { label: 'Times it was actually one small change', value: '0' },
     ],
   },
-  { src: '/hero/Folder-fun.svg', alt: 'Fun facts folder', left: '70%', top: 470, delay: 1.3, rotate: 10, width: 90 },
+  {
+    src: '/hero/Folder-fun.svg', alt: 'Fun facts folder', left: '76%', top: '50vh', delay: 1.3, rotate: 10, width: 90,
+    facts: [
+      { text: 'Facilitated a design sprint at Stanford University.', image: '/random/stanford.webp' },
+      { text: 'Won a dumpling-folding competition. My finest achievement.', image: '/random/dumpling.webp' },
+      { text: 'I Collect hobbies faster than I finish them.', image: '/random/hobbies.webp' },
+      { text: 'My flower budget is best left undisclosed.', image: '/random/flowers.webp' },
+      { text: 'Dog mom first, designer second.', image: '/random/dog-mom.webp' },
+    ],
+  },
 ]
 
 function FolderTooltip({ stats }: { stats: FolderStat[] }) {
@@ -83,8 +94,77 @@ function FolderTooltip({ stats }: { stats: FolderStat[] }) {
   )
 }
 
-function HeroFolder({ src, alt, left, top, delay, rotate, width, stats }: typeof HERO_FOLDERS[0]) {
+function FunFactTooltip({ fact }: { fact: FunFact }) {
+  return (
+    <div style={{
+      position: 'absolute',
+      bottom: 'calc(100% + 18px)',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      pointerEvents: 'none',
+      zIndex: 100,
+    }}>
+      <motion.div
+        initial={{ opacity: 0, y: 6, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 4, scale: 0.96 }}
+        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          background: '#1c1c1e',
+          borderRadius: 18,
+          overflow: 'hidden',
+          width: 240,
+          boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+        }}
+      >
+        <img src={fact.image} alt="" style={{ width: '100%', height: 130, objectFit: 'cover', display: 'block' }} />
+        <div style={{ padding: '12px 16px 14px', color: '#fff', fontSize: 14, fontWeight: 400, lineHeight: 1.45 }}>
+          {fact.text}
+        </div>
+        <div style={{
+          position: 'absolute',
+          bottom: -10,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 20,
+          height: 10,
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            width: 14,
+            height: 14,
+            background: '#1c1c1e',
+            transform: 'rotate(45deg)',
+            position: 'absolute',
+            top: -7,
+            left: '50%',
+            marginLeft: -7,
+            borderRadius: 2,
+          }} />
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
+function HeroFolder({ src, alt, left, top, delay, rotate, width, stats, facts }: typeof HERO_FOLDERS[0]) {
   const [hovered, setHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [currentFactIndex, setCurrentFactIndex] = useState(0)
+  const lastFactIndexRef = useRef(-1)
+  const floatY = rotate < 0 ? [-9, 0, -9] : [9, 0, 9]
+
+  const handleHoverStart = () => {
+    setHovered(true)
+    if (facts && facts.length > 1) {
+      const next = lastFactIndexRef.current === -1
+        ? Math.floor(Math.random() * facts.length)
+        : (lastFactIndexRef.current + 1) % facts.length
+      lastFactIndexRef.current = next
+      setCurrentFactIndex(next)
+    }
+  }
+
   return (
     <motion.div
       drag
@@ -96,21 +176,31 @@ function HeroFolder({ src, alt, left, top, delay, rotate, width, stats }: typeof
         scale: { duration: 0.5, delay: delay + 1.5, ease: [0.16, 1, 0.3, 1] },
         rotate: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
       }}
+      data-cursor="drag"
       whileDrag={{ scale: 1.08, zIndex: 50 }}
-      onHoverStart={() => setHovered(true)}
+      onHoverStart={handleHoverStart}
       onHoverEnd={() => setHovered(false)}
-      style={{ position: 'absolute', left, top, pointerEvents: 'auto', cursor: 'grab', userSelect: 'none' }}
+      onDragStart={() => { setIsDragging(true); setHovered(false); window.dispatchEvent(new Event('cursor:drag:start')) }}
+      onDragEnd={() => { setIsDragging(false); window.dispatchEvent(new Event('cursor:drag:end')) }}
+      style={{ position: 'absolute', left, top, pointerEvents: 'auto', userSelect: 'none' }}
     >
-      <AnimatePresence>{stats && hovered && <FolderTooltip stats={stats} />}</AnimatePresence>
-      <img src={src} alt={alt} width={width} draggable={false} style={{ display: 'block' }} />
+      <motion.div
+        animate={!isDragging ? { y: floatY } : { y: 0 }}
+        transition={{ delay: delay + 2.0, duration: 5.0 + delay * 0.4, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <AnimatePresence>{stats && hovered && !isDragging && <FolderTooltip stats={stats} />}</AnimatePresence>
+        <AnimatePresence>{facts && hovered && !isDragging && <FunFactTooltip fact={facts[currentFactIndex]} />}</AnimatePresence>
+        <img src={src} alt={alt} width={width} draggable={false} style={{ display: 'block' }} />
+      </motion.div>
     </motion.div>
   )
 }
 
-// Arc positions: imaginary ellipse around center content (cx=50%, cy=45vh, rx=30%, ry=36vh)
-// rx/ry ratio ≈ viewport aspect ratio so the arc looks circular on screen
-// Left arc at θ=130°/180°/220° — arrow flipped rightward, label extends left (away from content)
-// Right arc at θ=40°/320°   — standard arrow, label extends right
+// Arc: imaginary ellipse cx=46%, cy=45vh, rx=30%, ry=36vh — all 10 floating elements (5 cursors,
+// 3 illustrations, 2 folders) are placed on this arc with ~25° spacing to prevent overlaps.
+// cx is shifted 4% left of centre to compensate for cursor labels always extending rightward.
+// Left arc (θ top→bottom): final_FINAL_v2 232°, folder-final 208°, Lots of Coffee 180°, sticky 152°, Music Non-Stop 118°
+// Right arc (θ top→bottom): This is still WIP 308°, wave 335°, folder-fun 8°, Just One Small Change 35°, scribble 60°
 interface FigmaCursor {
   name: string; color: string
   left: string; top: string
@@ -118,23 +208,30 @@ interface FigmaCursor {
   animY: number[]; animX: number[]
 }
 const FIGMA_USERS: FigmaCursor[] = [
-  { name: 'final_FINAL_v2',        color: '#E8B225', left: '33%', top: '17vh', delay: 1.8, duration: 17, animY: [0, -18, 14, -24, 16, -10, 0], animX: [0, -8,  5, -11, 7,  -5, 0] },
-  { name: 'Lots of Coffee',        color: '#4088F0', left: '20%', top: '45vh', delay: 0,   duration: 14, animY: [0, -16, 20, -22, 14, -18, 0], animX: [0, -10, 6, -13, 8,  -6, 0] },
-  { name: 'Music Non-Stop',        color: '#3DAA54', left: '28%', top: '69vh', delay: 0.7, duration: 18, animY: [0, 14, -18, 16, -12, 17,  0], animX: [0, -8,  5, -10, 7,  -5, 0] },
-  { name: 'This is still WIP',     color: '#E05530', left: '68%', top: '20vh', delay: 2.1, duration: 13, animY: [0, -20, 12, -24, 10, -16, 0], animX: [0, 8,  -5, 11, -7,  5,  0] },
-  { name: 'Just One Small Change', color: '#D43F9B', left: '68%', top: '69vh', delay: 1.2, duration: 16, animY: [0, 15, -16, 21, -10, 18,  0], animX: [0, 8,  -5, 10, -7,  5,  0] },
+  { name: 'final_FINAL_v2',        color: '#E8B225', left: '27%', top: '17vh', delay: 1.8, duration: 17, animY: [0, -34, 26, -42, 30, -20, 0], animX: [0, -18, 12, -22, 15, -10, 0] },
+  { name: 'Lots of Coffee',        color: '#4088F0', left: '16%', top: '45vh', delay: 0,   duration: 14, animY: [0, -30, 38, -40, 26, -34, 0], animX: [0, -20, 14, -26, 16, -12, 0] },
+  { name: 'Music Non-Stop',        color: '#3DAA54', left: '32%', top: '77vh', delay: 0.7, duration: 18, animY: [0, 28, -34, 30, -24, 32,  0], animX: [0, -16, 12, -20, 14, -10, 0] },
+  { name: 'This is still WIP',     color: '#E05530', left: '65%', top: '17vh', delay: 2.1, duration: 13, animY: [0, -38, 24, -44, 20, -30, 0], animX: [0, 16, -12, 22, -14, 10,  0] },
+  { name: 'Just One Small Change', color: '#D43F9B', left: '71%', top: '66vh', delay: 1.2, duration: 16, animY: [0, 30, -32, 40, -20, 36,  0], animX: [0, 16, -12, 20, -14, 10,  0] },
 ]
 
 function HeroCursor({ name, color, left, top, delay, duration, animY, animX }: FigmaCursor) {
+  const [isDragging, setIsDragging] = useState(false)
   return (
     <motion.div
+      drag
+      dragMomentum={false}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: delay + 1.5, ease: [0.16, 1, 0.3, 1] }}
-      style={{ position: 'absolute', left, top, pointerEvents: 'none' }}
+      data-cursor="drag"
+      style={{ position: 'absolute', left, top, pointerEvents: 'auto', userSelect: 'none' }}
+      whileDrag={{ scale: 1.08, zIndex: 50 }}
+      onDragStart={() => { setIsDragging(true); window.dispatchEvent(new Event('cursor:drag:start')) }}
+      onDragEnd={() => { setIsDragging(false); window.dispatchEvent(new Event('cursor:drag:end')) }}
     >
       <motion.div
-        animate={{ y: animY, x: animX }}
+        animate={isDragging ? { y: 0, x: 0 } : { y: animY, x: animX }}
         transition={{ duration, repeat: Infinity, ease: 'easeInOut', delay, repeatType: 'loop' }}
         style={{ position: 'relative', display: 'inline-block', width: 22 }}
       >

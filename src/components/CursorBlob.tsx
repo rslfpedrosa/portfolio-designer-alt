@@ -43,6 +43,7 @@ export default function CursorBlob() {
   const [activeCursor, setActiveCursor] = useState<string | null>(null)
   const [isActiveDragging, setIsActiveDragging] = useState(false)
   const [draggingLabel, setDraggingLabel] = useState('')
+  const [isGrabDragging, setIsGrabDragging] = useState(false)
   const [isPointer, setIsPointer] = useState(false)
 
   const [renderedLabel, setRenderedLabel] = useState<string | null>(null)
@@ -82,6 +83,18 @@ export default function CursorBlob() {
 
   useEffect(() => {
     if (!isDesktop) return
+    const onStart = () => setIsGrabDragging(true)
+    const onEnd   = () => setIsGrabDragging(false)
+    window.addEventListener('cursor:grab:start', onStart)
+    window.addEventListener('cursor:grab:end',   onEnd)
+    return () => {
+      window.removeEventListener('cursor:grab:start', onStart)
+      window.removeEventListener('cursor:grab:end',   onEnd)
+    }
+  }, [isDesktop])
+
+  useEffect(() => {
+    if (!isDesktop) return
 
     const onMove = (e: MouseEvent) => {
       mouseX.current = e.clientX
@@ -114,6 +127,8 @@ export default function CursorBlob() {
 
   const label = isActiveDragging
     ? draggingLabel
+    : isGrabDragging
+    ? null
     : activeCursor
     ? (CURSOR_LABELS[activeCursor] ?? null)
     : null
@@ -142,7 +157,7 @@ export default function CursorBlob() {
 
   if (!isDesktop) return null
 
-  const cursorType = isActiveDragging ? 'dragging' : isPointer ? 'pointer' : activeCursor === 'drag' ? 'drag-hover' : 'arrow'
+  const cursorType = (isActiveDragging || isGrabDragging) ? 'dragging' : isPointer ? 'pointer' : (activeCursor === 'drag' || activeCursor === 'grab') ? 'drag-hover' : 'arrow'
 
   const iconStyle = (type: string): React.CSSProperties => ({
     position: 'absolute',

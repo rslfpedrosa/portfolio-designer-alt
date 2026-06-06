@@ -1,25 +1,61 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const designShowcase = [
-  { id: 1, type: 'video', media: '/explorations/exploration-1.mp4', gradient: 'from-cyan-400 to-blue-500' },
-  { id: 2, type: 'video', media: '/explorations/exploration-2.mp4', gradient: 'from-pink-400 to-gray-500' },
-  { id: 3, type: 'video', media: '/explorations/exploration-3.mp4', gradient: 'from-orange-400 to-red-500' },
-  { id: 4, type: 'video', media: '/explorations/exploration-4.mp4', gradient: 'from-green-400 to-teal-500' },
+gsap.registerPlugin(ScrollTrigger)
+
+const TRAIL_MEDIA: Array<{ src: string; type: 'video' | 'image' }> = [
+  { src: '/explorations/exploration-1.mp4',     type: 'video' },
+  { src: '/explorations/hello-Post.webm',       type: 'video' },
+  { src: '/explorations/23126508_195.webp',     type: 'image' },
+  { src: '/explorations/exploration-2.mp4',     type: 'video' },
+  { src: '/explorations/012-2.webp',            type: 'image' },
+  { src: '/explorations/exploration-3.mp4',     type: 'video' },
+  { src: '/explorations/genes.webm',            type: 'video' },
+  { src: '/explorations/exploration-4.mp4',     type: 'video' },
 ]
 
-// [top-left, top-right, bottom-left, bottom-right]
-const CARDS = [
+// Used only by the mobile horizontal-scroll layout
+const MOBILE_CARDS = [
   { rotation: -8, pos: { top: '8%',    left: '6%'  } },
   { rotation: 4,  pos: { top: '7%',    right: '6%' } },
   { rotation: -5, pos: { bottom: '8%', left: '6%'  } },
   { rotation: 7,  pos: { bottom: '7%', right: '6%' } },
 ]
+const MOBILE_MEDIA = TRAIL_MEDIA.slice(0, 4)
 
-function CentreText() {
+interface TrailCard {
+  id: number
+  x: number
+  y: number
+  rotation: number
+  mediaIndex: number
+}
+
+const MAX_TRAIL     = 10    // hard cap during fast sweeps
+const MIN_DIST      = 75    // px between spawns
+const CARD_LIFETIME = 2000  // ms each card lives before auto-fading
+const IDLE_DELAY    = 100   // ms after last move before sequential fade starts
+const FADE_STEP     = 60    // ms between each removal when idle
+
+// Auto-demo path (relative 0–1 coords) — runs once when section scrolls into view.
+// x: 0.22–0.78 keeps cards away from viewport edges.
+// y: 0.18–0.48 keeps cards in the upper half of the section, which is visible
+//    when the IntersectionObserver fires at threshold 0.5.
+const DEMO_PATH = [
+  { x: 0.22, y: 0.22 },
+  { x: 0.38, y: 0.46 },
+  { x: 0.52, y: 0.18 },
+  { x: 0.66, y: 0.48 },
+  { x: 0.80, y: 0.20 },
+]
+const DEMO_INTERVAL = 190  // ms between each demo card
+
+function CentreText({ onButtonEnter, onButtonLeave }: { onButtonEnter?: () => void; onButtonLeave?: () => void }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -73,7 +109,13 @@ function CentreText() {
       >
         UI explorations, interaction studies, motion experiments, and visual concepts.
       </p>
-      <Link href="/lab" data-cursor="take-a-peek" style={{ pointerEvents: 'auto', marginTop: '1.5em' }}>
+      <Link
+        href="/lab"
+        data-cursor="take-a-peek"
+        style={{ pointerEvents: 'auto', marginTop: '1.5em' }}
+        onMouseEnter={onButtonEnter}
+        onMouseLeave={onButtonLeave}
+      >
         <div
           style={{
             display: 'inline-flex',
@@ -82,7 +124,7 @@ function CentreText() {
             fontSize: '17px',
             fontWeight: 500,
             color: '#241f21',
-            background: 'transparent',
+            background: '#ffffff',
             border: '1px solid rgba(36,31,33,0.35)',
             borderRadius: '999px',
             padding: '10px 24px',
@@ -103,19 +145,160 @@ function CentreText() {
 }
 
 export default function DesignShowcase() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
-  const didDrag = useRef(false)
+  const [trailCards, setTrailCards] = useState<TrailCard[]>([])
+  const sectionRef      = useRef<HTMLElement>(null)
+  const lastPosRef      = useRef<{ x: number; y: number } | null>(null)
+  const idRef           = useRef(0)
+  const mediaRef        = useRef(0)
+  const idleTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const fadeIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const cardTimersRef   = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map())
+  const demoRanRef        = useRef(false)
+  const demoTimersRef     = useRef<ReturnType<typeof setTimeout>[]>([])
+  const isButtonHoveredRef = useRef(false)
+
+  const removeCard = useCallback((cardId: number) => {
+    setTrailCards(prev => prev.filter(c => c.id !== cardId))
+    cardTimersRef.current.delete(cardId)
+  }, [])
+
+  // Shared spawn logic used by both the real cursor and the auto-demo
+  const spawnCardAt = useCallback((x: number, y: number) => {
+    const cardId = idRef.current++
+    const card: TrailCard = {
+      id:         cardId,
+      x, y,
+      rotation:   (Math.random() - 0.5) * 22,
+      mediaIndex: mediaRef.current++ % TRAIL_MEDIA.length,
+    }
+    setTrailCards(prev => {
+      const next = [...prev, card]
+      if (next.length > MAX_TRAIL) {
+        next.slice(0, next.length - MAX_TRAIL).forEach(c => {
+          const t = cardTimersRef.current.get(c.id)
+          if (t) { clearTimeout(t); cardTimersRef.current.delete(c.id) }
+        })
+        return next.slice(next.length - MAX_TRAIL)
+      }
+      return next
+    })
+    const timer = setTimeout(() => removeCard(cardId), CARD_LIFETIME)
+    cardTimersRef.current.set(cardId, timer)
+  }, [removeCard])
+
+  const stopFade = useCallback(() => {
+    if (idleTimerRef.current)    { clearTimeout(idleTimerRef.current);    idleTimerRef.current    = null }
+    if (fadeIntervalRef.current) { clearInterval(fadeIntervalRef.current); fadeIntervalRef.current = null }
+  }, [])
+
+  const startFade = useCallback(() => {
+    if (fadeIntervalRef.current) return
+    fadeIntervalRef.current = setInterval(() => {
+      setTrailCards(prev => {
+        if (prev.length === 0) {
+          clearInterval(fadeIntervalRef.current!)
+          fadeIntervalRef.current = null
+          return prev
+        }
+        // Clear lifetime timer for the card being sequentially removed
+        const t = cardTimersRef.current.get(prev[0].id)
+        if (t) { clearTimeout(t); cardTimersRef.current.delete(prev[0].id) }
+        return prev.slice(1)
+      })
+    }, FADE_STEP)
+  }, [])
+
+  const scheduleFade = useCallback(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    idleTimerRef.current = setTimeout(startFade, IDLE_DELAY)
+  }, [startFade])
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (isButtonHoveredRef.current) return
+
+    stopFade()
+
+    const rect = sectionRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    const last = lastPosRef.current
+    if (last) {
+      const dx = x - last.x
+      const dy = y - last.y
+      if (dx * dx + dy * dy < MIN_DIST * MIN_DIST) {
+        scheduleFade()
+        return
+      }
+    }
+    lastPosRef.current = { x, y }
+
+    spawnCardAt(x, y)
+    scheduleFade()
+  }, [stopFade, scheduleFade, spawnCardAt])
+
+  const handleMouseLeave = useCallback(() => {
+    lastPosRef.current = null
+    scheduleFade()
+  }, [scheduleFade])
+
+  // Auto-demo: runs once when the section first scrolls into view
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || demoRanRef.current) return
+      demoRanRef.current = true
+
+      DEMO_PATH.forEach(({ x, y }, i) => {
+        const t = setTimeout(() => {
+          const { width, height } = section.getBoundingClientRect()
+          spawnCardAt(x * width, y * height)
+        }, i * DEMO_INTERVAL)
+        demoTimersRef.current.push(t)
+      })
+    }, { threshold: 0.5 })
+
+    observer.observe(section)
+    return () => {
+      observer.disconnect()
+      demoTimersRef.current.forEach(t => clearTimeout(t))
+    }
+  }, [spawnCardAt])
+
+  // Clean up all timers on unmount
+  useEffect(() => () => {
+    stopFade()
+    cardTimersRef.current.forEach(t => clearTimeout(t))
+  }, [stopFade])
+
+  // Pin the desktop section for 100vh of scroll so the cursor animation is visible
+  useLayoutEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top top',
+        end: '+=100vh',
+        pin: true,
+      })
+    }, section)
+    return () => ctx.revert()
+  }, [])
 
   return (
     <>
-      {/* ── Desktop: scattered layout ── */}
+      {/* ── Desktop: cursor-trail layout ── */}
       <section
+        ref={sectionRef}
         className="relative hidden lg:block"
-        style={{
-          minHeight: 'max(780px, 90svh)',
-          marginTop: '6rem',
-        }}
+        style={{ minHeight: '100vh' }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
       >
         {/* Dot pattern */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
@@ -129,87 +312,104 @@ export default function DesignShowcase() {
           </svg>
         </div>
 
-        <CentreText />
+        {/*
+          Preloader: fixed off-screen at real size so browsers treat them as visible
+          and actually autoplay + decode each video — first-frame is instant on trail.
+        */}
+        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: 1, height: 1, overflow: 'hidden', pointerEvents: 'none', zIndex: -1 }} aria-hidden>
+          {TRAIL_MEDIA.map(item => item.type === 'video' ? (
+            <video key={item.src} src={item.src} autoPlay muted loop playsInline preload="auto"
+                   style={{ width: 1, height: 1 }} />
+          ) : (
+            <img key={item.src} src={item.src} alt="" style={{ width: 1, height: 1 }} />
+          ))}
+        </div>
 
-        {/* Draggable scattered cards */}
-        {designShowcase.map((item, index) => {
-          const card = CARDS[index]
-          const isHovered = hoveredIndex === index
-          const isDragging = draggingIndex === index
+        <CentreText
+          onButtonEnter={() => { isButtonHoveredRef.current = true; lastPosRef.current = null; startFade() }}
+          onButtonLeave={() => { isButtonHoveredRef.current = false; stopFade() }}
+        />
 
-          return (
-            <motion.div
-              key={item.id}
-              drag
-              dragMomentum={false}
-              dragElastic={0.05}
-              data-cursor="drag"
-              initial={{ opacity: 0, y: 24, rotate: card.rotation }}
-              whileInView={{ opacity: 1, y: 0 }}
-              animate={{ rotate: card.rotation }}
-              whileHover={{ rotate: card.rotation * 0.35 }}
-              whileDrag={{ scale: 1.04 }}
-              transition={{
-                opacity: { duration: 0.9, delay: 0.1 + index * 0.09, ease: [0.16, 1, 0.3, 1] },
-                y: { duration: 0.9, delay: 0.1 + index * 0.09, ease: [0.16, 1, 0.3, 1] },
-                rotate: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
-                scale: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
-              }}
-              viewport={{ once: true }}
-              onDragStart={() => {
-                didDrag.current = true
-                setDraggingIndex(index)
-                window.dispatchEvent(new CustomEvent('cursor:drag:start'))
-              }}
-              onDragEnd={() => {
-                setDraggingIndex(null)
-                setTimeout(() => { didDrag.current = false }, 100)
-                window.dispatchEvent(new CustomEvent('cursor:drag:end'))
-              }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
+        {/* Hint label — disappears once the first card appears */}
+        <AnimatePresence>
+          {trailCards.length === 0 && (
+            <motion.p
+              key="hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
               style={{
                 position: 'absolute',
-                width: 'clamp(180px, 30%, 430px)',
-                ...card.pos,
-                cursor: isDragging ? 'grabbing' : 'grab',
-                zIndex: isDragging ? 30 : isHovered ? 25 : 10,
-                borderRadius: '5px',
-                overflow: 'hidden',
-                boxShadow: isDragging
-                  ? '0 30px 80px rgba(36,31,33,0.28)'
-                  : isHovered
-                    ? '0 20px 60px rgba(36,31,33,0.22)'
-                    : '0 6px 28px rgba(36,31,33,0.13)',
-                transition: 'box-shadow 0.45s cubic-bezier(0.16,1,0.3,1)',
+                bottom: '9%',
+                left: '50%',
+                translateX: '-50%',
+                fontSize: 13,
+                color: 'rgba(36,31,33,0.38)',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                pointerEvents: 'none',
+                zIndex: 5,
+                whiteSpace: 'nowrap',
               }}
             >
-              <div style={{ aspectRatio: '16/10', overflow: 'hidden' }}>
-                <video
-                  src={item.media}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  onLoadedData={(e) => {
-                    const v = e.currentTarget
-                    v.play().catch(() => { v.muted = true })
-                  }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    display: 'block',
-                    transform: isHovered ? 'scale(1.04)' : 'scale(1)',
-                    transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
-                    pointerEvents: 'none',
-                  }}
-                />
-              </div>
-            </motion.div>
-          )
-        })}
+              Move your cursor to explore
+            </motion.p>
+          )}
+        </AnimatePresence>
+
+        {/* Trail cards — newest (i = length-1) at full size, oldest (i = 0) smallest */}
+        <AnimatePresence>
+          {trailCards.map((card, i) => {
+            const item = TRAIL_MEDIA[card.mediaIndex]
+            const total = trailCards.length
+            // i=0 oldest → 0.62 scale, i=total-1 newest → 1.0 scale
+            const scaleTarget = total === 1 ? 1 : 0.62 + (i / (total - 1)) * 0.38
+            return (
+              <motion.div
+                key={card.id}
+                initial={{ opacity: 0, scale: 0.42, y: 14, rotate: card.rotation - 5 }}
+                animate={{ opacity: 1, scale: scaleTarget, y: 0, rotate: card.rotation }}
+                exit={{ opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } }}
+                transition={{
+                  opacity: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                  scale:   { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+                  y:       { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                  rotate:  { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                }}
+                style={{
+                  position: 'absolute',
+                  left: card.x,
+                  top:  card.y,
+                  translateX: '-50%',
+                  translateY: '-50%',
+                  width: 'clamp(180px, 21vw, 300px)',
+                  borderRadius: 6,
+                  overflow: 'hidden',
+                  boxShadow: '0 12px 48px rgba(36,31,33,0.22)',
+                  zIndex: i + 1,
+                  pointerEvents: 'none',
+                }}
+              >
+                <div style={{ aspectRatio: '16/10' }}>
+                  {item.type === 'video' ? (
+                    <video
+                      src={item.src}
+                      autoPlay muted loop playsInline preload="auto"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  ) : (
+                    <img
+                      src={item.src}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  )}
+                </div>
+              </motion.div>
+            )
+          })}
+        </AnimatePresence>
       </section>
 
       {/* ── Mobile + Tablet: horizontal scroll layout ── */}
@@ -276,7 +476,7 @@ export default function DesignShowcase() {
                 fontSize: '17px',
                 fontWeight: 500,
                 color: '#241f21',
-                background: 'transparent',
+                background: '#ffffff',
                 border: '1px solid rgba(36,31,33,0.35)',
                 borderRadius: '999px',
                 padding: '10px 24px',
@@ -308,36 +508,39 @@ export default function DesignShowcase() {
           }}
           className="scrollbar-hide"
         >
-          {designShowcase.map((item, index) => (
+          {MOBILE_MEDIA.map((item, index) => (
             <div
-              key={item.id}
-                style={{
+              key={item.src}
+              style={{
                 flexShrink: 0,
                 width: '85vw',
                 maxWidth: '520px',
                 scrollSnapAlign: 'center',
-                transform: `rotate(${CARDS[index].rotation}deg)`,
+                transform: `rotate(${MOBILE_CARDS[index].rotation}deg)`,
                 borderRadius: '5px',
                 overflow: 'hidden',
                 boxShadow: '0 6px 28px rgba(36,31,33,0.13)',
               }}
             >
               <div style={{ aspectRatio: '16/10', overflow: 'hidden' }}>
-                <video
-                  src={item.media}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
+                {item.type === 'video' ? (
+                  <video
+                    src={item.src}
+                    autoPlay muted loop playsInline preload="metadata"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
+                ) : (
+                  <img
+                    src={item.src}
+                    alt=""
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
+                )}
               </div>
             </div>
           ))}
         </div>
       </section>
-
     </>
   )
 }
