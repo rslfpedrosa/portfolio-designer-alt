@@ -22,6 +22,7 @@ const PEN_COLORS = ['#241f21', '#e03535', '#f07030', '#f0b830', '#38c060', '#5ba
 
 const PEN_CURSOR = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 17 L7 13 L15 2 L18 5 L7 13 Z' fill='white' stroke='%23444' stroke-width='1.3' stroke-linejoin='round'/%3E%3Ccircle cx='3' cy='17' r='1.8' fill='%23333'/%3E%3C/svg%3E") 3 17, crosshair`
 const ERASER_CURSOR = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='16' viewBox='0 0 22 16'%3E%3Crect x='1' y='1' width='20' height='14' rx='3' fill='%23fce4ec' stroke='%23aaa' stroke-width='1.5'/%3E%3C/svg%3E") 11 8, cell`
+const STAMP_CURSOR = `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 13V8.5C14 7 15 7 15 5C15 4.20435 14.6839 3.44129 14.1213 2.87868C13.5587 2.31607 12.7956 2 12 2C11.2044 2 10.4413 2.31607 9.87868 2.87868C9.31607 3.44129 9 4.20435 9 5C9 7 10 7 10 8.5V13M5 22H19M20 15.5C20 14.837 19.7366 14.2011 19.2678 13.7322C18.7989 13.2634 18.163 13 17.5 13H6.5C5.83696 13 5.20107 13.2634 4.73223 13.7322C4.26339 14.2011 4 14.837 4 15.5V17C4 17.2652 4.10536 17.5196 4.29289 17.7071C4.48043 17.8946 4.73478 18 5 18H19C19.2652 18 19.5196 17.8946 19.7071 17.7071C19.8946 17.5196 20 17.2652 20 17V15.5Z' stroke='%23333' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 12 22, crosshair`
 
 const STICKERS = [
   { name: '+1',          src: '/toolbox/stickers/+1.svg' },
@@ -137,6 +138,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
   const [penMode, setPenMode] = useState<'draw' | 'erase'>('draw')
   const [showPenPopup, setShowPenPopup] = useState(false)
   const [showStampPicker, setShowStampPicker] = useState(false)
+  const [stampPickerX, setStampPickerX] = useState<number | null>(null)
   const [placedStickers, setPlacedStickers] = useState<PlacedSticker[]>([])
   const [activeSticker, setActiveSticker] = useState<{ src: string, name: string } | null>(null)
   const activeStickerRef = useRef<{ src: string, name: string } | null>(null)
@@ -288,6 +290,14 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
   // Clear active sticker when leaving stamp mode
   useEffect(() => {
     if (activeTool !== 'stamp') setActiveSticker(null)
+  }, [activeTool])
+
+  // Signal CursorBlob to swap to stamp icon when stamp tool is active
+  useEffect(() => {
+    if (activeTool === 'stamp') {
+      window.dispatchEvent(new Event('cursor:stamp:start'))
+      return () => { window.dispatchEvent(new Event('cursor:stamp:end')) }
+    }
   }, [activeTool])
 
   // Document-level click handler — bypasses all z-index/stacking issues
@@ -800,7 +810,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           width: 64,
           height: 64,
           pointerEvents: 'none',
-          zIndex: 130,
+          zIndex: 625,
           opacity: 0.72,
         }}
       >
@@ -813,7 +823,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 109,
+        zIndex: 595,
         pointerEvents: activeTool === 'sticky' ? 'auto' : 'none',
         cursor: 'none',
       }}
@@ -834,7 +844,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           padding: '10px 10px 12px',
           boxShadow: '2px 6px 18px rgba(0,0,0,0.13), 0 1px 3px rgba(0,0,0,0.08)',
           pointerEvents: 'none',
-          zIndex: 130,
+          zIndex: 625,
           opacity: 0.72,
         }}
       >
@@ -863,7 +873,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
             bottom: '100px',
             left: '50%',
             x: '-50%',
-            zIndex: 115,
+            zIndex: 610,
             alignItems: 'center',
             gap: '2px',
             background: 'rgba(255,255,255,0.96)',
@@ -1005,7 +1015,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
         bottom: '28px',
         left: '50%',
         x: '-50%',
-        zIndex: 110,
+        zIndex: 600,
         alignItems: 'center',
         gap: '2px',
         background: 'rgba(255,255,255,0.96)',
@@ -1141,6 +1151,8 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
             if (!activeSticker) setActiveTool('cursor')
           } else {
             setActiveTool('stamp')
+            const rect = stampButtonRef.current?.getBoundingClientRect()
+            if (rect) setStampPickerX(rect.left + rect.width / 2)
             setShowStampPicker(true)
           }
         }}
@@ -1149,7 +1161,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           width: '44px',
           height: '44px',
           borderRadius: '10px',
-          background: activeTool === 'stamp' ? 'rgba(0,0,0,0.08)' : 'transparent',
+          background: activeTool === 'stamp' ? '#7c3aed' : 'transparent',
           border: 'none',
           display: 'flex',
           alignItems: 'center',
@@ -1159,15 +1171,10 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           flexShrink: 0,
         }}
         onMouseEnter={e => { if (activeTool !== 'stamp') (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.05)' }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = activeTool === 'stamp' ? 'rgba(0,0,0,0.08)' : 'transparent' }}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = activeTool === 'stamp' ? '#7c3aed' : 'transparent' }}
       >
-        <svg width="26" height="30" viewBox="0 0 26 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="1" width="6" height="11" rx="2" fill="none" stroke="#3a3a3a" strokeWidth="1.5"/>
-          <rect x="7" y="10" width="12" height="4" rx="1.5" fill="none" stroke="#3a3a3a" strokeWidth="1.5"/>
-          <rect x="3" y="18" width="20" height="8" rx="2" fill="none" stroke="#3a3a3a" strokeWidth="1.5"/>
-          <rect x="9" y="14" width="8" height="4" fill="none" stroke="#3a3a3a" strokeWidth="1.5"/>
-          <line x1="7" y1="22" x2="19" y2="22" stroke="#3a3a3a" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
-          <line x1="7" y1="24.5" x2="14" y2="24.5" stroke="#3a3a3a" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 13V8.5C14 7 15 7 15 5C15 4.20435 14.6839 3.44129 14.1213 2.87868C13.5587 2.31607 12.7956 2 12 2C11.2044 2 10.4413 2.31607 9.87868 2.87868C9.31607 3.44129 9 4.20435 9 5C9 7 10 7 10 8.5V13M5 22H19M20 15.5C20 14.837 19.7366 14.2011 19.2678 13.7322C18.7989 13.2634 18.163 13 17.5 13H6.5C5.83696 13 5.20107 13.2634 4.73223 13.7322C4.26339 14.2011 4 14.837 4 15.5V17C4 17.2652 4.10536 17.5196 4.29289 17.7071C4.48043 17.8946 4.73478 18 5 18H19C19.2652 18 19.5196 17.8946 19.7071 17.7071C19.8946 17.5196 20 17.2652 20 17V15.5Z" stroke={activeTool === 'stamp' ? 'white' : '#3a3a3a'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
     </motion.div>
@@ -1175,7 +1182,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
     {/* Stamp picker backdrop */}
     {showStampPicker && (
       <div
-        style={{ position: 'fixed', inset: 0, zIndex: 115 }}
+        style={{ position: 'fixed', inset: 0, zIndex: 610 }}
         onClick={() => { setShowStampPicker(false); if (!activeSticker) setActiveTool('cursor') }}
       />
     )}
@@ -1189,9 +1196,9 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           style={{
             position: 'fixed',
             bottom: '104px',
-            left: '50%',
+            left: stampPickerX ?? '50%',
             transform: 'translateX(-50%)',
-            zIndex: 120,
+            zIndex: 620,
             pointerEvents: 'auto',
           }}
         >
