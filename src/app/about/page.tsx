@@ -332,13 +332,14 @@ const JOYS = [
   { title: 'Learning by Leaving', description: 'New cities. New ways of seeing.', video: '/videos/travel.mp4' },
 ]
 
-// [top-left, top-right, mid-left, mid-right, bottom-center]
+// Pentagon around center (50%, 50%) with r_x≈30%, r_y≈30%
+// top-left anchor: subtract half card width (~135px) and half card height (~165px)
 const POLAROID_POSITIONS = [
-  { rotation: -9, pos: { top: '5%',  left:  '2%'  } },
-  { rotation: 6,  pos: { top: '5%',  right: '2%'  } },
-  { rotation: -6, pos: { top: '42%', left:  '2%'  } },
-  { rotation: 8,  pos: { top: '50%', right: '2%'  } },
-  { rotation: -3, pos: { top: '68%', left: 'calc(50% - 140px)' } },
+  { rotation: -9, pos: { top: 'calc(20% - 165px)', left: 'calc(50% - 135px)'  } }, // top
+  { rotation:  6, pos: { top: 'calc(41% - 165px)', left: 'calc(80% - 135px)'  } }, // upper right
+  { rotation: -4, pos: { top: 'calc(74% - 165px)', left: 'calc(69% - 135px)'  } }, // lower right
+  { rotation:  8, pos: { top: 'calc(74% - 165px)', left: 'calc(31% - 135px)'  } }, // lower left
+  { rotation: -5, pos: { top: 'calc(41% - 165px)', left: 'calc(20% - 135px)'  } }, // upper left
 ]
 
 const PolaroidCard = ({
@@ -1066,7 +1067,7 @@ const AboutPage = () => {
       {/* Small Joys Section — Desktop */}
       <section
         className="relative hidden md:block z-10"
-        style={{ minHeight: 'max(780px, 90svh)', marginTop: '0' }}
+        style={{ minHeight: 'max(960px, 100svh)', marginTop: '0' }}
       >
         {/* Center text */}
         <motion.div
@@ -1076,7 +1077,7 @@ const AboutPage = () => {
           viewport={{ once: true }}
           style={{
             position: 'absolute',
-            top: '44%',
+            top: '50%',
             left: 0,
             right: 0,
             transform: 'translateY(-50%)',

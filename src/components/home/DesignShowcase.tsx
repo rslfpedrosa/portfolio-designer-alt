@@ -213,36 +213,48 @@ export default function DesignShowcase() {
     idleTimerRef.current = setTimeout(startFade, IDLE_DELAY)
   }, [startFade])
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    if (isButtonHoveredRef.current) return
+  // Use a window-level listener so the trail fires regardless of which tool overlay
+  // (pen canvas portalled to body, sticky fixed overlay) is on top of the section.
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      const rect = sectionRef.current?.getBoundingClientRect()
+      if (!rect) return
 
-    stopFade()
+      const inSection =
+        e.clientX >= rect.left && e.clientX <= rect.right &&
+        e.clientY >= rect.top  && e.clientY <= rect.bottom
 
-    const rect = sectionRef.current?.getBoundingClientRect()
-    if (!rect) return
-
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-
-    const last = lastPosRef.current
-    if (last) {
-      const dx = x - last.x
-      const dy = y - last.y
-      if (dx * dx + dy * dy < MIN_DIST * MIN_DIST) {
-        scheduleFade()
+      if (!inSection) {
+        if (lastPosRef.current !== null) {
+          lastPosRef.current = null
+          scheduleFade()
+        }
         return
       }
+
+      if (isButtonHoveredRef.current) return
+      stopFade()
+
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+
+      const last = lastPosRef.current
+      if (last) {
+        const dx = x - last.x
+        const dy = y - last.y
+        if (dx * dx + dy * dy < MIN_DIST * MIN_DIST) {
+          scheduleFade()
+          return
+        }
+      }
+      lastPosRef.current = { x, y }
+      spawnCardAt(x, y)
+      scheduleFade()
     }
-    lastPosRef.current = { x, y }
 
-    spawnCardAt(x, y)
-    scheduleFade()
+    window.addEventListener('mousemove', handleMove, { passive: true })
+    return () => window.removeEventListener('mousemove', handleMove)
   }, [stopFade, scheduleFade, spawnCardAt])
-
-  const handleMouseLeave = useCallback(() => {
-    lastPosRef.current = null
-    scheduleFade()
-  }, [scheduleFade])
 
   // Auto-demo: runs once when the section first scrolls into view
   useEffect(() => {
@@ -297,8 +309,6 @@ export default function DesignShowcase() {
         ref={sectionRef}
         className="relative hidden lg:block"
         style={{ minHeight: '100vh' }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
       >
         {/* Dot pattern */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
@@ -310,19 +320,6 @@ export default function DesignShowcase() {
             </defs>
             <rect width="100%" height="100%" fill="url(#sandbox-dots)" />
           </svg>
-        </div>
-
-        {/*
-          Preloader: fixed off-screen at real size so browsers treat them as visible
-          and actually autoplay + decode each video — first-frame is instant on trail.
-        */}
-        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: 1, height: 1, overflow: 'hidden', pointerEvents: 'none', zIndex: -1 }} aria-hidden>
-          {TRAIL_MEDIA.map(item => item.type === 'video' ? (
-            <video key={item.src} src={item.src} autoPlay muted loop playsInline preload="auto"
-                   style={{ width: 1, height: 1 }} />
-          ) : (
-            <img key={item.src} src={item.src} alt="" style={{ width: 1, height: 1 }} />
-          ))}
         </div>
 
         <CentreText

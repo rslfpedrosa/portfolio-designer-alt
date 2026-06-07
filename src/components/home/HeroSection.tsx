@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const CYCLING_PHRASES = ["Hi, I'm Rita.", 'I Design.', 'I Simplify.', 'I Explore.', 'I Create.', 'I Prototype.', 'I Question.', 'I Iterate.']
 
@@ -144,7 +146,10 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
   const activeStickerRef = useRef<{ src: string, name: string } | null>(null)
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
   const [isOverInteractiveEl, setIsOverInteractiveEl] = useState(false)
+  const [interactiveElCursor, setInteractiveElCursor] = useState('pointer')
   const [mounted, setMounted] = useState(false)
+  const [isHeroVisible, setIsHeroVisible] = useState(true)
+  const toolbarShownOnce = useRef(false)
   const stampButtonRef = useRef<HTMLButtonElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDrawingRef = useRef(false)
@@ -158,6 +163,26 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    if (!sectionRef.current) return
+    gsap.registerPlugin(ScrollTrigger)
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'bottom 90%',
+      onEnter: () => setIsHeroVisible(false),
+      onLeaveBack: () => setIsHeroVisible(true),
+    })
+    return () => st.kill()
+  }, [])
+
+  useEffect(() => {
+    if (!isHeroVisible) {
+      setActiveTool('cursor')
+      setShowPenPopup(false)
+      setShowStampPicker(false)
+    }
+  }, [isHeroVisible])
 
   useEffect(() => {
     if (shouldReduceMotion) {
@@ -273,10 +298,17 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
     const onMove = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY })
       const els = document.elementsFromPoint(e.clientX, e.clientY)
-      const interactive = els.some(el => {
-        if (el === canvasRef.current) return false
-        return el.matches(INTERACTIVE) || !!el.closest(INTERACTIVE)
-      })
+      let interactive = false
+      for (const el of els) {
+        if (el === canvasRef.current) continue
+        const matched = el.matches(INTERACTIVE) ? el : el.closest(INTERACTIVE)
+        if (matched) {
+          interactive = true
+          const isTextInput = matched.matches('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio]), textarea')
+          setInteractiveElCursor(isTextInput ? 'text' : 'pointer')
+          break
+        }
+      }
       setIsOverInteractiveEl(interactive)
       if (interactive) {
         isDrawingRef.current = false
@@ -292,13 +324,21 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
     if (activeTool !== 'stamp') setActiveSticker(null)
   }, [activeTool])
 
-  // Signal CursorBlob to swap to stamp icon when stamp tool is active
+  // Signal CursorBlob to switch to stamp icon when a sticker is loaded on cursor
   useEffect(() => {
-    if (activeTool === 'stamp') {
-      window.dispatchEvent(new Event('cursor:stamp:start'))
-      return () => { window.dispatchEvent(new Event('cursor:stamp:end')) }
+    if (activeTool === 'stamp' && activeSticker) {
+      window.dispatchEvent(new Event('cursor:stamp:active'))
+    } else {
+      window.dispatchEvent(new Event('cursor:stamp:inactive'))
     }
-  }, [activeTool])
+  }, [activeTool, activeSticker])
+
+  // Apply stamp cursor to body when stamp tool is active; yield to interactive elements
+  useEffect(() => {
+    if (activeTool !== 'stamp') return
+    document.body.style.cursor = isOverInteractiveEl ? '' : STAMP_CURSOR
+    return () => { document.body.style.cursor = '' }
+  }, [activeTool, isOverInteractiveEl])
 
   // Document-level click handler — bypasses all z-index/stacking issues
   useEffect(() => {
@@ -786,8 +826,8 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           top: 0,
           left: 0,
           zIndex: 105,
-          pointerEvents: activeTool === 'pen' && !isOverInteractiveEl ? 'auto' : 'none',
-          cursor: activeTool === 'pen' && !isOverInteractiveEl
+          pointerEvents: activeTool === 'pen' && !isOverInteractiveEl && isHeroVisible ? 'auto' : 'none',
+          cursor: activeTool === 'pen' && !isOverInteractiveEl && isHeroVisible
             ? (penMode === 'erase' ? ERASER_CURSOR : PEN_CURSOR)
             : 'default',
         }}
@@ -801,7 +841,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
 
     {/* Ghost sticker preview — follows cursor while in stamp mode with a sticker selected.
         Hidden over interactive elements so buttons show their normal cursor. */}
-    {activeTool === 'stamp' && activeSticker && !isOverInteractiveEl && (
+    {activeTool === 'stamp' && activeSticker && !isOverInteractiveEl && isHeroVisible && (
       <div
         style={{
           position: 'fixed',
@@ -810,7 +850,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           width: 64,
           height: 64,
           pointerEvents: 'none',
-          zIndex: 625,
+          zIndex: 130,
           opacity: 0.72,
         }}
       >
@@ -823,15 +863,15 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 595,
-        pointerEvents: activeTool === 'sticky' ? 'auto' : 'none',
+        zIndex: 109,
+        pointerEvents: activeTool === 'sticky' && isHeroVisible ? 'auto' : 'none',
         cursor: 'none',
       }}
       onClick={handleStickyClick}
     />
 
     {/* Ghost sticky note preview — follows cursor while in sticky mode */}
-    {activeTool === 'sticky' && (
+    {activeTool === 'sticky' && isHeroVisible && (
       <div
         style={{
           position: 'fixed',
@@ -844,7 +884,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
           padding: '10px 10px 12px',
           boxShadow: '2px 6px 18px rgba(0,0,0,0.13), 0 1px 3px rgba(0,0,0,0.08)',
           pointerEvents: 'none',
-          zIndex: 625,
+          zIndex: 130,
           opacity: 0.72,
         }}
       >
@@ -860,7 +900,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
 
     {/* Pen color + eraser popup — shown above toolbar when pen tool is active */}
     <AnimatePresence>
-      {activeTool === 'pen' && showPenPopup && entered && (
+      {activeTool === 'pen' && showPenPopup && entered && isHeroVisible && (
         <motion.div
           key="pen-popup"
           initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -873,7 +913,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
             bottom: '100px',
             left: '50%',
             x: '-50%',
-            zIndex: 610,
+            zIndex: 115,
             alignItems: 'center',
             gap: '2px',
             background: 'rgba(255,255,255,0.96)',
@@ -1008,14 +1048,15 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
       data-stamp-ui="true"
       className="hidden lg:flex"
       initial={{ opacity: 0, y: 16 }}
-      animate={entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-      transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.8, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      animate={entered && isHeroVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      onAnimationComplete={(def) => { if ((def as {opacity?: number}).opacity === 1) toolbarShownOnce.current = true }}
+      transition={shouldReduceMotion ? { duration: 0 } : entered && isHeroVisible ? { delay: toolbarShownOnce.current ? 0 : 1.8, duration: 0.5, ease: [0.16, 1, 0.3, 1] } : { delay: 0, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: 'fixed',
         bottom: '28px',
         left: '50%',
         x: '-50%',
-        zIndex: 600,
+        zIndex: 110,
         alignItems: 'center',
         gap: '2px',
         background: 'rgba(255,255,255,0.96)',
@@ -1025,6 +1066,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
         userSelect: 'none',
+        pointerEvents: isHeroVisible ? 'auto' : 'none',
       }}
     >
       {/* Cursor tool */}
@@ -1182,7 +1224,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
     {/* Stamp picker backdrop */}
     {showStampPicker && (
       <div
-        style={{ position: 'fixed', inset: 0, zIndex: 610 }}
+        style={{ position: 'fixed', inset: 0, zIndex: 115, cursor: isOverInteractiveEl ? interactiveElCursor : undefined }}
         onClick={() => { setShowStampPicker(false); if (!activeSticker) setActiveTool('cursor') }}
       />
     )}
@@ -1198,7 +1240,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
             bottom: '104px',
             left: stampPickerX ?? '50%',
             transform: 'translateX(-50%)',
-            zIndex: 620,
+            zIndex: 120,
             pointerEvents: 'auto',
           }}
         >
@@ -1230,7 +1272,7 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
               zIndex: 500,
               cursor: 'grab',
               userSelect: 'none',
-              pointerEvents: 'auto',
+              pointerEvents: activeTool === 'pen' ? 'none' : 'auto',
             }}
             transition={{ type: 'spring', stiffness: 400, damping: 28 }}
           >

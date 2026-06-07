@@ -14,7 +14,7 @@ const HERO_FOLDERS: Array<{
   facts?: FunFact[]
 }> = [
   {
-    src: '/hero/Folder-final.svg', alt: 'final_FINAL_v3 folder', left: '19%', top: '28vh', delay: 0.5, rotate: -8, width: 90,
+    src: '/hero/Folder-final.webp', alt: 'final_FINAL_v3 folder', left: '19%', top: '28vh', delay: 0.5, rotate: -8, width: 90,
     stats: [
       { label: 'Versions before this one', value: '27' },
       { label: 'Coffee consumed', value: '342 cups' },
@@ -23,7 +23,7 @@ const HERO_FOLDERS: Array<{
     ],
   },
   {
-    src: '/hero/Folder-fun.svg', alt: 'Fun facts folder', left: '76%', top: '50vh', delay: 1.3, rotate: 10, width: 90,
+    src: '/hero/Folder-fun.webp', alt: 'Fun facts folder', left: '76%', top: '50vh', delay: 1.3, rotate: 10, width: 90,
     facts: [
       { text: 'Facilitated a design sprint at Stanford University.', image: '/random/stanford.webp' },
       { text: 'Won a dumpling-folding competition. My finest achievement.', image: '/random/dumpling.webp' },
@@ -315,11 +315,10 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Scroll-driven case studies — GSAP ScrollTrigger pinned section */}
-      <CaseStudiesSection isDesktop={isDesktop} />
-
-      {/* Design Showcase Section */}
-      <DesignShowcase />
+      {/* Stable wrappers prevent GSAP pin-spacer insertion from breaking React's
+          insertBefore calls when sibling dynamic imports resolve later */}
+      <div><CaseStudiesSection isDesktop={isDesktop} /></div>
+      <div><DesignShowcase /></div>
 
       {/* Testimonials Section */}
       <TestimonialsSection />

@@ -202,6 +202,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
       ref={sectionRef}
       style={{
         position: 'relative',
+        zIndex: 30,
         height: '100svh',
         background: '#ffffff',
         padding: `${isDesktop ? 'clamp(80px,9vh,96px)' : 'clamp(96px,12vh,120px)'} clamp(40px,5vw,80px) clamp(40px,5vh,80px)`,

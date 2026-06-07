@@ -44,8 +44,9 @@ export default function CursorBlob() {
   const [isActiveDragging, setIsActiveDragging] = useState(false)
   const [draggingLabel, setDraggingLabel] = useState('')
   const [isGrabDragging, setIsGrabDragging] = useState(false)
-  const [isStampMode, setIsStampMode] = useState(false)
   const [isPointer, setIsPointer] = useState(false)
+
+  const [isStampMode, setIsStampMode] = useState(false)
 
   const [renderedLabel, setRenderedLabel] = useState<string | null>(null)
   const [labelShowing, setLabelShowing] = useState(false)
@@ -95,15 +96,16 @@ export default function CursorBlob() {
   }, [isDesktop])
 
   useEffect(() => {
-    const onStart = () => setIsStampMode(true)
-    const onEnd   = () => setIsStampMode(false)
-    window.addEventListener('cursor:stamp:start', onStart)
-    window.addEventListener('cursor:stamp:end',   onEnd)
+    if (!isDesktop) return
+    const onActive   = () => setIsStampMode(true)
+    const onInactive = () => setIsStampMode(false)
+    window.addEventListener('cursor:stamp:active',   onActive)
+    window.addEventListener('cursor:stamp:inactive', onInactive)
     return () => {
-      window.removeEventListener('cursor:stamp:start', onStart)
-      window.removeEventListener('cursor:stamp:end',   onEnd)
+      window.removeEventListener('cursor:stamp:active',   onActive)
+      window.removeEventListener('cursor:stamp:inactive', onInactive)
     }
-  }, [])
+  }, [isDesktop])
 
   useEffect(() => {
     if (!isDesktop) return
@@ -141,6 +143,8 @@ export default function CursorBlob() {
     ? draggingLabel
     : isGrabDragging
     ? null
+    : isStampMode
+    ? null
     : activeCursor
     ? (CURSOR_LABELS[activeCursor] ?? null)
     : null
@@ -169,36 +173,7 @@ export default function CursorBlob() {
 
   if (!isDesktop) return null
 
-  if (isStampMode) {
-    return (
-      <div
-        ref={cursorRef}
-        aria-hidden
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          opacity: 0,
-          pointerEvents: 'none',
-          zIndex: 9999999,
-          willChange: 'transform',
-          transform: 'translate(-12px, -22px)',
-        }}
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M14 13V8.5C14 7 15 7 15 5C15 4.20435 14.6839 3.44129 14.1213 2.87868C13.5587 2.31607 12.7956 2 12 2C11.2044 2 10.4413 2.31607 9.87868 2.87868C9.31607 3.44129 9 4.20435 9 5C9 7 10 7 10 8.5V13M5 22H19M20 15.5C20 14.837 19.7366 14.2011 19.2678 13.7322C18.7989 13.2634 18.163 13 17.5 13H6.5C5.83696 13 5.20107 13.2634 4.73223 13.7322C4.26339 14.2011 4 14.837 4 15.5V17C4 17.2652 4.10536 17.5196 4.29289 17.7071C4.48043 17.8946 4.73478 18 5 18H19C19.2652 18 19.5196 17.8946 19.7071 17.7071C19.8946 17.5196 20 17.2652 20 17V15.5Z"
-            stroke="#333"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
-    )
-  }
-
-  const cursorType = (isActiveDragging || isGrabDragging) ? 'dragging' : isPointer ? 'pointer' : (activeCursor === 'drag' || activeCursor === 'grab') ? 'drag-hover' : 'arrow'
+  const cursorType = (isActiveDragging || isGrabDragging) ? 'dragging' : isPointer ? 'pointer' : isStampMode ? 'stamp' : (activeCursor === 'drag' || activeCursor === 'grab') ? 'drag-hover' : 'arrow'
 
   const iconStyle = (type: string): React.CSSProperties => ({
     position: 'absolute',
@@ -283,6 +258,15 @@ export default function CursorBlob() {
           strokeLinejoin="round"
         />
       </svg>
+
+      {/* Stamp mode icon */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/cursor/stamp.svg"
+        alt=""
+        draggable={false}
+        style={{ ...iconStyle('stamp'), top: -1.4, left: -1.4, width: 31, height: 31 }}
+      />
 
       {renderedLabel && (
         <div
