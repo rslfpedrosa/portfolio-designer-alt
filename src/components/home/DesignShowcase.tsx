@@ -282,6 +282,14 @@ export default function DesignShowcase() {
             <rect width="100%" height="100%" fill="url(#sandbox-dots)" />
           </svg>
         </div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+          <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
+            <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+            <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          </div>
+          <div className="absolute top-0 left-0 right-0 h-px" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+          <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        </div>
 
         <CentreText
           onButtonEnter={() => { isButtonHoveredRef.current = true; lastPosRef.current = null; startFade() }}
@@ -374,8 +382,8 @@ export default function DesignShowcase() {
       <section
         className="relative lg:hidden"
         style={{
-          padding: 'clamp(48px, 10vw, 80px) clamp(20px, 5vw, 32px)',
           paddingTop: 'clamp(80px, 16vw, 120px)',
+          paddingBottom: 'clamp(48px, 10vw, 80px)',
           overflow: 'hidden',
         }}
       >
@@ -390,8 +398,17 @@ export default function DesignShowcase() {
             <rect width="100%" height="100%" fill="url(#sandbox-dots-m)" />
           </svg>
         </div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+          <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
+            <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+            <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          </div>
+          <div className="absolute top-0 left-0 right-0 h-px" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+          <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        </div>
 
-        <div style={{ textAlign: 'center', marginBottom: 'clamp(28px, 7vw, 48px)', position: 'relative', zIndex: 1 }}>
+        <div className="px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto" style={{ textAlign: 'center', marginBottom: 'clamp(28px, 7vw, 48px)', position: 'relative', zIndex: 1 }}>
           <h2
             style={{
               fontSize: 'clamp(3.5rem, 18vw, 5.5rem)',
@@ -448,6 +465,7 @@ export default function DesignShowcase() {
             </div>
           </Link>
         </div>
+        </div>
 
         <div
           style={{
@@ -455,8 +473,6 @@ export default function DesignShowcase() {
             overflowX: 'scroll',
             scrollSnapType: 'x mandatory',
             gap: '28px',
-            marginLeft: 'calc(-1 * clamp(20px, 5vw, 32px))',
-            marginRight: 'calc(-1 * clamp(20px, 5vw, 32px))',
             paddingLeft: '14vw',
             paddingRight: '14vw',
             paddingTop: '32px',

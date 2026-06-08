@@ -35,7 +35,7 @@ const testimonials = [
 const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const
 
 const cornerStyle = (corner: typeof CORNERS[number]) => ({
-  backgroundColor: '#f2efea',
+  backgroundColor: '#ffffff',
   border: '1px solid rgba(36,31,33,0.15)',
   top: corner.startsWith('top') ? '-6px' : undefined,
   bottom: corner.startsWith('bottom') ? '-6px' : undefined,
@@ -215,36 +215,17 @@ export default function TestimonialsSection() {
             <rect width="100%" height="100%" fill="url(#testimonials-dots)" />
           </svg>
         </div>
-
-        <div
-          className="relative z-10"
-          style={{ padding: '0 clamp(24px, 5vw, 80px)' }}
-        >
-          {/* Section header */}
-          <div
-            className="flex items-end justify-between"
-            style={{ marginBottom: 'clamp(16px, 2vw, 32px)' }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true }}
-            >
-              <h2
-                style={{
-                  fontSize: 'clamp(2rem, 4vw, 4.5rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  lineHeight: 1.05,
-                  color: '#241f21',
-                }}
-              >
-                What my peers say
-              </h2>
-            </motion.div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+          <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
+            <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+            <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
           </div>
+        </div>
 
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8">
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="max-w-7xl mx-auto">
           {/* Slideshow */}
           <div style={{ paddingTop: 0 }}>
             {/* Outer hover wrapper — corners sit here so they're never clipped */}
@@ -259,7 +240,7 @@ export default function TestimonialsSection() {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: isCardHovered ? '#ffffff' : '#f2efea',
+                    backgroundColor: '#ffffff',
                     border: `1px solid ${isCardHovered ? '#0a99ff' : 'rgba(36,31,33,0.13)'}`,
                     transition: 'background-color 0.15s, border-color 0.15s',
                     top: corner.startsWith('top') ? '-6px' : undefined,
@@ -292,7 +273,7 @@ export default function TestimonialsSection() {
                 }}
               >
                 {/* Quote icon */}
-                <img src="/icons/aspas.svg" alt="" width={60} height={57} style={{ marginBottom: 'clamp(24px, 3vw, 40px)', flexShrink: 0 }} />
+                <img src="/icons/aspas.svg" alt="" width={80} height={76} style={{ marginBottom: 'clamp(24px, 3vw, 40px)', flexShrink: 0 }} />
 
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                   {/* Quote area — height locked by the longest quote rendered as invisible ghost */}
@@ -370,6 +351,7 @@ export default function TestimonialsSection() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
 

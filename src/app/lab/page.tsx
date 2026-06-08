@@ -78,6 +78,8 @@ const LabPage = () => {
 
       {/* Hero */}
       <section className="relative z-10 pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="absolute top-0 left-0 w-full h-px" style={dashedLine} />
+        <div className="absolute bottom-0 left-0 w-full h-px" style={dashedLine} />
         <div className="max-w-7xl mx-auto">
           <div className="text-left pl-6 sm:pl-8 lg:pl-16">
             <h1

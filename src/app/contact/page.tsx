@@ -220,7 +220,7 @@ const ContactPage = () => {
                         key={corner}
                         className="absolute w-3 h-3 rounded-sm"
                         style={{
-                          backgroundColor: '#f2efea',
+                          backgroundColor: '#ffffff',
                           border: '1px solid #0d99ff',
                           top: corner.startsWith('top') ? -6 : undefined,
                           bottom: corner.startsWith('bottom') ? -6 : undefined,

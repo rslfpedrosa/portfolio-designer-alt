@@ -507,7 +507,7 @@ const cornerSquares = (
       key={corner}
       className="absolute w-3 h-3 z-20 rounded-sm"
       style={{
-        backgroundColor: active ? '#ffffff' : bg,
+        backgroundColor: '#ffffff',
         border: `1px solid ${active ? '#0a99ff' : borderColor}`,
         top: corner.startsWith('top') ? '-6px' : undefined,
         bottom: corner.startsWith('bottom') ? '-6px' : undefined,

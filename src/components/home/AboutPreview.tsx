@@ -2,17 +2,18 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
+
+const photos = [
+  { src: '/random/hobbies.webp', alt: 'Rita with friends outdoors', rotate: -11, x: -90, y: 20, z: 1, hoverRotate: -24, hoverX: -195, hoverY: 40, w: 260, h: 346 },
+  { src: '/random/dog-mom.webp', alt: 'Rita with her dog', rotate: -2, x: 0, y: -15, z: 3, hoverRotate: -2, hoverX: 0, hoverY: -60, w: 310, h: 412 },
+  { src: '/random/dumpling.webp', alt: 'Rita with friends', rotate: 9, x: 90, y: 20, z: 2, hoverRotate: 22, hoverX: 195, hoverY: 40, w: 260, h: 346 },
+]
 
 export default function AboutPreview() {
   return (
-    <section
-      className="relative bg-white"
-      style={{
-      }}
-    >
-      {/* Dot pattern */}
+    <section className="relative" style={{ background: '#ffffff', padding: 'clamp(24px, 4vw, 48px) 0' }}>
+      {/* Dot pattern — fills the full section including gutters and bottom padding */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -23,50 +24,69 @@ export default function AboutPreview() {
           <rect width="100%" height="100%" fill="url(#about-dots)" />
         </svg>
       </div>
+      <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={{ top: 'clamp(24px, 4vw, 48px)', backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', zIndex: 2 }} />
+      <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={{ bottom: 'clamp(24px, 4vw, 48px)', backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', zIndex: 2 }} />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 2 }} aria-hidden>
+        <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2" style={{ minHeight: 'clamp(480px, 55vw, 700px)' }}>
+      {/* Dark panel between the vertical dashed lines */}
+      <div className="absolute left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto" style={{ top: 'clamp(24px, 4vw, 48px)', bottom: 'clamp(24px, 4vw, 48px)', background: '#151414', borderRadius: '20px', zIndex: 1 }} />
 
-        {/* Left — large portrait */}
-        <div className="relative order-2 lg:order-1 overflow-hidden" style={{ minHeight: 'clamp(360px, 40vw, 560px)' }}>
-          <Link
-            href="/about"
-            className="block absolute inset-0 group"
-            aria-label="About Me"
-            data-cursor="meet-rita"
-          >
-            <Image
-              src="/Me/IMG_0426.webp"
-              alt="Rita Pedrosa"
-              fill
-              className="object-cover object-top"
-              style={{
-                transform: 'scale(1)',
-                transition: 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.03)')}
-              onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              loading="lazy"
-            />
-            {/* Bottom gradient */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, rgba(242,239,234,0.5) 0%, transparent 50%)' }}
-            />
-            {/* Hover label */}
-            <div
-              className="absolute bottom-0 left-0 right-0 flex items-center justify-between group-hover:opacity-100 opacity-0 transition-opacity duration-400"
-              style={{ padding: 'clamp(20px, 3vw, 32px)' }}
+      <div className="px-4 sm:px-6 lg:px-8" style={{ position: 'relative', zIndex: 3 }}>
+      <div className="max-w-7xl mx-auto">
+      <div
+        className="relative grid grid-cols-1 lg:grid-cols-2 items-center"
+        style={{ minHeight: 'clamp(400px, 45vw, 580px)' }}
+      >
+        {/* Left — fanned photos */}
+        <div
+          className="relative flex items-center justify-center order-2 lg:order-1"
+          style={{ minHeight: 'clamp(300px, 34vw, 460px)' }}
+        >
+          <Link href="/about" className="block" style={{ cursor: 'pointer' }}>
+            <motion.div
+              className="relative"
+              style={{ width: '420px', height: '460px' }}
+              initial="initial"
+              whileHover="hovered"
             >
-              <span className="section-label">About Me</span>
-              <ArrowUpRight size={14} style={{ color: 'rgba(255,255,255,0.4)' }} />
-            </div>
+              {photos.map((photo) => (
+                <motion.div
+                  key={photo.src}
+                  className="absolute overflow-hidden"
+                  variants={{
+                    initial: { rotate: photo.rotate, x: photo.x, y: photo.y, scale: 1 },
+                    hovered: { rotate: photo.hoverRotate, x: photo.hoverX, y: photo.hoverY, scale: 1.04 },
+                  }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    width: `${photo.w}px`,
+                    height: `${photo.h}px`,
+                    borderRadius: '16px',
+                    zIndex: photo.z,
+                    top: '50%',
+                    left: '50%',
+                    marginTop: `${-photo.h / 2}px`,
+                    marginLeft: `${-photo.w / 2}px`,
+                    boxShadow: '0 24px 64px rgba(0,0,0,0.55)',
+                  }}
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    className="object-cover"
+                    sizes={`${photo.w}px`}
+                    loading="lazy"
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
           </Link>
-          {/* Right border */}
-          <div
-            className="absolute top-0 right-0 h-full w-px pointer-events-none lg:block hidden"
-            style={{ backgroundColor: 'rgba(36,31,33,0.08)' }}
-          />
         </div>
 
         {/* Right — editorial text */}
@@ -78,27 +98,28 @@ export default function AboutPreview() {
           className="order-1 lg:order-2 flex flex-col justify-center"
           style={{ padding: 'clamp(48px, 6vw, 96px) clamp(28px, 5vw, 80px)' }}
         >
-          <p className="section-label" style={{ marginBottom: '24px' }}>About</p>
-
           <h2
             style={{
               fontSize: 'clamp(2rem, 3.8vw, 4.5rem)',
               fontWeight: 500,
               letterSpacing: '-0.035em',
               lineHeight: 1.05,
-              color: '#241f21',
+              color: '#ffffff',
               marginBottom: 'clamp(20px, 2.5vw, 32px)',
             }}
           >
             Design is about{' '}
-            <span className="text-gradient">connection</span>
+            <span style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', verticalAlign: 'top' }}>
+              <span>connection</span>
+              <img src="/icons/line.svg" alt="" style={{ width: '100%', height: 'auto', marginTop: '-2px', filter: 'brightness(0) invert(1)' }} />
+            </span>
           </h2>
 
           <p
             style={{
               fontSize: '18px',
               lineHeight: 1.8,
-              color: 'rgba(36,31,33,0.5)',
+              color: 'rgba(255,255,255,0.5)',
               maxWidth: '44ch',
               marginBottom: 'clamp(28px, 3.5vw, 48px)',
             }}
@@ -107,74 +128,34 @@ export default function AboutPreview() {
             It&apos;s about creating experiences that feel intuitive, meaningful, and genuinely useful in real life.
           </p>
 
-          {/* Stats row */}
-          <div
-            className="flex items-start gap-8 lg:gap-12"
-            style={{
-              paddingTop: 'clamp(20px, 2.5vw, 32px)',
-              marginBottom: 'clamp(28px, 3.5vw, 48px)',
-              borderTop: '1px solid rgba(36,31,33,0.08)',
-            }}
-          >
-            {[
-              { value: '4+', label: 'Years designing\ndigital products' },
-              { value: '3', label: 'Industry verticals\nhealthcare, AI, fintech' },
-            ].map(stat => (
-              <div key={stat.value}>
-                <div
-                  style={{
-                    fontSize: 'clamp(1.75rem, 3vw, 3rem)',
-                    fontWeight: 500,
-                    letterSpacing: '-0.04em',
-                    color: '#241f21',
-                    lineHeight: 1,
-                    marginBottom: '8px',
-                  }}
-                >
-                  {stat.value}
-                </div>
-                <div
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    letterSpacing: '0.08em',
-                    color: 'rgba(36,31,33,0.4)',
-                    lineHeight: 1.5,
-                    textTransform: 'uppercase',
-                    whiteSpace: 'pre-line',
-                  }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <Link
-            href="/about"
-            className="group inline-flex items-center gap-2"
-            data-cursor="meet-rita"
-          >
-            <span
-              className="font-medium transition-colors duration-300 group-hover:text-[#241f21]"
+          <Link href="/about" data-cursor="meet-rita">
+            <div
               style={{
-                fontSize: '12px',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: 'rgba(36,31,33,0.5)',
-                borderBottom: '1px solid rgba(36,31,33,0.15)',
-                paddingBottom: '2px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '17px',
+                fontWeight: 500,
+                color: '#151414',
+                background: '#ffffff',
+                border: '1px solid rgba(36,31,33,0.5)',
+                borderRadius: '999px',
+                padding: '10px 24px',
+                transition: 'border-color 0.18s ease',
+                whiteSpace: 'nowrap',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#151414')}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(36,31,33,0.5)')}
             >
               How I approach design
-            </span>
-            <ArrowUpRight
-              size={13}
-              className="transition-all duration-300 group-hover:text-[#241f21] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              style={{ color: 'rgba(36,31,33,0.3)' }}
-            />
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.75 10.75V0.75H0.75M10.75 0.75L0.75 10.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </Link>
         </motion.div>
+      </div>
+      </div>
       </div>
     </section>
   )
