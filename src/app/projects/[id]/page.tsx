@@ -728,7 +728,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
-                  className="bg-[#e8e4de] rounded-2xl border border-[#241f21]/10 overflow-hidden"
+                  className="bg-[#fafafa] rounded-2xl border border-[#241f21]/10 overflow-hidden"
                 >
                   <div className="px-6 sm:px-10 pt-8 pb-2">
                     <h2 className="text-xs font-semibold uppercase tracking-widest text-[#241f21]/40">Project Summary</h2>
@@ -875,7 +875,7 @@ Key design focuses included:
                     viewport={{ once: true }}
                     className="flex items-start gap-4 py-4"
                   >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center text-[#241f21]">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center text-[#241f21]">
                       {item.icon}
                     </div>
                     <div>
@@ -955,7 +955,7 @@ Key design focuses included:
                         )}
                       </div>
                       <div className="absolute bottom-0 translate-y-1/2 left-6">
-                        <div className="w-12 h-12 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center shadow-sm" style={{ color: '#c9a84c' }}>
+                        <div className="w-12 h-12 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center shadow-sm" style={{ color: '#c9a84c' }}>
                           <item.icon size={18} strokeWidth={1.5} />
                         </div>
                       </div>
@@ -1399,7 +1399,7 @@ Key design focuses included:
                     className="flex items-start gap-4 py-4"
                   >
                     <div
-                      className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center text-[#241f21]"
+                      className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center text-[#241f21]"
                     >
                       {item.icon}
                     </div>
@@ -1617,7 +1617,7 @@ Key design focuses included:
                     viewport={{ once: true }}
                     className="rounded-2xl border border-[#241f21]/10 p-6 flex flex-col items-start gap-4 h-full bg-white"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center" style={{ color: themeColors.iconText }}>
+                    <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center" style={{ color: themeColors.iconText }}>
                       {item.icon}
                     </div>
                     <div>
@@ -1670,7 +1670,7 @@ Key design focuses included:
                       viewport={{ once: true }}
                       className="py-4 flex gap-4"
                     >
-                      <span className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center text-sm font-semibold text-[#241f21] shrink-0">{i + 1}</span>
+                      <span className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center text-sm font-semibold text-[#241f21] shrink-0">{i + 1}</span>
                       <div>
                         <p className="text-base font-semibold text-[#241f21]">{item.title}</p>
                         <p className="text-sm sm:text-base text-[#241f21]/60 mt-1 leading-relaxed">{item.description}</p>
@@ -1749,7 +1749,7 @@ Key design focuses included:
                     </div>
                     <div className="border-t border-[#241f21]/15">
                       <div className="p-6 flex items-center gap-3">
-                        <span className="w-8 h-8 rounded-lg bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center text-sm font-semibold text-[#241f21] shrink-0">{i + 1}</span>
+                        <span className="w-8 h-8 rounded-lg bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center text-sm font-semibold text-[#241f21] shrink-0">{i + 1}</span>
                         <h3 className="text-base font-semibold text-[#241f21]">{feature.title}</h3>
                       </div>
                       <div className="divide-y divide-[#241f21]/10">
@@ -1867,7 +1867,7 @@ Key design focuses included:
                     viewport={{ once: true }}
                     className="flex items-start gap-4 py-4"
                   >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center text-[#241f21]">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center text-[#241f21]">
                       {item.icon}
                     </div>
                     <div>
@@ -1911,9 +1911,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] p-6 flex flex-col items-start h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] p-6 flex flex-col items-start h-full"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                  <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <RefreshCw className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-medium text-[#241f21] mb-2">Work is fragmented across too many tools</h3>
@@ -1924,9 +1924,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] p-6 flex flex-col items-start h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] p-6 flex flex-col items-start h-full"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                  <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <MessageSquare className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-medium text-[#241f21] mb-2">Guest communication dominates daily work</h3>
@@ -1937,9 +1937,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] p-6 flex flex-col items-start h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] p-6 flex flex-col items-start h-full"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                  <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Eye className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-medium text-[#241f21] mb-2">Automation must remain transparent</h3>
@@ -1988,9 +1988,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] p-6 flex flex-col items-start h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] p-6 flex flex-col items-start h-full"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                  <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Accessibility className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-[#241f21]">Reducing cognitive load in message-heavy workflows</p>
@@ -2000,9 +2000,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] p-6 flex flex-col items-start h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] p-6 flex flex-col items-start h-full"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                  <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Eye className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-[#241f21]">Making AI assistance visible without feeling intrusive</p>
@@ -2012,9 +2012,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] p-6 flex flex-col items-start h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] p-6 flex flex-col items-start h-full"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                  <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <Settings className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-[#241f21]">Supporting fast decisions while preserving user control</p>
@@ -2024,9 +2024,9 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] p-6 flex flex-col items-start h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] p-6 flex flex-col items-start h-full"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                  <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                     <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <p className="text-[#241f21]">Structuring complex information into calm, scannable layouts</p>
@@ -2120,7 +2120,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] overflow-hidden flex flex-col h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] overflow-hidden flex flex-col h-full"
                 >
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image
@@ -2132,7 +2132,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                    <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                       <PenLine className="w-5 h-5" strokeWidth={1.5} />
                     </div>
                     <p className="text-[#241f21]">Suggests draft replies that users can review and edit</p>
@@ -2143,7 +2143,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] overflow-hidden flex flex-col h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] overflow-hidden flex flex-col h-full"
                 >
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image
@@ -2155,7 +2155,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                    <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                       <LayoutDashboard className="w-5 h-5" strokeWidth={1.5} />
                     </div>
                     <p className="text-[#241f21]">Pulls context from reservations, policies, and property data</p>
@@ -2166,7 +2166,7 @@ Key design focuses included:
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-[#241f21]/10 bg-[#e8e4de] overflow-hidden flex flex-col h-full"
+                  className="rounded-2xl border border-[#241f21]/10 bg-[#fafafa] overflow-hidden flex flex-col h-full"
                 >
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image
@@ -2178,7 +2178,7 @@ Key design focuses included:
                     />
                   </div>
                   <div className="p-6 flex flex-col items-start">
-                    <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
+                    <div className="w-10 h-10 rounded-xl bg-[#fafafa] border border-[#241f21]/15 flex items-center justify-center mb-3" style={{ color: '#A074FA' }}>
                       <Rocket className="w-5 h-5" strokeWidth={1.5} />
                     </div>
                     <p className="text-[#241f21]">Learns from user feedback to improve future suggestions</p>
