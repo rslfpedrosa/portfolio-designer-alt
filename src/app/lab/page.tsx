@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import ShowcaseCard from '@/components/ShowcaseCard'
 import CTASection from '@/components/home/CTASection'
 import GridBackground from '@/components/GridBackground'
@@ -65,7 +64,7 @@ const dashedLine = {
 
 const LabPage = () => {
   return (
-    <div className="min-h-screen pt-16 relative overflow-x-hidden" style={{ backgroundColor: '#f2efea' }}>
+    <div className="pt-16 relative overflow-x-hidden" style={{ minHeight: '80vh', backgroundColor: '#f2efea' }}>
 
       <GridBackground />
 
@@ -80,12 +79,7 @@ const LabPage = () => {
       {/* Hero */}
       <section className="relative z-10 pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ y: 20 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="text-left pl-6 sm:pl-8 lg:pl-16"
-          >
+          <div className="text-left pl-6 sm:pl-8 lg:pl-16">
             <h1
               className="text-6xl sm:text-8xl font-medium mb-3 sm:mb-6 leading-none"
               style={{ color: '#241f21' }}
@@ -95,7 +89,7 @@ const LabPage = () => {
             <p className="text-xl max-w-3xl" style={{ color: 'rgba(36,31,33,0.5)' }}>
               Design explorations focused on craft, interaction, and curiosity.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -107,7 +101,7 @@ const LabPage = () => {
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={dashedLine} />
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={dashedLine} />
               <div className="relative z-10">
-                <ShowcaseCard item={item} index={index} />
+                <ShowcaseCard item={item} />
               </div>
             </div>
           ))}

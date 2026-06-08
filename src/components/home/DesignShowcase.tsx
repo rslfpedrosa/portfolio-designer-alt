@@ -42,18 +42,6 @@ const CARD_LIFETIME = 2000  // ms each card lives before auto-fading
 const IDLE_DELAY    = 100   // ms after last move before sequential fade starts
 const FADE_STEP     = 60    // ms between each removal when idle
 
-// Auto-demo path (relative 0–1 coords) — runs once when section scrolls into view.
-// x: 0.22–0.78 keeps cards away from viewport edges.
-// y: 0.18–0.48 keeps cards in the upper half of the section, which is visible
-//    when the IntersectionObserver fires at threshold 0.5.
-const DEMO_PATH = [
-  { x: 0.22, y: 0.22 },
-  { x: 0.38, y: 0.46 },
-  { x: 0.52, y: 0.18 },
-  { x: 0.66, y: 0.48 },
-  { x: 0.80, y: 0.20 },
-]
-const DEMO_INTERVAL = 190  // ms between each demo card
 
 function CentreText({ onButtonEnter, onButtonLeave }: { onButtonEnter?: () => void; onButtonLeave?: () => void }) {
   return (
@@ -153,8 +141,6 @@ export default function DesignShowcase() {
   const idleTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null)
   const fadeIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const cardTimersRef   = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map())
-  const demoRanRef        = useRef(false)
-  const demoTimersRef     = useRef<ReturnType<typeof setTimeout>[]>([])
   const isButtonHoveredRef = useRef(false)
 
   const removeCard = useCallback((cardId: number) => {
@@ -255,31 +241,6 @@ export default function DesignShowcase() {
     window.addEventListener('mousemove', handleMove, { passive: true })
     return () => window.removeEventListener('mousemove', handleMove)
   }, [stopFade, scheduleFade, spawnCardAt])
-
-  // Auto-demo: runs once when the section first scrolls into view
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting || demoRanRef.current) return
-      demoRanRef.current = true
-
-      DEMO_PATH.forEach(({ x, y }, i) => {
-        const t = setTimeout(() => {
-          const { width, height } = section.getBoundingClientRect()
-          spawnCardAt(x * width, y * height)
-        }, i * DEMO_INTERVAL)
-        demoTimersRef.current.push(t)
-      })
-    }, { threshold: 0.5 })
-
-    observer.observe(section)
-    return () => {
-      observer.disconnect()
-      demoTimersRef.current.forEach(t => clearTimeout(t))
-    }
-  }, [spawnCardAt])
 
   // Clean up all timers on unmount
   useEffect(() => () => {
