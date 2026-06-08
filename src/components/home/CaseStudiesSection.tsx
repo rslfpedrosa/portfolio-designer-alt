@@ -200,12 +200,14 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
   return (
     <section
       ref={sectionRef}
+      className="px-4 sm:px-6 lg:px-8"
       style={{
         position: 'relative',
         zIndex: 30,
         height: '100svh',
         background: '#ffffff',
-        padding: `${isDesktop ? 'clamp(80px,9vh,96px)' : 'clamp(96px,12vh,120px)'} clamp(40px,5vw,80px) clamp(40px,5vh,80px)`,
+        paddingTop: isDesktop ? 'clamp(80px,9vh,96px)' : 'clamp(96px,12vh,120px)',
+        paddingBottom: 'clamp(40px,5vh,80px)',
         boxSizing: 'border-box',
         overflow: 'hidden',
       }}
@@ -222,34 +224,47 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
         </svg>
       </div>
 
-      {/* ── Figma component label ────────────────────────────────────────────── */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: isDesktop ? 'calc(clamp(80px,9vh,96px) - 22px)' : 'calc(clamp(96px,12vh,120px) - 22px)',
-          left: 'clamp(40px,5vw,80px)',
-          display: 'flex', alignItems: 'center', gap: 6,
-          color: '#9747FF',
-          zIndex: 50, pointerEvents: 'none',
-        }}
-      >
-        <img src="/icons/component.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={displayIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}
-          >
-            Case Study {String(displayIndex + 1).padStart(2, '0')}
-          </motion.span>
-        </AnimatePresence>
+      {/* Vertical dashed lines — same container as other sections */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+        <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+        </div>
       </div>
 
+      {/* Horizontal dashed lines above and below card */}
+      <div aria-hidden style={{ position: 'absolute', top: isDesktop ? 'clamp(80px,9vh,96px)' : 'clamp(96px,12vh,120px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
+      <div aria-hidden style={{ position: 'absolute', bottom: 'clamp(40px,5vh,80px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
+
       {/* ── Bordered slideshow frame ─────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto h-full" style={{ position: 'relative' }}>
+
+        {/* ── Figma component label ──────────────────────────────────────────── */}
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            bottom: 'calc(100% + 8px)',
+            left: 0,
+            display: 'flex', alignItems: 'center', gap: 6,
+            color: '#9747FF',
+            zIndex: 50, pointerEvents: 'none',
+          }}
+        >
+          <img src="/icons/component.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={displayIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}
+            >
+              Case Study {String(displayIndex + 1).padStart(2, '0')}
+            </motion.span>
+          </AnimatePresence>
+        </div>
       <div style={{
         position: 'relative',
         width: '100%',
@@ -353,7 +368,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
                         color: '#ffffff',
                         fontSize: isDesktop ? 'clamp(36px, 4.8vw, 58px)' : 'clamp(28px, 7.5vw, 48px)',
                         fontWeight: 500, lineHeight: 1.1, letterSpacing: '-0.02em',
-                        maxWidth: i === 0 && isDesktop ? 'none' : '22ch',
+                        maxWidth: i === 0 ? 'none' : '22ch',
                         margin: 0,
                       }}
                     >
@@ -370,7 +385,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
                       color: 'rgba(255,255,255,0.60)',
                       fontSize: isDesktop ? 'clamp(16px, 1.8vw, 20px)' : 'clamp(15px, 4vw, 18px)',
                       lineHeight: 1.65,
-                      maxWidth: i === 0 && isDesktop ? 'none' : '38ch',
+                      maxWidth: i === 0 ? 'none' : '38ch',
                       margin: 0,
                       marginBottom: 'clamp(20px, 2.5vw, 36px)',
                     }}
@@ -456,6 +471,7 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
             )}
           </AnimatePresence>
         </div>
+      </div>
       </div>
     </section>
   )

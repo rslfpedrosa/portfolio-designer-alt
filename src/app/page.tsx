@@ -261,31 +261,31 @@ function HeroCursor({ name, color, left, top, delay, duration, animY, animX }: F
 
 // Dynamically import heavy components with loading states
 const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
-  loading: () => <div className="min-h-screen bg-[#f2efea]" />,
+  loading: () => <div className="min-h-screen bg-white" />,
 })
 
 const CaseStudiesSection = dynamic(() => import('@/components/home/CaseStudiesSection'), {
-  loading: () => <div style={{ height: '100svh', background: '#f2efea' }} />,
+  loading: () => <div style={{ height: '100svh', background: '#ffffff' }} />,
   ssr: false,
 })
 
 const DesignShowcase = dynamic(() => import('@/components/home/DesignShowcase'), {
-  loading: () => <div className="py-16 bg-[#f2efea]" />,
+  loading: () => <div className="py-16 bg-white" />,
   ssr: false,
 })
 
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
-  loading: () => <div className="py-16 bg-[#f2efea]" />,
+  loading: () => <div className="py-16 bg-white" />,
   ssr: false,
 })
 
 const AboutPreview = dynamic(() => import('@/components/home/AboutPreview'), {
-  loading: () => <div className="py-16 bg-[#f2efea]" />,
+  loading: () => <div className="py-16 bg-white" />,
   ssr: false,
 })
 
 const CTASection = dynamic(() => import('@/components/home/CTASection'), {
-  loading: () => <div className="py-16 bg-[#f2efea]" />,
+  loading: () => <div className="py-16 bg-white" />,
   ssr: false,
 })
 

@@ -19,7 +19,7 @@ export default function ShowcaseCard({ item }: ShowcaseCardProps) {
       style={{ borderRadius: 0 }}
     >
       {/* Media */}
-      <div className="aspect-video relative overflow-hidden bg-[#e8e4de]">
+      <div className="relative overflow-hidden bg-[#e8e4de]" style={{ minHeight: 'clamp(320px, 52svh, 580px)' }}>
         {item.type === 'video' ? (
           <video
             src={item.media}

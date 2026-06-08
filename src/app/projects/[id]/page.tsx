@@ -538,11 +538,11 @@ Key design focuses included:
   const navigationSections = getNavigationSections()
 
   return (
-    <div className="min-h-screen bg-[#f2efea] relative z-10">
+    <div className="min-h-screen bg-white relative z-10">
       {/* Hero Section */}
       <section
         ref={(el) => { if (el) heroRef.current = el }}
-        className="relative -mt-16 bg-[#f2efea]"
+        className="relative -mt-16 bg-white"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-28 sm:pt-32 pb-0 lg:pb-6">
 
@@ -721,7 +721,7 @@ Key design focuses included:
             <section
               id="summary"
               ref={(el) => { if (el) sectionRefs.current['summary'] = el }}
-              className="py-6 sm:py-8 px-6 sm:px-6 lg:px-12 bg-[#f2efea]">
+              className="py-6 sm:py-8 px-6 sm:px-6 lg:px-12 bg-white">
               <div className="max-w-4xl mx-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -767,7 +767,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -849,7 +849,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -897,7 +897,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -922,7 +922,7 @@ Key design focuses included:
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                     viewport={{ once: true }}
-                    className="rounded-2xl border border-[#241f21]/10 flex flex-col bg-[#f2efea]"
+                    className="rounded-2xl border border-[#241f21]/10 flex flex-col bg-white"
                   >
                     <div className="relative">
                       <div className="relative w-full aspect-[4/3] overflow-hidden rounded-t-2xl">
@@ -979,7 +979,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['branding'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1043,7 +1043,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['packaging'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1111,7 +1111,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['digital'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1186,7 +1186,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['impact'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1227,7 +1227,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['reflection-bocca'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1256,7 +1256,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1288,7 +1288,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['overview'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1317,7 +1317,7 @@ Key design focuses included:
 
       {/* Image Section - Cortado Only */}
       {project.id === 2 && (
-        <section className="py-4 sm:py-8 px-0 sm:px-6 sm:px-6 lg:px-12 bg-[#f2efea]">
+        <section className="py-4 sm:py-8 px-0 sm:px-6 sm:px-6 lg:px-12 bg-white">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1344,7 +1344,7 @@ Key design focuses included:
 
       {/* Image Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="pt-4 sm:pt-6 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]">
+        <section className="pt-4 sm:pt-6 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-white">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1372,7 +1372,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="pt-8 sm:pt-16 pb-2 sm:pb-4 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="pt-8 sm:pt-16 pb-2 sm:pb-4 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1417,7 +1417,7 @@ Key design focuses included:
 
       {/* Stanford Images Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-12 bg-[#f2efea]">
+        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-12 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
               <motion.div
@@ -1470,7 +1470,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-sprint'] = el
           }}
-          className="pt-8 sm:pt-16 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="pt-8 sm:pt-16 pb-8 sm:pb-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1523,7 +1523,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['understanding'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1585,7 +1585,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['clinician'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1615,7 +1615,7 @@ Key design focuses included:
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     viewport={{ once: true }}
-                    className="rounded-2xl border border-[#241f21]/10 p-6 flex flex-col items-start gap-4 h-full bg-[#f2efea]"
+                    className="rounded-2xl border border-[#241f21]/10 p-6 flex flex-col items-start gap-4 h-full bg-white"
                   >
                     <div className="w-10 h-10 rounded-xl bg-[#e8e4de] border border-[#241f21]/15 flex items-center justify-center" style={{ color: themeColors.iconText }}>
                       {item.icon}
@@ -1639,7 +1639,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1691,7 +1691,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['features'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1780,7 +1780,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['reflection'] = el
           }}
-          className="pt-8 sm:pt-16 pb-8 sm:pb-12 px-6 sm:px-6 lg:px-12 bg-[#f2efea]"
+          className="pt-8 sm:pt-16 pb-8 sm:pb-12 px-6 sm:px-6 lg:px-12 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1806,7 +1806,7 @@ Key design focuses included:
 
       {/* Further Reading Section - Onyx Only */}
       {project.id === 3 && (
-        <section className="py-8 sm:py-12 px-6 sm:px-6 lg:px-8 bg-[#f2efea]">
+        <section className="py-8 sm:py-12 px-6 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -1841,7 +1841,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['context'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1889,7 +1889,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['understanding'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -1963,7 +1963,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['design-focus'] = el
           }}
-          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-8 bg-[#f2efea]"
+          className="pt-8 sm:pt-16 pb-0 px-6 sm:px-6 lg:px-8 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2039,7 +2039,7 @@ Key design focuses included:
 
       {/* Design Focus Images Section - Cortado Only */}
       {project.id === 2 && (
-        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-8 bg-[#f2efea]">
+        <section className="pt-4 pb-8 sm:pb-16 px-0 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
               <motion.div
@@ -2092,7 +2092,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['solution'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2268,7 +2268,7 @@ Key design focuses included:
           ref={(el) => {
             if (el) sectionRefs.current['reflection'] = el
           }}
-          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-[#f2efea]"
+          className="py-8 sm:py-16 px-6 sm:px-6 lg:px-8 bg-white"
         >
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2294,7 +2294,7 @@ Key design focuses included:
 
       {/* Further Reading Section - Cortado Only */}
       {project.id === 2 && (
-        <section className="py-8 sm:py-12 px-6 sm:px-6 lg:px-8 bg-[#f2efea]">
+        <section className="py-8 sm:py-12 px-6 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -2329,7 +2329,7 @@ Key design focuses included:
       {nextProject && (
       <section
         ref={(el) => { if (el) nextProjectRef.current = el }}
-        className="pt-8 pb-16 px-4 sm:px-6 lg:px-8 bg-[#f2efea]"
+        className="pt-8 pb-16 px-4 sm:px-6 lg:px-8 bg-white"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div

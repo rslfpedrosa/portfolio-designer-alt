@@ -79,7 +79,7 @@ const ProjectsPage = () => {
   }, [])
 
   return (
-    <div className="min-h-screen pt-16 relative overflow-x-hidden" style={{ backgroundColor: '#f2efea' }}>
+    <div className="min-h-screen pt-16 relative overflow-x-hidden" style={{ backgroundColor: '#ffffff' }}>
 
       <GridBackground />
 

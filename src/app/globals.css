@@ -130,7 +130,7 @@ html {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #f2efea;
+  background-color: #ffffff;
   font-family: 'DiamondGrotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

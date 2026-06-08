@@ -201,7 +201,7 @@ export default function TestimonialsSection() {
         id="testimonials-section"
         className="relative bg-white pt-[80px] md:pt-[clamp(80px,10vw,140px)]"
         style={{
-          paddingBottom: 'clamp(64px, 8vw, 120px)',
+          paddingBottom: 'clamp(32px, 4vw, 56px)',
         }}
       >
         {/* Dot pattern */}

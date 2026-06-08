@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import gsap from 'gsap'
@@ -36,6 +36,8 @@ interface TrailCard {
   mediaIndex: number
 }
 
+const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const
+
 const MAX_TRAIL     = 10    // hard cap during fast sweeps
 const MIN_DIST      = 75    // px between spawns
 const CARD_LIFETIME = 2000  // ms each card lives before auto-fading
@@ -69,7 +71,7 @@ function CentreText({ onButtonEnter, onButtonLeave }: { onButtonEnter?: () => vo
           fontSize: 'clamp(4.5rem, 8vw, 10rem)',
           fontWeight: 400,
           letterSpacing: '-0.04em',
-          color: '#241f21',
+          color: '#ffffff',
           lineHeight: 1,
           marginBottom: '0.25em',
         }}
@@ -80,7 +82,7 @@ function CentreText({ onButtonEnter, onButtonLeave }: { onButtonEnter?: () => vo
         style={{
           fontSize: '18px',
           fontWeight: 500,
-          color: '#241f21',
+          color: '#ffffff',
           letterSpacing: '-0.02em',
           marginBottom: '0.65em',
         }}
@@ -90,7 +92,7 @@ function CentreText({ onButtonEnter, onButtonLeave }: { onButtonEnter?: () => vo
       <p
         style={{
           fontSize: '17px',
-          color: 'rgba(36,31,33,0.5)',
+          color: 'rgba(255,255,255,0.55)',
           lineHeight: 1.55,
           maxWidth: '38ch',
         }}
@@ -111,16 +113,16 @@ function CentreText({ onButtonEnter, onButtonLeave }: { onButtonEnter?: () => vo
             gap: '8px',
             fontSize: '17px',
             fontWeight: 500,
-            color: '#241f21',
-            background: '#ffffff',
-            border: '1px solid rgba(36,31,33,0.35)',
+            color: '#ffffff',
+            background: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.3)',
             borderRadius: '999px',
             padding: '10px 24px',
             transition: 'border-color 0.18s ease',
             whiteSpace: 'nowrap',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#241f21')}
-          onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(36,31,33,0.35)')}
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.8)')}
+          onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)')}
         >
           Explore the sandbox
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -134,7 +136,8 @@ function CentreText({ onButtonEnter, onButtonLeave }: { onButtonEnter?: () => vo
 
 export default function DesignShowcase() {
   const [trailCards, setTrailCards] = useState<TrailCard[]>([])
-  const sectionRef      = useRef<HTMLElement>(null)
+  const outerSectionRef = useRef<HTMLElement>(null)
+  const sectionRef      = useRef<HTMLDivElement>(null)
   const lastPosRef      = useRef<{ x: number; y: number } | null>(null)
   const idRef           = useRef(0)
   const mediaRef        = useRef(0)
@@ -242,34 +245,42 @@ export default function DesignShowcase() {
     return () => window.removeEventListener('mousemove', handleMove)
   }, [stopFade, scheduleFade, spawnCardAt])
 
+  // Pin the desktop section for a dwell period on scroll
+  useEffect(() => {
+    const section = outerSectionRef.current
+    if (!section) return
+    const st = ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: '+=200vh',
+      pin: true,
+      pinSpacing: true,
+      invalidateOnRefresh: true,
+    })
+    // Refresh after mount so GSAP accounts for CaseStudiesSection's pin spacer
+    ScrollTrigger.refresh()
+    return () => st.kill()
+  }, [])
+
   // Clean up all timers on unmount
   useEffect(() => () => {
     stopFade()
     cardTimersRef.current.forEach(t => clearTimeout(t))
   }, [stopFade])
 
-  // Pin the desktop section for 100vh of scroll so the cursor animation is visible
-  useLayoutEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: '+=100vh',
-        pin: true,
-      })
-    }, section)
-    return () => ctx.revert()
-  }, [])
-
   return (
     <>
       {/* ── Desktop: cursor-trail layout ── */}
       <section
-        ref={sectionRef}
-        className="relative hidden lg:block"
-        style={{ minHeight: '100vh' }}
+        ref={outerSectionRef}
+        className="relative hidden lg:block px-4 sm:px-6 lg:px-8"
+        style={{
+          height: '100svh',
+          overflow: 'visible',
+          paddingTop: 'clamp(80px, 9vh, 96px)',
+          paddingBottom: 'clamp(40px, 5vh, 80px)',
+          boxSizing: 'border-box',
+        }}
       >
         {/* Dot pattern */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
@@ -282,100 +293,152 @@ export default function DesignShowcase() {
             <rect width="100%" height="100%" fill="url(#sandbox-dots)" />
           </svg>
         </div>
+        {/* Vertical dashed column lines */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
           <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
             <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
             <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
           </div>
-          <div className="absolute top-0 left-0 right-0 h-px" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
-          <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
         </div>
+        {/* Horizontal dashed lines aligned with panel top/bottom edges */}
+        <div aria-hidden style={{ position: 'absolute', top: 'clamp(80px,9vh,96px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
+        <div aria-hidden style={{ position: 'absolute', bottom: 'clamp(40px,5vh,80px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
 
-        <CentreText
-          onButtonEnter={() => { isButtonHoveredRef.current = true; lastPosRef.current = null; startFade() }}
-          onButtonLeave={() => { isButtonHoveredRef.current = false; stopFade() }}
-        />
+        <div className="max-w-7xl mx-auto" style={{ position: 'relative', height: '100%' }}>
+          {/* Figma component label */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              bottom: 'calc(100% + 8px)',
+              left: 0,
+              display: 'flex', alignItems: 'center', gap: 6,
+              color: '#9747FF',
+              zIndex: 50, pointerEvents: 'none',
+            }}
+          >
+            <img src="/icons/component.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
+            <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}>Sandbox</span>
+          </div>
 
-        {/* Hint label — disappears once the first card appears */}
-        <AnimatePresence>
-          {trailCards.length === 0 && (
-            <motion.p
-              key="hint"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              style={{
-                position: 'absolute',
-                bottom: '9%',
-                left: '50%',
-                translateX: '-50%',
-                fontSize: 13,
-                color: 'rgba(36,31,33,0.38)',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                pointerEvents: 'none',
-                zIndex: 5,
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Move your cursor to explore
-            </motion.p>
-          )}
-        </AnimatePresence>
-
-        {/* Trail cards — newest (i = length-1) at full size, oldest (i = 0) smallest */}
-        <AnimatePresence>
-          {trailCards.map((card, i) => {
-            const item = TRAIL_MEDIA[card.mediaIndex]
-            const total = trailCards.length
-            // i=0 oldest → 0.62 scale, i=total-1 newest → 1.0 scale
-            const scaleTarget = total === 1 ? 1 : 0.62 + (i / (total - 1)) * 0.38
-            return (
-              <motion.div
-                key={card.id}
-                initial={{ opacity: 0, scale: 0.42, y: 14, rotate: card.rotation - 5 }}
-                animate={{ opacity: 1, scale: scaleTarget, y: 0, rotate: card.rotation }}
-                exit={{ opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } }}
-                transition={{
-                  opacity: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
-                  scale:   { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
-                  y:       { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
-                  rotate:  { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
-                }}
+          {/* Bordered black panel — cursor tracking zone */}
+          <div
+            ref={sectionRef}
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              border: '1.5px solid #9747FF',
+              background: '#000000',
+              overflow: 'visible',
+            }}
+          >
+            {/* Corner pin squares */}
+            {CORNERS.map(corner => (
+              <div
+                key={corner}
                 style={{
                   position: 'absolute',
-                  left: card.x,
-                  top:  card.y,
-                  translateX: '-50%',
-                  translateY: '-50%',
-                  width: 'clamp(180px, 21vw, 300px)',
-                  borderRadius: 6,
-                  overflow: 'hidden',
-                  boxShadow: '0 12px 48px rgba(36,31,33,0.22)',
-                  zIndex: i + 1,
+                  width: 12, height: 12,
+                  borderRadius: 2,
+                  zIndex: 20,
                   pointerEvents: 'none',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #9747FF',
+                  top: corner.startsWith('top') ? -6 : undefined,
+                  bottom: corner.startsWith('bottom') ? -6 : undefined,
+                  left: corner.endsWith('left') ? -6 : undefined,
+                  right: corner.endsWith('right') ? -6 : undefined,
                 }}
-              >
-                <div style={{ aspectRatio: '16/10' }}>
-                  {item.type === 'video' ? (
-                    <video
-                      src={item.src}
-                      autoPlay muted loop playsInline preload="auto"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
-                  ) : (
-                    <img
-                      src={item.src}
-                      alt=""
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
-                  )}
-                </div>
-              </motion.div>
-            )
-          })}
-        </AnimatePresence>
+              />
+            ))}
+
+            <CentreText
+              onButtonEnter={() => { isButtonHoveredRef.current = true; lastPosRef.current = null; startFade() }}
+              onButtonLeave={() => { isButtonHoveredRef.current = false; stopFade() }}
+            />
+
+            {/* Hint label — disappears once the first card appears */}
+            <AnimatePresence>
+              {trailCards.length === 0 && (
+                <motion.p
+                  key="hint"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                  style={{
+                    position: 'absolute',
+                    bottom: '9%',
+                    left: '50%',
+                    translateX: '-50%',
+                    fontSize: 13,
+                    color: 'rgba(255,255,255,0.38)',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    pointerEvents: 'none',
+                    zIndex: 5,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Move your cursor to explore
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            {/* Trail cards — newest (i = length-1) at full size, oldest (i = 0) smallest */}
+            <AnimatePresence>
+              {trailCards.map((card, i) => {
+                const item = TRAIL_MEDIA[card.mediaIndex]
+                const total = trailCards.length
+                const scaleTarget = total === 1 ? 1 : 0.62 + (i / (total - 1)) * 0.38
+                return (
+                  <motion.div
+                    key={card.id}
+                    initial={{ opacity: 0, scale: 0.42, y: 14, rotate: card.rotation - 5 }}
+                    animate={{ opacity: 1, scale: scaleTarget, y: 0, rotate: card.rotation }}
+                    exit={{ opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } }}
+                    transition={{
+                      opacity: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                      scale:   { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+                      y:       { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                      rotate:  { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                    }}
+                    style={{
+                      position: 'absolute',
+                      left: card.x,
+                      top:  card.y,
+                      translateX: '-50%',
+                      translateY: '-50%',
+                      width: 'clamp(180px, 21vw, 300px)',
+                      borderRadius: 6,
+                      overflow: 'hidden',
+                      boxShadow: '0 12px 48px rgba(36,31,33,0.22)',
+                      zIndex: i + 1,
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <div style={{ aspectRatio: '16/10' }}>
+                      {item.type === 'video' ? (
+                        <video
+                          src={item.src}
+                          autoPlay muted loop playsInline preload="auto"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                      ) : (
+                        <img
+                          src={item.src}
+                          alt=""
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                      )}
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
       </section>
 
       {/* ── Mobile + Tablet: horizontal scroll layout ── */}
@@ -387,6 +450,13 @@ export default function DesignShowcase() {
           overflow: 'hidden',
         }}
       >
+        {/* Background panel within the dashed lines */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+          <div
+            className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto"
+            style={{ background: '#000000' }}
+          />
+        </div>
         {/* Dot pattern */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
           <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -414,7 +484,7 @@ export default function DesignShowcase() {
               fontSize: 'clamp(3.5rem, 18vw, 5.5rem)',
               fontWeight: 400,
               letterSpacing: '-0.04em',
-              color: '#241f21',
+              color: '#ffffff',
               lineHeight: 1,
               marginBottom: '0.1em',
             }}
@@ -425,7 +495,7 @@ export default function DesignShowcase() {
             style={{
               fontSize: '18px',
               fontWeight: 500,
-              color: '#241f21',
+              color: '#ffffff',
               letterSpacing: '-0.02em',
               marginBottom: '0.5em',
             }}
@@ -435,7 +505,7 @@ export default function DesignShowcase() {
           <p
             style={{
               fontSize: '17px',
-              color: 'rgba(36,31,33,0.5)',
+              color: 'rgba(255,255,255,0.55)',
               lineHeight: 1.55,
               marginBottom: '1.25em',
             }}
@@ -450,9 +520,9 @@ export default function DesignShowcase() {
                 gap: '8px',
                 fontSize: '17px',
                 fontWeight: 500,
-                color: '#241f21',
-                background: '#ffffff',
-                border: '1px solid rgba(36,31,33,0.35)',
+                color: '#ffffff',
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.3)',
                 borderRadius: '999px',
                 padding: '10px 24px',
                 whiteSpace: 'nowrap',
