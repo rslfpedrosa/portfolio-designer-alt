@@ -333,6 +333,17 @@ export default function DesignShowcase() {
               overflow: 'visible',
             }}
           >
+            {/* Dot pattern on dark panel */}
+            <div className="absolute inset-0 pointer-events-none" aria-hidden style={{ overflow: 'hidden' }}>
+              <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="sandbox-panel-dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                    <circle cx="6" cy="6" r="0.75" fill="rgba(255,255,255,0.14)" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#sandbox-panel-dots)" />
+              </svg>
+            </div>
             {/* Corner pin squares */}
             {CORNERS.map(corner => (
               <div
@@ -462,7 +473,7 @@ export default function DesignShowcase() {
           <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="sandbox-dots-m" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-                <circle cx="6" cy="6" r="0.75" fill="rgba(36,31,33,0.14)" />
+                <circle cx="6" cy="6" r="0.75" fill="rgba(255,255,255,0.14)" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#sandbox-dots-m)" />

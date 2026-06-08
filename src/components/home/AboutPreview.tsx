@@ -89,6 +89,7 @@ export default function AboutPreview() {
                 style={{ minHeight: 'clamp(300px, 34vw, 460px)' }}
               >
                 <Link href="/about" className="block" style={{ cursor: 'pointer' }}>
+                  <div className="scale-[0.6] sm:scale-100 -my-[92px] sm:my-0">
                   <motion.div
                     className="relative"
                     style={{ width: '420px', height: '460px' }}
@@ -127,6 +128,7 @@ export default function AboutPreview() {
                       </motion.div>
                     ))}
                   </motion.div>
+                  </div>
                 </Link>
               </div>
 

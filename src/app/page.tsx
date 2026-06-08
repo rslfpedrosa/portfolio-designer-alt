@@ -311,7 +311,9 @@ const HomePage = () => {
           <div className="hidden lg:block">
             {FIGMA_USERS.map((user) => <HeroCursor key={user.name} {...user} />)}
           </div>
-          {HERO_FOLDERS.map((folder) => <HeroFolder key={folder.src} {...folder} />)}
+          <div className="hidden md:block">
+            {HERO_FOLDERS.map((folder) => <HeroFolder key={folder.src} {...folder} />)}
+          </div>
         </div>
       </div>
 

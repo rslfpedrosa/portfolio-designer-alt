@@ -20,15 +20,16 @@ function isClickableElement(el: Element | null): boolean {
 const DRAGGING_LABELS = ['Drop me anywhere', 'Find me a spot', 'Wheeeee...', 'Look ma, no hands.', 'Where should I live?', 'Handle with care.']
 
 const CURSOR_LABELS: Record<string, string> = {
-  'hi-there':     'Hi there',
-  'view-project': 'View project',
-  'meet-rita':    'Meet Rita',
-  'take-a-peek':  'Take a peek',
-  'explore':           'Explore',
-  'say-hello':         'Say hello',
+  'hi-there':        'Hi there',
+  'view-project':    'View project',
+  'meet-rita':       'Meet Rita',
+  'take-a-peek':     'Take a peek',
+  'explore':         'Explore',
+  'say-hello':       'Say hello',
   'back-to-beginning': 'Start over',
-  'drag':              'Drag me!',
+  'drag':            'Drag me!',
   'read-full-review':  'Read full review',
+  'read-case-study': 'Read Case Study',
 }
 
 export default function CursorBlob() {

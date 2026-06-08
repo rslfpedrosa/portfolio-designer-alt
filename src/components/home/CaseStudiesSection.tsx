@@ -1,8 +1,8 @@
 'use client'
 
 import { useRef, useState, useLayoutEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import Link from 'next/link'
 import Image from 'next/image'
 import { Heart, ShoppingBag, Home } from 'lucide-react'
 import { projectsData } from '@/data/projects'
@@ -76,6 +76,7 @@ const fadeUp = {
 // After 3 viewports the section unpins and normal page scroll resumes.
 
 export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }) {
+  const router = useRouter()
   const sectionRef = useRef<HTMLElement>(null)
 
   // Clip-path is written exclusively via GSAP (never via React style prop)
@@ -265,14 +266,22 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
             </motion.span>
           </AnimatePresence>
         </div>
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        border: '1.5px solid #9747FF',
-        overflow: 'hidden',
-        background: '#042d2b',
-      }}>
+      <div
+        role="button"
+        tabIndex={0}
+        data-cursor="read-case-study"
+        onClick={() => router.push(`/projects/${slides[displayIndex].id}`)}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') router.push(`/projects/${slides[displayIndex].id}`) }}
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          border: '1.5px solid #9747FF',
+          overflow: 'hidden',
+          background: '#042d2b',
+          cursor: isDesktop ? 'none' : 'pointer',
+        }}
+      >
         {/* ── Image layers ────────────────────────────────────────────────────
             clipPath is NOT in the style prop — GSAP owns that property entirely.
             Each image sits above the previous one in z-order; the clip-path mask
@@ -395,34 +404,6 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
                       : slide.tagline ?? slide.description}
                   </motion.p>
 
-                  {/* 5. Button */}
-                  <motion.div variants={fadeUp}>
-                    <Link href={`/projects/${slide.id}`} style={isDesktop ? { cursor: 'none' } : {}}>
-                      <div
-                        onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
-                        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 8,
-                          fontSize: 17,
-                          fontWeight: 500,
-                          color: '#241f21',
-                          background: '#ffffff',
-                          border: '1px solid #ffffff',
-                          borderRadius: 999,
-                          padding: '10px 24px',
-                          transition: 'opacity 0.18s ease',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        See Case Study
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M10.75 10.75V0.75H0.75M10.75 0.75L0.75 10.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                    </Link>
-                  </motion.div>
                 </div>
               </motion.div>
             ))}
