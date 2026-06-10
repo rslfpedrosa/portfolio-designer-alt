@@ -6,6 +6,13 @@ import GridBackground from '@/components/GridBackground'
 
 const labItems = [
   {
+    id: 8,
+    type: 'image',
+    media: '/explorations/petunia.webp',
+    description: 'Petunia — a visual exploration of organic form and texture through digital craft.',
+    tags: ['Figma'],
+  },
+  {
     id: 7,
     type: 'video',
     media: '/explorations/hello-Post.webm',
@@ -57,37 +64,42 @@ const labItems = [
 ]
 
 const dashedLine = {
-  backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)',
+  backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.2) 50%, transparent 50%)',
   backgroundSize: '16px 1px',
   backgroundRepeat: 'repeat-x',
 }
 
+const dashedLineV = {
+  backgroundImage: 'linear-gradient(to bottom, rgba(255,255,255,0.2) 50%, transparent 50%)',
+  backgroundSize: '1px 16px',
+  backgroundRepeat: 'repeat-y',
+}
+
 const LabPage = () => {
   return (
-    <div className="pt-16 relative overflow-x-hidden" style={{ minHeight: '80vh', backgroundColor: '#000000' }}>
+    <div className="pt-16 relative overflow-x-hidden" style={{ minHeight: '80vh', backgroundColor: '#0a0a0a' }}>
 
-      <GridBackground />
+      <GridBackground dark />
 
       {/* Vertical dashed column lines */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-20" aria-hidden>
         <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 left-0 h-full w-px" style={dashedLineV} />
+          <div className="absolute top-0 right-0 h-full w-px" style={dashedLineV} />
         </div>
       </div>
 
       {/* Hero */}
       <section className="relative z-10 pt-14 sm:pt-24 pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="absolute top-0 left-0 w-full h-px" style={dashedLine} />
         <div className="max-w-7xl mx-auto">
           <div className="text-left pl-6 sm:pl-8 lg:pl-16">
             <h1
-              className="text-6xl sm:text-8xl font-medium mb-3 sm:mb-6 leading-none"
-              style={{ color: '#241f21' }}
+              className="font-medium leading-none mb-3 sm:mb-6"
+              style={{ fontSize: 'clamp(56px, 10vw, 120px)', color: '#ffffff' }}
             >
               Sandbox
             </h1>
-            <p className="text-xl max-w-3xl" style={{ color: 'rgba(36,31,33,0.5)' }}>
+            <p className="text-xl max-w-3xl" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Design explorations focused on craft, interaction, and curiosity.
             </p>
           </div>
@@ -96,16 +108,29 @@ const LabPage = () => {
 
       {/* Explorations */}
       <section className="relative z-10 py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col gap-8 sm:gap-12">
-          {labItems.map((item, index) => (
-            <div key={item.id} className="relative">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={dashedLine} />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={dashedLine} />
-              <div className="relative z-10">
-                <ShowcaseCard item={item} />
-              </div>
-            </div>
-          ))}
+        <div className="max-w-7xl mx-auto relative" style={{ zIndex: 1 }}>
+          {/* Centre column dashed lines (desktop only) */}
+          <div className="absolute inset-y-0 w-px pointer-events-none hidden lg:block" style={{ zIndex: 20, left: 'calc(50% - 1.5rem)', ...dashedLineV }} />
+          <div className="absolute inset-y-0 w-px pointer-events-none hidden lg:block" style={{ zIndex: 20, left: 'calc(50% + 1.5rem)', ...dashedLineV }} />
+
+          <div className="flex flex-col gap-y-6 sm:gap-y-10">
+            {Array.from({ length: Math.ceil(labItems.length / 2) }, (_, rowIndex) => {
+              const rowItems = labItems.slice(rowIndex * 2, rowIndex * 2 + 2)
+              return (
+                <div key={rowIndex}>
+                  <div className="relative pointer-events-none" style={{ height: 1, zIndex: 20 }}>
+                    <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={dashedLine} />
+                  </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+                    {rowItems.map(item => <ShowcaseCard key={item.id} item={item} />)}
+                  </div>
+                  <div className="relative pointer-events-none" style={{ height: 1, zIndex: 20 }}>
+                    <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px" style={dashedLine} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </section>
 

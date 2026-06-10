@@ -107,7 +107,7 @@ const ProjectsPage = () => {
               My Work
             </h1>
             <p className="text-xl max-w-2xl" style={{ color: 'rgba(36,31,33,0.5)' }}>
-              Selected work, not all the work. Feel free to get in touch if you'd like to see more.
+              Selected work, not all the work.<br /> Feel free to get in touch if you'd like to see more.
             </p>
           </motion.div>
         </div>

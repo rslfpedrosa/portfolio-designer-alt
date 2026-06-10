@@ -11,6 +11,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const
+
 // ── Slide configuration ──────────────────────────────────────────────────────
 const SLIDE_IDS = [3, 1, 2]
 type LucideIcon = React.ComponentType<{ size?: number }>
@@ -240,12 +242,29 @@ export default function CaseStudiesSection({ isDesktop }: { isDesktop: boolean }
       {/* ── Bordered slideshow frame ─────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto h-full" style={{ position: 'relative' }}>
 
+        {/* ── Corner squares ────────────────────────────────────────────────── */}
+        {CORNERS.map(corner => (
+          <div
+            key={corner}
+            className="absolute w-3 h-3 z-50 rounded-sm"
+            style={{
+              backgroundColor: '#ffffff',
+              border: '1px solid #9747FF',
+              top: corner.startsWith('top') ? '-6px' : undefined,
+              bottom: corner.startsWith('bottom') ? '-6px' : undefined,
+              left: corner.endsWith('left') ? '-6px' : undefined,
+              right: corner.endsWith('right') ? '-6px' : undefined,
+            }}
+          />
+        ))}
+
         {/* ── Figma component label ──────────────────────────────────────────── */}
         <div
           aria-hidden
           style={{
             position: 'absolute',
-            bottom: 'calc(100% + 8px)',
+            top: 0,
+            transform: 'translateY(calc(-100% - 8px))',
             left: 0,
             display: 'flex', alignItems: 'center', gap: 6,
             color: '#9747FF',

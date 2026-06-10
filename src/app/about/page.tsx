@@ -326,20 +326,26 @@ const ConferenceCard = ({
 
 const JOYS = [
   { title: 'Beautiful, Overpriced Coffees', description: '€5 for vibes and foam art? Worth it.', video: '/videos/coffee.mp4' },
+  { title: 'Brunch Is a Hobby', description: "Technically it's a meal. Emotionally it's a lifestyle.", image: '/Me/brunch.webp' },
   { title: 'Falling in Love with Every Dog I Meet', description: 'Dogs are my weakness.', video: '/videos/dogs.mp4' },
+  { title: 'Arts & Crafts', description: 'The supplies need their own apartment at this point.', image: '/Me/arts.webp' },
   { title: 'Design Shop Wandering', description: 'My favorite kind of field trip.', video: '/videos/design-shop.mp4' },
+  { title: 'Cooking Without Measuring', description: 'The recipe is more of a suggestion.', image: '/Me/baking.webp' },
   { title: "Nature's Biggest Fan", description: 'Trees, fresh air, no emails. Perfect.', video: '/videos/nature.mp4' },
   { title: 'Learning by Leaving', description: 'New cities. New ways of seeing.', video: '/videos/travel.mp4' },
 ]
 
-// Pentagon around center (50%, 50%) with r_x≈30%, r_y≈30%
-// top-left anchor: subtract half card width (~135px) and half card height (~165px)
+// Full circle, 8 cards at 45° steps — center (51%, 50%), r_x=40%, r_y=34%
+// x = 50 + 40·cos(θ),  y = 51 − 34·sin(θ)  (CSS y inverted)
 const POLAROID_POSITIONS = [
-  { rotation: -9, pos: { top: 'calc(20% - 165px)', left: 'calc(50% - 135px)'  } }, // top
-  { rotation:  6, pos: { top: 'calc(41% - 165px)', left: 'calc(80% - 135px)'  } }, // upper right
-  { rotation: -4, pos: { top: 'calc(74% - 165px)', left: 'calc(69% - 135px)'  } }, // lower right
-  { rotation:  8, pos: { top: 'calc(74% - 165px)', left: 'calc(31% - 135px)'  } }, // lower left
-  { rotation: -5, pos: { top: 'calc(41% - 165px)', left: 'calc(20% - 135px)'  } }, // upper left
+  { rotation: -9, pos: { top: 'calc(17% - 165px)', left: 'calc(50% - 135px)'  } }, // θ=90°  top
+  { rotation:  6, pos: { top: 'calc(27% - 165px)', left: 'calc(78% - 135px)'  } }, // θ=45°  top-right
+  { rotation: -5, pos: { top: 'calc(51% - 165px)', left: 'calc(90% - 135px)'  } }, // θ=0°   right
+  { rotation:  8, pos: { top: 'calc(75% - 165px)', left: 'calc(78% - 135px)'  } }, // θ=-45° bottom-right
+  { rotation: -7, pos: { top: 'calc(85% - 165px)', left: 'calc(50% - 135px)'  } }, // θ=-90° bottom
+  { rotation:  4, pos: { top: 'calc(75% - 165px)', left: 'calc(22% - 135px)'  } }, // θ=225° bottom-left
+  { rotation: -6, pos: { top: 'calc(51% - 165px)', left: 'calc(10% - 135px)'  } }, // θ=180° left
+  { rotation:  9, pos: { top: 'calc(27% - 165px)', left: 'calc(22% - 135px)'  } }, // θ=135° top-left
 ]
 
 const PolaroidCard = ({
@@ -412,23 +418,39 @@ const PolaroidCard = ({
     >
       {/* Photo area */}
       <div style={{ aspectRatio: '1/1', overflow: 'hidden' }}>
-        <video
-          ref={videoRef}
-          src={joy.video}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-            transform: isHovered ? 'scale(1.04)' : 'scale(1)',
-            transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
-            pointerEvents: 'none',
-          }}
-        />
+        {joy.image ? (
+          <img
+            src={joy.image}
+            alt={joy.title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              transform: isHovered ? 'scale(1.04)' : 'scale(1)',
+              transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+              pointerEvents: 'none',
+            }}
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            src={joy.video}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              transform: isHovered ? 'scale(1.04)' : 'scale(1)',
+              transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
       </div>
       {/* Polaroid label strip */}
       <div style={{ padding: '10px 4px 20px 4px' }}>
@@ -443,7 +465,7 @@ const PolaroidCard = ({
   )
 }
 
-const MOBILE_ROTATIONS = [-6, 5, -4, 7, -3]
+const MOBILE_ROTATIONS = [-6, 5, -4, 7, -3, -5, 6, -7]
 
 const MobilePolaroidCard = ({ joy, rotation }: { joy: typeof JOYS[0]; rotation: number }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -476,15 +498,23 @@ const MobilePolaroidCard = ({ joy, rotation }: { joy: typeof JOYS[0]; rotation: 
       }}
     >
       <div style={{ aspectRatio: '1/1', overflow: 'hidden' }}>
-        <video
-          ref={videoRef}
-          src={joy.video}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        />
+        {joy.image ? (
+          <img
+            src={joy.image}
+            alt={joy.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            src={joy.video}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        )}
       </div>
       <div style={{ padding: '10px 4px 20px 4px' }}>
         <p style={{ fontSize: '13px', fontWeight: 600, color: textDark, lineHeight: 1.3, marginBottom: '2px' }}>
@@ -527,7 +557,7 @@ const CORNER_HANDLES = [
 const AboutPage = () => {
   const shouldReduceMotion = useReducedMotion()
 
-  const [cardRadius, setCardRadius] = useState(0)
+  const [cardRadius, setCardRadius] = useState(84)
   const [isCardHovered, setIsCardHovered] = useState(false)
   const [cardDimensions, setCardDimensions] = useState({ width: 0, height: 0 })
   const cardRef = useRef<HTMLDivElement>(null)
@@ -682,7 +712,7 @@ const AboutPage = () => {
           <div className="flex items-center gap-2 mb-3">
             <span
               className="text-xs font-medium px-2.5 py-1 rounded-md"
-              style={{ backgroundColor: bg, border: `1px solid ${borderColor}`, color: textDark }}
+              style={{ backgroundColor: '#ffffff', border: `1px solid ${borderColor}`, color: textDark }}
             >
               Section 1
             </span>
@@ -1067,7 +1097,7 @@ const AboutPage = () => {
       {/* Small Joys Section — Desktop */}
       <section
         className="relative hidden md:block z-10"
-        style={{ minHeight: 'max(960px, 100svh)', marginTop: '0' }}
+        style={{ minHeight: 'max(1100px, 100svh)', marginTop: '0' }}
       >
         {/* Center text */}
         <motion.div

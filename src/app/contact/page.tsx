@@ -3,7 +3,6 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Send, Mail, Linkedin, Dribbble, CheckCircle, X } from 'lucide-react'
-import GridBackground from '@/components/GridBackground'
 
 const CYCLING_PHRASES = ["Let's Talk.", "Let's Connect.", "Let's Collaborate.", "Let's Create."]
 
@@ -160,12 +159,21 @@ const ContactPage = () => {
     },
   ]
 
-  const borderColor = 'rgba(36,31,33,0.13)'
+  const borderColor = 'rgba(255,255,255,0.12)'
 
   return (
-    <div className="min-h-screen pt-16 relative overflow-hidden" style={{ backgroundColor: '#f2efea' }}>
-      {/* Grid Pattern */}
-      <GridBackground />
+    <div className="min-h-screen pt-16 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      {/* Dot pattern */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="cf-dots-dark" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+              <circle cx="6" cy="6" r="0.75" fill="rgba(255,255,255,0.10)" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#cf-dots-dark)" />
+        </svg>
+      </div>
 
       {/* Page content above background layers */}
       <div className="relative z-10">
@@ -179,15 +187,15 @@ const ContactPage = () => {
             transition={{ duration: 0.6 }}
             className="space-y-6 sm:pl-8 lg:pl-16"
           >
-            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-medium text-[#241f21] flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-medium flex flex-wrap items-baseline gap-x-4 gap-y-2" style={{ color: '#ffffff' }}>
               <span className="relative inline-block">
                 {/* Invisible spacer: keeps container at widest-phrase width */}
-                <span className="invisible text-gradient whitespace-nowrap" aria-hidden>Let&apos;s Collaborate.</span>
+                <span className="invisible whitespace-nowrap" aria-hidden>Let&apos;s Collaborate.</span>
 
                 {/* Measurement span for frame width tracking */}
                 <span
                   ref={measureRef}
-                  className="absolute top-0 left-0 invisible whitespace-nowrap text-gradient pointer-events-none"
+                  className="absolute top-0 left-0 invisible whitespace-nowrap pointer-events-none"
                   aria-hidden
                 >
                   {displayText}
@@ -196,12 +204,12 @@ const ContactPage = () => {
 
                 {/* Visible animated text + cursor */}
                 <span className="absolute top-0 left-0 right-0 whitespace-nowrap">
-                  <span className="text-gradient">{displayText}</span>
+                  <span style={{ color: '#ffffff' }}>{displayText}</span>
                   {entered && (
                     <span
                       className="typewriter-cursor"
                       aria-hidden
-                      style={{ display: 'inline-block', width: '2px', height: '0.8em', backgroundColor: '#042d2b', marginLeft: '2px', verticalAlign: 'middle' }}
+                      style={{ display: 'inline-block', width: '2px', height: '0.8em', backgroundColor: '#ffffff', marginLeft: '2px', verticalAlign: 'middle' }}
                     />
                   )}
                 </span>
@@ -220,7 +228,7 @@ const ContactPage = () => {
                         key={corner}
                         className="absolute w-3 h-3 rounded-sm"
                         style={{
-                          backgroundColor: '#ffffff',
+                          backgroundColor: '#000000',
                           border: '1px solid #0d99ff',
                           top: corner.startsWith('top') ? -6 : undefined,
                           bottom: corner.startsWith('bottom') ? -6 : undefined,
@@ -233,7 +241,7 @@ const ContactPage = () => {
                 )}
               </span>
             </h1>
-            <p className="text-xl leading-relaxed max-w-2xl" style={{ color: 'rgba(36,31,33,0.55)' }}>
+            <p className="text-xl leading-relaxed max-w-2xl" style={{ color: 'rgba(255,255,255,0.55)' }}>
               I'm always excited to collaborate on projects that make a difference.
               Whether you need help with product strategy, design systems, or creating
               beautiful user experiences, I'd love to hear from you.
@@ -260,7 +268,7 @@ const ContactPage = () => {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#000000',
                     border: `1px solid ${borderColor}`,
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
@@ -271,20 +279,20 @@ const ContactPage = () => {
               ))}
               <div
                 className="relative px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
-                style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
+                style={{ backgroundColor: '#0a0a0a', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
               >
               <div>
-                <h2 className="text-3xl font-medium text-[#241f21] mb-4">
+                <h2 className="text-3xl font-medium mb-4" style={{ color: '#ffffff' }}>
                   Send me a message
                 </h2>
-                <p style={{ color: 'rgba(36,31,33,0.55)' }}>
+                <p style={{ color: 'rgba(255,255,255,0.55)' }}>
                   Fill out the form below and I'll get back to you within 24 hours.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: 'rgba(36,31,33,0.70)' }}>
+                  <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: 'rgba(255,255,255,0.70)' }}>
                     Name
                   </label>
                   <input
@@ -294,14 +302,14 @@ const ContactPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent transition-colors text-[#241f21] placeholder:text-[#241f21]/40"
-                    style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(255,255,255,0.65)', color: '#241f21' }}
+                    className="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent transition-colors placeholder:text-white/30"
+                    style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(255,255,255,0.06)', color: '#ffffff' }}
                     placeholder="Your name"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'rgba(36,31,33,0.70)' }}>
+                  <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'rgba(255,255,255,0.70)' }}>
                     Email
                   </label>
                   <input
@@ -311,14 +319,14 @@ const ContactPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent transition-colors placeholder:text-[#241f21]/40"
-                    style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(255,255,255,0.65)', color: '#241f21' }}
+                    className="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent transition-colors placeholder:text-white/30"
+                    style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(255,255,255,0.06)', color: '#ffffff' }}
                     placeholder="your@email.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: 'rgba(36,31,33,0.70)' }}>
+                  <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: 'rgba(255,255,255,0.70)' }}>
                     Message
                   </label>
                   <textarea
@@ -328,8 +336,8 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent transition-colors resize-none placeholder:text-[#241f21]/40"
-                    style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(255,255,255,0.65)', color: '#241f21' }}
+                    className="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#d9ee72] focus:border-transparent transition-colors resize-none placeholder:text-white/30"
+                    style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(255,255,255,0.06)', color: '#ffffff' }}
                     placeholder="Tell me about your project..."
                   />
                 </div>
@@ -339,7 +347,7 @@ const ContactPage = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[#0f0f0f] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-[#0d99ff] text-white px-6 py-3 rounded-full font-medium text-base hover:bg-[#0d99ff]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -369,7 +377,7 @@ const ContactPage = () => {
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#000000',
                     border: `1px solid ${borderColor}`,
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
@@ -380,13 +388,13 @@ const ContactPage = () => {
               ))}
               <div
                 className="relative px-6 py-10 sm:p-10 lg:p-14 h-full space-y-8"
-                style={{ backgroundColor: '#ffffff', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
+                style={{ backgroundColor: '#0a0a0a', outline: `1px solid ${borderColor}`, outlineOffset: '0px' }}
               >
               <div className="-mb-4">
-                <h2 className="text-3xl font-medium text-[#241f21] mb-4">
+                <h2 className="text-3xl font-medium mb-4" style={{ color: '#ffffff' }}>
                   Get in touch
                 </h2>
-                <p style={{ color: 'rgba(36,31,33,0.55)' }}>
+                <p style={{ color: 'rgba(255,255,255,0.55)' }}>
                   Prefer to reach out directly? Here are a few ways to connect with me.
                 </p>
               </div>
@@ -404,16 +412,16 @@ const ContactPage = () => {
                       onMouseEnter={() => setEmailHovered(true)}
                       onMouseLeave={() => setEmailHovered(false)}
                       className="flex w-full items-center space-x-4 p-4 rounded-xl transition-all duration-200 cursor-pointer"
-                      style={{ border: `1px solid ${borderColor}`, backgroundColor: 'rgba(36,31,33,0.04)' }}
+                      style={{ border: `1px solid rgba(255,255,255,0.20)`, backgroundColor: 'transparent' }}
                     >
-                      <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-colors" style={{ backgroundColor: 'rgba(36,31,33,0.14)', border: `1px solid ${borderColor}` }}>
-                        <Icon size={18} strokeWidth={1.5} style={{ color: emailHovered ? '#241f21' : 'rgba(36,31,33,0.70)', transition: 'color 0.2s' }} />
+                      <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-colors" style={{ backgroundColor: 'transparent', border: `1px solid rgba(255,255,255,0.20)` }}>
+                        <Icon size={18} strokeWidth={1.5} style={{ color: '#ffffff' }} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs uppercase tracking-widest mb-0.5" style={{ color: 'rgba(36,31,33,0.40)' }}>{info.title}</p>
-                        <p className="font-medium text-[#241f21] truncate">{info.value}</p>
+                        <p className="text-xs uppercase tracking-widest mb-0.5" style={{ color: 'rgba(255,255,255,0.40)' }}>{info.title}</p>
+                        <p className="font-medium truncate" style={{ color: '#ffffff' }}>{info.value}</p>
                       </div>
-                      <div className="ml-auto" style={{ color: emailHovered ? '#241f21' : 'rgba(36,31,33,0.55)', transition: 'color 0.2s' }}>
+                      <div className="ml-auto" style={{ color: emailHovered ? '#ffffff' : 'rgba(255,255,255,0.40)', transition: 'color 0.2s' }}>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -425,7 +433,7 @@ const ContactPage = () => {
 
               {/* Social Links */}
               <div className="space-y-4">
-                <h3 className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(36,31,33,0.40)' }}>
+                <h3 className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.40)' }}>
                   Follow me
                 </h3>
                 <div className="flex gap-3">
@@ -439,8 +447,8 @@ const ContactPage = () => {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2.5 px-4 py-2.5 rounded-full transition-all duration-200 text-[#241f21]/80 hover:text-[#241f21]"
-                        style={{ border: `1px solid rgba(36,31,33,0.22)`, backgroundColor: 'rgba(36,31,33,0.14)' }}
+                        className="flex items-center gap-2.5 px-4 py-2.5 rounded-full transition-all duration-200"
+                        style={{ border: `1px solid rgba(255,255,255,0.20)`, backgroundColor: 'transparent', color: '#ffffff' }}
                         aria-label={social.name}
                       >
                         <Icon size={18} />
@@ -453,10 +461,10 @@ const ContactPage = () => {
 
               {/* Availability */}
               <div className="p-6 rounded-2xl" style={{ border: `1px solid ${borderColor}` }}>
-                <h3 className="text-lg font-medium text-[#241f21] mb-2">
+                <h3 className="text-lg font-medium mb-2" style={{ color: '#ffffff' }}>
                   Current Availability
                 </h3>
-                <p className="mb-4" style={{ color: 'rgba(36,31,33,0.55)' }}>
+                <p className="mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>
                   I'm currently available for select projects and collaborations.
                   Let's discuss how we can work together.
                 </p>
@@ -465,7 +473,7 @@ const ContactPage = () => {
                     <div className="status-dot-inner absolute inset-0 rounded-full" style={{ backgroundColor: '#3caa54' }} />
                     <div className="status-dot-pulse absolute inset-0 rounded-full" style={{ backgroundColor: '#3caa54' }} />
                   </div>
-                  <span className="text-sm font-medium" style={{ color: 'rgba(36,31,33,0.70)' }}>
+                  <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.70)' }}>
                     Available for new projects
                   </span>
                 </div>

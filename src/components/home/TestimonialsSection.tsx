@@ -133,7 +133,6 @@ export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [mobileDirection, setMobileDirection] = useState<'left' | 'right'>('right')
-  const [isCardHovered, setIsCardHovered] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -199,9 +198,10 @@ export default function TestimonialsSection() {
     <>
       <section
         id="testimonials-section"
-        className="relative bg-white pt-[80px] md:pt-[clamp(80px,10vw,140px)]"
+        className="relative bg-white"
         style={{
-          paddingBottom: 'clamp(32px, 4vw, 56px)',
+          paddingTop: 'clamp(80px, 9vh, 96px)',
+          paddingBottom: 'clamp(40px, 5vh, 80px)',
         }}
       >
         {/* Dot pattern */}
@@ -232,17 +232,30 @@ export default function TestimonialsSection() {
             <div
               className="relative"
               style={{ isolation: 'isolate' }}
-              onMouseEnter={() => setIsCardHovered(true)}
-              onMouseLeave={() => setIsCardHovered(false)}
             >
+              {/* Figma component label */}
+              <div
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  bottom: 'calc(100% + 8px)',
+                  left: 0,
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  color: '#9747FF',
+                  zIndex: 50, pointerEvents: 'none',
+                }}
+              >
+                <img src="/icons/component.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
+                <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}>What My Peers Say</span>
+              </div>
+
               {CORNERS.map(corner => (
                 <div
                   key={corner}
                   className="absolute w-3 h-3 z-20 rounded-sm"
                   style={{
                     backgroundColor: '#ffffff',
-                    border: `1px solid ${isCardHovered ? '#0a99ff' : 'rgba(36,31,33,0.13)'}`,
-                    transition: 'background-color 0.15s, border-color 0.15s',
+                    border: '1px solid #9747FF',
                     top: corner.startsWith('top') ? '-6px' : undefined,
                     bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                     left: corner.endsWith('left') ? '-6px' : undefined,
@@ -261,10 +274,9 @@ export default function TestimonialsSection() {
                 style={{
                   position: 'relative',
                   background: 'white',
-                  boxShadow: `0 0 0 1px ${isCardHovered ? '#0a99ff' : 'rgba(36,31,33,0.13)'}`,
+                  boxShadow: '0 0 0 1.5px #9747FF',
                   padding: 'clamp(28px, 4vw, 56px)',
                   cursor: 'pointer',
-                  transition: 'box-shadow 0.15s',
                   minHeight: 'clamp(320px, 40vw, 540px)',
                   height: 'auto',
                   display: 'flex',

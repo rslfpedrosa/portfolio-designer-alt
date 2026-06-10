@@ -19,7 +19,7 @@ export default function ShowcaseCard({ item }: ShowcaseCardProps) {
       style={{ borderRadius: 0 }}
     >
       {/* Media */}
-      <div className="relative overflow-hidden bg-[#e8e4de]" style={{ minHeight: 'clamp(320px, 52svh, 580px)' }}>
+      <div className="relative overflow-hidden bg-[#e8e4de]" style={{ height: 'clamp(320px, 52svh, 580px)' }}>
         {item.type === 'video' ? (
           <video
             src={item.media}
@@ -50,11 +50,6 @@ export default function ShowcaseCard({ item }: ShowcaseCardProps) {
         )}
       </div>
 
-      {/* Bottom border */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
-        style={{ backgroundColor: 'rgba(36,31,33,0.08)' }}
-      />
     </motion.div>
   )
 }

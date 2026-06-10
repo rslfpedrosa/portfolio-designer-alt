@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,10 +13,8 @@ const photos = [
 ]
 
 export default function AboutPreview() {
-  const [isHovered, setIsHovered] = useState(false)
-
   return (
-    <section className="relative" style={{ background: '#ffffff', paddingTop: 'clamp(32px, 4vw, 56px)', paddingBottom: 'clamp(80px, 10vw, 140px)' }}>
+    <section className="relative" style={{ background: '#ffffff', paddingTop: 'clamp(80px, 9vh, 96px)', paddingBottom: 'clamp(40px, 5vh, 80px)' }}>
       {/* Dot pattern */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -30,8 +27,8 @@ export default function AboutPreview() {
         </svg>
       </div>
       {/* Horizontal dashed lines aligned with panel top/bottom */}
-      <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={{ top: 'clamp(32px, 4vw, 56px)', backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', zIndex: 2 }} />
-      <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={{ bottom: 'clamp(80px, 10vw, 140px)', backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', zIndex: 2 }} />
+      <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={{ top: 'clamp(80px, 9vh, 96px)', backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', zIndex: 2 }} />
+      <div className="absolute left-1/2 -translate-x-1/2 w-screen h-px pointer-events-none" style={{ bottom: 'clamp(40px, 5vh, 80px)', backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', zIndex: 2 }} />
       {/* Vertical dashed lines */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 2 }} aria-hidden>
         <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
@@ -43,13 +40,27 @@ export default function AboutPreview() {
       <div className="px-4 sm:px-6 lg:px-8" style={{ position: 'relative', zIndex: 3 }}>
         <div className="max-w-7xl mx-auto">
 
-          {/* Hover wrapper — corners and border live here */}
+          {/* Wrapper — corners and border live here */}
           <div
             className="relative"
             style={{ isolation: 'isolate' }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
+            {/* Figma component label */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                bottom: 'calc(100% + 8px)',
+                left: 0,
+                display: 'flex', alignItems: 'center', gap: 6,
+                color: '#9747FF',
+                zIndex: 50, pointerEvents: 'none',
+              }}
+            >
+              <img src="/icons/component.svg" alt="" width={14} height={14} style={{ display: 'block' }} />
+              <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1 }}>About Me</span>
+            </div>
+
             {/* Corner squares */}
             {CORNERS.map(corner => (
               <div
@@ -57,8 +68,7 @@ export default function AboutPreview() {
                 className="absolute w-3 h-3 z-20 rounded-sm"
                 style={{
                   backgroundColor: '#ffffff',
-                  border: `1px solid ${isHovered ? '#0a99ff' : 'rgba(36,31,33,0.13)'}`,
-                  transition: 'border-color 0.15s',
+                  border: '1px solid #9747FF',
                   top: corner.startsWith('top') ? '-6px' : undefined,
                   bottom: corner.startsWith('bottom') ? '-6px' : undefined,
                   left: corner.endsWith('left') ? '-6px' : undefined,
@@ -72,8 +82,7 @@ export default function AboutPreview() {
               className="absolute inset-0"
               style={{
                 background: '#ffffff',
-                boxShadow: `0 0 0 1px ${isHovered ? '#0a99ff' : 'rgba(36,31,33,0.13)'}`,
-                transition: 'box-shadow 0.15s',
+                boxShadow: '0 0 0 1.5px #9747FF',
                 zIndex: 1,
               }}
             />

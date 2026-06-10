@@ -602,14 +602,14 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
                 fontWeight: 500,
                 color: '#241f21',
                 background: 'transparent',
-                border: '1px solid rgba(36,31,33,0.35)',
+                border: '1px solid #241f21',
                 borderRadius: '999px',
                 padding: '10px 24px',
-                transition: 'border-color 0.18s ease',
+                transition: 'opacity 0.18s ease',
                 whiteSpace: 'nowrap',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#241f21')}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(36,31,33,0.35)')}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.7')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
               View My Work
             </div>
@@ -625,14 +625,14 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
                 fontSize: '17px',
                 fontWeight: 500,
                 color: '#ffffff',
-                background: '#0a99ff',
-                border: '1px solid #0a99ff',
+                background: '#0d99ff',
+                border: '1px solid #0d99ff',
                 borderRadius: '999px',
                 padding: '10px 24px',
                 transition: 'opacity 0.18s ease',
                 whiteSpace: 'nowrap',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
               Get In Touch
@@ -838,6 +838,9 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
       />,
       document.body
     )}
+
+    {/* All fixed tool UI portalled to body to escape the hero wrapper's z-10 stacking context */}
+    {mounted && createPortal(<>
 
     {/* Ghost sticker preview — follows cursor while in stamp mode with a sticker selected.
         Hidden over interactive elements so buttons show their normal cursor. */}
@@ -1248,6 +1251,8 @@ export default function HeroSection(_props: HeroSectionProps = {}) {
         </div>
       )}
     </AnimatePresence>
+
+    </>, document.body)}
 
     {/* Placed stickers — rendered in a body portal so they appear on any section */}
     {mounted && createPortal(

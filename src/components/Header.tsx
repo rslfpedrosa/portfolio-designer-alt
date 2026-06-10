@@ -13,7 +13,7 @@ const Header = () => {
   const pathname = usePathname()
 
   const isCaseStudy = /^\/projects\/\d+/.test(pathname)
-  const isLightPage = isCaseStudy || pathname === '/' || pathname === '/contact' || pathname === '/about' || pathname === '/lab' || pathname === '/projects'
+  const isLightPage = isCaseStudy || pathname === '/' || pathname === '/about' || pathname === '/projects'
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
@@ -52,8 +52,8 @@ const Header = () => {
         burgerColor: '#241f21',
       }
     : {
-        pillBg: 'rgba(4,45,43,0.82)',
-        pillBorder: 'rgba(255,255,255,0.08)',
+        pillBg: 'rgba(255,255,255,0.08)',
+        pillBorder: 'rgba(255,255,255,0.12)',
         separator: 'rgba(255,255,255,0.18)',
         logoText: '#ffffff',
         navMuted: 'rgba(255,255,255,0.5)',
@@ -62,7 +62,7 @@ const Header = () => {
         activePillText: '#ffffff',
         ctaBg: 'rgba(255,255,255,0.14)',
         ctaText: '#ffffff',
-        mobileBg: 'rgba(4,45,43,0.97)',
+        mobileBg: 'rgba(10,10,10,0.97)',
         mobileDivider: 'rgba(255,255,255,0.06)',
         mobileLinkColor: 'rgba(255,255,255,0.85)',
         burgerColor: '#ffffff',
