@@ -252,8 +252,8 @@ const ContactPage = () => {
 
       {/* Contact Form & Info */}
       <section className="relative px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
-        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: `linear-gradient(to right, ${borderColor} 50%, transparent 50%)`, backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
-        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: `linear-gradient(to right, ${borderColor} 50%, transparent 50%)`, backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute top-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: `linear-gradient(to right, ${borderColor} 50%, transparent 50%)`, backgroundSize: '8px 1px', backgroundRepeat: 'repeat-x' }} />
+        <div className="absolute bottom-0 left-0 w-full h-px pointer-events-none" style={{ backgroundImage: `linear-gradient(to right, ${borderColor} 50%, transparent 50%)`, backgroundSize: '8px 1px', backgroundRepeat: 'repeat-x' }} />
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Contact Form */}

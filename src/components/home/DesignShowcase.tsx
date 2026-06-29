@@ -250,13 +250,13 @@ export default function DesignShowcase() {
         {/* Dashed column lines */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
           <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
-            <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-            <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+            <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 8px', backgroundRepeat: 'repeat-y' }} />
+            <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 8px', backgroundRepeat: 'repeat-y' }} />
           </div>
         </div>
         {/* Horizontal dashed lines aligned with panel edges */}
-        <div aria-hidden style={{ position: 'absolute', top: 'clamp(80px,9vh,96px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
-        <div aria-hidden style={{ position: 'absolute', bottom: 'clamp(40px,5vh,80px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
+        <div aria-hidden style={{ position: 'absolute', top: 'clamp(80px,9vh,96px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '8px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
+        <div aria-hidden style={{ position: 'absolute', bottom: 'clamp(40px,5vh,80px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '8px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
 
         <div className="max-w-7xl mx-auto" style={{ position: 'relative', height: '100%' }}>
           {/* Figma component label */}
@@ -345,13 +345,13 @@ export default function DesignShowcase() {
         {/* Dashed column lines */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
           <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 max-w-7xl mx-auto">
-            <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-            <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+            <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 8px', backgroundRepeat: 'repeat-y' }} />
+            <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 8px', backgroundRepeat: 'repeat-y' }} />
           </div>
         </div>
         {/* Horizontal dashed lines aligned with panel edges */}
-        <div aria-hidden style={{ position: 'absolute', top: 'clamp(80px,16vw,120px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
-        <div aria-hidden style={{ position: 'absolute', bottom: 'clamp(48px,10vw,80px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '16px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
+        <div aria-hidden style={{ position: 'absolute', top: 'clamp(80px,16vw,120px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '8px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
+        <div aria-hidden style={{ position: 'absolute', bottom: 'clamp(48px,10vw,80px)', left: 0, right: 0, height: 1, backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '8px 1px', backgroundRepeat: 'repeat-x', pointerEvents: 'none' }} />
 
         <div className="px-4 sm:px-6 max-w-7xl mx-auto" style={{ position: 'relative' }}>
           {/* Figma component label */}

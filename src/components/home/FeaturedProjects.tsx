@@ -24,7 +24,7 @@ export default function FeaturedProjects({
     width: '100vw',
     marginLeft: 'calc(-50vw + 50%)',
     backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.10) 50%, transparent 50%)',
-    backgroundSize: '16px 1px',
+    backgroundSize: '8px 1px',
     backgroundRepeat: 'repeat-x' as const,
   }
 

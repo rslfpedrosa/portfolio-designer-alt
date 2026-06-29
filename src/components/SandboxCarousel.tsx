@@ -6,11 +6,12 @@ const CARDS = [
   '/explorations/23126508_195.webp',
   '/projects/Cortado/collage.webp',
   '/explorations/012-2.webp',
+  '/explorations/Smart-Reply.webp',
   '/projects/Onyx/Stanford.webp',
   '/projects/Bocca/2.webp',
 ]
 
-const CENTER_I = 3       // Math.floor(7 / 2)
+const CENTER_I = 4       // Math.floor(8 / 2)
 const CARD_W = 248
 const CARD_H = 390
 const X_STEP = 248       // px between card centers along world X

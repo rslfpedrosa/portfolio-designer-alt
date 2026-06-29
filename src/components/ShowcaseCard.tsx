@@ -2,6 +2,16 @@
 
 import { motion } from 'framer-motion'
 
+// Uses parent variant propagation — parent row triggers "hidden" → "visible"
+// custom prop sets the delay so the card appears after the box lines finish drawing
+const cardVariants = {
+  hidden: { opacity: 0 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    transition: { duration: 0.8, ease: 'easeOut', delay },
+  }),
+}
+
 interface ShowcaseItem {
   id: number
   type: string
@@ -10,13 +20,16 @@ interface ShowcaseItem {
 
 interface ShowcaseCardProps {
   item: ShowcaseItem
+  delay?: number
 }
 
-export default function ShowcaseCard({ item }: ShowcaseCardProps) {
+export default function ShowcaseCard({ item, delay = 1.2 }: ShowcaseCardProps) {
   return (
     <motion.div
       className="group relative overflow-hidden"
       style={{ borderRadius: 0 }}
+      variants={cardVariants}
+      custom={delay}
     >
       {/* Media */}
       <div className="relative overflow-hidden bg-[#e8e4de]" style={{ height: 'clamp(320px, 52svh, 580px)' }}>
@@ -49,7 +62,6 @@ export default function ShowcaseCard({ item }: ShowcaseCardProps) {
           />
         )}
       </div>
-
     </motion.div>
   )
 }

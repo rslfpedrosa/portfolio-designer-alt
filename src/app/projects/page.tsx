@@ -59,7 +59,7 @@ const descVariant = {
 
 const dashedH = {
   backgroundImage: 'linear-gradient(to right, rgba(36,31,33,0.13) 50%, transparent 50%)',
-  backgroundSize: '16px 1px',
+  backgroundSize: '8px 1px',
   backgroundRepeat: 'repeat-x',
 }
 
@@ -86,8 +86,8 @@ const ProjectsPage = () => {
       {/* Vertical dashed column lines */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         <div className="absolute inset-y-0 left-4 right-4 sm:left-6 sm:right-6 lg:left-8 lg:right-8 max-w-7xl mx-auto">
-          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
-          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 16px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 left-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 8px', backgroundRepeat: 'repeat-y' }} />
+          <div className="absolute top-0 right-0 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(36,31,33,0.13) 50%, transparent 50%)', backgroundSize: '1px 8px', backgroundRepeat: 'repeat-y' }} />
         </div>
       </div>
 
