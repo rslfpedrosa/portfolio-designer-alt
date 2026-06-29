@@ -792,7 +792,7 @@ Key design focuses included:
                 {/* Large card - spans 2 columns */}
                 <div className="relative overflow-hidden rounded-2xl col-span-2 aspect-[16/9] lg:aspect-[2/1]">
                   <Image
-                    src="/projects/bocca/2.webp"
+                    src="/projects/Bocca/2.webp"
                     alt="Bocca Moments overview"
                     fill
                     unoptimized
@@ -804,7 +804,7 @@ Key design focuses included:
                 {/* Tall card - spans 2 rows on large screens, hidden on mobile */}
                 <div className="hidden lg:block relative overflow-hidden rounded-2xl lg:row-span-2 aspect-square lg:aspect-auto lg:h-full">
                   <Image
-                    src="/projects/bocca/1.webp"
+                    src="/projects/Bocca/1.webp"
                     alt="Bocca Moments details"
                     fill
                     unoptimized
@@ -816,7 +816,7 @@ Key design focuses included:
                 {/* Square card */}
                 <div className="relative overflow-hidden rounded-2xl aspect-square">
                   <Image
-                    src="/projects/bocca/4.webp"
+                    src="/projects/Bocca/4.webp"
                     alt="Bocca Moments experience"
                     fill
                     unoptimized
@@ -828,7 +828,7 @@ Key design focuses included:
                 {/* Square card - hidden on mobile */}
                 <div className="hidden lg:block relative overflow-hidden rounded-2xl aspect-square">
                   <Image
-                    src="/projects/bocca/3.webp"
+                    src="/projects/Bocca/3.webp"
                     alt="Bocca Moments highlights"
                     fill
                     unoptimized
@@ -913,8 +913,8 @@ Key design focuses included:
               </p>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {[
-                  { icon: Heart, title: 'Intimacy through design', description: 'Every element, from tone of voice to interaction pacing, reinforces closeness and attention.', image: '/projects/bocca/2.webp' },
-                  { icon: Clock, title: 'Ritual instead of routine', description: 'The experience encourages slowing down, transforming consumption into a shared moment.', image: '/projects/bocca/3.webp' },
+                  { icon: Heart, title: 'Intimacy through design', description: 'Every element, from tone of voice to interaction pacing, reinforces closeness and attention.', image: '/projects/Bocca/2.webp' },
+                  { icon: Clock, title: 'Ritual instead of routine', description: 'The experience encourages slowing down, transforming consumption into a shared moment.', image: '/projects/Bocca/3.webp' },
                 ].map((item, i) => (
                   <motion.div
                     key={i}
