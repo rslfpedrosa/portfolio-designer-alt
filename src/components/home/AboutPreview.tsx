@@ -132,7 +132,6 @@ export default function AboutPreview() {
                           fill
                           className="object-cover"
                           sizes={`${photo.w}px`}
-                          loading="lazy"
                         />
                       </motion.div>
                     ))}
