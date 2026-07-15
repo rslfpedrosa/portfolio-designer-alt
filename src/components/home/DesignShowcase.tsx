@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import gsap from 'gsap'
@@ -122,7 +122,7 @@ function ArcCarousel() {
               {item.type === 'video' ? (
                 <video
                   src={item.src}
-                  autoPlay muted loop playsInline
+                  autoPlay muted loop playsInline preload="metadata"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
               ) : (
@@ -206,10 +206,44 @@ function CentreText() {
 // ─── Main component ──────────────────────────────────────────────────────────
 export default function DesignShowcase() {
   const outerSectionRef = useRef<HTMLElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  // Only one layout is ever actually mounted at a time (matches Tailwind's `lg` breakpoint).
+  // Previously both desktop and mobile variants were always in the DOM (just CSS-hidden),
+  // which meant every autoplaying video in the carousel was fetched and decoded twice.
+  const [isWide, setIsWide] = useState<boolean | null>(null)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    setIsWide(mq.matches)
+    const onChange = (e: MediaQueryListEvent) => setIsWide(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  // Defer mounting the carousel's videos/images until the section is actually
+  // close to the viewport, instead of fetching ~30MB of video the instant this
+  // client-only chunk loads (which previously happened immediately on page load,
+  // regardless of scroll position).
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = wrapperRef.current
+    if (!el || inView) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '800px 0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [inView])
 
   useEffect(() => {
     const section = outerSectionRef.current
-    if (!section) return
+    if (!section || !isWide) return
     const st = ScrollTrigger.create({
       trigger: section,
       start: 'top top',
@@ -220,14 +254,18 @@ export default function DesignShowcase() {
     })
     ScrollTrigger.refresh()
     return () => st.kill()
-  }, [])
+  }, [isWide])
+
+  if (isWide === null) {
+    return <div ref={wrapperRef} className="py-16 bg-white" />
+  }
 
   return (
-    <>
-      {/* ── Desktop ── */}
+    <div ref={wrapperRef}>
+    {isWide ? (
       <section
         ref={outerSectionRef}
-        className="relative hidden lg:block px-4 sm:px-6 lg:px-8"
+        className="relative px-4 sm:px-6 lg:px-8"
         style={{
           height: '100svh',
           overflow: 'visible',
@@ -313,7 +351,7 @@ export default function DesignShowcase() {
 
             {/* Carousel inside its own clipping div */}
             <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-              <ArcCarousel />
+              {inView && <ArcCarousel />}
             </div>
 
             {/* Text above the arc */}
@@ -321,10 +359,10 @@ export default function DesignShowcase() {
           </div>
         </div>
       </section>
-
-      {/* ── Mobile + Tablet ── */}
+    ) : (
+      /* ── Mobile + Tablet ── */
       <section
-        className="relative lg:hidden"
+        className="relative"
         style={{
           paddingTop: 'clamp(80px, 16vw, 120px)',
           paddingBottom: 'clamp(48px, 10vw, 80px)',
@@ -396,7 +434,7 @@ export default function DesignShowcase() {
 
             {/* Carousel inside its own clipping div */}
             <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-              <ArcCarousel />
+              {inView && <ArcCarousel />}
             </div>
 
             {/* Text above the arc */}
@@ -404,6 +442,7 @@ export default function DesignShowcase() {
           </div>
         </div>
       </section>
-    </>
+    )}
+    </div>
   )
 }

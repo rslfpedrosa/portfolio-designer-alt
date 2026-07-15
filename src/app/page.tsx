@@ -291,6 +291,12 @@ const CTASection = dynamic(() => import('@/components/home/CTASection'), {
 
 const HomePage = () => {
   const [isDesktop, setIsDesktop] = useState(false)
+  // Width-gated (matches Tailwind's md/lg breakpoints) so the floating hero
+  // decorations aren't mounted at all on mobile — previously they were only
+  // CSS-hidden, so their images still loaded and their infinite drag/float
+  // animations still ran off-screen.
+  const [isMdUp, setIsMdUp] = useState(false)
+  const [isLgUp, setIsLgUp] = useState(false)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -298,6 +304,21 @@ const HomePage = () => {
     const handleChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+
+  useEffect(() => {
+    const mdQuery = window.matchMedia('(min-width: 768px)')
+    const lgQuery = window.matchMedia('(min-width: 1024px)')
+    setIsMdUp(mdQuery.matches)
+    setIsLgUp(lgQuery.matches)
+    const onMdChange = (e: MediaQueryListEvent) => setIsMdUp(e.matches)
+    const onLgChange = (e: MediaQueryListEvent) => setIsLgUp(e.matches)
+    mdQuery.addEventListener('change', onMdChange)
+    lgQuery.addEventListener('change', onLgChange)
+    return () => {
+      mdQuery.removeEventListener('change', onMdChange)
+      lgQuery.removeEventListener('change', onLgChange)
+    }
   }, [])
 
   return (
@@ -308,12 +329,16 @@ const HomePage = () => {
           <HeroSection />
         </div>
         <div className="absolute inset-0 overflow-visible pointer-events-none z-[30]">
-          <div className="hidden lg:block">
-            {FIGMA_USERS.map((user) => <HeroCursor key={user.name} {...user} />)}
-          </div>
-          <div className="hidden md:block">
-            {HERO_FOLDERS.map((folder) => <HeroFolder key={folder.src} {...folder} />)}
-          </div>
+          {isLgUp && (
+            <div className="hidden lg:block">
+              {FIGMA_USERS.map((user) => <HeroCursor key={user.name} {...user} />)}
+            </div>
+          )}
+          {isMdUp && (
+            <div className="hidden md:block">
+              {HERO_FOLDERS.map((folder) => <HeroFolder key={folder.src} {...folder} />)}
+            </div>
+          )}
         </div>
       </div>
 
